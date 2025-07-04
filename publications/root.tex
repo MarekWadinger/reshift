@@ -37,7 +37,7 @@
 %% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
 %% for the whole article with \linenumbers.
 \usepackage[mathlines,switch]{lineno}
-\linenumbers\resetlinenumber[5]
+\linenumbers
 
 % upright sub-index
 \newcommand{\ui}[2]{#1 _{\text{#2}}}
@@ -73,27 +73,18 @@ Change-point detection, Dynamic mode decomposition, Control systems, Online lear
 \linenumbers{}
 
 %% main text
-\section{Introduction}\label{sec:introduction}
 \input{sections/introduction.tex}
 
-\section{Preliminaries}\label{sec:preliminaries}
 \input{sections/preliminaries.tex}
 
-\clearpage
 \input{sections/theoretical_analysis.tex}
 
-\clearpage
-\section{Method}\label{sec:method}
 \input{sections/method.tex}
 
-\clearpage
-\section{Results}\label{sec:results}
 \input{sections/results.tex}
 
-\section{Conclusions}\label{sec:conclusions}
 \input{sections/conclusions.tex}
 
-\section*{Notation}
 \input{sections/notation.tex}
 
 \section*{Additional information}

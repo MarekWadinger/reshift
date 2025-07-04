@@ -1,7 +1,9 @@
+\section{Preliminaries}\label{sec:preliminaries}
+
 This section presents the theoretical background of the proposed method. We start with the definition of Dynamic Mode Decomposition (DMD) and its online and extended online versions. We then describe how to utilize the online Singular Value Decomposition (SVD) algorithm, which enables finding lower rank representation less expensively. Finally, we present the proposed method for truncating the DMD matrix to a lower rank online.
 
 \subsection{DMD}\label{sec:dmd}
-Dynamic Mode Decomposition (DMD), introduced in \citet{Schmid2010}, is a technique with broad application in data sequence analysis. The use cases span discriminating dominant signal and noise components from high-dimensional measurements, revealing coherent structures, and modeling dynamic behavior via system identification. The DMD was found to be closely related to Koopman theory by \citet{Rowley2009}, revealing perhaps the most interesting property of representing a non-linear system as a set of linear governing equations, which enabled its combination with nominal MPC and other techniques where optimization problem could be significantly simplified by finding linear representation of the system albeit increased dimensionality of the model. Various modifications of DMD further broadened its utilization and underpinned its essential place in system identification and control theory \citep{Schmid2022}.
+Dynamic Mode Decomposition (DMD), introduced in~\cite{Schmid2010}, is a technique with broad application in data sequence analysis. The use cases span discriminating dominant signal and noise components from high-dimensional measurements, revealing coherent structures, and modeling dynamic behavior via system identification. The DMD was found to be closely related to Koopman theory by~\cite{Rowley2009}, revealing perhaps the most interesting property of representing a non-linear system as a set of linear governing equations, which enabled its combination with nominal MPC and other techniques where optimization problem could be significantly simplified by finding linear representation of the system albeit increased dimensionality of the model. Various modifications of DMD further broadened its utilization and underpinned its essential place in system identification and control theory~\cite{Schmid2022}.
 
 The DMD algorithm aims to find the optimal linear operator \(A\) that advances the snapshot matrix in time; mathematically, the optimal linear operator \(A\) is defined as
 \begin{equation}\label{eq:best-fit-operator}
@@ -9,7 +11,7 @@ The DMD algorithm aims to find the optimal linear operator \(A\) that advances t
 \end{equation}
 where matrices \(X \in \mathbb{C}^{m \times n}\) and \(X^\prime \in \mathbb{C}^{m \times n}\) represent \(n\) consecutive snapshot pairs \({\{x(t_i), x(t_i^\prime )\}}^n_{i=1}\), where \(t_i^\prime = t_i + \Delta t_i\) and \(X^+\) is Moore-Penrose pseudinverse of \(X\).
 
-\citet{Tu2013} proposed an exact algorithm for solving~\eqref{eq:best-fit-operator}, that does not rely on the assumption of uniform sampling, enabling its usage in industrial data streams. While enabling irregular sampling, time steps \(\Delta t_i\) must be sufficiently small to capture the highest frequency dynamics.
+\cite{Tu2013} proposed an exact algorithm for solving~\eqref{eq:best-fit-operator}, that does not rely on the assumption of uniform sampling, enabling its usage in industrial data streams. While enabling irregular sampling, time steps \(\Delta t_i\) must be sufficiently small to capture the highest frequency dynamics.
 
 \subsection{Algorithm for DMD}
 DMD utilizes the computationally efficient singular value decomposition (SVD) of \(X\) to provide a low-rank representation of high-dimensional systems.
@@ -40,7 +42,7 @@ Projection onto POD modes in~\eqref{eq:projected-operator} preserves the non-zer
 
 DMD modes represent linear combinations of POD mode amplitudes with consistent linear behavior over time, offering insights into temporal evolution, thus combining the advantages of SVD for spatial dimensionality reduction and FFT for identifying temporal frequencies. Each DMD mode is linked to a specific eigenvalue \(\lambda = a + ib\), indicating growth or decay rate \(a\) and oscillation frequency \(b\).
 
-Therefore, DMD not only reduces dimensionality but also models the evolution of the modes in time, enabling its usage for prediction\citep{Brunton2022}. Indeed, the operator \(A\) then represents a linear time-invariant system
+Therefore, DMD not only reduces dimensionality but also models the evolution of the modes in time, enabling its usage for prediction~\cite{Brunton2022}. Indeed, the operator \(A\) then represents a linear time-invariant system
 
 \begin{equation*}
     X^\prime = AX.
@@ -51,7 +53,7 @@ Lastly, to reconstruct the full-dimensional DMD modes \(\Phi \) from reduced DMD
     \Phi = X^\prime \tilde{V} \tilde{\Sigma}^{-1} W.
 \end{equation}
 
-\citet{Tu2013} has shown correspondence between DMD modes and eigenvectors of the full matrix \(A\) as
+\cite{Tu2013} has shown correspondence between DMD modes and eigenvectors of the full matrix \(A\) as
 \begin{align*}
     A\Phi
      & = (X^\prime \tilde{V} \tilde{\Sigma}^{-1} \tilde{U}*) (X^\prime \tilde{V} \tilde{\Sigma}^{-1} W)
@@ -61,15 +63,15 @@ Lastly, to reconstruct the full-dimensional DMD modes \(\Phi \) from reduced DMD
      & = \Phi \Lambda
 \end{align*}
 
-In cases where \(n \gg m\), we may seek more efficient reconstruction of the full-dimensional DMD modes using projected modes \(\Phi = \tilde{U} W\) while losing guarantees of finding the exact eigenvectors of \(A\) \citep{Schmid2010}.
+In cases where \(n \gg m\), we may seek more efficient reconstruction of the full-dimensional DMD modes using projected modes \(\Phi = \tilde{U} W\) while losing guarantees of finding the exact eigenvectors of \(A\)~\cite{Schmid2010}.
 
 \subsection{Online DMD}
 In most practical applications, sufficient data may not be available on demand but instead become available in a streaming manner. Moreover, many complex systems in nature or engineered ones exhibit time-varying dynamics, under the influence of environmental or operational factors, that we may wish to track over time to maintain the models' validity. In these relevant cases, we can update the underlying decomposition of the data matrix \(X\) over time.
 
-Recently, an attractive way of updating exact DMD in streaming applications was proposed by \citet{Zhang2019}, providing extensive variations to improve tracking of time-varying dynamics without storing the full data matrix \(X\).
+Recently, an attractive way of updating exact DMD in streaming applications was proposed by~\cite{Zhang2019}, providing extensive variations to improve tracking of time-varying dynamics without storing the full data matrix \(X\).
 
 \subsection{Algorithm for online DMD updates}\label{sec:online-dmd-updates}
-The initial requirement of online DMD updates in \citet{Zhang2019} is the availability of \(A\). In some instances, we may have recorded (or sufficient time to record) the history of snapshots \(X_k\) up to time step \(k\) enabling initialization of \(A_k\) using the standard DMD algorithm presented in Section~\ref{sec:dmd}. Conversely, initializing \(A_k\) with the identity matrix works well in practice and converges quickly.
+The initial requirement of online DMD updates in~\cite{Zhang2019} is the availability of \(A\). In some instances, we may have recorded (or sufficient time to record) the history of snapshots \(X_k\) up to time step \(k\) enabling initialization of \(A_k\) using the standard DMD algorithm presented in Section~\ref{sec:dmd}. Conversely, initializing \(A_k\) with the identity matrix works well in practice and converges quickly.
 
 In streaming data processing, new pairs of snapshots may become available in real-time or delayed in mini-batches as
 \begin{equation}
@@ -131,7 +133,7 @@ This means that the history of snapshot pairs \({\{x(t_i), x(t_i^\prime )\}}^{k+
 
 
 \subsection{Online DMD with Control}
-In industrial automation, complex systems to which external control is applied are of interest. DMD can effectively identify internal system dynamics, subtracting the effect of control input. Perhaps more interestingly, it can also be used to evaluate the effect of control on the system \citep{Proctor2016}. From control theory, the (discrete-time) linear time-varying system can be written as
+In industrial automation, complex systems to which external control is applied are of interest. DMD can effectively identify internal system dynamics, subtracting the effect of control input. Perhaps more interestingly, it can also be used to evaluate the effect of control on the system~\cite{Proctor2016}. From control theory, the (discrete-time) linear time-varying system can be written as
 \begin{equation}\label{eq:linear-system}
     X_{k+1} = A_k X_{k} + B_k \Theta_{k},
 \end{equation}
@@ -160,12 +162,12 @@ Similarly to DMD, the matrices \(A_k\) and \(B_k\) may then be found by minimizi
     \bar{A}_k = X^\prime_k \bar{X}_k^+.
 \end{equation*}
 
-At time \(k+c\), we incorporate \(c\) new columns into \(\bar{X}_k\) and \(X^\prime_k\), and aim to update \(\bar{A}_{k+c}\) utilizing our prior knowledge of \(\bar{A}_k\). By applying the same method as in Section~\ref{sec:online-dmd-updates}, extending the online DMD to this scenario is straightforward. Specifically, the square matrix \(A_k\) from the DMD is replaced in DMDc with the rectangular matrix \(\bar{A}_k\) defined earlier, and the matrix \(X_k\) in the formulae~\eqref{eq:precision-matrix-update} and~\eqref{eq:online-dmd-update} is substituted with the matrix \(\bar{X}_k\)~\citep{Zhang2019}.
+At time \(k+c\), we incorporate \(c\) new columns into \(\bar{X}_k\) and \(X^\prime_k\), and aim to update \(\bar{A}_{k+c}\) utilizing our prior knowledge of \(\bar{A}_k\). By applying the same method as in Section~\ref{sec:online-dmd-updates}, extending the online DMD to this scenario is straightforward. Specifically, the square matrix \(A_k\) from the DMD is replaced in DMDc with the rectangular matrix \(\bar{A}_k\) defined earlier, and the matrix \(X_k\) in the formulae~\eqref{eq:precision-matrix-update} and~\eqref{eq:online-dmd-update} is substituted with the matrix \(\bar{X}_k\)~\cite{Zhang2019}.
 
 \subsection{Truncating Online DMD with Control}\label{sec:truncating-online-dmd}
-Some of the challenges of online DMD proposed in~\citet{Zhang2019} include the lack of robustness to noise, bad scalability, and decreased numerical stability of small eigenvalue updates. To address these issues, we propose modifying the online DMD algorithm that truncates the DMD matrix to a lower rank. Conventionally, this process in batch-trained DMD relies on the truncated singular value decomposition (SVD) method, which is widely used in data analysis to reduce the dimensionality of data while preserving the most essential information. Nevertheless, computing the SVD of the matrix \(X_k\) is computationally expensive and unsuitable for online learning. Instead, we employ online SVD algorithms that perform low-rank updates of the SVD as new snapshots \(X_k\) become available.
+Some of the challenges of online DMD proposed in~\cite{Zhang2019} include the lack of robustness to noise, bad scalability, and decreased numerical stability of small eigenvalue updates. To address these issues, we propose modifying the online DMD algorithm that truncates the DMD matrix to a lower rank. Conventionally, this process in batch-trained DMD relies on the truncated singular value decomposition (SVD) method, which is widely used in data analysis to reduce the dimensionality of data while preserving the most essential information. Nevertheless, computing the SVD of the matrix \(X_k\) is computationally expensive and unsuitable for online learning. Instead, we employ online SVD algorithms that perform low-rank updates of the SVD as new snapshots \(X_k\) become available.
 
-We use the algorithm of \citet{Zhang2022}, a modified version of the originally proposed algorithm by \citet{Brand2006}. The main benefit of this modification is the reorthogonalization rule, which prevents erosion of left singular values orthogonality at a reasonable computational cost. For the details on the algorithm, please refer to the original work of author \citep{Zhang2022}. For consistency of nomenclature, we will refer to the SVD decomposition of the augmented matrix \(\bar{X}_k\) as
+We use the algorithm of~\cite{Zhang2022}, a modified version of the originally proposed algorithm by~\cite{Brand2006}. The main benefit of this modification is the reorthogonalization rule, which prevents erosion of left singular values orthogonality at a reasonable computational cost. For the details on the algorithm, please refer to the original work of author~\cite{Zhang2022}. For consistency of nomenclature, we will refer to the SVD decomposition of the augmented matrix \(\bar{X}_k\) as
 \begin{equation*}
     \bar{X}_k = \tilde{U}_k \tilde{\Sigma}_k \tilde{V}_k^\top.
 \end{equation*}

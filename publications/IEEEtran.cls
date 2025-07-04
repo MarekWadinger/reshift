@@ -4366,7 +4366,7 @@ between column types.}%
 
 %% CITATION AND BIBLIOGRAPHY COMMANDS
 %%
-%% V1.6 no longer supports the older, nonstandard \shortcite and \citename setup stuff
+%% V1.6 no longer supports the older, nonstandard \shortcite and~\citename setup stuff
 %
 %
 % Modify Latex2e \@citex to separate citations with "], ["
@@ -4388,11 +4388,11 @@ between column types.}%
 % redefine them. The result will be the proper sorting of the
 % citation numbers and auto detection of 3 or more entry "ranges" -
 % all in IEEE style:  [1], [2], [5]--[7], [12]
-% This also allows for an optional note, i.e., \cite[mynote]{..}.
-% If the \cite with note has more than one reference, the note will
+% This also allows for an optional note, i.e.,~\cite[mynote]{..}.
+% If the~\cite with note has more than one reference, the note will
 % be applied to the last of the listed references. It is generally
 % desired that if a note is given, only one reference is listed in
-% that \cite.
+% that~\cite.
 % Thanks to Mr. Arseneau for providing the required format arguments
 % to produce the IEEE style.
 \def\citepunct{], [}
@@ -4439,7 +4439,7 @@ between column types.}%
   \@esphack}
 
 % \IEEEnoauxwrite{} allows for citations that do not add to or affect
-% the order of the existing citation list. Can be useful for \cite
+% the order of the existing citation list. Can be useful for~\cite
 % within \thanks{}.
 \DeclareRobustCommand{\IEEEnoauxwrite}[1]{\relax
 \if@filesw

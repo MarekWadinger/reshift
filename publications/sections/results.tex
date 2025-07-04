@@ -1,3 +1,5 @@
+\section{Results}\label{sec:results}
+
 This section presents the results of the proposed method applied to various datasets. The initial part of this section compares the proposed method with a related method for change point detection based on subspace identification using online SVD.~Artificial step detection highlights the significant differences in identifying subspaces using the two decomposition methods. Two real-world datasets are used to compare the performance of our proposed method with that of the alternative subspace identification method.
 
 Secondly, we address the challenging real-world dataset involving faulty HVAC operation detection in an industrial-scale battery energy storage system (BESS). The final subsection compares the proposed method with other methods used for change-point detection on benchmarking data of a simulated complex dynamical system with control (CATS) and a laboratory water circulation system (SKAB).
@@ -7,7 +9,7 @@ Change-point detection can be simplified to finding the temporal dynamics of a s
 
 The dataset consists of 10,000 snapshots with nine steps of increasing size and distance from the original operation point after every 1,000 snapshots. Gaussian noise is added to challenge one of the weaknesses of subspace-identification-based methods.
 
-Our proposed method is compared to the online SVD-based CPD presented in \citet{Kawahara2007} using the same hyperparameters, as listed in Table~\ref{table:kawahara_comp_hyperparameters}.
+Our proposed method is compared to the online SVD-based CPD presented in~\cite{Kawahara2007} using the same hyperparameters, as listed in Table~\ref{table:kawahara_comp_hyperparameters}.
 
 \begin{table}[ht]
 	\caption{Hyperparameters used for comparison with online SVD based CPD.}\label{table:kawahara_comp_hyperparameters}
@@ -26,9 +28,9 @@ Our proposed method is compared to the online SVD-based CPD presented in \citet{
 	\end{tabular}
 \end{table}
 
-The results in Figure~\ref{fig:artificial_steps_detection} show that while no method identified the first change-point at snapshot 1000, DMD-CPD discriminates minor change-points around the first operation point, with decreasing change-point statistics for subsequent detections. This decrease can be explained by the significant increase in absolute error between the original and reconstructed data for both the base and test sets, compared to their relative error, which decreases the residual of their division. Computing the difference between test and base set reconstruction errors gives evidence to the previous explanation. This relation of energy of the change-point detection to the actual dissimilarity of the data is a significant advantage of the proposed method over the deep learning techniques~\citep{DeRyck2021}. To sum up, the absolute dissimilarity of the data is reflected in the difference in the errors, while the relative dissimilarity is reflected in the error ratio.
+The results in Figure~\ref{fig:artificial_steps_detection} show that while no method identified the first change-point at snapshot 1000, DMD-CPD discriminates minor change-points around the first operation point, with decreasing change-point statistics for subsequent detections. This decrease can be explained by the significant increase in absolute error between the original and reconstructed data for both the base and test sets, compared to their relative error, which decreases the residual of their division. Computing the difference between test and base set reconstruction errors gives evidence to the previous explanation. This relation of energy of the change-point detection to the actual dissimilarity of the data is a significant advantage of the proposed method over the deep learning techniques~\cite{DeRyck2021}. To sum up, the absolute dissimilarity of the data is reflected in the difference in the errors, while the relative dissimilarity is reflected in the error ratio.
 
-The proposed method has a similar shape of statistics for error divergence to the error ratio statistics of the method proposed in \citet{Kawahara2007} but with significantly lower noise. In both cases, the peak of the change-point statistics is delayed by \(c\) snapshots, which is expected due to the nature of CPD-DMD.~The exact delay allows for precisely pinpointing the change-point time.
+The proposed method has a similar shape of statistics for error divergence to the error ratio statistics of the method proposed in~\cite{Kawahara2007} but with significantly lower noise. In both cases, the peak of the change-point statistics is delayed by \(c\) snapshots, which is expected due to the nature of CPD-DMD.~The exact delay allows for precisely pinpointing the change-point time.
 
 \begin{figure}[H]
 	\centering
@@ -37,7 +39,7 @@ The proposed method has a similar shape of statistics for error divergence to th
 \end{figure}
 
 \subsection{Sleep Stage Detection via Respiration Signal}
-Identifying change points in real-world data is challenging due to cyclic, seasonal, and environmental effects. In this context, we use a dataset of respiration signals from a sleep stage detection task. The datasets represent respiration (thorax extension), sampled at 10 Hz from different subjects. The data are manually labeled by Dr.~J. Rittweger from the Institute for Physiology at the Free University of Berlin. For details, refer to the original publication~\citep{Keogh2005}. For comparison with online SVD, we use the same hyperparameters as in the previous section, listed in Table~\ref{table:kawahara_comp_hyperparameters}.
+Identifying change points in real-world data is challenging due to cyclic, seasonal, and environmental effects. In this context, we use a dataset of respiration signals from a sleep stage detection task. The datasets represent respiration (thorax extension), sampled at 10 Hz from different subjects. The data are manually labeled by Dr.~J. Rittweger from the Institute for Physiology at the Free University of Berlin. For details, refer to the original publication~\cite{Keogh2005}. For comparison with online SVD, we use the same hyperparameters as in the previous section, listed in Table~\ref{table:kawahara_comp_hyperparameters}.
 
 \paragraph{NPRS43}
 The comparison results of experiments conducted on the NPRS43 dataset are presented in Figure~\ref{fig:nprs43}. This dataset spans approximately 7 minutes of sleep respiration signals of a subject. The subject is in stage II deep sleep for the first 5 minutes, then transitions through a short awake stage of approximately 1 minute to the stage I sleep. The transitions are marked as red vertical lines in the plot. Due to the size of the test set, the peak of change-point statistics is delayed by \(c\) snapshots and marked as red dashed vertical lines.
@@ -92,7 +94,7 @@ The selection of hyperparameters demonstrates the intuitiveness of parameter sel
 
 The results of the detection experiment on simulated data streaming from the BESS history replay, presented in Figure~\ref{fig:bess}, show that before the actual occurrence of the fault, the system detects multiple events of abnormal operation with a source other than the identified dynamical system from the data. The proposed method accurately detects the transition from normal to faulty operation of the HVAC system with high accuracy and low false positive rate, with the peak of change-point statistics delayed by \(c\) snapshots.
 
-The proposed method detected three periods related to the transient normal behavior of the HVAC system, marked as change points. While it is challenging to confirm if the initial peaks in the CPD score were false positives, operators can interpret this information as a potential early warning of an impending fault. Such early warnings are valuable for detecting faults, preventing catastrophic consequences, and planning maintenance. The positions of the potential fault precursors match the detected anomalies in~\citet{Wadinger2024}, where detection was performed using an online anomaly detection method based on conditional probability distribution. This alignment supports cross-validation of both methods and lends credibility to identifying these events as fault precursors.
+The proposed method detected three periods related to the transient normal behavior of the HVAC system, marked as change points. While it is challenging to confirm if the initial peaks in the CPD score were false positives, operators can interpret this information as a potential early warning of an impending fault. Such early warnings are valuable for detecting faults, preventing catastrophic consequences, and planning maintenance. The positions of the potential fault precursors match the detected anomalies in~\cite{Wadinger2024}, where detection was performed using an online anomaly detection method based on conditional probability distribution. This alignment supports cross-validation of both methods and lends credibility to identifying these events as fault precursors.
 
 The evaluation of error difference shows that we can detect both the transition from normal to faulty operation and vice versa. Here, the peaks related to true anticipated CPs are more pronounced than those in the error ratio evaluation. This indicates the usefulness of the error difference evaluation in increasing the precision of the CPD\@.
 
@@ -103,9 +105,9 @@ The evaluation of error difference shows that we can detect both the transition 
 \end{figure}
 
 \subsection{Laboratory Water Circulation System (SKAB)}
-In this section, we compare the performance of the proposed method with commonly used change-point detection methods on a benchmark real-world dataset of a laboratory water circulation system (SKAB)~\citep{Katser2020}. The dataset represents a well-described industrial system with multiple sensors and well-defined operational and fault states characterized by collective anomalies or change points, as well as transitions between these states.
+In this section, we compare the performance of the proposed method with commonly used change-point detection methods on a benchmark real-world dataset of a laboratory water circulation system (SKAB)~\cite{Katser2020}. The dataset represents a well-described industrial system with multiple sensors and well-defined operational and fault states characterized by collective anomalies or change points, as well as transitions between these states.
 
-\citet{Katser2020} compare methods with default hyperparameters, which are listed in Table~\ref{table:comparison-models}, using the first 400 snapshots of each dataset as a training part. We follow the same procedure, and for CPD-DMD hyperparameters with task-specific tuning requirements, we use the training set of samples as a history of snapshots to establish the parameters.
+\cite{Katser2020} compare methods with default hyperparameters, which are listed in Table~\ref{table:comparison-models}, using the first 400 snapshots of each dataset as a training part. We follow the same procedure, and for CPD-DMD hyperparameters with task-specific tuning requirements, we use the training set of samples as a history of snapshots to establish the parameters.
 
 \begin{table}[H]
 	\caption{List of reference method and sources}\label{table:comparison-models}
@@ -114,20 +116,20 @@ In this section, we compare the performance of the proposed method with commonly
 		\toprule
 		\textbf{Algorithm} & \textbf{Source}       \\
 		\midrule
-		Conv-AE            & \citet{Pavithra2020}  \\
-		Isolation forest   & \citet{Liu2008}       \\
-		LSTM-AE            & \citet{Chollet2016}   \\
-		MSCRED             & \citet{ZhangCh2019}   \\
-		MSET               & \citet{Gross2000}     \\
-		T-squared          & \citet{Hotelling1947} \\
-		T-squared+Q (PCA)  & \citet{JoeQin2003}    \\
-		Vanilla AE         & \citet{Chen2017}      \\
-		Vanilla LSTM       & \citet{Filonov2016}   \\
+		Conv-AE            &~\cite{Pavithra2020}  \\
+		Isolation forest   &~\cite{Liu2008}       \\
+		LSTM-AE            &~\cite{Chollet2016}   \\
+		MSCRED             &~\cite{ZhangCh2019}   \\
+		MSET               &~\cite{Gross2000}     \\
+		T-squared          &~\cite{Hotelling1947} \\
+		T-squared+Q (PCA)  &~\cite{JoeQin2003}    \\
+		Vanilla AE         &~\cite{Chen2017}      \\
+		Vanilla LSTM       &~\cite{Filonov2016}   \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-The evaluation is performed using NAB metrics presented in the work of~\citet{Ahmad2017}. These metrics operate over a window of snapshots. In the leaderboard proposed in~\citet{Katser2020}, the window is centered around the change point to establish metrics for reference methods. Nevertheless, from the definition of the change-point and the utilization of the window for scoring (please refer to the paper by~\citet{Lavin2015}), it is evident that the detector alerting a change-point half of the window size snapshots before the change-point actually occurs is considered perfect. Since the start of the transition towards the faulty state is marked as anomalous in the dataset, as seen in Figure~\ref{fig:scab_interpretation}, we stipulate that the detection before the start of the transition should be regarded as a false positive. Therefore, we modify the original evaluation metrics to observe the snapshots window after the change-point and evaluate the models' performance.
+The evaluation is performed using NAB metrics presented in the work of~\cite{Ahmad2017}. These metrics operate over a window of snapshots. In the leaderboard proposed in~\cite{Katser2020}, the window is centered around the change point to establish metrics for reference methods. Nevertheless, from the definition of the change-point and the utilization of the window for scoring (please refer to the paper by~\cite{Lavin2015}), it is evident that the detector alerting a change-point half of the window size snapshots before the change-point actually occurs is considered perfect. Since the start of the transition towards the faulty state is marked as anomalous in the dataset, as seen in Figure~\ref{fig:scab_interpretation}, we stipulate that the detection before the start of the transition should be regarded as a false positive. Therefore, we modify the original evaluation metrics to observe the snapshots window after the change-point and evaluate the models' performance.
 
 To ensure reproducibility and consistency, we created a fork of the original repository available at \url{https://github.com/MarekWadinger/SKAB}.
 
@@ -172,7 +174,7 @@ The results of experiments, presented in Table~\ref{table:skab_cpd_comparison-ow
 
 
 \subsection{Simulated Complex Dynamical System with Control (CATS)}
-This section evaluates the performance of our method on the Controlled Anomalies Time Series (CATS) Dataset proposed in \citet{Fleith2023}. The dataset shows a simulation of a complex dynamical system with 200 injected anomalies, consisting of control commands, external stimuli, and 5 million snapshots of telemetry sampled at 1 Hz. While the generating mechanism is not described, the availability of the benchmark dataset, including the control action signals, makes it a good candidate for evaluating the proposed method. The dataset is meant for anomaly detection algorithms but contains numerous sequences of anomalous behavior. Compared to SKAB, this dataset has a far lower contamination level of 3.8\%, making it more suitable for evaluating the CPD performance, where events of change are underrepresented.
+This section evaluates the performance of our method on the Controlled Anomalies Time Series (CATS) Dataset proposed in~\cite{Fleith2023}. The dataset shows a simulation of a complex dynamical system with 200 injected anomalies, consisting of control commands, external stimuli, and 5 million snapshots of telemetry sampled at 1 Hz. While the generating mechanism is not described, the availability of the benchmark dataset, including the control action signals, makes it a good candidate for evaluating the proposed method. The dataset is meant for anomaly detection algorithms but contains numerous sequences of anomalous behavior. Compared to SKAB, this dataset has a far lower contamination level of 3.8\%, making it more suitable for evaluating the CPD performance, where events of change are underrepresented.
 
 The evaluation uses the same metrics as the previous case study on a resampled dataset to 1-minute intervals, with a median taken for both features and targets. No public background on the generating mechanism complicated the hyperparameter selection. Based on the 58-day timespan captured in the dataset, we selected one day as the learning window and set the number of time delays to 4 hours, with a maximum limit of the final number of features set to 60. The reference window is double the size of the test window, 10 hours for the former and 5 hours for the latter. The ranks of the DMD were set to 10 and 4 for the states and control inputs, respectively.
 
