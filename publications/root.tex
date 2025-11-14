@@ -53,7 +53,14 @@
 
 \title{Interpretable Change Detection and Adaptation for Industrial Applications via Dynamic Mode Decomposition}
 
-\author{Marek Wadinger, Michal Kvasnica, and Yoshinobu Kawahara}
+\author{\IEEEauthorblockN{Marek Wadinger\IEEEauthorrefmark{1}, Michal Kvasnica\IEEEauthorrefmark{1}, and Yoshinobu Kawahara\IEEEauthorrefmark{2}} \\
+\IEEEauthorblockA{\IEEEauthorrefmark{1}Slovak University of Technology in Bratislava\\
+Bratislava, Slovakia\\
+\texttt{\{marek.wadinger, michal.kvasnica\}@stuba.sk}} \\
+\IEEEauthorblockA{\IEEEauthorrefmark{2}Osaka University, and
+RIKEN Center for Advanced Intelligence\\
+Osaka, Japan\\
+\texttt{kawahara@ist.osaka-u.ac.jp}}}
 
 \markboth{IEEE Transactions on Control Systems Technology}%
 {Shell \MakeLowercase{\textit{et al.}}: Adaptive and Interpretable Change-Point Detection}
@@ -73,19 +80,21 @@ Change-point detection, Dynamic mode decomposition, Control systems, Online lear
 \linenumbers{}
 
 %% main text
-\input{sections/introduction.tex}
+\input{sections/introduction}
 
-\input{sections/preliminaries.tex}
+\input{sections/notation}
 
-\input{sections/theoretical_analysis.tex}
+\input{sections/preliminaries}
 
-\input{sections/method.tex}
+% \input{sections/theoretical_analysis}
 
-\input{sections/results.tex}
+\input{sections/method}
 
-\input{sections/conclusions.tex}
+\input{sections/numerical-validation}
 
-\input{sections/notation.tex}
+\input{sections/results}
+
+\input{sections/conclusions}
 
 \section*{Additional information}
 Our code and data are openly accessible on GitHub at the following URL:~\url{https://github.com/MarekWadinger/odmd-subid-cpd}.
@@ -100,9 +109,25 @@ The authors declare that they have no known competing financial interests or per
 During the preparation of this work the authors used Grammarly and GPT-3.5 in order to improve language and readability. After using this tool/service, the authors reviewed and edited the content as needed and take full responsibility for the content of the publication.
 
 \section*{Acknowledgements}
-The authors gratefully acknowledge the contribution of the Program to support young researchers under the project Adaptive and Robust Change Detection for Enhanced Reliability in Intelligent Systems. The authors gratefully acknowledge the contribution of the Scientific Grant Agency of the Slovak Republic under the grant 1/0490/23 and grant VEGA `1/0691/21'. This research is funded by the Horizon Europe under the grant no. 101079342 (Fostering Opportunities Towards Slovak Excellence in Advanced Control for Smart Industries).
+The authors acknowledge the contribution of the Program to support young researchers at STU under the project AIOperator: eXplainable Intelligence for Industry (AXII). The authors gratefully acknowledge the contribution of the Scientific Grant Agency of the Slovak Republic under the grants VEGA 1/0297/22 and VEGA 1/0490/23. Funded by the EU NextGenerationEU through the Recovery and Resilience Plan for Slovakia under the project No. 09I01--03--V04--00024.
 
 \bibliographystyle{IEEEtran}
 \bibliography{main}
+
+\section{Biography}
+\begin{IEEEbiography}
+    [{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{biography/wadinger.jpg}}]{Marek Wadinger} conducted the presented research during his research stay at Osaka University. He is currently pursuing a Ph.D. in process control at STUBA\@. His research interests include anomaly detection, reliability engineering, and streaming data analysis. He has co-authored several publications, such as ``Real-Time Outlier Detection with Dynamic Process Limits'' and ``Adaptable and Interpretable Framework for Anomaly Detection in SCADA-based Industrial Systems.'' He was also affiliated with the TESLA Group, a.s., as an AI specialist.
+\end{IEEEbiography}
+\begin{IEEEbiography}
+    [{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{biography/kvasnica.png}}]{Prof. Michal Kvasnica}
+    received his Ph.D. degree at ETH Zurich, Switzerland, in 2008. Since 2012, he has been a tenured associate professor at STUBA's Department of Information Engineering and Process Control and promoted to full professor in 2022. He served as the Head of the Department of Information Engineering and Process Control from 2019 to 2023. His research focuses on model predictive control, hybrid systems, and microgrid control. Prof. Kvasnica has authored prestigious publications and is an active contributor to the academic community.
+\end{IEEEbiography}
+\begin{IEEEbiography}
+    [{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{biography/kawahara.jpg}}]{Prof. Yoshinobu Kawahara}
+    received his Ph.D. degree from The University of Tokyo in 2008. After completing his doctoral studies, he served as an Associate Professor at the Osaka University, from 2013. Since 2019, he served as full Professor at the Kyushu University and since 2022 at the Osaka University. Prof. Kawahara is also the Team Director of the Structured Learning Team at the RIKEN Center for Advanced Intelligence Project. His research interests encompass machine learning, dynamical systems, and nonlinear systems.
+\end{IEEEbiography}
+\newpage
+
+\input{sections/appendix_dmd}
 
 \end{document}
