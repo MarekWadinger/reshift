@@ -7,6 +7,7 @@ import pandas as pd
 from river.anomaly.base import AnomalyDetector
 from river.base import MiniBatchTransformer, Transformer
 from river.decomposition import OnlineDMD, OnlineDMDwC
+from river.utils.rolling import Rolling as RiverRolling
 
 from .preprocessing import hankel
 from .rolling import Rolling
@@ -123,7 +124,7 @@ class SubIDChangeDetector(AnomalyDetector):
 
     def __init__(
         self,
-        subid: MiniBatchTransformer | Transformer | Rolling,
+        subid: MiniBatchTransformer | Transformer | Rolling | RiverRolling,
         ref_size: int,
         test_size: int | None = None,
         threshold: float = 0.25,
