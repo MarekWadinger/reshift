@@ -135,7 +135,7 @@ def plot_chd(
         "subplots": (len(datas), 1),
         "fraction": 0.5,
     }
-    fig_kwargs_.update(fig_kwargs)  # type: ignore
+    fig_kwargs_.update(fig_kwargs)
     if axs is None:
         fig, axs_ = plt.subplots(
             len(datas),
