@@ -15,11 +15,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-examples = [
-    "bayesian-optimization~=1.4.3",
-    "jupyter~=1.0.0",
-    "notebook~=7.1.2",
-]
+examples = ["bayesian-optimization~=1.4.3", "jupyter>=1.1.1", "notebook>=7.5.5"]
 
 [tool.pytest.ini_options]
 addopts = [
@@ -91,17 +87,15 @@ exclude_lines = [
 river = { git = "https://github.com/MarekWadinger/river.git" }
 
 [dependency-groups]
-app = [
-    "streamlit<2.0.0",
-]
+app = ["streamlit<2.0.0"]
 dev = [
-    "commitizen>=4.8.3",
-    "mypy>=1.16.1",
-    "pre-commit>=4.2.0",
-    "pytest>=8.4.1",
-    "pytest-cov>=6.2.1",
-    "pytest-html>=4.1.1",
-    "ruff>=0.12.1",
+    "commitizen>=4.13.9",
+    "pre-commit>=4.5.1",
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+    "pytest-html>=4.2.0",
+    "ruff>=0.15.10",
+    "ty>=0.0.29",
     "types-Markdown",
     "types-PyYAML",
     "types-Pygments",
