@@ -63,9 +63,7 @@ def load_cats(resample_s: None | int = None) -> pd.DataFrame:
     else:
 
         def download_and_read_parquet_with_progress(url):
-            """
-            Download a Parquet file from the given URL, save it to memory, and read
-            it into a pandas DataFrame, while printing the download progress.
+            """Download and cache a Parquet file from the given URL.
 
             Parameters:
                 url (str): The URL of the Parquet file to download and read.
@@ -197,9 +195,9 @@ def load_usp(
             )
             # We are only interested in ordinal numeric values
             df[col] = df[col].map(
-                lambda x: float(x)
-                if isinstance(x, str) and x.isnumeric()
-                else x
+                lambda x: (
+                    float(x) if isinstance(x, str) and x.isnumeric() else x
+                )
             )
         return df
 

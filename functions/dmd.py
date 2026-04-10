@@ -1,13 +1,4 @@
-"""Dynamic Mode Decomposition (DMD) in scikkit-learn API.
-
-This module contains the implementation of the Online DMD, Windowed DMD,
-and DMD with Control algorithm. It is based on the paper by Zhang et al.
-[^1] and implementation of authors available at [GitHub](https://github.com/haozhg/odmd).
-However, this implementation provides a more flexible interface aligned with
-River API covers and separates update and revert methods in Windowed DMD.
-
-Todo:
-    - [ ] Align design with (n, m) convention (currently (m, n)).
+"""Dynamic Mode Decomposition (DMD) in scikit-learn API.
 
 References:
     [^1]: Schmid, P. (2022). Dynamic Mode Decomposition and Its Variants. 54(1), pp.225-254. doi:[10.1146/annurev-fluid-030121-015835](https://doi.org/10.1146/annurev-fluid-030121-015835).

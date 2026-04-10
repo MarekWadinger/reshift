@@ -28,7 +28,7 @@ def get_default_timedelays(
 
 
 def get_default_rank(X, noise_variance: float | None = None):
-    """Get default rank for the given data matrix
+    """Get default rank for the given data matrix.
 
     Args:
         X (np.ndarray): Data matrix
@@ -57,7 +57,8 @@ def get_default_rank(X, noise_variance: float | None = None):
 
 
 def get_default_params(X, U=None, window_size: int = 0, max_rank=10):
-    """Get default parameters for the given dataset and window size
+    """Get default parameters for the given dataset and window size.
+
     Args:
         X (np.ndarray): Data matrix
         window_size (int): Window size. What kind of structural changes are we looking for?
@@ -215,13 +216,13 @@ class SubIDChangeDetector(AnomalyDetector):
             #  - running normalization
             #  - ...
             D_train, D_test = self.distances
-            score_ = (D_test / D_train) - 1
+            score = (D_test / D_train) - 1
             # TODO: explore interesting scoring option
             # TODO: explore weighting of individual terms
             # score = D_train - D_test
             # TODO: figure out proper way of utilizing imaginary part of score
-            if isinstance(score_, complex):
-                score: float = score_.real + np.abs(score_.imag)
+            if isinstance(score, complex):
+                score: float = score.real + np.abs(score.imag)
             # TODO: comment on score shawing
             score = max(score, 0.0)
             self._score = score
@@ -240,7 +241,7 @@ class SubIDChangeDetector(AnomalyDetector):
         """
         return False
 
-    def _compute_distance(self, X: pd.DataFrame, X_t: pd.DataFrame) -> complex:
+    def _compute_distance(self, X: pd.DataFrame, X_t: pd.DataFrame) -> float:
         """Compute the distance between the data matrix and its transformation.
 
         This formulation computes a measure of how much information in the dataset represented by Y is preserved or retained when projected onto the space spanned by W. The difference between the covariance matrix of Y and the projected version is computed, and the sum of all elements in this difference matrix gives an overall measure of dissimilarity or distortion.
@@ -264,18 +265,29 @@ class SubIDChangeDetector(AnomalyDetector):
         # )
         # return Q
         # Opt 2: Using squared L1 norm (Kawahara 2007)
-        XX = np.sum(X.values**2)
-        # # XX = np.linalg.norm(X, 1)
-        # # # Using following normalization changes the score baseline based on
-        # # #  the ratio of test  and base size
-        XX_std = 1  # np.sqrt(XX)
-        XtXt = np.sum(X_t.values**2)
-        # # XtXt = np.linalg.norm(X_t, 1)
-        XtXt_std = 1  # np.sqrt(XtXt)
-        return complex(XX / XX_std - XtXt / XtXt_std)
+        # XX = np.sum(X.values**2)
+        # # # XX = np.linalg.norm(X, 1)
+        # # # # Using following normalization changes the score baseline based on
+        # # # #  the ratio of test and base size
+        # XX_std = 1  # np.sqrt(XX)
+        # XtXt = np.sum(X_t.values**2)
+        # # # XtXt = np.linalg.norm(X_t, 1)
+        # XtXt_std = 1  # np.sqrt(XtXt)
+        # return complex(XX / XX_std - XtXt / XtXt_std)
         # Opt 3: Using norm with projected data
         # Q = np.sum(np.linalg.norm(X.values - X_p.values, ord=1, axis=1))
         # return float(Q)
+        # Opt 4: Using norm with projected data
+        #  Total Measurement Error
+        # Q = np.sum(np.linalg.norm(X.values - X_t.values, axis=1, ord=2))
+        # Total Feature-Wise Error
+        # # 2-norm is n_features insensitive
+        # Q = np.sum(np.linalg.norm(X.values - X_t.values, axis=0, ord=2))
+        # # 1-norm is n_measurements sensitive
+        Q = np.sum(np.linalg.norm(X.values - X_t.values, axis=0, ord=1))
+        # # Overall Similarity - divided by number of measurements, corresponds to magnitude of change
+        # Q = np.linalg.norm(X.values - X_t.values, ord=1).real
+        return Q
 
     def _reset_score(self):
         self._score = None
