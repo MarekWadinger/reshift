@@ -33,7 +33,9 @@ if spec is not None and spec.loader is not None:
 else:
     raise ImportError(f"Could not load {module_path}")
 
-from run import run_track
+from run import (  # type: ignore  # noqa: E402 — necessary after dynamic module loading
+    run_track,
+)
 
 logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
