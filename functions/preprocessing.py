@@ -153,7 +153,9 @@ def hankel(
     if feature_names_in_ is not None:
         return pd.DataFrame(
             hX,
-            columns=[f"{f}_{i}" for i in range(hn) for f in feature_names_in_],
+            columns=pd.Index(
+                [f"{f}_{i}" for i in range(hn) for f in feature_names_in_]
+            ),
             index=index_in_,
         )
     return hX

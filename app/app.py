@@ -54,7 +54,7 @@ def progressive_val_predict(
         meta["scores_dmd_diff"] = np.zeros(X.shape[0], dtype=float)
 
     if U.empty:
-        U = pd.DataFrame(index=X.index, columns=[None])
+        U = pd.DataFrame(index=X.index, columns=pd.Index([None]))
     # Run pipeline
     for i, (x, u) in enumerate(
         zip(
@@ -155,8 +155,8 @@ def compute_metrics(Y, scores_dmd, test_size):
     ]
 
     df_res = pd.DataFrame(
-        columns=[m for m in metrics],
-        index=list(experiments.keys()),
+        columns=pd.Index([m for m in metrics]),
+        index=pd.Index(list(experiments.keys())),
     )
 
     for name, po in experiments.items():
