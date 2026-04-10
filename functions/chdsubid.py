@@ -136,7 +136,7 @@ class SubIDChangeDetector(AnomalyDetector):
         self.subid = subid
         self.threshold = threshold
         if ref_size == 0 and isinstance(subid, Rolling):
-            ref_size = subid.window_size  # type: ignore
+            ref_size = subid.window_size
             # Since window_size is maxlen of deque in Rolling it may be None
             if ref_size is None:
                 raise ValueError(

@@ -138,7 +138,7 @@ class BayesianOptimization(BO):
             ),
         ]
         self.server = tornado.httpserver.HTTPServer(
-            tornado.web.Application(handlers)  # type: ignore
+            tornado.web.Application(handlers)
         )
         self.server.listen(9009)
         tornado.ioloop.IOLoop.instance().start()
@@ -182,7 +182,7 @@ class BayesianOptimization(BO):
             print(colour + name + " is done!", end="\n\n")
         self.results.append((name, max_params, max_target))
 
-    def maximize(
+    def maximize(  # type: ignore
         self,
         init_points=5,
         n_iter=100,
