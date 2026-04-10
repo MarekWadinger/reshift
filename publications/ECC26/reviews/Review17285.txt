@@ -1,0 +1,31 @@
+Reviewer 10 of ECC 2026 submission 701
+
+Comments to the author
+======================
+
+The paper presents a well-developed and practically
+relevant framework for change-point detection that is based
+on truncated online DMD with control. The combination of
+online DMDc updates, rank-truncated online SVD, and a
+reconstruction-error ratio statistic is technically very
+appropriate and very well motivated. The industrial case
+studies (nonlinear two-tank system and BESS data) greatly
+strengthen the applied contribution of the paper and prove
+that the method can be instantly used in control-oriented
+environments. 
+Several aspects of the paper are particularly strong: the
+attention to numerical stability, the explicit discussion
+of computational complexity, and the interpretability of
+the detection metric. These features will be valuable for
+online monitoring, system identification, and industrial
+fault detection.
+However, some parts of the exposition are quite verbose and
+could really do with "tight" treatment. The theoretical
+sections are right but dense, and some transitions between
+derivations (particularly the basis-alignment steps and
+online SVD integration) assume substantial prior knowledge,
+which may limit readability. Similarly, the experimental
+section is well constructed but could be more concise
+without losing impact.
+I also suggest shortening the paper down to the suggested
+6-page length of ECC site. 

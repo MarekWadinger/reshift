@@ -1,0 +1,45 @@
+Reviewer 3 of ECC 2026 submission 701
+
+Comments to the author
+======================
+
+The paper entitled "Truncated Online Dynamic Mode
+Decomposition with Control for Industrial Change Detection"
+presents a change-point detection framework based on online
+DMD. The paper first gives a brief background on DMD in
+general, then presents the main algorithm, and finally
+illustrates it via three examples. Overall it is a well
+written paper with a clear, application-oriented
+contribution.
+
+The examples are varied and illustrative, and include one
+case with actual industrial data (a battery state-of-charge
+monitoring system); this is highly appreciated in a paper
+about data-driven detection.  
+
+General remarks:
+Some argumentation for the transformation (12)-(13) would
+be appreciated. Why was it chosen, and for what specific
+purpose? 
+What would happen if m + l > p + q ? It seems like the
+matrix being inverted in (13) could become singular in that
+case; does this influence the algorithm?
+
+Furthermore, the theoretical properties stated in Section
+III C would benefit from some argumentation. Perhaps they
+are better saved for a later journal version.
+
+Some minor remarks:
+- The author affiliations on p. 1 should be formatted
+according to IEEE conference standards.
+- In (3),  \Phi = \Lambda ?
+- Some k's seem to be missing in (8)-(9).
+- In Section III B, it is much appreciated that Algorithm
+is written explicitly. However, "Revert old snapshots using
+negative weights" seems a bit too vague compared to the
+rest of the presentation.
+- In Section III B, shouldn't c be a deterministic lower
+bound?
+- In Fig. 2, please provide a proper legend for the states
+plot.
+- Please provide a proper citation for [10].

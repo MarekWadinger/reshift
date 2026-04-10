@@ -1,0 +1,51 @@
+Reviewer 7 of ECC 2026 submission 701
+
+Comments to the author
+======================
+
+The paper introduces a process change detection method
+based on a variant of the dynamic mode decomposition method
+with recursive SVD and truncation. The detection algorithm
+is presented and tested with two hypothetical examples and
+a set of data from a real energy storage system failure.
+The merit of the paper is that everything is presented in
+an organized pattern. Despite this, the technical
+contribution of the paper is a bit subtle to me. The DMD
+method is clearly not the contribution of the paper, and
+the modification of the DMD method in this paper is not
+clear to me. I can only guess that the paper employs the
+recursive SVD proposed by [10] for the SVD process of the
+original DMD method. If this is indeed the case, the
+authors may want to clarify this because, currently, this
+part is in the “Preliminaries” section.
+
+In the change point detection algorithm, what is the
+temporal relationship between the base, test and learning
+phases? Are these three windows attached to the previous
+one consecutively? If this is the case, how do we make sure
+that the behaviour inside the base window is normal, and
+the changes happen in the test window, and the learning
+window covers the normal behaviours of the new mode? The
+unpresented convergence and stability analysis of the
+detection framework is also confusing to me. Are these
+results already established elsewhere, or do you omit the
+proofs for a reason?
+
+The experimental validation part contains two simulations.
+The authors may want to clarify this because simulations
+are substantially different from experiments. The plots
+need to be properly labelled. For example, the red lines in
+the plot are not explained. In Fig. 2, the two colours in
+the first subplot are both labelled as “X”. In Fig. 3, the
+lines in different colours are not explained at all. The
+use of the term “score” is confusing. I am not sure if this
+is the same as the so-called “statistic” as in (15). If
+this is the case, please keep the terminology consistent;
+otherwise, please define it properly before using.
+
+In terms of the writing style, I suggest that the authors
+double-check all abbreviations to make sure that they are
+defined before using them. There are also some reused
+symbols like “a” and “b”, first defined as DMD mode
+parameters in Section II-A, and then as the hyperparameters
+for change point detection in Section III-A.

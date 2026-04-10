@@ -114,7 +114,7 @@ def plot_chd(
     axs: np.ndarray | None = None,
     **fig_kwargs: dict,
 ):
-    """Plot hange-Point Detection Results.
+    """Plot Change-Point Detection Results.
 
     Args:
         datas: List of data to plot. Each data is plot on a separate subplot.
@@ -152,6 +152,9 @@ def plot_chd(
     if labels is None:
         labels = [""] * len(datas)
 
+    # Track if we've already added red line legend entries (only add once)
+    red_line_legend_added = False
+
     for ax, data, label in zip(axs_, datas, labels):
         if isinstance(data, str) and isinstance(datas, dict):
             name = data
@@ -162,26 +165,54 @@ def plot_chd(
             return fig, axs_
 
         if y_true is not None:
-            for i in y_true:
-                ax.axvline(i, color=RED_ALPHA05)
+            for i, y_val in enumerate(y_true):
+                if i == 0 and not red_line_legend_added:
+                    ax.axvline(y_val, color=RED_ALPHA05, label="True change-point")
+                    red_line_legend_added = True
+                else:
+                    ax.axvline(y_val, color=RED_ALPHA05)
                 if grace_period:
-                    ax.axvline(
-                        i + grace_period, color=RED_ALPHA05, linestyle="--"
-                    )
+                    if i == 0 and not red_line_legend_added:
+                        ax.axvline(
+                            y_val + grace_period, color=RED_ALPHA05, linestyle="--",
+                            label="Grace period (detection window end)"
+                        )
+                        red_line_legend_added = True
+                    else:
+                        ax.axvline(
+                            y_val + grace_period, color=RED_ALPHA05, linestyle="--"
+                        )
         if data is not None:
-            ax.plot(data[idx_start:idx_end], label=label)
+            # Check if data is a DataFrame with multiple columns
+            if hasattr(data, 'columns') and len(data.columns) > 1:
+                # Plot each column with its name as the label
+                for col in data.columns:
+                    ax.plot(data[col].iloc[idx_start:idx_end], label=col)
+            else:
+                ax.plot(data[idx_start:idx_end], label=label)
             if normalize:
                 ax_norm = ax.twinx()
-                ax_norm.plot(  # type: ignore
-                    _normalize(data[idx_start:idx_end]),
-                    label=label + " (norm)",
-                )
+                if hasattr(data, 'columns') and len(data.columns) > 1:
+                    for col in data.columns:
+                        ax_norm.plot(  # type: ignore
+                            _normalize(data[col].iloc[idx_start:idx_end]),
+                            label=col + " (norm)",
+                        )
+                else:
+                    ax_norm.plot(  # type: ignore
+                        _normalize(data[idx_start:idx_end]),
+                        label=label + " (norm)",
+                    )
             if name != "":
                 ax.set_ylabel(name)
-            if label != "":
-                ax.legend()
+            # Show legend if there are labels or red lines with labels
+            if label != "" or (y_true is not None and red_line_legend_added):
+                ax.legend(loc="upper left")
             ax.grid(True, axis="y")
             ax.ticklabel_format(style="sci", axis="y", scilimits=(2, 1))
+            # Add x-axis label on the last subplot only
+            if ax == axs_[-1]:
+                ax.set_xlabel("Sample index")
 
             if ids_in_start is not None and ids_in_end is not None:
                 n_ins = len(ids_in_start)

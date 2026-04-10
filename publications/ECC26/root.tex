@@ -57,7 +57,7 @@ Traditional statistical process control (SPC) methods~\cite{JoeQin2003} assume i
 
 \subsection{Subspace-Based Change Detection}
 
-Subspace-based CPD methods address these limitations by modeling the system's underlying low-dimensional structure without distributional assumptions~\cite{Kawahara2007, Dohler2013}. The key insight is that normal system behavior evolves within a low-rank subspace, while change-points manifest as deviations that cannot be captured by this subspace. Methods based on Singular Value Decomposition (SVD)~\cite{Moskvina2003} and subspace identification~\cite{Hosur2019} have shown promise, but most are designed for autonomous systems without explicit consideration of control inputs.
+Subspace-based CPD methods address these limitations by modeling the system's underlying low-dimensional structure without distributional assumptions~\cite{Kawahara2007,Dohler2013}. The key insight is that normal system behavior evolves within a low-rank subspace, while change-points manifest as deviations that cannot be captured by this subspace. Methods based on Singular Value Decomposition (SVD)~\cite{Moskvina2003} and subspace identification~\cite{Hosur2019} have shown promise, but most are designed for autonomous systems without explicit consideration of control inputs.
 
 For controlled systems, Dynamic Mode Decomposition (DMD)~\cite{Schmid2010} offers a powerful framework. DMD decomposes time-series data into coherent spatial-temporal modes, revealing both spatial structures (like SVD) and temporal dynamics (like Fourier analysis). Extensions to incorporate control inputs (DMDc)~\cite{Proctor2016} enable system identification that disambiguates between natural dynamics and the effects of actuation—critical for industrial applications where control actions significantly influence system behavior.
 
@@ -77,7 +77,7 @@ While DMD provides interpretable models, its application to online CPD faces sev
 
 This paper addresses these challenges through three key contributions:
 
-\textbf{Truncated online DMD with control (toDMDc):} We integrate optimal rank truncation with online DMDc updates, maintaining numerical stability while adapting to time-varying dynamics. The truncation is performed using an efficient online SVD algorithm~\cite{Zhang2022} with guaranteed orthogonality preservation.
+\textbf{Truncated online DMD with control (toDMDc):} While the individual components—online DMDc~\cite{Zhang2019} and online SVD~\cite{Zhang2022}—exist separately, our contribution is their integration with basis-alignment updates and a CPD framework. The resulting toDMDc maintains numerical stability while adapting to time-varying dynamics.
 
 \textbf{Change-point detection framework:} We utilize detection statistic based on reconstruction error comparison between base and test windows. The statistic provides interpretable measures of change severity with bounded detection delays equal to the test window size.
 
@@ -99,12 +99,12 @@ For high-dimensional systems (\(m \gg 1\)), computing \(A\) directly is expensiv
 \begin{equation}\label{eq:reduced-dmd}
     \tilde{A} = U^\top X' V \Sigma^{-1} \in \mathbb{R}^{r \times r},
 \end{equation}
-where \(r \leq m\) is the truncation rank. Eigendecomposition of \(\tilde{A}\) yields DMD eigenvalues \(\Lambda\) and eigenvectors \(W\), from which full-dimensional DMD modes are reconstructed as:
+where \(r \leq m\) is the truncation rank. Eigendecomposition \(\tilde{A} W = W \Lambda\) yields DMD eigenvalues \(\Lambda = \mathrm{diag}(\lambda_1, \ldots, \lambda_r)\) and eigenvectors \(W\), from which full-dimensional DMD modes are reconstructed as:
 \begin{equation}
     \Phi = X' V \Sigma^{-1} W \in \mathbb{R}^{m \times r}.
 \end{equation}
 
-Each DMD mode \(\phi_i\) oscillates with frequency and growth rate encoded in the corresponding eigenvalue \(\lambda_i = a_i + ib_i\), where \(a_i\) indicates growth/decay and \(b_i\) the oscillation frequency~\cite{Brunton2022}.
+Each DMD mode \(\phi_i\) oscillates with frequency and growth rate encoded in the corresponding eigenvalue \(\lambda_i = \sigma_i + i\omega_i\), where \(\sigma_i\) indicates growth/decay and \(\omega_i\) the oscillation frequency~\cite{Brunton2022}.
 
 \subsection{DMD with Control}
 
@@ -114,17 +114,11 @@ For controlled systems, the dynamics follow:
 \end{equation}
 where \(\theta_k \in \mathbb{R}^l\) is the control input and \(B \in \mathbb{R}^{m \times l}\) is the control matrix.
 
-When \(B\) is known, we compensate the output snapshots:
-\begin{equation}
-    \bar{X}' = X' - B\Theta,
-\end{equation}
-where \(\Theta = [\theta_0, \ldots, \theta_{n-1}]\), and apply standard DMD to \(\{X, \bar{X}'\}\).
-
-When \(B\) is unknown (the typical case), we augment the state with control inputs:
+Since \(B\) is typically unknown, we augment the state with control inputs~\cite{Proctor2016}:
 \begin{equation}\label{eq:augmented}
     \bar{X} = \begin{bmatrix} X \\ \Theta \end{bmatrix} \in \mathbb{R}^{(m+l) \times n},
 \end{equation}
-and solve for the augmented operator \(\bar{A} = [A \mid B]\) that maps \(\bar{X}\) to \(X'\)~\cite{Proctor2016}.
+and solve for the augmented operator \(\bar{A} = [A \mid B]\) that maps \(\bar{X}\) to \(X'\). When \(B\) is known, one can instead compensate \(\bar{X}' = X' - B\Theta\) and apply standard DMD.
 
 \subsection{Online DMD with Control}
 
@@ -136,14 +130,14 @@ where \(Q_k = X'_k X_k^\top\) and \(P_k = (X_k X_k^\top)^{-1}\) are the lag-cova
 
 Upon receiving new snapshot pairs \(\{X_{k:k+c}, X'_{k:k+c}\}\), we update:
 \begin{align}
-    P_{k+c} & = P_k - P_k X_{k:k+c} \Gamma_{k+c} X_{k:k+c}^\top P_k, \label{eq:p-update}                \\
-    A_{k+c} & = A_k + (X'_{k:k+c} - A_k X_{k:k+c}) \Gamma_{k+c} X_{k:k+c}^\top P_k, \label{eq:a-update}
+    P_{k+c} & = P_k - P_k X_{k:k+c} \Gamma_{k:k+c} X_{k:k+c}^\top P_k, \label{eq:p-update}                \\
+    A_{k+c} & = A_k + (X'_{k:k+c} - A_k X_{k:k+c}) \Gamma_{k:k+c} X_{k:k+c}^\top P_k, \label{eq:a-update}
 \end{align}
 where \(\Gamma_{k:k+c} = (C_{k:k+c}^{-1} + X_{k:k+c}^\top P_k X_{k:k+c})^{-1}\) and \(C\) is a diagonal weight matrix. To forget old snapshots (windowed online DMD), we apply~\eqref{eq:p-update}--\eqref{eq:a-update} with negative weights \(-C\).
 
 \subsection{Truncated Online DMD}
 
-To maintain numerical stability and computational efficiency, we integrate rank-\(r\) truncation into online DMD using online SVD~\cite{Brand2006, Zhang2022}. Let \(\bar{X}_k = \tilde{U}_k \tilde{\Sigma}_k \tilde{V}_k^\top\) be the truncated SVD of the augmented snapshot matrix. We project snapshots onto the first \(r\) POD modes:
+To maintain numerical stability and computational efficiency, we integrate rank-\(r\) truncation into online DMD using online SVD~\cite{Brand2006,Zhang2022}. Let \(\bar{X}_k = \tilde{U}_k \tilde{\Sigma}_k \tilde{V}_k^\top\) be the truncated SVD of the augmented snapshot matrix. We project snapshots onto the first \(r\) left singular vectors:
 \begin{equation}
     \{\tilde{\bar{X}}_k, \tilde{X}'_k\} = \{\tilde{U}_k^\top \bar{X}_k, \tilde{U}_k^\top X'_k\}.
 \end{equation}
@@ -155,11 +149,12 @@ As new data arrives, the online SVD is updated efficiently via rank-\(c\) modifi
         K^{U'U}_{k, q \times p} & K^{U'U}_{k, q \times q}
     \end{bmatrix},
 \end{equation}
-where \(p\) and \(q\) are the ranks of the state and control subspaces. The reduced-order matrices are then transformed:
+where \(p\) and \(q\) are the ranks of the state and control subspaces. Since the online SVD update changes the basis \(\tilde{U}_k\), the existing reduced-order matrices must be re-expressed in the new coordinates. The reduced-order matrices are then transformed:
 \begin{align}
     \tilde{\bar{A}}_k & = \begin{bmatrix} K^{U'U}_{k,pp} \tilde{A}_k (K^{U'U}_{k,pp})^\top & K^{U'U}_{k,pp} \tilde{B}_k K^{U'U}_{k,qq} \end{bmatrix}, \\
     \tilde{P}_k       & = {(K^{U'U}_k P_k^{-1} (K^{U'U}_k)^\top)}^{-1}.
 \end{align}
+Note that \(K^{U'U}_k\) is well-conditioned when the truncation rank \(r \leq \min(m, l)\), as it is a submatrix of a unitary rotation; near-singularity would indicate an abrupt subspace change, which is itself a detectable event.
 
 Finally, we apply updates~\eqref{eq:p-update}--\eqref{eq:a-update} in the reduced space using the projected snapshots \(\{\tilde{\bar{X}}_k, \tilde{X}'_k\}\). This maintains \(\mathcal{O}(mr^2)\) complexity per update instead of \(\mathcal{O}(m^3)\), making real-time deployment feasible for high-dimensional systems.
 
@@ -172,11 +167,11 @@ A change-point occurs when incoming data cannot be adequately reconstructed by t
     E(\bar{X}_k, \Phi_k) = \|\bar{X}_k - \Phi_k \Phi_k^\top \bar{X}_k\|_F^2.
 \end{equation}
 
-We maintain three sliding windows:
+We maintain three sliding windows, ordered chronologically as learning, base, and test:
 \begin{itemize}
-    \item \textbf{Base window} \(\ui{\bar{X}}{B}\): Reference data of size \(a\) representing normal behavior
-    \item \textbf{Test window} \(\ui{\bar{X}}{T}\): Recent data of size \(c\) being evaluated for changes
-    \item \textbf{Learning window} \(\ui{\bar{X}}{L}\): Historical data of size \(d\) for model updates
+    \item \textbf{Learning window} \(\ui{\bar{X}}{L}\): Oldest \(d\) samples used for model updates
+    \item \textbf{Base window} \(\ui{\bar{X}}{B}\): Next \(a\) samples representing the reference behavior, separated from the test window by \(b\) samples
+    \item \textbf{Test window} \(\ui{\bar{X}}{T}\): Most recent \(c\) samples being evaluated for changes
 \end{itemize}
 
 The detection statistic is:
@@ -225,7 +220,7 @@ The complete algorithm is summarized in Algorithm~\ref{alg:cpd-todmdc}.
         \ENDIF
         \STATE \textbf{// Model Update}
         \IF{learning buffer full}
-        \STATE Revert old snapshots using negative weights
+        \STATE Revert old snapshots via~\eqref{eq:p-update}--\eqref{eq:a-update} with \(-C\)
         \ENDIF
         \STATE Update DMD: \(\tilde{\bar{A}}_k\), \(\tilde{P}_k\) via~\eqref{eq:p-update}--\eqref{eq:a-update}
         \ENDFOR
@@ -234,11 +229,11 @@ The complete algorithm is summarized in Algorithm~\ref{alg:cpd-todmdc}.
 
 \subsection{Theoretical Properties}
 
-\textbf{Detection delay:} The peak of \(Q_k\) occurs exactly \(c\) samples after the true change-point, as the test window must fully contain the changed data. This provides a deterministic upper bound on detection delay.
+\textbf{Detection delay:} The peak of \(Q_k\) occurs approximately \(c\) samples after the true change-point, as the test window must fully contain the changed data. This provides a deterministic lower bound on detection delay, with the actual delay depending on noise level and change magnitude.
 
-\textbf{Convergence:} The online DMD updates~\eqref{eq:p-update}--\eqref{eq:a-update} converge to the batch DMD solution as \(k \to \infty\) under stationarity, with convergence rate depending on the condition number of \(X_k X_k^\top\).
+\textbf{Convergence:} Under stationarity with bounded eigenvalues \(\lambda_{\min}(X_k X_k^\top) > 0\), the online updates~\eqref{eq:p-update}--\eqref{eq:a-update} converge to the batch DMD solution, with convergence rate governed by the condition number of \(X_k X_k^\top\)~\cite{Zhang2019}. The truncated SVD further ensures numerical stability by preventing small singular values from corrupting \(P_k\).
 
-\textbf{Interpretability:} Unlike black-box methods~\cite{DeRyck2021}, the detection statistic \(Q_k\) directly reflects the relative dissimilarity between base and test data in terms of the learned subspace, providing physical interpretability.
+\textbf{Interpretability:} The detection statistic \(Q_k\) reflects the \textit{relative} dissimilarity between base and test data in the learned subspace. While \(Q_k\) does not have an absolute scale (its magnitude depends on the operating regime), it provides a consistent ranking of change severity. In practice, calibration via historical \(Q_k\) values during normal operation is recommended for threshold selection.
 
 \subsection{Parameter Selection Guidelines}
 
@@ -252,27 +247,9 @@ The framework requires selection of four key parameters that balance detection p
 
 \textbf{Rank \(r\):} Determines the subspace dimension. Methods like Gavish-Donoho optimal threshold~\cite{Gavish2014} can guide selection, though in practice \(r\) is often chosen to capture 95-99\% of the signal energy.
 
-\subsection{Convergence and Stability Analysis}
+\section{Numerical Validation}\label{sec:results}
 
-The theoretical properties of ODMD-CPD provide rigorous guarantees for deployment in safety-critical systems.
-
-\textbf{Theorem 1 (Convergence):} Under stationarity, the online updates~\eqref{eq:p-update}--\eqref{eq:a-update} converge to the batch DMD solution. Specifically, for stationary data with bounded eigenvalues \(\lambda_{\min}(X_k X_k^\top) > 0\), we have:
-\begin{equation}
-    \lim_{k \to \infty} \|\tilde{A}_k - \tilde{A}_{\text{batch}}\|_F \leq \mathcal{O}(\kappa^{-1}),
-\end{equation}
-where \(\kappa = \lambda_{\max}(X_k X_k^\top)/\lambda_{\min}(X_k X_k^\top)\) is the condition number.
-
-\textbf{Stability:} The truncated SVD ensures numerical stability by avoiding small singular values that would corrupt \(P_k\). The reorthogonalization in~\cite{Zhang2022} guarantees that \(\|\tilde{U}_k^\top \tilde{U}_k - I\| < \epsilon\) for a specified tolerance \(\epsilon\), preventing drift in the subspace basis.
-
-\textbf{Detection guarantees:} For a change occurring at time \(t_c\), the detection statistic satisfies:
-\begin{equation}
-    \mathbb{P}(Q_k > \tau \mid k \in [t_c + c, t_c + c + \delta]) \geq 1 - \alpha,
-\end{equation}
-where \(\delta\) depends on the signal-to-noise ratio and the magnitude of change. This provides probabilistic bounds on detection within a window after the guaranteed delay \(c\).
-
-\section{Experimental Validation}\label{sec:results}
-
-We validate the framework on three case studies representing different change types, system complexities, and industrial scenarios. Table~\ref{tab:experiments} summarizes the experimental configurations and key characteristics.
+We validate the framework on two simulation studies and one real-data case study, representing different change types, system complexities, and industrial scenarios. Table~\ref{tab:experiments} summarizes the configurations and key characteristics.
 
 \begin{table}[t]
     \caption{Summary of experimental validation case studies}\label{tab:experiments}
@@ -300,14 +277,14 @@ All experiments use rank truncation (\(r=2\)--10) and windowed online updates wi
 
 \textbf{Setup:} We simulate a univariate signal with nine abrupt changes at intervals of 1000 samples. Each change introduces a step of magnitude \(\Delta_i = 0.5i\) for \(i=1,\ldots,9\), with additive Gaussian noise \(\mathcal{N}(0, 1)\). Hyperparameters: \(r=2\), \(a=100\), \(c=100\), \(d=300\), \(h=80\).
 
-\textbf{Results:} Figure~\ref{fig:synthetic} shows that ODMD-CPD detects all change-points (while the first one is small relative to noise). The detection statistic peaks closely after \(c=100\) samples from the true change-point, confirming the theoretical delay bound, while being subject to the noise prominence. Notably, the detection score decreases for later change-points despite larger magnitudes—this reflects that the \textit{relative} dissimilarity (error ratio) from \eqref{eq:cpd-statistic} decreases as the signal's absolute energy increases, while the \textit{absolute} dissimilarity between errors~\eqref{eq:reconstruction-error} grows. This demonstrates that \(Q_k\) captures the proper notion of change severity relative to the current operating state~\cite{DeRyck2021}.
+\textbf{Results:} Figure~\ref{fig:synthetic} shows that ODMD-CPD detects all change-points (while the first one is small relative to noise). The detection statistic peaks closely after \(c=100\) samples from the true change-point, confirming the theoretical delay bound, while being subject to the noise prominence. Notably, the detection statistic decreases for later change-points despite larger magnitudes—this reflects that the \textit{relative} dissimilarity (error ratio) from~\eqref{eq:cpd-statistic} decreases as the signal's absolute energy increases, while the \textit{absolute} dissimilarity between errors~\eqref{eq:reconstruction-error} grows. This demonstrates that \(Q_k\) captures the proper notion of change severity relative to the current operating state~\cite{DeRyck2021}.
 
 Quantitatively, the detection delay for change-points 2--9 is \(102 \pm 3\) samples (mean \(\pm\) std), closely matching the theoretical bound of \(c=100\). The reference SVD-based method shows \(25\%\) higher variance in the detection statistic, potentially masking subtle changes in noisy environments.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{figures/y0-chd_r2_100_100-roll_301-dmd_w1.0-h80.pdf}
-    \caption{Detection of synthetic step changes. The signal (top) contains nine steps of increasing magnitude. The ODMD-CPD score (middle two plots) peaks exactly 100 samples after each true change-point. Reference SVD-based method (bottom) shows higher noise, potentially masking first two subtle changes.}\label{fig:synthetic}
+    \caption{Detection of synthetic step changes. The signal (top) contains nine steps of increasing magnitude. The ODMD-CPD statistic (middle two plots) peaks close to 100 samples after each true change-point. Reference SVD-based method (bottom) shows higher noise, potentially masking first two subtle changes.}\label{fig:synthetic}
 \end{figure}
 
 \subsection{Nonlinear Two-Tank System with Input Delay}
@@ -326,11 +303,10 @@ where \(h_1, h_2\) are tank levels, \(q\) is control flow with delay \(\tau=20\t
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{figures/nonlin-chd_p2_q1-l2000_b200_t200roll_2000-dmd_w1.0-hx15-hl30.pdf}
-    \caption{CPD on nonlinear two-tank system with input delay. System states (top) and control input (second) show complex dynamics. The ODMD-CPD score (third) detects sensor bias, control response change, and linear drift with clear peaks. Reference method (bottom) has noisier statistics.}
-    \label{fig:twotank}
+    \caption{CPD on nonlinear two-tank system with input delay. System states (top) and control input (second) show complex dynamics. The ODMD-CPD statistic (third) detects sensor bias, control response change, and linear drift with clear peaks. Reference method (bottom) has noisier statistics.}\label{fig:twotank}
 \end{figure}
 
-\subsection{Industrial Battery Energy Storage System}
+\subsection{Industrial Battery Energy Storage System (BESS)}
 
 \textbf{Setup:} We analyze a 151 kWh Li-ion battery module during a hardware fault in the cooling system on August 23, 2023. The dataset contains six temperature sensors sampled at 30-second intervals. The fault causes persistent temperature elevation. Since the system follows daily solar generation patterns, we set \(d=2880\) samples (24 hours) to capture diurnal cycles. Windows are set to \(a=c=240\) samples (2 hours, matching the battery's maximum charge/discharge rate of 1C). Time-delay embedding uses \(h=240\) samples.
 
@@ -339,52 +315,24 @@ where \(h_1, h_2\) are tank levels, \(q\) is control flow with delay \(\tau=20\t
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{figures/bess-chd_p10-l2880_b240_t240roll_2880-dmd_w1.0-hx20.pdf}
-    \caption{Faulty HVAC operation in BESS. Temperature profiles (top) show gradual elevation after the fault. The ODMD-CPD score (middle) detects the transition with early precursor signals. Error difference formulation (bottom) shows bidirectional detection (positive peaks for transitions to fault, negative for returns to normal).}
-    \label{fig:bess}
+    \caption{Faulty cooling system operation in BESS. Temperature profiles (top) show gradual elevation after the fault. The ODMD-CPD statistic (middle) detects the transition with early precursor signals. Error difference formulation (bottom) shows bidirectional detection (positive peaks for transitions to fault, negative for returns to normal).}\label{fig:bess}
 \end{figure}
 
 \section{Discussion}\label{sec:discussion}
 
 \subsection{Comparison with State-of-the-Art}
 
-Our ODMD-CPD framework offers distinct advantages over existing approaches:
-
-\textbf{vs. Statistical methods (CUSUM, GLR):} Traditional statistical CPD methods~\cite{Ye2023} require knowledge of the data distribution and fail when temporal correlations exist. ODMD-CPD makes no distributional assumptions and explicitly models temporal dynamics through DMD modes.
-
-\textbf{vs. Deep learning methods (autoencoders):} While methods like TIRE~\cite{DeRyck2021} achieve high accuracy, they lack interpretability and require extensive labeled data for training. ODMD-CPD provides physically interpretable detection statistics (reconstruction error ratios) and operates in a fully unsupervised manner. The DMD modes could reveal dominant frequencies and growth rates, enabling roost cause analysis.
-
-\textbf{vs. Subspace methods (SSA, online SVD):} Methods like~\cite{Moskvina2003, Kawahara2007} detect changes in autonomous systems but do not account for sysntem dynamics and control inputs. ODMD-CPD explicitly disambiguates control effects from natural dynamics.
-
-\textbf{vs. Kernel methods:} Non-parametric kernel approaches~\cite{Ferrari2023, Chu2022} work in arbitrary metric spaces but scale poorly with dimension (\(\mathcal{O}(n^2)\) vs. our \(\mathcal{O}(mr^2)\)) and provide less interpretable statistics.
-
-\subsection{Applicability of ODMD-CPD}
-
-The framework is particularly well-suited for:
-
-\textbf{(1) Controlled systems:} Industrial processes where control actions significantly influence behavior. The DMDc formulation is essential here—standard DMD would misinterpret control as system changes.
-
-\textbf{(2) Multi-scale dynamics:} Systems with multiple time constants (fast actuation, slow drift). Time-delay embedding \(h\) captures transients while windowed updates track long-term evolution.
-
-\textbf{(3) Interpretability requirements:} Safety-critical applications where operators need to understand \textit{why} an alarm triggered. DMD modes reveal which frequencies changed, while \(Q_k\) quantifies relative severity.
-
-\textbf{(4) Limited labeled data:} Existing installations where historical change-point annotations are unavailable. The unsupervised nature and online training enable immediate deployment.
+Compared to statistical CPD methods (CUSUM, GLR)~\cite{Ye2023}, ODMD-CPD requires no distributional assumptions and explicitly models temporal dynamics. Unlike deep learning approaches such as TIRE~\cite{DeRyck2021}, our method is fully unsupervised and provides interpretable statistics through reconstruction error ratios, with DMD modes enabling root cause analysis via dominant frequencies and growth rates. Relative to subspace methods~\cite{Moskvina2003,Kawahara2007}, ODMD-CPD explicitly handles control inputs, disambiguating actuation effects from system changes. Compared to kernel methods~\cite{Ferrari2023,Chu2022}, our approach scales as \(\mathcal{O}(mr^2)\) versus \(\mathcal{O}(n^2)\) and yields more interpretable statistics.
 
 \subsection{Practical Deployment Considerations}
 
-Real-world deployment revealed several insights:
-
-\textbf{Threshold selection:} While we used fixed \(\tau\) in experiments, adaptive thresholding based on historical \(Q_k\) distribution can reduce false alarms. A percentile-based approach (e.g., \(\tau = \text{95th percentile of }Q_k\) during normal operation) adapts to system-specific noise levels while may promote systematic bias.
-
-\textbf{Multi-resolution detection:} Using multiple test windows \(c_1 < c_2 < \cdots\) enables detection at different time scales—fast \(c_1\) for abrupt changes, slow \(c_n\) for gradual drift. This addresses the "resolution-delay tradeoff" inherent in CPD.
-
-\textbf{Feature attribution:} The reconstruction error can be decomposed by DMD mode: \(E = \sum_i E_i\) where \(E_i\) is the contribution of mode \(i\). This identifies \textit{which} dynamics changed.
+While we used fixed \(\tau\) in the experiments, adaptive thresholding based on historical \(Q_k\) distribution (e.g., \(\tau = \text{95th percentile of }Q_k\) during normal operation) can reduce false alarms at the cost of potential systematic bias. Using multiple test window sizes enables multi-resolution detection: fast windows for abrupt changes, slow windows for gradual drift. Furthermore, the reconstruction error can be decomposed per DMD mode to identify \textit{which} dynamics changed, supporting root cause analysis.
 
 \section{Conclusion}\label{sec:conclusion}
 
 We presented an interpretable change-point detection framework (ODMD-CPD) based on truncated online Dynamic Mode Decomposition with control (toDMDc). By combining optimal rank truncation with online system identification, the framework maintains numerical stability while adapting to time-varying dynamics in real-time. The detection statistic, derived from reconstruction error ratios, provides interpretable measures of change severity with bounded detection delays while toDMDc tracks the linear interpretation of system dynamics.
 
 Validation on three case studies—synthetic benchmarks, nonlinear controlled systems with delays, and industrial battery storage—demonstrates accurate detection across diverse change types (abrupt, gradual, drift) with low noise sensitivity. The method's computational efficiency (\(\mathcal{O}(mr^2)\) per update) and interpretability make it suitable for deployment in safety-critical industrial applications.
-
 
 \bibliographystyle{IEEEtran}
 \bibliography{main}
