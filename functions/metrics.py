@@ -69,7 +69,7 @@ def single_detecting_boundaries(
         elif anomaly_window_destination == "righter":
             detecting_boundaries.append([val, val + td])
         elif anomaly_window_destination == "center":
-            detecting_boundaries.append([val - td / 2, val + td / 2])
+            detecting_boundaries.append([val - td // 2, val + td // 2])  # type: ignore
         else:
             raise RuntimeError("choose anomaly_window_destination")
 
