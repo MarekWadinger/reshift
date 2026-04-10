@@ -1,72 +1,90 @@
 # https://pre-commit.com
-exclude: "examples|reports"
+default_install_hook_types:
+  - pre-commit
+  - post-checkout
+  - post-merge
+  - post-rewrite
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v6.0.0
     hooks:
       - id: debug-statements #Check for debugger imports and breakpoint() in python files
+        stages: [pre-commit]
       - id: check-ast #Simply check whether files parse as valid python
+        stages: [pre-commit]
       - id: fix-byte-order-marker #removes UTF-8 byte order marker
+        stages: [pre-commit]
       - id: check-json
+        exclude: tsconfig.*\.json$
+        stages: [pre-commit]
       - id: detect-private-key # detect-private-key is not in repo
+        stages: [pre-commit]
       - id: check-yaml
+        stages: [pre-commit]
       - id: check-added-large-files
+        args: ["--maxkb=10000"]
+        stages: [pre-commit]
       - id: check-shebang-scripts-are-executable
+        stages: [pre-commit]
       - id: check-case-conflict #Check for files with names that would conflict on a case-insensitive filesystem like MacOS HFS+ or Windows FAT
+        stages: [pre-commit]
       - id: end-of-file-fixer #Makes sure files end in a newline and only a newline
+        stages: [pre-commit]
       - id: trailing-whitespace
+        stages: [pre-commit]
       - id: mixed-line-ending
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.4
+        stages: [pre-commit]
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: "v0.48.0"
     hooks:
-      - id: ruff
-        args: [--fix, --exit-non-zero-on-fix, --line-length=79]
-        types_or: [python, pyi, jupyter]
-      - id: ruff-format
-        args: [--line-length=79]
-        types_or: [python, pyi, jupyter]
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort #isort is a pre-commit hook that runs to check for issues in imports and docstrings
-        args: ["--profile", "black", "--filter-files", "-l", "79"]
-  - repo: https://github.com/asottile/blacken-docs
-    rev: 1.16.0
-    hooks:
-      - id: blacken-docs #blacken-docs is a pre-commit hook that runs to check for issues in the docs
-        additional_dependencies: [black]
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.2
-    hooks:
-      - id: pyupgrade #pyupgrade is a pre-commit hook that runs to check for issues in the code
-        args: [--py36-plus]
+      - id: markdownlint
+        args: ["-f", "--disable", "MD051", "--disable", "MD013"]
+        stages: [pre-commit]
   - repo: local
     hooks:
-      - id: mypy # mypy is a pre-commit hook that runs as a linter to check for type errors
-        name: mypy
-        entry: mypy
+      - id: ruff
+        name: ruff
+        entry: uv run ruff check
         language: system
-        types: [python]
-        args:
-          [
-            "--ignore-missing-imports",
-            "--explicit-package-bases",
-            "--implicit-optional",
-            "--check-untyped-defs",
-          ]
-        stages:
-          - "pre-push"
-          - "pre-merge-commit"
+        args: [--fix, --exit-non-zero-on-fix, --line-length=79]
+        types_or: [python, pyi, jupyter]
+        stages: [pre-commit]
+      - id: ruff-format
+        name: ruff-format
+        entry: uv run ruff format
+        language: system
+        args: [--line-length=79]
+        types_or: [python, pyi, jupyter]
+        stages: [pre-commit]
+      - id: ty
+        name: ty check
+        entry: uv run ty check
+        language: system
+        types_or: [python, pyi, jupyter]
+        stages: [pre-commit]
+      - id: eslint
+        name: eslint
+        entry: npx --prefix frontend eslint --config frontend/eslint.config.js --max-warnings=0
+        language: system
+        files: ^frontend/src/.*\.(ts|tsx)$
+        stages: [pre-commit]
+      - id: prettier
+        name: prettier
+        entry: npx --prefix frontend prettier --write --list-different
+        language: system
+        files: ^frontend/.*\.(ts|tsx|css|json)$
+        exclude: (package-lock\.json|tsconfig.*\.json)$
+        stages: [pre-commit]
   - repo: local
     hooks:
       - id: pytest-check
         name: pytest-check
-        language: python
+        language: system
         types: [python]
-        entry: pytest
+        entry: make test
         pass_filenames: false
-        always_run: true
-        args: [--doctest-modules, -o, addopts=""]
+        always_run: false
+        stages: [pre-push]
   - repo: https://github.com/roy-ht/pre-commit-jupyter
     rev: v1.2.1
     hooks:
@@ -75,9 +93,14 @@ repos:
           - --remove-kernel-metadata
           - --pin-patterns
           - "[pin];[donotremove]"
-  - repo: https://github.com/cmhughes/latexindent.pl.git
-    rev: V3.24
+        stages: [pre-push]
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.13.9
     hooks:
-      - id: latexindent
-        args:
-          - --defaultIndent="    "
+      - id: commitizen
+        stages: [commit-msg]
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.11.2
+    hooks:
+      - id: uv-sync
+        args: ["--frozen"]

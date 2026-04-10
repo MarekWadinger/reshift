@@ -44,6 +44,10 @@ results/
 config.ini
 !reports/.coveragerc
 
+# Auto-generated doc artifacts
+docs/requirements.txt
+docs/reference/
+
 # Allow gitignore
 !*.gitignore
 !*.github
