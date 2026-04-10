@@ -26,8 +26,16 @@ endef
 # Setup & Maintenance
 # ============================================================================
 
+.PHONY: .river
+.river: ## Clone river fork into vendor/ (required for decomposition modules)
+	@if [ ! -d vendor/river ]; then \
+		mkdir -p vendor && \
+		echo "Cloning river fork from MarekWadinger/river..." && \
+		git clone https://github.com/MarekWadinger/river.git vendor/river; \
+	fi
+
 .PHONY: install
-install: .uv .pre-commit ## Install the package, dependencies, and pre-commit for local development
+install: .uv .pre-commit .river ## Install the package, dependencies, and pre-commit for local development
 	uv sync --frozen --all-extras --all-packages --group dev --group docs
 	pre-commit install --install-hooks
 

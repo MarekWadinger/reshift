@@ -3,7 +3,7 @@ name = "odmd-subid-cpd"
 version = "1.0.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.14"
 dependencies = [
     "matplotlib<4.0.0",
     "numpy<3.0.0",
@@ -46,26 +46,6 @@ norecursedirs = ["examples", ".*"]
 lint.ignore = ["E501"]
 lint.select = ["E", "F", "I", "UP"] # https://beta.ruff.rs/docs/rules/
 
-[tool.mypy]
-check_untyped_defs = true
-
-[[tool.mypy.overrides]]
-module = [
-    "river.*",
-    "mmh3.*",
-    "numpy.*",
-    "sklearn.*",
-    "pytest.*",
-    "pandas.*",
-    "scipy.*",
-    "graphviz.*",
-    "vaex.*",
-    "torch.*",
-    "sqlalchemy.*",
-    "requests.*",
-]
-ignore_missing_imports = true
-
 [tool.coverage.run]
 omit = ["tests/*"]
 
@@ -84,7 +64,7 @@ exclude_lines = [
 ]
 
 [tool.uv.sources]
-river = { git = "https://github.com/MarekWadinger/river.git" }
+river = { path = "vendor/river", editable = true }
 
 [dependency-groups]
 app = ["streamlit<2.0.0"]
