@@ -1,4 +1,6 @@
-from typing import Literal
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Literal
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
@@ -6,6 +8,9 @@ import numpy as np
 from matplotlib.axes import Axes
 
 from .preprocessing import normalize as _normalize
+
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 
 def is_tex_available() -> bool:
@@ -102,7 +107,8 @@ GRAY_ALPHA025 = "#dedede"
 
 
 def plot_chd(
-    datas: dict[str, np.ndarray | None] | list[np.ndarray | None],
+    datas: dict[str, np.ndarray | DataFrame | None]
+    | list[np.ndarray | DataFrame | None],
     y_true: list[float] | np.ndarray | None = None,
     labels: list[str] | None = None,
     idx_start: int | None = None,
@@ -128,19 +134,19 @@ def plot_chd(
         normalize: Normalize data. If False, no normalization is done.
 
     """
-    fig_kwargs_ = {
+    fig_kwargs_: dict[str, str | float | tuple[int, int]] = {
         "width": "article",
         "subplots": (len(datas), 1),
         "fraction": 0.5,
     }
-    fig_kwargs_.update(fig_kwargs)
+    fig_kwargs_.update(fig_kwargs)  # type: ignore
     if axs is None:
         fig, axs_ = plt.subplots(
             len(datas),
             1,
             sharex="col",
             sharey="row",
-            figsize=set_size(**fig_kwargs_),  # type: ignore
+            figsize=set_size(**fig_kwargs_),
         )
     else:
         axs_ = axs
@@ -167,40 +173,59 @@ def plot_chd(
         if y_true is not None:
             for i, y_val in enumerate(y_true):
                 if i == 0 and not red_line_legend_added:
-                    ax.axvline(y_val, color=RED_ALPHA05, label="True change-point")
+                    ax.axvline(
+                        y_val, color=RED_ALPHA05, label="True change-point"
+                    )
                     red_line_legend_added = True
                 else:
                     ax.axvline(y_val, color=RED_ALPHA05)
                 if grace_period:
                     if i == 0 and not red_line_legend_added:
                         ax.axvline(
-                            y_val + grace_period, color=RED_ALPHA05, linestyle="--",
-                            label="Grace period (detection window end)"
+                            y_val + grace_period,
+                            color=RED_ALPHA05,
+                            linestyle="--",
+                            label="Grace period (detection window end)",
                         )
                         red_line_legend_added = True
                     else:
                         ax.axvline(
-                            y_val + grace_period, color=RED_ALPHA05, linestyle="--"
+                            y_val + grace_period,
+                            color=RED_ALPHA05,
+                            linestyle="--",
                         )
         if data is not None:
             # Check if data is a DataFrame with multiple columns
-            if hasattr(data, 'columns') and len(data.columns) > 1:
-                # Plot each column with its name as the label
-                for col in data.columns:
-                    ax.plot(data[col].iloc[idx_start:idx_end], label=col)
+            if hasattr(data, "columns") and hasattr(data.columns, "__len__"):  # type: ignore
+                data_cols = getattr(data, "columns", None)
+                if data_cols is not None and len(data_cols) > 1:  # type: ignore
+                    # Plot each column with its name as the label
+                    for col in data_cols:  # type: ignore
+                        ax.plot(data[col].iloc[idx_start:idx_end], label=col)  # type: ignore
+                else:
+                    ax.plot(data[idx_start:idx_end], label=label)  # type: ignore
             else:
                 ax.plot(data[idx_start:idx_end], label=label)
             if normalize:
                 ax_norm = ax.twinx()
-                if hasattr(data, 'columns') and len(data.columns) > 1:
-                    for col in data.columns:
-                        ax_norm.plot(  # type: ignore
-                            _normalize(data[col].iloc[idx_start:idx_end]),
-                            label=col + " (norm)",
+                if hasattr(data, "columns") and hasattr(
+                    data.columns, "__len__"
+                ):  # type: ignore
+                    data_cols = getattr(data, "columns", None)
+                    if data_cols is not None and len(data_cols) > 1:  # type: ignore
+                        for col in data_cols:  # type: ignore
+                            ax_norm.plot(
+                                _normalize(data[col].iloc[idx_start:idx_end]),  # type: ignore
+                                label=col + " (norm)",
+                            )
+                    else:
+                        ax_norm.plot(
+                            _normalize(data[idx_start:idx_end]),  # type: ignore
+                            label=label + " (norm)",
                         )
                 else:
-                    ax_norm.plot(  # type: ignore
-                        _normalize(data[idx_start:idx_end]),
+                    ax_norm.plot(
+                        _normalize(data[idx_start:idx_end]),  # type: ignore
                         label=label + " (norm)",
                     )
             if name != "":
