@@ -4,6 +4,7 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.axes import Axes
+from pandas import DataFrame
 
 from .preprocessing import normalize as _normalize
 
@@ -102,7 +103,8 @@ GRAY_ALPHA025 = "#dedede"
 
 
 def plot_chd(
-    datas: dict[str, np.ndarray | None] | list[np.ndarray | None],
+    datas: dict[str, np.ndarray | DataFrame | None]
+    | list[np.ndarray | DataFrame | None],
     y_true: list[float] | np.ndarray | None = None,
     labels: list[str] | None = None,
     idx_start: int | None = None,
@@ -128,19 +130,19 @@ def plot_chd(
         normalize: Normalize data. If False, no normalization is done.
 
     """
-    fig_kwargs_ = {
+    fig_kwargs_: dict[str, object] = {
         "width": "article",
         "subplots": (len(datas), 1),
         "fraction": 0.5,
     }
-    fig_kwargs_.update(fig_kwargs)
+    fig_kwargs_.update(fig_kwargs)  # type: ignore
     if axs is None:
         fig, axs_ = plt.subplots(
             len(datas),
             1,
             sharex="col",
             sharey="row",
-            figsize=set_size(**fig_kwargs_),  # type: ignore
+            figsize=set_size(**fig_kwargs_),
         )
     else:
         axs_ = axs
@@ -169,10 +171,16 @@ def plot_chd(
                         i + grace_period, color=RED_ALPHA05, linestyle="--"
                     )
         if data is not None:
-            ax.plot(data[idx_start:idx_end], label=label)
+            # Check if data is a DataFrame with multiple columns
+            if isinstance(data, DataFrame) and len(data.columns) > 1:
+                # Plot each column with its name as the label
+                for col in data.columns:
+                    ax.plot(data[col].iloc[idx_start:idx_end], label=col)
+            else:
+                ax.plot(data[idx_start:idx_end], label=label)
             if normalize:
                 ax_norm = ax.twinx()
-                ax_norm.plot(  # type: ignore
+                ax_norm.plot(
                     _normalize(data[idx_start:idx_end]),
                     label=label + " (norm)",
                 )
