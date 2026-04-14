@@ -19,7 +19,7 @@ def is_tex_available() -> bool:
     """
     import shutil
 
-    return shutil.which("latex") is not None
+    return all(shutil.which(cmd) is not None for cmd in ("latex", "dvipng"))
 
 
 plt.rcParams.update(
