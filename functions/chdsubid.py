@@ -7,10 +7,17 @@ import pandas as pd
 from river.anomaly.base import AnomalyDetector
 from river.base import MiniBatchTransformer, Transformer
 from river.decomposition import OnlineDMD, OnlineDMDwC
+from river.decomposition.rust_rolling_dmd import (
+    RustRollingDMD,
+    RustRollingDMDwC,
+)
 from river.utils.rolling import Rolling as RiverRolling
 
 from .preprocessing import hankel
 from .rolling import Rolling
+
+_RustTypes = (RustRollingDMD, RustRollingDMDwC)
+_RollingTypes = (Rolling, RustRollingDMD, RustRollingDMDwC)
 
 
 # # Default parameters
@@ -124,7 +131,14 @@ class SubIDChangeDetector(AnomalyDetector):
 
     def __init__(
         self,
-        subid: MiniBatchTransformer | Transformer | Rolling | RiverRolling,
+        subid: MiniBatchTransformer
+        | Transformer
+        | OnlineDMD
+        | OnlineDMDwC
+        | Rolling
+        | RiverRolling
+        | RustRollingDMD
+        | RustRollingDMDwC,
         ref_size: int,
         test_size: int | None = None,
         threshold: float = 0.25,
@@ -135,7 +149,7 @@ class SubIDChangeDetector(AnomalyDetector):
     ):
         self.subid = subid
         self.threshold = threshold
-        if ref_size == 0 and isinstance(subid, Rolling):
+        if ref_size == 0 and isinstance(subid, _RollingTypes):
             ref_size = subid.window_size
             # Since window_size is maxlen of deque in Rolling it may be None
             if ref_size is None:
@@ -301,7 +315,7 @@ class SubIDChangeDetector(AnomalyDetector):
             or not isinstance(self.subid, Transformer)
             and hasattr(self.subid, "transform_many")
         ):
-            X_p = self.subid.transform_many(X)
+            X_p = pd.DataFrame(self.subid.transform_many(X))
         else:
             X_p = pd.DataFrame(
                 [
@@ -382,7 +396,7 @@ class SubIDChangeDetector(AnomalyDetector):
         cond_soon = len(self._X) > self.learn_delay
         if cond_soon and cond_grace:
             idx = -self.learn_delay - 1
-            if isinstance(self.subid, Rolling):
+            if isinstance(self.subid, _RollingTypes):
                 self.subid.update(self._X[idx], **params)
             else:
                 self.subid.learn_one(self._X[idx], **params)
@@ -407,7 +421,11 @@ class DMDChangeDetector(SubIDChangeDetector):
 
     def __init__(
         self,
-        subid: OnlineDMD | OnlineDMDwC | Rolling,
+        subid: OnlineDMD
+        | OnlineDMDwC
+        | Rolling
+        | RustRollingDMD
+        | RustRollingDMDwC,
         ref_size: int,
         test_size: int | None = None,
         threshold: float = 0.25,
@@ -424,7 +442,7 @@ class DMDChangeDetector(SubIDChangeDetector):
             grace_period=grace_period,
             learn_after_grace=learn_after_grace,
         )
-        self.subid = subid  # Correct type hinting
+        self.subid = subid
         self._Xp: deque[dict] = deque(
             maxlen=self.ref_size + self.lag + self.test_size
         )
@@ -434,8 +452,8 @@ class DMDChangeDetector(SubIDChangeDetector):
             subid_: Transformer = self.subid.obj  # type: ignore
         else:
             subid_ = self.subid
-        if (isinstance(subid_, OnlineDMD | OnlineDMDwC)) and subid_.A_allclose:
-            self._Xp.append(subid_.transform_one(X.iloc[-1].to_dict()))
+        if hasattr(subid_, "A_allclose") and subid_.A_allclose:
+            self._Xp.append(dict(subid_.transform_one(X.iloc[-1].to_dict())))
         else:
             X_p = super()._transform_many(X)
             self._Xp.extend(X_p.to_dict(orient="records"))
