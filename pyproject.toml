@@ -15,7 +15,12 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-examples = ["bayesian-optimization~=1.4.3", "jupyter>=1.1.1", "notebook>=7.5.5"]
+examples = [
+    "bayesian-optimization~=1.4.3",
+    "jupyter>=1.1.1",
+    "notebook>=7.5.5",
+    "pydmd>=2025.8.1",
+]
 
 [tool.pytest.ini_options]
 addopts = [
@@ -42,6 +47,9 @@ doctest_optionflags = [
 ]
 norecursedirs = ["examples", ".*"]
 
+[tool.ty.environment]
+extra-paths = ["vendor/river"]
+
 [tool.ruff]
 lint.ignore = ["E501"]
 lint.select = ["E", "F", "I", "UP"] # https://beta.ruff.rs/docs/rules/
@@ -51,6 +59,7 @@ omit = ["tests/*"]
 
 [tool.coverage.report]
 exclude_lines = [
+    "pragma: no cover",
     "def __repr__",
     "if self.debug:",
     "if settings.DEBUG",
