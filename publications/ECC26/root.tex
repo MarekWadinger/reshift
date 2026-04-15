@@ -265,7 +265,7 @@ where \(\kappa = \lambda_{\max}(X_k X_k^\top)/\lambda_{\min}(X_k X_k^\top)\) is 
 \textbf{Stability:} The truncated SVD ensures numerical stability by avoiding small singular values that would corrupt \(P_k\). The reorthogonalization in~\cite{Zhang2022} guarantees that \(\|\tilde{U}_k^\top \tilde{U}_k - I\| < \epsilon\) for a specified tolerance \(\epsilon\), preventing drift in the subspace basis.
 
 \textbf{Detection guarantees:} For a change occurring at time \(t_c\), the detection statistic satisfies:
-\begin{equation}
+\begin{equation}\label{eq:detection-guarantee}
     \mathbb{P}(Q_k > \tau \mid k \in [t_c + c, t_c + c + \delta]) \geq 1 - \alpha,
 \end{equation}
 where \(\delta\) depends on the signal-to-noise ratio and the magnitude of change. This provides probabilistic bounds on detection within a window after the guaranteed delay \(c\).
@@ -294,7 +294,8 @@ We validate the framework on three case studies representing different change ty
     \end{tabular}
 \end{table}
 
-All experiments use rank truncation (\(r=2\)--10) and windowed online updates with forgetting factors to adapt to time-varying conditions.
+All experiments use rank truncation (\(r=2\)--10) and windowed online updates with forgetting factors to adapt to time-varying conditions. Throughout this section, figures adopt a common convention: solid vertical lines mark the true occurrence of each change-point at time \(t_c\), while dashed red vertical lines mark the probabilistic detection bound \( t_c + c + \delta \) from~\eqref{eq:detection-guarantee}, within which \(Q_k\) is expected to exceed the threshold \( \tau \) with probability at least \( 1-\alpha \). The horizontal axis in each Figure
+shows the number of samples elapsed since the experiment start.
 
 \subsection{Synthetic Step Changes}
 
@@ -347,15 +348,7 @@ where \(h_1, h_2\) are tank levels, \(q\) is control flow with delay \(\tau=20\t
 
 \subsection{Comparison with State-of-the-Art}
 
-Our ODMD-CPD framework offers distinct advantages over existing approaches:
-
-\textbf{vs. Statistical methods (CUSUM, GLR):} Traditional statistical CPD methods~\cite{Ye2023} require knowledge of the data distribution and fail when temporal correlations exist. ODMD-CPD makes no distributional assumptions and explicitly models temporal dynamics through DMD modes.
-
-\textbf{vs. Deep learning methods (autoencoders):} While methods like TIRE~\cite{DeRyck2021} achieve high accuracy, they lack interpretability and require extensive labeled data for training. ODMD-CPD provides physically interpretable detection statistics (reconstruction error ratios) and operates in a fully unsupervised manner. The DMD modes could reveal dominant frequencies and growth rates, enabling roost cause analysis.
-
-\textbf{vs. Subspace methods (SSA, online SVD):} Methods like~\cite{Moskvina2003, Kawahara2007} detect changes in autonomous systems but do not account for sysntem dynamics and control inputs. ODMD-CPD explicitly disambiguates control effects from natural dynamics.
-
-\textbf{vs. Kernel methods:} Non-parametric kernel approaches~\cite{Ferrari2023, Chu2022} work in arbitrary metric spaces but scale poorly with dimension (\(\mathcal{O}(n^2)\) vs. our \(\mathcal{O}(mr^2)\)) and provide less interpretable statistics.
+Unlike statistical methods (CUSUM, GLR)~\cite{Ye2023} that assume a known distribution and fail under temporal correlation, ODMD-CPD makes no such assumptions and explicitly models dynamics. Deep-learning approaches like TIRE~\cite{DeRyck2021} achieve high accuracy but lack interpretability and require labeled data; ODMD-CPD is unsupervised, with interpretable reconstruction-error statistics and DMD modes that enable root cause analysis. Autonomous subspace methods~\cite{Moskvina2003, Kawahara2007} ignore control inputs, whereas our DMDc formulation disambiguates actuation from system change. Kernel methods~\cite{Ferrari2023, Chu2022} scale as \(\mathcal{O}(n^2)\) versus our \(\mathcal{O}(mr^2)\) and are less interpretable.
 
 \subsection{Applicability of ODMD-CPD}
 
