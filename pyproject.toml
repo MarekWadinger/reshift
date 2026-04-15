@@ -45,7 +45,7 @@ doctest_optionflags = [
     "ELLIPSIS",
     "IGNORE_EXCEPTION_DETAIL",
 ]
-norecursedirs = ["examples", ".*"]
+norecursedirs = ["examples", "vendor", ".*"]
 
 [tool.ty.environment]
 extra-paths = ["vendor/river"]
