@@ -25,7 +25,9 @@ jobs:
         continue-on-error: true
         run: |
           pipx install commitizen
-          cz bump --dry-run
+          # --yes: non-interactive (without it cz prompts -> EOFError on CI ->
+          # the gate always "failed" and the bump was always skipped).
+          cz bump --yes --dry-run
       - name: Create bump and changelog
         if: steps.bump_check.outcome == 'success'
         uses: commitizen-tools/commitizen-action@master
