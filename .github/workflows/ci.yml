@@ -4,12 +4,21 @@ on:
   push:
     branches: [ main, dev ]
     paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - 'LICENSE'
       - 'pyproject.toml'
       - 'CHANGELOG.md'
       - '.github/workflows/**'
   workflow_dispatch:
   pull_request:
     branches: [ main, dev ]
+    # Skip the heavy test matrix for docs-only changes. Safe here because
+    # main has no required status checks, so a skipped run never blocks merge.
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - 'LICENSE'
 
 permissions:
   contents: read
