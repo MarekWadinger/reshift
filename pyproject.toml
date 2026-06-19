@@ -25,10 +25,7 @@ examples = [
 [tool.pytest.ini_options]
 addopts = [
     "--doctest-modules",
-    "--doctest-glob=README.md",
-    "--ignore=build.py",
     "--ignore=scripts/",
-    "--ignore=docs/",
     "--verbose",
     "-ra",
     "-m not datasets and not slow",
@@ -52,6 +49,7 @@ extra-paths = ["vendor/river"]
 
 [tool.ruff]
 line-length = 79
+extend-exclude = ["vendor"]
 
 [tool.coverage.run]
 omit = ["tests/*"]
