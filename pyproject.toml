@@ -46,7 +46,7 @@ lint.select = ["ALL"]
 lint.ignore = [
     # === Backlog: being fixed group-by-group; removed as each is resolved ===
     "NPY002",
-    "S113", "S301",
+    "S301",
     "TD002", "TD003",
     "PGH003",
     "SLF001",  # pending: per-line noqa or public-accessor improvement

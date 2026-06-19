@@ -8,6 +8,9 @@ import requests
 
 logger = logging.getLogger(__name__)
 
+# Seconds before a dataset download request gives up (avoids hanging forever).
+_TIMEOUT = 30
+
 
 def load_dateset(file_path: str, url: str, save: bool = False) -> np.ndarray:
     # Check if the file exists
@@ -16,7 +19,7 @@ def load_dateset(file_path: str, url: str, save: bool = False) -> np.ndarray:
         return np.loadtxt(file_path)
 
     # If the file does not exist, download the data
-    response = requests.get(url)
+    response = requests.get(url, timeout=_TIMEOUT)
 
     if response.status_code == 200:
         lines = response.text.split("\n")
@@ -81,7 +84,7 @@ def load_cats(resample_s: None | int = None) -> pd.DataFrame:
             """
             from io import BytesIO
 
-            response = requests.get(url, stream=True)
+            response = requests.get(url, stream=True, timeout=_TIMEOUT)
             total_size = int(response.headers.get("content-length", 0))
             bytes_downloaded = 0
 
@@ -144,7 +147,7 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
             Path(folder_path).mkdir(parents=True, exist_ok=True)
 
             # Get the contents of the folder
-            response = requests.get(url)
+            response = requests.get(url, timeout=_TIMEOUT)
             if response.status_code == 200:
                 for item in response.json():
                     if item["type"] == "file" and item["name"].endswith(
@@ -155,7 +158,12 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
                         file_name = Path(file_url).name
                         file_path = str(Path(folder_path) / file_name)
                         with Path(file_path).open("wb") as f:
-                            f.write(requests.get(file_url).content)
+                            f.write(
+                                requests.get(
+                                    file_url,
+                                    timeout=_TIMEOUT,
+                                ).content,
+                            )
                     elif item["type"] == "dir":
                         download_csv_from_git(item["url"], folder_path)
 
@@ -194,7 +202,7 @@ def load_usp(
     )
 
     if not Path(file_path).exists():
-        response = requests.get(url)
+        response = requests.get(url, timeout=_TIMEOUT)
         if response.status_code == 200:
             msg = (
                 f"Please, download the data from the following URL: {url}.\n"
@@ -278,7 +286,7 @@ def load_bess() -> tuple[pd.DataFrame, pd.DataFrame]:
             # Read the data from the file into a numpy array
             def download_csv_from_git(url: str, save_path: str) -> None:
                 # Get the contents of the folder
-                response = requests.get(url)
+                response = requests.get(url, timeout=_TIMEOUT)
                 if response.status_code == 200:
                     with Path(save_path).open("wb") as f:
                         f.write(response.content)
