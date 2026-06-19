@@ -39,6 +39,11 @@ norecursedirs = ["examples", "vendor", ".*"]
 [tool.ty.environment]
 extra-paths = ["vendor/river"]
 
+# vendor/ is on the search path for import resolution but must not itself be
+# type-checked (it's third-party river source, not ours).
+[tool.ty.src]
+exclude = ["vendor"]
+
 [tool.ruff]
 line-length = 79
 extend-exclude = ["vendor"]
