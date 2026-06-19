@@ -47,7 +47,9 @@ doctest_optionflags = [
 norecursedirs = ["examples", "vendor", ".*"]
 
 [tool.ty.environment]
-extra-paths = ["vendor/river"]
+# examples/ holds notebook-local helpers (e.g. cpdmd_compare) imported by the
+# example notebooks after a sys.path.append("..").
+extra-paths = ["vendor/river", "examples"]
 
 # vendor/ is on the search path for import resolution but must not itself be
 # type-checked (it's third-party river source, not ours).
