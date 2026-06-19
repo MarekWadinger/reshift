@@ -33,6 +33,7 @@ class DMD:
     """
 
     def __init__(self, r: int = 0) -> None:
+        """Initialize DMD with the desired truncation rank."""
         self.r = r
         self.m: int
         self.n: int
@@ -220,11 +221,11 @@ class DMDwC(DMD):
         """Predict future values using the trained DMD model.
 
         Args:
-        - forecast: int
-            Number of steps to predict into the future.
+            x: Initial state vector of shape (m,).
+            forecast: Number of steps to predict into the future.
+            U: Control input matrix of shape (forecast, l). Required when B is set.
 
         Returns:
-        - predictions: numpy.ndarray
             Predicted data matrix for the specified number of prediction steps.
 
         """

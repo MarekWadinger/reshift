@@ -5,10 +5,10 @@ from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
-from river.preprocessing import Hankelizer as H
+from river.preprocessing import Hankelizer as RiverHankelizer
 
 
-class Hankelizer(H):
+class Hankelizer(RiverHankelizer):
     """Mini-batch Hankelizer that keeps track of the transformation.
 
     Similar to the original Hankelizer, it
@@ -26,11 +26,11 @@ class Hankelizer(H):
         Using Mini-batch Hankelizer is equivalent to
         >>> import numpy as np
         >>> import pandas as pd
-        >>> from river.preprocessing import Hankelizer as H
+        >>> from river.preprocessing import Hankelizer as RiverHankelizer
         >>> X_train = pd.DataFrame(np.random.rand(10, 2), columns=["a", "b"])
         >>> hn = 3
         >>> hankelizer = Hankelizer(hn)
-        >>> hankelizer_old = H(hn)
+        >>> hankelizer_old = RiverHankelizer(hn)
 
         >>> hankelizer.learn_many(X_train)
         >>> X_t_new = hankelizer.transform_many(X_train)
@@ -55,6 +55,7 @@ class Hankelizer(H):
         w: int = 2,
         return_partial: bool | Literal["copy"] = "copy",
     ) -> None:
+        """Initialize the Hankelizer with window size and partial-return mode."""
         super().__init__(w, return_partial)
         self.transform_track: list[dict] = []
 
@@ -112,7 +113,7 @@ def hankel(
         X (np.ndarray): The input array.
         hn (int): The number of columns in the Hankel matrix.
         step (int, optional): The step size for the delays. Defaults to 1.
-        cut_rollover (bool, optional): Whether to cut the rollover part of the Hankel matrix. Defaults to True.
+        return_partial (bool | "copy", optional): Whether to return partial rows. Defaults to "copy".
 
     Returns:
         np.ndarray: The Hankel matrix.

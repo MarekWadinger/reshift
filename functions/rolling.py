@@ -5,7 +5,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 from river.utils.rolling import Rollable
-from river.utils.rolling import Rolling as R
+from river.utils.rolling import Rolling as RiverRolling
 
 
 def separate_args_kwargs(
@@ -82,7 +82,7 @@ def separate_args_kwargs(
     return args__, kwargs__
 
 
-class Rolling(R):
+class Rolling(RiverRolling):
     """A generic wrapper for performing rolling computations.
 
     This can be wrapped around any object which implements both an `update` and a `revert` method.
@@ -123,6 +123,7 @@ class Rolling(R):
     """
 
     def __init__(self, obj: Rollable, window_size: int) -> None:
+        """Initialize Rolling wrapper with the given object and window size."""
         super().__init__(obj, window_size)
 
     def learn_one(self, *args: Any, **kwargs: Any) -> None:  # noqa: ANN401

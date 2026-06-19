@@ -58,7 +58,9 @@ def get_default_rank(
     """Get default rank for the given data matrix.
 
     Args:
-        X (np.ndarray): Data matrix
+        X (np.ndarray): Data matrix.
+        noise_variance (float | None, optional): Known noise variance. When ``None``,
+            the optimal threshold is estimated from the median singular value.
 
     Returns:
         int: Default rank
@@ -108,11 +110,14 @@ def get_default_params(
     """Get default parameters for the given dataset and window size.
 
     Args:
-        X (np.ndarray): Data matrix
+        X (np.ndarray): Data matrix.
+        U (np.ndarray | None, optional): Control input matrix. When provided, a rank for U is also returned.
         window_size (int): Window size. What kind of structural changes are we looking for?
+        max_rank (int): Upper bound on the returned rank(s).
 
     References:
-        [2] Moskvina, V., & Zhigljavsky, A. (2003). An Algorithm Based on Singular Spectrum Analysis for Change-Point Detection.
+        [2] Moskvina, V., & Zhigljavsky, A. (2003). An Algorithm Based on Singular Spectrum Analysis for
+        Change-Point Detection.
         Communications in Statistics - Simulation and Computation, 32(2), 319-352.
         doi:[10.1081/SAC-120017494](https://doi.org/10.1081/SAC-120017494).
 
@@ -193,6 +198,7 @@ class SubIDChangeDetector(AnomalyDetector):
         learn_after_grace: bool = True,
         start_soon: bool = False,
     ) -> None:
+        """Initialize SubIDChangeDetector with subspace model and detection parameters."""
         self.subid = subid
         self.threshold = threshold
         if ref_size == 0 and isinstance(subid, _RollingTypes):
@@ -542,6 +548,7 @@ class DMDChangeDetector(SubIDChangeDetector):
         grace_period: int = 0,
         learn_after_grace: bool = True,
     ) -> None:
+        """Initialize DMDChangeDetector with subspace model and detection parameters."""
         super().__init__(
             subid=subid,
             ref_size=ref_size,

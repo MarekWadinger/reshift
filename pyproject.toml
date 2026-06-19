@@ -54,14 +54,8 @@ lint.ignore = [
     "N803",    # argument names use math notation (X, U, Y)
     "N806",    # local vars use math notation (X, A, U, S, V)
     "N816",    # mixed-case math vars at module scope
-    "N817",    # acronym imports (e.g. Rolling as R)
-    "D105",    # magic-method docstrings optional
-    "D107",    # __init__ documented via the class docstring
-    "D401",    # imperative-mood first line not enforced
-    "D404",    # allow docstrings beginning with "This"
-    "D417",    # partial Args lists allowed (don't require every param)
     "ERA001",  # commented-out code kept as research scratch
-    "E501",    # code line length (doctests/notebooks exceed 79)
+    "E501",    # code line length (replaced by W505)
     "FBT001",  # boolean positional arg in function definition
     "FBT002",  # boolean default positional arg
     "FBT003",  # boolean positional value in call
@@ -75,7 +69,7 @@ lint.ignore = [
     "INP001",  # implicit namespace package (no __init__ needed)
     "PLC0415", # intentional lazy imports (optional/heavy deps)
 ]
-lint.pycodestyle.max-doc-length = 129
+lint.pycodestyle.max-doc-length = 120
 lint.pycodestyle.max-line-length = 79
 
 # T201/T203 (print): prints are the output medium in notebooks and the

@@ -1,4 +1,4 @@
-"""This module is modified part of evaluation from library [tsad](https://github.com/waico/tsad)."""
+"""Modified evaluation utilities from the [tsad](https://github.com/waico/tsad) library."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 def filter_detecting_boundaries(
     detecting_boundaries: list[list[Any]],
 ) -> list[list[Any]]:
-    """Filters out empty sublists from a list of detecting boundaries.
+    """Filter out empty sublists from a list of detecting boundaries.
 
     Args:
         detecting_boundaries (list of list): A list containing sublists,
@@ -95,7 +95,7 @@ def single_detecting_boundaries(
             >= new_detecting_boundaries[i + 1][0]
         ):
             # transform print to list of intersections
-            # print(f'Intersection of scoring windows {new_detecting_boundaries[i][1], new_detecting_boundaries[i+1][0]}')
+            # print(f'Intersection of scoring windows {new_detecting_boundaries[i][1], new_detecting_boundaries[i + 1][0]}')  # noqa: W505
             intersection_count += 1
             if intersection_mode == "cut left window":
                 new_detecting_boundaries[i][1] = new_detecting_boundaries[
@@ -186,7 +186,7 @@ def extract_cp_confusion_matrix(
     point: int = 0,
     binary: bool = False,
 ) -> dict[str, Any]:
-    """Extracts the confusion matrix for change point detection.
+    """Extract the confusion matrix for change point detection.
 
     Args:
         detecting_boundaries (list of list of int): List of pairs of start and end times for detecting boundaries.
@@ -400,7 +400,8 @@ def single_evaluate_nab(
             The list of predicted anomaly points.
         table_of_coef (pandas DataFrame, optional):
             Table of coefficients for NAB score function.
-            Default is a 3x4 DataFrame with indices 'Standard', 'LowFP', 'LowFN' and columns 'A_tp', 'A_fp', 'A_tn', 'A_fn'.
+            Default is a 3x4 DataFrame with indices 'Standard', 'LowFP', 'LowFN'
+            and columns 'A_tp', 'A_fp', 'A_tn', 'A_fn'.
         clear_anomalies_mode (bool, optional):
             If True, the left of Atp boundary is equal to the right of Afp.
             Otherwise, fault mode, when the left of Afp boundary is the right of Atp. Default is True.

@@ -39,6 +39,7 @@ class NPDataset(base.Dataset):
     """Base class for numpy array datasets."""
 
     def __init__(self, X: np.ndarray, y: np.ndarray | None = None) -> None:
+        """Initialize dataset from numpy arrays."""
         self.X = X
         self.y = y
         if self.y is not None:
@@ -55,6 +56,7 @@ class NPDataset(base.Dataset):
         )
 
     def __iter__(self) -> Iterator[tuple[dict, object]]:
+        """Iterate over (x, y) sample pairs from the numpy arrays."""
         return stream.iter_array(self.X, self.y)
 
 
@@ -62,6 +64,7 @@ class ChangeDetectionTrack(Track):
     """Evaluation track that bundles synthetic step-change datasets."""
 
     def __init__(self) -> None:
+        """Initialize the change detection track with synthetic step-change datasets."""
         # datasets = [ds.WaterFlow(), ds.WebTraffic(), ds.synth.AnomalySine()]
         datasets = [
             NPDataset(
