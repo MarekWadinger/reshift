@@ -1,6 +1,6 @@
 [project]
 name = "odmd-subid-cpd"
-version = "1.0.0"
+version = "4.0.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -123,3 +123,44 @@ docs = [
     "mkdocs-section-index>=0.3.10",
     "mkdocstrings-python<2.0.0",
 ]
+
+[tool.commitizen]
+# Why cz_customize and not cz_conventional_commits: the built-in conventional cz
+# HARDCODES commit_parser/changelog_pattern as class attributes (feat|fix|refactor|
+# perf only), so the [tool.commitizen] commit_parser key is silently ignored and
+# `docs` can never reach the changelog. cz_customize is the only supported way to
+# add it (see https://commitizen-tools.github.io/commitizen/customization/).
+name = "cz_customize"
+tag_format = "v$version"
+version_provider = "pep621"
+update_changelog_on_bump = true
+major_version_zero = false
+# No changelog_start_rev: the pre-v2.0.0 CAPS convention (ADD:/UPDATE:/FIX:) does
+# not match the case-sensitive parser below, so that era is auto-excluded from
+# generation and is instead captured by a hand-curated v1.0.0 section appended to
+# CHANGELOG.md. Bumps are incremental and never rewrite that manual section.
+
+[tool.commitizen.customize]
+# bump_pattern/bump_map are copied verbatim from commitizen's own defaults, so
+# SemVer bumping is identical to standard conventional commits. DEPRECATION NOTE:
+# commitizen has deprecated these module defaults in favour of BUMP_PATTERN/BUMP_MAP
+# and will remove them in v5 -- re-check this block against upstream on the next
+# major commitizen upgrade.
+bump_pattern = "^((BREAKING[\\-\\ ]CHANGE|\\w+)(\\(.+\\))?!?):"
+bump_map = {"^.+!$" = "MAJOR", "^BREAKING[\\-\\ ]CHANGE" = "MAJOR", "^feat" = "MINOR", "^fix" = "PATCH", "^refactor" = "PATCH", "^perf" = "PATCH"}
+# Changelog: standard types + docs (the only addition over the built-in).
+changelog_pattern = "^(feat|fix|perf|refactor|docs)(\\(.+\\))?(!)?:"
+commit_parser = "^(?P<change_type>feat|fix|perf|refactor|docs)(?:\\((?P<scope>[^()\r\n]*)\\)|\\()?(?P<breaking>!)?:\\s(?P<message>.*)?"
+change_type_order = ["BREAKING CHANGE", "Features", "Fixes", "Performance", "Refactor", "Docs"]
+# schema_pattern restores `cz check` commit-msg validation (cz_customize without it
+# accepts ANY message). Full conventional vocabulary, copied from commitizen's
+# built-in -- intentionally broader than the changelog set above (chore/ci/test/etc.
+# are valid commits even though they don't appear in the changelog).
+schema_pattern = '(?s)(build|bump|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\S+\))?!?: ([^\n\r]+)((\n\n.*)|(\s*))?$'
+
+[tool.commitizen.customize.change_type_map]
+feat = "Features"
+fix = "Fixes"
+perf = "Performance"
+refactor = "Refactor"
+docs = "Docs"
