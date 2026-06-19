@@ -1,0 +1,6803 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Marek Wadinger">
+      
+      
+        <link rel="canonical" href="https://marekwadinger.github.io/odmd-subid-cpd/reference/vendor/river/river/forest/">
+      
+      
+        <link rel="prev" href="../feature_selection/variance/">
+      
+      
+        <link rel="next" href="adaptive_random_forest/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Index - ODMD-SUBID-CPD</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Titillium Web";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vendor.river.river.forest" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="ODMD-SUBID-CPD" class="md-header__button md-logo" aria-label="ODMD-SUBID-CPD" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ODMD-SUBID-CPD
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Index
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/MarekWadinger/odmd-subid-cpd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    odmd-subid-cpd
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../../app/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="ODMD-SUBID-CPD" class="md-nav__button md-logo" aria-label="ODMD-SUBID-CPD" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ODMD-SUBID-CPD
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/MarekWadinger/odmd-subid-cpd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    odmd-subid-cpd
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../app/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    app
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_1" id="__nav_2_1_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    app
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../app/app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    app
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../benchmarks/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    benchmarks
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    benchmarks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../benchmarks/profile_decomposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    profile_decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../examples/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    examples
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    examples
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../examples/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../functions/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    functions
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    functions
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../functions/chdsubid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    chdsubid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../functions/datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    datasets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../functions/dmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dmd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../functions/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../functions/plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../functions/preprocessing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    preprocessing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../functions/rolling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rolling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../scripts/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    scripts
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../scripts/gen_ref_pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gen_ref_pages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vendor
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    vendor
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_1" id="__nav_2_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    river
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    river
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../benchmarks/model_adapters/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    benchmarks
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_1_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    river
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_6_1_2" id="__nav_2_6_1_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_6_1_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    river
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../__version__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    __version__
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../active/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    active
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../anomaly/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    anomaly
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../bandit/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bandit
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../base/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    base
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../checks/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    checks
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../cluster/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cluster
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../compat/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compat
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../compose/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compose
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../conf/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conf
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conftest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conftest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../covariance/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    covariance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../datasets/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    datasets
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../decomposition/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    decomposition
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../drift/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    drift
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dummy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dummy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../ensemble/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ensemble
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../evaluate/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    evaluate
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../facto/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    facto
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../feature_extraction/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    feature_extraction
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../feature_selection/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    feature_selection
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_1_2_24" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    forest
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_2_6_1_2_24" id="__nav_2_6_1_2_24_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_6_1_2_24_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6_1_2_24">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    forest
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="adaptive_random_forest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    adaptive_random_forest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aggregated_mondrian_forest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    aggregated_mondrian_forest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="online_extra_trees/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    online_extra_trees
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="test_amf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test_amf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../imblearn/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    imblearn
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../linear_model/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linear_model
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../metrics/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    metrics
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../misc/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../model_selection/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    model_selection
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../multiclass/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    multiclass
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../multioutput/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    multioutput
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../naive_bayes/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    naive_bayes
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../neighbors/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    neighbors
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../neural_net/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    neural_net
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../optim/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    optim
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../preprocessing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    preprocessing
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../proba/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    proba
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../reco/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reco
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../rules/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rules
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../sketch/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sketch
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../stats/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../stream/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stream
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_estimators/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test_estimators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../time_series/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time_series
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../tree/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tree
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../utils/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    utils
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.AMFClassifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;AMFClassifier
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.AMFRegressor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;AMFRegressor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.ARFClassifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ARFClassifier
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" ARFClassifier">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.ARFClassifier.n_drifts_detected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;n_drifts_detected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.ARFClassifier.n_warnings_detected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;n_warnings_detected
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.ARFRegressor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ARFRegressor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" ARFRegressor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.ARFRegressor.valid_aggregation_method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;valid_aggregation_method
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.ARFRegressor.n_drifts_detected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;n_drifts_detected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.ARFRegressor.n_warnings_detected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;n_warnings_detected
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.OXTRegressor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;OXTRegressor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" OXTRegressor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.OXTRegressor.instances_per_tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;instances_per_tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.OXTRegressor.n_drifts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;n_drifts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.OXTRegressor.n_tree_swaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;n_tree_swaps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.OXTRegressor.n_warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;n_warnings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.forest.OXTRegressor.total_instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;total_instances
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h1 id="vendor.river.river.forest" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">forest</span>
+
+
+<a href="#vendor.river.river.forest" class="headerlink" title="Permanent link">&para;</a></h1>
+
+    <div class="doc doc-contents first">
+
+        <p>This module implements forest-based classifiers and regressors.</p>
+
+
+
+
+
+
+<p><span class="doc-section-title">Modules:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            adaptive_random_forest (vendor.river.river.forest.adaptive_random_forest)" href="adaptive_random_forest/#vendor.river.river.forest.adaptive_random_forest">adaptive_random_forest</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            aggregated_mondrian_forest (vendor.river.river.forest.aggregated_mondrian_forest)" href="aggregated_mondrian_forest/#vendor.river.river.forest.aggregated_mondrian_forest">aggregated_mondrian_forest</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            online_extra_trees (vendor.river.river.forest.online_extra_trees)" href="online_extra_trees/#vendor.river.river.forest.online_extra_trees">online_extra_trees</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            test_amf (vendor.river.river.forest.test_amf)" href="test_amf/#vendor.river.river.forest.test_amf">test_amf</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            AMFClassifier (vendor.river.river.forest.AMFClassifier)" href="#vendor.river.river.forest.AMFClassifier">AMFClassifier</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Aggregated Mondrian Forest classifier for online learning.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            AMFRegressor (vendor.river.river.forest.AMFRegressor)" href="#vendor.river.river.forest.AMFRegressor">AMFRegressor</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Aggregated Mondrian Forest regressor for online learning.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            ARFClassifier (vendor.river.river.forest.ARFClassifier)" href="#vendor.river.river.forest.ARFClassifier">ARFClassifier</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Adaptive Random Forest classifier.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            ARFRegressor (vendor.river.river.forest.ARFRegressor)" href="#vendor.river.river.forest.ARFRegressor">ARFRegressor</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Adaptive Random Forest regressor.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            OXTRegressor (vendor.river.river.forest.OXTRegressor)" href="#vendor.river.river.forest.OXTRegressor">OXTRegressor</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Online Extra Trees regressor.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.forest.AMFClassifier" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">AMFClassifier</span>
+
+
+<a href="#vendor.river.river.forest.AMFClassifier" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">AMFClassifier</span><span class="p">(</span>
+    <span class="n"><span title="vendor.river.river.forest.AMFClassifier(n_estimators)">n_estimators</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.AMFClassifier(step)">step</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.AMFClassifier(use_aggregation)">use_aggregation</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.AMFClassifier(dirichlet)">dirichlet</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.AMFClassifier(split_pure)">split_pure</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.AMFClassifier(seed)">seed</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            AMFLearner (vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner)" href="aggregated_mondrian_forest/#vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner">AMFLearner</a></code>, <code><span title="river.base.Classifier">Classifier</span></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            AMFClassifier (vendor.river.river.forest.AMFClassifier)" href="#vendor.river.river.forest.AMFClassifier" id="mermaid-link-vendor.river.river.forest.AMFClassifier"></a>
+                  <a class="autorefs autorefs-internal" title="            AMFLearner (vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner)" href="aggregated_mondrian_forest/#vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner" id="mermaid-link-vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.forest.AMFClassifier">
+              flowchart TD
+              vendor.river.river.forest.AMFClassifier[AMFClassifier]
+              vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner[AMFLearner]
+
+                              vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner --> vendor.river.river.forest.AMFClassifier
+                
+
+
+              click vendor.river.river.forest.AMFClassifier href "" "vendor.river.river.forest.AMFClassifier"
+              click vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner href "" "vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.forest.AMFClassifier');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Aggregated Mondrian Forest classifier for online learning.</p>
+<p>This implementation is truly online<sup id="vendor.river.river.forest.AMFClassifier--fnref:1"><a class="footnote-ref" href="#vendor.river.river.forest.AMFClassifier--fn:1">1</a></sup>, in the sense that a single pass is performed, and that
+predictions can be produced anytime.</p>
+<p>Each node in a tree predicts according to the distribution of the labels
+it contains. This distribution is regularized using a "Jeffreys" prior
+with parameter <code>dirichlet</code>. For each class with <code>count</code> labels in the
+node and <code>n_samples</code> samples in it, the prediction of a node is given by</p>
+<p><span class="arithmatex">\(\frac{count + dirichlet}{n_{samples} + dirichlet \times n_{classes}}\)</span>.</p>
+<p>The prediction for a sample is computed as the aggregated predictions of all the
+subtrees along the path leading to the leaf node containing the sample. The
+aggregation weights are exponential weights with learning rate <code>step</code> and log-loss
+when <code>use_aggregation</code> is <code>True</code>.</p>
+<p>This computation is performed exactly thanks to a context tree weighting algorithm.
+More details can be found in the paper cited in the references below.</p>
+<p>The final predictions are the average class probabilities predicted by each of the
+<code>n_estimators</code> trees in the forest.</p>
+<h4 id="vendor.river.river.forest.AMFClassifier--parameters">Parameters<a class="headerlink" href="#vendor.river.river.forest.AMFClassifier--parameters" title="Permanent link">&para;</a></h4>
+<p>n_estimators
+    The number of trees in the forest.
+step
+    Step-size for the aggregation weights. Default is 1 for classification with
+    the log-loss, which is usually the best choice.
+use_aggregation
+    Controls if aggregation is used in the trees. It is highly recommended to
+    leave it as <code>True</code>.
+dirichlet
+    Regularization level of the class frequencies used for predictions in each node. A rule of
+    thumb is to set this to <code>1 / n_classes</code>, where <code>n_classes</code> is the expected number of
+    classes which might appear. Default is <code>dirichlet = 0.5</code>, which works well for binary
+    classification problems.
+split_pure
+    Controls if nodes that contains only sample of the same class should be
+    split ("pure" nodes). Default is <code>False</code>, namely pure nodes are not split,
+    but <code>True</code> can be sometimes better.
+seed
+    Random seed for reproducibility.</p>
+<h4 id="vendor.river.river.forest.AMFClassifier--notes">Notes<a class="headerlink" href="#vendor.river.river.forest.AMFClassifier--notes" title="Permanent link">&para;</a></h4>
+<p>Only log_loss used for the computation of the aggregation weights is supported for now, namely
+the log-loss for multi-class classification.</p>
+<h4 id="vendor.river.river.forest.AMFClassifier--examples">Examples<a class="headerlink" href="#vendor.river.river.forest.AMFClassifier--examples" title="Permanent link">&para;</a></h4>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>from river import datasets
+from river import evaluate
+from river import forest
+from river import metrics</p>
+<p>dataset = datasets.Bananas().take(500)</p>
+<p>model = forest.AMFClassifier(
+...     n_estimators=10,
+...     use_aggregation=True,
+...     dirichlet=0.5,
+...     seed=1
+... )</p>
+<p>metric = metrics.Accuracy()</p>
+<p>evaluate.progressive_val_score(dataset, model, metric)
+Accuracy: 85.37%</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h4 id="vendor.river.river.forest.AMFClassifier--references">References<a class="headerlink" href="#vendor.river.river.forest.AMFClassifier--references" title="Permanent link">&para;</a></h4>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.forest.AMFClassifier--fn:1">
+<p>Mourtada, J., Gaïffas, S., &amp; Scornet, E. (2021). AMF: Aggregated Mondrian forests for online
+learning. Journal of the Royal Statistical Society Series B: Statistical Methodology, 83(3), 505-533.&#160;<a class="footnote-backref" href="#vendor.river.river.forest.AMFClassifier--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.forest.AMFRegressor" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">AMFRegressor</span>
+
+
+<a href="#vendor.river.river.forest.AMFRegressor" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">AMFRegressor</span><span class="p">(</span>
+    <span class="n"><span title="vendor.river.river.forest.AMFRegressor(n_estimators)">n_estimators</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.AMFRegressor(step)">step</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.AMFRegressor(use_aggregation)">use_aggregation</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.AMFRegressor(seed)">seed</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            AMFLearner (vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner)" href="aggregated_mondrian_forest/#vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner">AMFLearner</a></code>, <code><span title="river.base.Regressor">Regressor</span></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            AMFRegressor (vendor.river.river.forest.AMFRegressor)" href="#vendor.river.river.forest.AMFRegressor" id="mermaid-link-vendor.river.river.forest.AMFRegressor"></a>
+                  <a class="autorefs autorefs-internal" title="            AMFLearner (vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner)" href="aggregated_mondrian_forest/#vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner" id="mermaid-link-vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.forest.AMFRegressor">
+              flowchart TD
+              vendor.river.river.forest.AMFRegressor[AMFRegressor]
+              vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner[AMFLearner]
+
+                              vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner --> vendor.river.river.forest.AMFRegressor
+                
+
+
+              click vendor.river.river.forest.AMFRegressor href "" "vendor.river.river.forest.AMFRegressor"
+              click vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner href "" "vendor.river.river.forest.aggregated_mondrian_forest.AMFLearner"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.forest.AMFRegressor');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Aggregated Mondrian Forest regressor for online learning.</p>
+<p>This algorithm is truly online, in the sense that a single pass is performed, and that
+predictions can be produced anytime.</p>
+<p>Each node in a tree predicts according to the average of the labels it contains.
+The prediction for a sample is computed as the aggregated predictions of all the subtrees
+along the path leading to the leaf node containing the sample. The aggregation weights are
+exponential weights with learning rate <code>step</code> using a squared loss when <code>use_aggregation</code>
+is <code>True</code>.</p>
+<p>This computation is performed exactly thanks to a context tree weighting algorithm.
+More details can be found in the original paper<sup id="vendor.river.river.forest.AMFRegressor--fnref:1"><a class="footnote-ref" href="#vendor.river.river.forest.AMFRegressor--fn:1">1</a></sup>.</p>
+<p>The final predictions are the average of the predictions of each of the
+<code>n_estimators</code> trees in the forest.</p>
+<h4 id="vendor.river.river.forest.AMFRegressor--parameters">Parameters<a class="headerlink" href="#vendor.river.river.forest.AMFRegressor--parameters" title="Permanent link">&para;</a></h4>
+<p>n_estimators
+    The number of trees in the forest.
+step
+    Step-size for the aggregation weights.
+use_aggregation
+    Controls if aggregation is used in the trees. It is highly recommended to
+    leave it as <code>True</code>.
+seed
+    Random seed for reproducibility.</p>
+<h4 id="vendor.river.river.forest.AMFRegressor--examples">Examples<a class="headerlink" href="#vendor.river.river.forest.AMFRegressor--examples" title="Permanent link">&para;</a></h4>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>from river import datasets
+from river import evaluate
+from river import forest
+from river import metrics</p>
+<p>dataset = datasets.TrumpApproval()
+model = forest.AMFRegressor(seed=42)
+metric = metrics.MAE()</p>
+<p>evaluate.progressive_val_score(dataset, model, metric)
+MAE: 0.268533</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h4 id="vendor.river.river.forest.AMFRegressor--references">References<a class="headerlink" href="#vendor.river.river.forest.AMFRegressor--references" title="Permanent link">&para;</a></h4>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.forest.AMFRegressor--fn:1">
+<p>Mourtada, J., Gaïffas, S., &amp; Scornet, E. (2021). AMF: Aggregated Mondrian forests for online
+learning. Journal of the Royal Statistical Society Series B: Statistical Methodology, 83(3), 505-533.&#160;<a class="footnote-backref" href="#vendor.river.river.forest.AMFRegressor--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.forest.ARFClassifier" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ARFClassifier</span>
+
+
+<a href="#vendor.river.river.forest.ARFClassifier" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">ARFClassifier</span><span class="p">(</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(n_models)">n_models</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(max_features)">max_features</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="s2">&quot;sqrt&quot;</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(lambda_value)">lambda_value</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(metric)">metric</span></span><span class="p">:</span> <span class="n"><span title="river.metrics.base.MultiClassMetric">MultiClassMetric</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(disable_weighted_vote)">disable_weighted_vote</span></span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(drift_detector)">drift_detector</span></span><span class="p">:</span> <span class="n"><span title="river.base.DriftDetector">DriftDetector</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(warning_detector)">warning_detector</span></span><span class="p">:</span> <span class="n"><span title="river.base.DriftDetector">DriftDetector</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(grace_period)">grace_period</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(max_depth)">max_depth</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(split_criterion)">split_criterion</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;info_gain&quot;</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(delta)">delta</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(tau)">tau</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(leaf_prediction)">leaf_prediction</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;nba&quot;</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(nb_threshold)">nb_threshold</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(nominal_attributes)">nominal_attributes</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(splitter)">splitter</span></span><span class="p">:</span> <span class="n"><span title="river.tree.splitter.Splitter">Splitter</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(binary_split)">binary_split</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(min_branch_fraction)">min_branch_fraction</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(max_share_to_split)">max_share_to_split</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.99</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(max_size)">max_size</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(memory_estimate_period)">memory_estimate_period</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">2000000</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(stop_mem_management)">stop_mem_management</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(remove_poor_attrs)">remove_poor_attrs</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(merit_preprune)">merit_preprune</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFClassifier(seed)">seed</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            BaseForest (vendor.river.river.forest.adaptive_random_forest.BaseForest)" href="adaptive_random_forest/#vendor.river.river.forest.adaptive_random_forest.BaseForest">BaseForest</a></code>, <code><span title="river.base.Classifier">Classifier</span></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            ARFClassifier (vendor.river.river.forest.ARFClassifier)" href="#vendor.river.river.forest.ARFClassifier" id="mermaid-link-vendor.river.river.forest.ARFClassifier"></a>
+                  <a class="autorefs autorefs-internal" title="            BaseForest (vendor.river.river.forest.adaptive_random_forest.BaseForest)" href="adaptive_random_forest/#vendor.river.river.forest.adaptive_random_forest.BaseForest" id="mermaid-link-vendor.river.river.forest.adaptive_random_forest.BaseForest"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.forest.ARFClassifier">
+              flowchart TD
+              vendor.river.river.forest.ARFClassifier[ARFClassifier]
+              vendor.river.river.forest.adaptive_random_forest.BaseForest[BaseForest]
+
+                              vendor.river.river.forest.adaptive_random_forest.BaseForest --> vendor.river.river.forest.ARFClassifier
+                
+
+
+              click vendor.river.river.forest.ARFClassifier href "" "vendor.river.river.forest.ARFClassifier"
+              click vendor.river.river.forest.adaptive_random_forest.BaseForest href "" "vendor.river.river.forest.adaptive_random_forest.BaseForest"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.forest.ARFClassifier');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Adaptive Random Forest classifier.</p>
+<p>The 3 most important aspects of Adaptive Random Forest <sup id="vendor.river.river.forest.ARFClassifier--fnref:1"><a class="footnote-ref" href="#vendor.river.river.forest.ARFClassifier--fn:1">1</a></sup> are:</p>
+<ol>
+<li>
+<p>inducing diversity through re-sampling</p>
+</li>
+<li>
+<p>inducing diversity through randomly selecting subsets of features for
+   node splits</p>
+</li>
+<li>
+<p>drift detectors per base tree, which cause selective resets in response
+   to drifts</p>
+</li>
+</ol>
+<p>It also allows training background trees, which start training if a
+warning is detected and replace the active tree if the warning escalates
+to a drift.</p>
+<h4 id="vendor.river.river.forest.ARFClassifier--parameters">Parameters<a class="headerlink" href="#vendor.river.river.forest.ARFClassifier--parameters" title="Permanent link">&para;</a></h4>
+<p>n_models
+    Number of trees in the ensemble.
+max_features
+    Max number of attributes for each node split.<br/>
+    - If <code>int</code>, then consider <code>max_features</code> at each split.<br/>
+    - If <code>float</code>, then <code>max_features</code> is a percentage and
+      <code>int(max_features * n_features)</code> features are considered per split.<br/>
+    - If "sqrt", then <code>max_features=sqrt(n_features)</code>.<br/>
+    - If "log2", then <code>max_features=log2(n_features)</code>.<br/>
+    - If None, then <code>max_features=n_features</code>.
+lambda_value
+    The lambda value for bagging (lambda=6 corresponds to Leveraging Bagging).
+metric
+    Metric used to track trees performance within the ensemble.
+    Defaults to <code>metrics.Accuracy()</code>.
+disable_weighted_vote
+    If <code>True</code>, disables the weighted vote prediction.
+drift_detector
+    Drift Detection method. Set to None to disable Drift detection.
+    Defaults to <code>drift.ADWIN(delta=0.001)</code>.
+warning_detector
+    Warning Detection method. Set to None to disable warning detection.
+    Defaults to <code>drift.ADWIN(delta=0.01)</code>.
+grace_period
+    [<em>Tree parameter</em>] Number of instances a leaf should observe between
+    split attempts.
+max_depth
+    [<em>Tree parameter</em>] The maximum depth a tree can reach. If <code>None</code>, the
+    tree will grow until the system recursion limit.
+split_criterion
+    [<em>Tree parameter</em>] Split criterion to use.<br/>
+    - 'gini' - Gini<br/>
+    - 'info_gain' - Information Gain<br/>
+    - 'hellinger' - Hellinger Distance
+delta
+    [<em>Tree parameter</em>] Allowed error in split decision, a value closer to 0
+    takes longer to decide.
+tau
+    [<em>Tree parameter</em>] Threshold below which a split will be forced to break
+    ties.
+leaf_prediction
+    [<em>Tree parameter</em>] Prediction mechanism used at leafs.<br/>
+    - 'mc' - Majority Class<br/>
+    - 'nb' - Naive Bayes<br/>
+    - 'nba' - Naive Bayes Adaptive
+nb_threshold
+    [<em>Tree parameter</em>] Number of instances a leaf should observe before
+    allowing Naive Bayes.
+nominal_attributes
+    [<em>Tree parameter</em>] List of Nominal attributes. If empty, then assume that
+    all attributes are numerical.
+splitter
+    [<em>Tree parameter</em>] The Splitter or Attribute Observer (AO) used to monitor the class
+    statistics of numeric features and perform splits. Splitters are available in the
+    <code>tree.splitter</code> module. Different splitters are available for classification and
+    regression tasks. Classification and regression splitters can be distinguished by their
+    property <code>is_target_class</code>. This is an advanced option. Special care must be taken when
+    choosing different splitters. By default, <code>tree.splitter.GaussianSplitter</code> is used
+    if <code>splitter</code> is <code>None</code>.
+binary_split
+    [<em>Tree parameter</em>] If True, only allow binary splits.
+min_branch_fraction
+    [<em>Tree parameter</em>] The minimum percentage of observed data required for branches
+    resulting from split candidates. To validate a split candidate, at least two resulting
+    branches must have a percentage of samples greater than <code>min_branch_fraction</code>. This
+    criterion prevents unnecessary splits when the majority of instances are concentrated
+    in a single branch.
+max_share_to_split
+    [<em>Tree parameter</em>] Only perform a split in a leaf if the proportion of elements
+    in the majority class is smaller than this parameter value. This parameter avoids
+    performing splits when most of the data belongs to a single class.
+max_size
+    [<em>Tree parameter</em>] Maximum memory (MiB) consumed by the tree.
+memory_estimate_period
+    [<em>Tree parameter</em>] Number of instances between memory consumption checks.
+stop_mem_management
+    [<em>Tree parameter</em>] If True, stop growing as soon as memory limit is hit.
+remove_poor_attrs
+    [<em>Tree parameter</em>] If True, disable poor attributes to reduce memory usage.
+merit_preprune
+    [<em>Tree parameter</em>] If True, enable merit-based tree pre-pruning.
+seed
+    Random seed for reproducibility.</p>
+<h4 id="vendor.river.river.forest.ARFClassifier--examples">Examples<a class="headerlink" href="#vendor.river.river.forest.ARFClassifier--examples" title="Permanent link">&para;</a></h4>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>from river import evaluate
+from river import forest
+from river import metrics
+from river.datasets import synth</p>
+<p>dataset = synth.ConceptDriftStream(
+...     seed=42,
+...     position=500,
+...     width=40
+... ).take(1000)</p>
+<p>model = forest.ARFClassifier(seed=8, leaf_prediction="mc")</p>
+<p>metric = metrics.Accuracy()</p>
+<p>evaluate.progressive_val_score(dataset, model, metric)
+Accuracy: 67.97%</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>The total number of warnings and drifts detected, respectively</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>model.n_warnings_detected(), model.n_drifts_detected()
+(2, 1)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>The number of warnings detected by tree number 2</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>model.n_warnings_detected(2)
+1</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>And the corresponding number of actual concept drift detected</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>model.n_drifts_detected(2)
+1</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h4 id="vendor.river.river.forest.ARFClassifier--references">References<a class="headerlink" href="#vendor.river.river.forest.ARFClassifier--references" title="Permanent link">&para;</a></h4>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.forest.ARFClassifier--fn:1">
+<p>Heitor Murilo Gomes, Albert Bifet, Jesse Read, Jean Paul Barddal,
+ Fabricio Enembreck, Bernhard Pfharinger, Geoff Holmes, Talel Abdessalem.
+ Adaptive random forests for evolving data stream classification.
+ In Machine Learning, DOI: 10.1007/s10994-017-5642-8, Springer, 2017.&#160;<a class="footnote-backref" href="#vendor.river.river.forest.ARFClassifier--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            n_drifts_detected (vendor.river.river.forest.ARFClassifier.n_drifts_detected)" href="#vendor.river.river.forest.ARFClassifier.n_drifts_detected">n_drifts_detected</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Get the total number of concept drifts detected, or such number on an individual</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            n_warnings_detected (vendor.river.river.forest.ARFClassifier.n_warnings_detected)" href="#vendor.river.river.forest.ARFClassifier.n_warnings_detected">n_warnings_detected</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Get the total number of concept drift warnings detected, or the number on an individual</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.forest.ARFClassifier.n_drifts_detected" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">n_drifts_detected</span>
+
+
+<a href="#vendor.river.river.forest.ARFClassifier.n_drifts_detected" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">n_drifts_detected</span><span class="p">(</span><span class="n"><span title="vendor.river.river.forest.ARFClassifier.n_drifts_detected(tree_id)">tree_id</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Get the total number of concept drifts detected, or such number on an individual
+tree basis (optionally).</p>
+<h5 id="vendor.river.river.forest.ARFClassifier.n_drifts_detected--parameters">Parameters<a class="headerlink" href="#vendor.river.river.forest.ARFClassifier.n_drifts_detected--parameters" title="Permanent link">&para;</a></h5>
+<p>tree_id
+    The number of the base learner in the ensemble: <code>[0, self.n_models - 1]. If</code>None`,
+    the total number of warnings is returned instead.</p>
+<h5 id="vendor.river.river.forest.ARFClassifier.n_drifts_detected--returns">Returns<a class="headerlink" href="#vendor.river.river.forest.ARFClassifier.n_drifts_detected--returns" title="Permanent link">&para;</a></h5>
+<div class="language-text highlight"><pre><span></span><code>The number of concept drifts detected.
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.forest.ARFClassifier.n_warnings_detected" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">n_warnings_detected</span>
+
+
+<a href="#vendor.river.river.forest.ARFClassifier.n_warnings_detected" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">n_warnings_detected</span><span class="p">(</span><span class="n"><span title="vendor.river.river.forest.ARFClassifier.n_warnings_detected(tree_id)">tree_id</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Get the total number of concept drift warnings detected, or the number on an individual
+tree basis (optionally).</p>
+<h5 id="vendor.river.river.forest.ARFClassifier.n_warnings_detected--parameters">Parameters<a class="headerlink" href="#vendor.river.river.forest.ARFClassifier.n_warnings_detected--parameters" title="Permanent link">&para;</a></h5>
+<p>tree_id
+    The number of the base learner in the ensemble: <code>[0, self.n_models - 1]. If</code>None`,
+    the total number of warnings is returned instead.</p>
+<h5 id="vendor.river.river.forest.ARFClassifier.n_warnings_detected--returns">Returns<a class="headerlink" href="#vendor.river.river.forest.ARFClassifier.n_warnings_detected--returns" title="Permanent link">&para;</a></h5>
+<div class="language-text highlight"><pre><span></span><code>The number of concept drift warnings detected.
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.forest.ARFRegressor" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ARFRegressor</span>
+
+
+<a href="#vendor.river.river.forest.ARFRegressor" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">ARFRegressor</span><span class="p">(</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(n_models)">n_models</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(max_features)">max_features</span></span><span class="o">=</span><span class="s2">&quot;sqrt&quot;</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(aggregation_method)">aggregation_method</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;median&quot;</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(lambda_value)">lambda_value</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(metric)">metric</span></span><span class="p">:</span> <span class="n"><span title="river.metrics.base.RegressionMetric">RegressionMetric</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(disable_weighted_vote)">disable_weighted_vote</span></span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(drift_detector)">drift_detector</span></span><span class="p">:</span> <span class="n"><span title="river.base.DriftDetector">DriftDetector</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(warning_detector)">warning_detector</span></span><span class="p">:</span> <span class="n"><span title="river.base.DriftDetector">DriftDetector</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(grace_period)">grace_period</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(max_depth)">max_depth</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(delta)">delta</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(tau)">tau</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(leaf_prediction)">leaf_prediction</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;adaptive&quot;</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(leaf_model)">leaf_model</span></span><span class="p">:</span> <span class="n"><span title="river.base.Regressor">Regressor</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(model_selector_decay)">model_selector_decay</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(nominal_attributes)">nominal_attributes</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(splitter)">splitter</span></span><span class="p">:</span> <span class="n"><span title="river.tree.splitter.Splitter">Splitter</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(min_samples_split)">min_samples_split</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(binary_split)">binary_split</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(max_size)">max_size</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">500.0</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(memory_estimate_period)">memory_estimate_period</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">2000000</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(stop_mem_management)">stop_mem_management</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(remove_poor_attrs)">remove_poor_attrs</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(merit_preprune)">merit_preprune</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.ARFRegressor(seed)">seed</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            BaseForest (vendor.river.river.forest.adaptive_random_forest.BaseForest)" href="adaptive_random_forest/#vendor.river.river.forest.adaptive_random_forest.BaseForest">BaseForest</a></code>, <code><span title="river.base.Regressor">Regressor</span></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            ARFRegressor (vendor.river.river.forest.ARFRegressor)" href="#vendor.river.river.forest.ARFRegressor" id="mermaid-link-vendor.river.river.forest.ARFRegressor"></a>
+                  <a class="autorefs autorefs-internal" title="            BaseForest (vendor.river.river.forest.adaptive_random_forest.BaseForest)" href="adaptive_random_forest/#vendor.river.river.forest.adaptive_random_forest.BaseForest" id="mermaid-link-vendor.river.river.forest.adaptive_random_forest.BaseForest"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.forest.ARFRegressor">
+              flowchart TD
+              vendor.river.river.forest.ARFRegressor[ARFRegressor]
+              vendor.river.river.forest.adaptive_random_forest.BaseForest[BaseForest]
+
+                              vendor.river.river.forest.adaptive_random_forest.BaseForest --> vendor.river.river.forest.ARFRegressor
+                
+
+
+              click vendor.river.river.forest.ARFRegressor href "" "vendor.river.river.forest.ARFRegressor"
+              click vendor.river.river.forest.adaptive_random_forest.BaseForest href "" "vendor.river.river.forest.adaptive_random_forest.BaseForest"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.forest.ARFRegressor');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Adaptive Random Forest regressor.</p>
+<p>The 3 most important aspects of Adaptive Random Forest <sup id="vendor.river.river.forest.ARFRegressor--fnref:1"><a class="footnote-ref" href="#vendor.river.river.forest.ARFRegressor--fn:1">1</a></sup> are:</p>
+<ol>
+<li>
+<p>inducing diversity through re-sampling</p>
+</li>
+<li>
+<p>inducing diversity through randomly selecting subsets of features for
+   node splits</p>
+</li>
+<li>
+<p>drift detectors per base tree, which cause selective resets in response
+   to drifts</p>
+</li>
+</ol>
+<p>Notice that this implementation is slightly different from the original
+algorithm proposed in <sup id="vendor.river.river.forest.ARFRegressor--fnref:2"><a class="footnote-ref" href="#vendor.river.river.forest.ARFRegressor--fn:2">2</a></sup>. The <code>HoeffdingTreeRegressor</code> is used as base
+learner, instead of <code>FIMT-DD</code>. It also adds a new strategy to monitor the
+predictions and check for concept drifts. The deviations of the predictions
+to the target are monitored and normalized in the [0, 1] range to fulfill ADWIN's
+requirements. We assume that the data subjected to the normalization follows
+a normal distribution, and thus, lies within the interval of the mean <span class="arithmatex">\(\pm3\sigma\)</span>.</p>
+<h4 id="vendor.river.river.forest.ARFRegressor--parameters">Parameters<a class="headerlink" href="#vendor.river.river.forest.ARFRegressor--parameters" title="Permanent link">&para;</a></h4>
+<p>n_models
+    Number of trees in the ensemble.
+max_features
+    Max number of attributes for each node split.<br/>
+    - If <code>int</code>, then consider <code>max_features</code> at each split.<br/>
+    - If <code>float</code>, then <code>max_features</code> is a percentage and
+      <code>int(max_features * n_features)</code> features are considered per split.<br/>
+    - If "sqrt", then <code>max_features=sqrt(n_features)</code>.<br/>
+    - If "log2", then <code>max_features=log2(n_features)</code>.<br/>
+    - If None, then <code>max_features=n_features</code>.
+lambda_value
+    The lambda value for bagging (lambda=6 corresponds to Leveraging Bagging).
+metric
+    Metric used to track trees performance within the ensemble. Depending,
+    on the configuration, this metric is also used to weight predictions
+    from the members of the ensemble. Defaults to <code>metrics.MSE()</code>.
+aggregation_method
+    The method to use to aggregate predictions in the ensemble.<br/>
+    - 'mean'<br/>
+    - 'median' - If selected will disable the weighted vote.
+disable_weighted_vote
+    If <code>True</code>, disables the weighted vote prediction, i.e. does not assign
+    weights to individual tree's predictions and uses the arithmetic mean
+    instead. Otherwise will use the <code>metric</code> value to weight predictions.
+drift_detector
+    Drift Detection method. Set to None to disable Drift detection.
+    Defaults to <code>drift.ADWIN(0.001)</code>.
+warning_detector
+    Warning Detection method. Set to None to disable warning detection.
+    Defaults to <code>drift.ADWIN(0.01)</code>.
+grace_period
+    [<em>Tree parameter</em>] Number of instances a leaf should observe between
+    split attempts.
+max_depth
+    [<em>Tree parameter</em>] The maximum depth a tree can reach. If <code>None</code>, the
+    tree will grow until the system recursion limit.
+delta
+    [<em>Tree parameter</em>] Allowed error in split decision, a value closer to 0
+    takes longer to decide.
+tau
+    [<em>Tree parameter</em>] Threshold below which a split will be forced to break
+    ties.
+leaf_prediction
+    [<em>Tree parameter</em>] Prediction mechanism used at leaves.</br>
+    - 'mean' - Target mean</br>
+    - 'model' - Uses the model defined in <code>leaf_model</code></br>
+    - 'adaptive' - Chooses between 'mean' and 'model' dynamically</br>
+leaf_model
+    [<em>Tree parameter</em>] The regression model used to provide responses if
+    <code>leaf_prediction='model'</code>. If not provided, an instance of
+    <code>river.linear_model.LinearRegression</code> with the default hyperparameters
+     is used.
+model_selector_decay
+    [<em>Tree parameter</em>] The exponential decaying factor applied to the learning models'
+    squared errors, that are monitored if <code>leaf_prediction='adaptive'</code>. Must be
+    between <code>0</code> and <code>1</code>. The closer to <code>1</code>, the more importance is going to
+    be given to past observations. On the other hand, if its value
+    approaches <code>0</code>, the recent observed errors are going to have more
+    influence on the final decision.
+nominal_attributes
+    [<em>Tree parameter</em>] List of Nominal attributes. If empty, then assume that
+    all attributes are numerical.
+splitter
+    [<em>Tree parameter</em>] The Splitter or Attribute Observer (AO) used to monitor the class
+    statistics of numeric features and perform splits. Splitters are available in the
+    <code>tree.splitter</code> module. Different splitters are available for classification and
+    regression tasks. Classification and regression splitters can be distinguished by their
+    property <code>is_target_class</code>. This is an advanced option. Special care must be taken when
+    choosing different splitters.By default, <code>tree.splitter.EBSTSplitter</code> is used if
+    <code>splitter</code> is <code>None</code>.
+min_samples_split
+    [<em>Tree parameter</em>] The minimum number of samples every branch resulting from a split
+    candidate must have to be considered valid.
+binary_split
+    [<em>Tree parameter</em>] If True, only allow binary splits.
+max_size
+    [<em>Tree parameter</em>] Maximum memory (MiB) consumed by the tree.
+memory_estimate_period
+    [<em>Tree parameter</em>] Number of instances between memory consumption checks.
+stop_mem_management
+    [<em>Tree parameter</em>] If True, stop growing as soon as memory limit is hit.
+remove_poor_attrs
+    [<em>Tree parameter</em>] If True, disable poor attributes to reduce memory usage.
+merit_preprune
+    [<em>Tree parameter</em>] If True, enable merit-based tree pre-pruning.
+seed
+    Random seed for reproducibility.</p>
+<h4 id="vendor.river.river.forest.ARFRegressor--references">References<a class="headerlink" href="#vendor.river.river.forest.ARFRegressor--references" title="Permanent link">&para;</a></h4>
+<h4 id="vendor.river.river.forest.ARFRegressor--examples">Examples<a class="headerlink" href="#vendor.river.river.forest.ARFRegressor--examples" title="Permanent link">&para;</a></h4>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>from river import datasets
+from river import evaluate
+from river import forest
+from river import metrics
+from river import preprocessing</p>
+<p>dataset = datasets.TrumpApproval()</p>
+<p>model = (
+...     preprocessing.StandardScaler() |
+...     forest.ARFRegressor(seed=42)
+... )</p>
+<p>metric = metrics.MAE()</p>
+<p>evaluate.progressive_val_score(dataset, model, metric)
+MAE: 0.772113</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.forest.ARFRegressor--fn:1">
+<p>Gomes, H.M., Bifet, A., Read, J., Barddal, J.P., Enembreck, F.,
+  Pfharinger, B., Holmes, G. and Abdessalem, T., 2017. Adaptive random
+  forests for evolving data stream classification. Machine Learning,
+  106(9-10), pp.1469-1495.&#160;<a class="footnote-backref" href="#vendor.river.river.forest.ARFRegressor--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="vendor.river.river.forest.ARFRegressor--fn:2">
+<p>Gomes, H.M., Barddal, J.P., Boiko, L.E., Bifet, A., 2018.
+  Adaptive random forests for data stream regression. ESANN 2018.&#160;<a class="footnote-backref" href="#vendor.river.river.forest.ARFRegressor--fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            n_drifts_detected (vendor.river.river.forest.ARFRegressor.n_drifts_detected)" href="#vendor.river.river.forest.ARFRegressor.n_drifts_detected">n_drifts_detected</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Get the total number of concept drifts detected, or such number on an individual</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            n_warnings_detected (vendor.river.river.forest.ARFRegressor.n_warnings_detected)" href="#vendor.river.river.forest.ARFRegressor.n_warnings_detected">n_warnings_detected</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Get the total number of concept drift warnings detected, or the number on an individual</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            valid_aggregation_method
+
+
+  
+      property
+   (vendor.river.river.forest.ARFRegressor.valid_aggregation_method)" href="#vendor.river.river.forest.ARFRegressor.valid_aggregation_method">valid_aggregation_method</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Valid aggregation_method values.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.forest.ARFRegressor.valid_aggregation_method" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">valid_aggregation_method</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.forest.ARFRegressor.valid_aggregation_method" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">valid_aggregation_method</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Valid aggregation_method values.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.forest.ARFRegressor.n_drifts_detected" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">n_drifts_detected</span>
+
+
+<a href="#vendor.river.river.forest.ARFRegressor.n_drifts_detected" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">n_drifts_detected</span><span class="p">(</span><span class="n"><span title="vendor.river.river.forest.ARFRegressor.n_drifts_detected(tree_id)">tree_id</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Get the total number of concept drifts detected, or such number on an individual
+tree basis (optionally).</p>
+<h5 id="vendor.river.river.forest.ARFRegressor.n_drifts_detected--parameters">Parameters<a class="headerlink" href="#vendor.river.river.forest.ARFRegressor.n_drifts_detected--parameters" title="Permanent link">&para;</a></h5>
+<p>tree_id
+    The number of the base learner in the ensemble: <code>[0, self.n_models - 1]. If</code>None`,
+    the total number of warnings is returned instead.</p>
+<h5 id="vendor.river.river.forest.ARFRegressor.n_drifts_detected--returns">Returns<a class="headerlink" href="#vendor.river.river.forest.ARFRegressor.n_drifts_detected--returns" title="Permanent link">&para;</a></h5>
+<div class="language-text highlight"><pre><span></span><code>The number of concept drifts detected.
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.forest.ARFRegressor.n_warnings_detected" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">n_warnings_detected</span>
+
+
+<a href="#vendor.river.river.forest.ARFRegressor.n_warnings_detected" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">n_warnings_detected</span><span class="p">(</span><span class="n"><span title="vendor.river.river.forest.ARFRegressor.n_warnings_detected(tree_id)">tree_id</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Get the total number of concept drift warnings detected, or the number on an individual
+tree basis (optionally).</p>
+<h5 id="vendor.river.river.forest.ARFRegressor.n_warnings_detected--parameters">Parameters<a class="headerlink" href="#vendor.river.river.forest.ARFRegressor.n_warnings_detected--parameters" title="Permanent link">&para;</a></h5>
+<p>tree_id
+    The number of the base learner in the ensemble: <code>[0, self.n_models - 1]. If</code>None`,
+    the total number of warnings is returned instead.</p>
+<h5 id="vendor.river.river.forest.ARFRegressor.n_warnings_detected--returns">Returns<a class="headerlink" href="#vendor.river.river.forest.ARFRegressor.n_warnings_detected--returns" title="Permanent link">&para;</a></h5>
+<div class="language-text highlight"><pre><span></span><code>The number of concept drift warnings detected.
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.forest.OXTRegressor" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">OXTRegressor</span>
+
+
+<a href="#vendor.river.river.forest.OXTRegressor" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">OXTRegressor</span><span class="p">(</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(n_models)">n_models</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(max_features)">max_features</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="s2">&quot;sqrt&quot;</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(resampling_strategy)">resampling_strategy</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;subbagging&quot;</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(resampling_rate)">resampling_rate</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(detection_mode)">detection_mode</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(warning_detector)">warning_detector</span></span><span class="p">:</span> <span class="n"><span title="river.base.DriftDetector">DriftDetector</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(drift_detector)">drift_detector</span></span><span class="p">:</span> <span class="n"><span title="river.base.DriftDetector">DriftDetector</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(max_depth)">max_depth</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(randomize_tree_depth)">randomize_tree_depth</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(track_metric)">track_metric</span></span><span class="p">:</span> <span class="n"><span title="river.metrics.base.RegressionMetric">RegressionMetric</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(disable_weighted_vote)">disable_weighted_vote</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(split_buffer_size)">split_buffer_size</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(seed)">seed</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(grace_period)">grace_period</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(delta)">delta</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(tau)">tau</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(leaf_prediction)">leaf_prediction</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">=</span> <span class="s2">&quot;adaptive&quot;</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(leaf_model)">leaf_model</span></span><span class="p">:</span> <span class="n"><span title="river.base.Regressor">Regressor</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(model_selector_decay)">model_selector_decay</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(nominal_attributes)">nominal_attributes</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(min_samples_split)">min_samples_split</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(binary_split)">binary_split</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(max_size)">max_size</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(memory_estimate_period)">memory_estimate_period</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">2000000</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(stop_mem_management)">stop_mem_management</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(remove_poor_attrs)">remove_poor_attrs</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.forest.OXTRegressor(merit_preprune)">merit_preprune</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            ExtraTrees (vendor.river.river.forest.online_extra_trees.ExtraTrees)" href="online_extra_trees/#vendor.river.river.forest.online_extra_trees.ExtraTrees">ExtraTrees</a></code>, <code><span title="river.base.Regressor">Regressor</span></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            OXTRegressor (vendor.river.river.forest.OXTRegressor)" href="#vendor.river.river.forest.OXTRegressor" id="mermaid-link-vendor.river.river.forest.OXTRegressor"></a>
+                  <a class="autorefs autorefs-internal" title="            ExtraTrees (vendor.river.river.forest.online_extra_trees.ExtraTrees)" href="online_extra_trees/#vendor.river.river.forest.online_extra_trees.ExtraTrees" id="mermaid-link-vendor.river.river.forest.online_extra_trees.ExtraTrees"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.forest.OXTRegressor">
+              flowchart TD
+              vendor.river.river.forest.OXTRegressor[OXTRegressor]
+              vendor.river.river.forest.online_extra_trees.ExtraTrees[ExtraTrees]
+
+                              vendor.river.river.forest.online_extra_trees.ExtraTrees --> vendor.river.river.forest.OXTRegressor
+                
+
+
+              click vendor.river.river.forest.OXTRegressor href "" "vendor.river.river.forest.OXTRegressor"
+              click vendor.river.river.forest.online_extra_trees.ExtraTrees href "" "vendor.river.river.forest.online_extra_trees.ExtraTrees"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.forest.OXTRegressor');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Online Extra Trees regressor.</p>
+<p>The online Extra Trees<sup id="vendor.river.river.forest.OXTRegressor--fnref:1"><a class="footnote-ref" href="#vendor.river.river.forest.OXTRegressor--fn:1">1</a></sup> ensemble takes some steps further into randomization when
+compared to Adaptive Random Forests (ARF). A subspace of the feature space is considered
+at each split attempt, as ARF does, and online bagging or subbagging can also be
+(optionally) used. Nonetheless, Extra Trees randomizes the split candidates evaluated by each
+leaf node (just a single split is tested by numerical feature, which brings significant
+speedups to the ensemble), and might also randomize the maximum depth of the forest members,
+as well as the size of the feature subspace processed by each of its trees' leaves.</p>
+<p>On the other hand, OXT suffers from a cold-start problem. As the splits are random, the
+predictive performance in small samples is usually worse than using a deterministic
+split approach, such as the one used by ARF.</p>
+<h4 id="vendor.river.river.forest.OXTRegressor--parameters">Parameters<a class="headerlink" href="#vendor.river.river.forest.OXTRegressor--parameters" title="Permanent link">&para;</a></h4>
+<p>n_models
+    The number of trees in the ensemble.
+max_features
+    Max number of attributes for each node split.</br>
+    - If int, then consider <code>max_features</code> at each split.</br>
+    - If float, then <code>max_features</code> is a percentage and <code>int(max_features * n_features)</code>
+    features are considered per split.</br>
+    - If "sqrt", then <code>max_features=sqrt(n_features)</code>.</br>
+    - If "log2", then <code>max_features=log2(n_features)</code>.</br>
+    - If "random", then <code>max_features</code> will assume a different random number in the interval
+    <code>[2, n_features]</code> for each tree leaf.</br>
+    - If None, then <code>max_features=n_features</code>.
+resampling_strategy
+    The chosen instance resampling strategy:</br>
+    - If <code>None</code>, no resampling will be done and the trees will process all instances.
+    - If <code>'baggging'</code>, online bagging will be performed (sampling with replacement).
+    - If <code>'subbagging'</code>, online subbagging will be performed (sampling without replacement).
+resampling_rate
+    Only valid if <code>resampling_strategy</code> is not None. Controls the parameters of the resampling
+    strategy.</br>.
+    - If <code>resampling_strategy='bagging'</code>, must be an integer greater than or equal to 1 that
+    parameterizes the poisson distribution used to simulate bagging in online learning
+    settings. It acts as the lambda parameter of Oza Bagging and Leveraging Bagging.</br>
+    - If <code>resampling_strategy='subbagging'</code>, must be a float in the interval <span class="arithmatex">\((0, 1]\)</span> that
+    controls the chance of each instance being used by a tree for learning.
+detection_mode
+    The concept drift detection mode in which the forest operates. Valid values are:</br>
+    - "all": creates both warning and concept drift detectors. If a warning is detected,
+    an alternate tree starts being trained in the background. If the warning trigger escalates
+    to a concept drift, the affected tree is replaced by the alternate tree.</br>
+    - "drop": only the concept drift detectors are created. If a drift is detected, the
+    affected tree is dropped and replaced by a new tree.</br>
+    - "off": disables the concept drift adaptation capabilities. The forest will act as if
+    the processed stream is stationary.
+warning_detector
+    The detector that will be used to trigger concept drift warnings. Defaults to
+    <code>drift.ADWIN(0.01)</code>.
+drift_detector
+    The detector used to detect concept drifts. Defaults to <code>drift.ADWIN(0.001)</code>.
+max_depth
+    The maximum depth the ensemble members might reach. If <code>None</code>, the trees will grow
+    indefinitely.
+randomize_tree_depth
+    Whether or not randomize the maximum depth of each tree in the ensemble. If <code>max_depth</code>
+    is provided, it is going to act as an upper bound to generate the maximum depth for each
+    tree.
+track_metric
+    The performance metric used to weight predictions. Defaults to <code>metrics.MAE()</code>.
+disable_weighted_vote
+    Defines whether or not to use predictions weighted by each trees' prediction performance.
+split_buffer_size
+    Defines the size of the buffer used by the tree splitters when determining the feature
+    range and a random split point in this interval.
+seed
+    Random seed to support reproducibility.
+grace_period
+    [<em>Tree parameter</em>] Number of instances a leaf should observe between
+    split attempts.
+delta
+    [<em>Tree parameter</em>] Allowed error in split decision, a value closer to 0
+    takes longer to decide.
+tau
+    [<em>Tree parameter</em>] Threshold below which a split will be forced to break
+    ties.
+leaf_prediction
+    [<em>Tree parameter</em>] Prediction mechanism used at leaves.</br>
+    - 'mean' - Target mean</br>
+    - 'model' - Uses the model defined in <code>leaf_model</code></br>
+    - 'adaptive' - Chooses between 'mean' and 'model' dynamically</br>
+leaf_model
+    [<em>Tree parameter</em>] The regression model used to provide responses if
+    <code>leaf_prediction='model'</code>. If not provided, an instance of
+    <code>river.linear_model.LinearRegression</code> with the default hyperparameters
+     is used.
+model_selector_decay
+    [<em>Tree parameter</em>] The exponential decaying factor applied to the learning models'
+    squared errors, that are monitored if <code>leaf_prediction='adaptive'</code>. Must be
+    between <code>0</code> and <code>1</code>. The closer to <code>1</code>, the more importance is going to
+    be given to past observations. On the other hand, if its value
+    approaches <code>0</code>, the recent observed errors are going to have more
+    influence on the final decision.
+nominal_attributes
+    [<em>Tree parameter</em>] List of Nominal attributes. If empty, then assume that
+    all attributes are numerical.
+min_samples_split
+    [<em>Tree parameter</em>] The minimum number of samples every branch resulting from a split
+    candidate must have to be considered valid.
+binary_split
+    [<em>Tree parameter</em>] If True, only allow binary splits.
+max_size
+    [<em>Tree parameter</em>] Maximum memory (MiB) consumed by the tree.
+memory_estimate_period
+    [<em>Tree parameter</em>] Number of instances between memory consumption checks.
+stop_mem_management
+    [<em>Tree parameter</em>] If True, stop growing as soon as memory limit is hit.
+remove_poor_attrs
+    [<em>Tree parameter</em>] If True, disable poor attributes to reduce memory usage.
+merit_preprune
+    [<em>Tree parameter</em>] If True, enable merit-based tree pre-pruning.</p>
+<h4 id="vendor.river.river.forest.OXTRegressor--notes">Notes<a class="headerlink" href="#vendor.river.river.forest.OXTRegressor--notes" title="Permanent link">&para;</a></h4>
+<p>As the Online Extra Trees change the way in which Hoeffding Trees perform split attempts
+and monitor numerical input features, some of the parameters of the vanilla Hoeffding Tree
+algorithms are not available.</p>
+<h4 id="vendor.river.river.forest.OXTRegressor--examples">Examples<a class="headerlink" href="#vendor.river.river.forest.OXTRegressor--examples" title="Permanent link">&para;</a></h4>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>from river import datasets
+from river import evaluate
+from river import metrics
+from river import forest</p>
+<p>dataset = datasets.synth.Friedman(seed=42).take(5000)</p>
+<p>model = forest.OXTRegressor(n_models=3, seed=42)</p>
+<p>metric = metrics.RMSE()</p>
+<p>evaluate.progressive_val_score(dataset, model, metric)
+RMSE: 3.16212</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h4 id="vendor.river.river.forest.OXTRegressor--references">References<a class="headerlink" href="#vendor.river.river.forest.OXTRegressor--references" title="Permanent link">&para;</a></h4>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.forest.OXTRegressor--fn:1">
+<p>Mastelini, S. M., Nakano, F. K., Vens, C., &amp; de Leon Ferreira, A. C. P. (2022).
+Online Extra Trees Regressor. IEEE Transactions on Neural Networks and Learning Systems.&#160;<a class="footnote-backref" href="#vendor.river.river.forest.OXTRegressor--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            instances_per_tree
+
+
+  
+      property
+   (vendor.river.river.forest.OXTRegressor.instances_per_tree)" href="#vendor.river.river.forest.OXTRegressor.instances_per_tree">instances_per_tree</a></code></b>
+              (<code><a class="autorefs autorefs-external" title="collections.Counter" href="https://docs.python.org/3/library/collections.html#collections.Counter">Counter</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The number of instances processed by each one of the current forest members.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            n_drifts
+
+
+  
+      property
+   (vendor.river.river.forest.OXTRegressor.n_drifts)" href="#vendor.river.river.forest.OXTRegressor.n_drifts">n_drifts</a></code></b>
+              (<code><a class="autorefs autorefs-external" title="collections.Counter" href="https://docs.python.org/3/library/collections.html#collections.Counter">Counter</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The number of concept drifts detected per ensemble member.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            n_tree_swaps
+
+
+  
+      property
+   (vendor.river.river.forest.OXTRegressor.n_tree_swaps)" href="#vendor.river.river.forest.OXTRegressor.n_tree_swaps">n_tree_swaps</a></code></b>
+              (<code><a class="autorefs autorefs-external" title="collections.Counter" href="https://docs.python.org/3/library/collections.html#collections.Counter">Counter</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The number of performed alternate tree swaps.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            n_warnings
+
+
+  
+      property
+   (vendor.river.river.forest.OXTRegressor.n_warnings)" href="#vendor.river.river.forest.OXTRegressor.n_warnings">n_warnings</a></code></b>
+              (<code><a class="autorefs autorefs-external" title="collections.Counter" href="https://docs.python.org/3/library/collections.html#collections.Counter">Counter</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The number of warnings detected per ensemble member.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            total_instances
+
+
+  
+      property
+   (vendor.river.river.forest.OXTRegressor.total_instances)" href="#vendor.river.river.forest.OXTRegressor.total_instances">total_instances</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>The total number of instances processed by the ensemble.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.forest.OXTRegressor.instances_per_tree" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">instances_per_tree</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.forest.OXTRegressor.instances_per_tree" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">instances_per_tree</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="collections.Counter" href="https://docs.python.org/3/library/collections.html#collections.Counter">Counter</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>The number of instances processed by each one of the current forest members.</p>
+<p>Each time a concept drift is detected, the count corresponding to the affected tree is
+reset.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.forest.OXTRegressor.n_drifts" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">n_drifts</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.forest.OXTRegressor.n_drifts" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">n_drifts</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="collections.Counter" href="https://docs.python.org/3/library/collections.html#collections.Counter">Counter</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>The number of concept drifts detected per ensemble member.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.forest.OXTRegressor.n_tree_swaps" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">n_tree_swaps</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.forest.OXTRegressor.n_tree_swaps" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">n_tree_swaps</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="collections.Counter" href="https://docs.python.org/3/library/collections.html#collections.Counter">Counter</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>The number of performed alternate tree swaps.</p>
+<p>Not applicable if the warning detectors are disabled.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.forest.OXTRegressor.n_warnings" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">n_warnings</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.forest.OXTRegressor.n_warnings" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">n_warnings</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="collections.Counter" href="https://docs.python.org/3/library/collections.html#collections.Counter">Counter</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>The number of warnings detected per ensemble member.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.forest.OXTRegressor.total_instances" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">total_instances</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.forest.OXTRegressor.total_instances" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">total_instances</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>The total number of instances processed by the ensemble.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../feature_selection/variance/" class="md-footer__link md-footer__link--prev" aria-label="Previous: variance">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                variance
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="adaptive_random_forest/" class="md-footer__link md-footer__link--next" aria-label="Next: adaptive_random_forest">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                adaptive_random_forest
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["content.code.copy", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "navigation.sections", "toc.follow"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

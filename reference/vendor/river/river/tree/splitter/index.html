@@ -1,0 +1,8445 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Marek Wadinger">
+      
+      
+        <link rel="canonical" href="https://marekwadinger.github.io/odmd-subid-cpd/reference/vendor/river/river/tree/splitter/">
+      
+      
+        <link rel="prev" href="../split_criterion/variance_reduction_split_criterion/">
+      
+      
+        <link rel="next" href="base/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Index - ODMD-SUBID-CPD</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Titillium Web";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vendor.river.river.tree.splitter" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../../.." title="ODMD-SUBID-CPD" class="md-header__button md-logo" aria-label="ODMD-SUBID-CPD" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ODMD-SUBID-CPD
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Index
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/MarekWadinger/odmd-subid-cpd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    odmd-subid-cpd
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../../../app/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../../.." title="ODMD-SUBID-CPD" class="md-nav__button md-logo" aria-label="ODMD-SUBID-CPD" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ODMD-SUBID-CPD
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/MarekWadinger/odmd-subid-cpd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    odmd-subid-cpd
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../app/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    app
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_1" id="__nav_2_1_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    app
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../app/app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    app
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../benchmarks/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    benchmarks
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    benchmarks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../benchmarks/profile_decomposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    profile_decomposition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../examples/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    examples
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    examples
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../examples/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../functions/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    functions
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    functions
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../functions/chdsubid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    chdsubid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../functions/datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    datasets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../functions/dmd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dmd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../functions/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../functions/plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../functions/preprocessing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    preprocessing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../functions/rolling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rolling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../../scripts/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    scripts
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    scripts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../scripts/gen_ref_pages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gen_ref_pages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vendor
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    vendor
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_1" id="__nav_2_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    river
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    river
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    
+  
+  
+  
+    <a href="../../../benchmarks/model_adapters/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    benchmarks
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_1_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    river
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_6_1_2" id="__nav_2_6_1_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_6_1_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    river
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../__version__/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    __version__
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../active/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    active
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../anomaly/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    anomaly
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    api
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../bandit/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bandit
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../base/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    base
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../checks/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    checks
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../cluster/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cluster
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../compat/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compat
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../compose/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    compose
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../conf/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conf
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../conftest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    conftest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../covariance/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    covariance
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../datasets/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    datasets
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../decomposition/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    decomposition
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../drift/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    drift
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dummy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dummy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../ensemble/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ensemble
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../evaluate/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    evaluate
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../facto/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    facto
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../feature_extraction/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    feature_extraction
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../feature_selection/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    feature_selection
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../forest/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    forest
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../imblearn/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    imblearn
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../linear_model/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linear_model
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../metrics/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    metrics
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../misc/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    misc
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../model_selection/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    model_selection
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../multiclass/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    multiclass
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../multioutput/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    multioutput
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../naive_bayes/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    naive_bayes
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../neighbors/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    neighbors
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../neural_net/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    neural_net
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../optim/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    optim
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../preprocessing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    preprocessing
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../proba/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    proba
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../reco/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    reco
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../rules/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rules
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sketch/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sketch
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../stats/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stats
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../stream/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stream
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../test_estimators/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test_estimators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../time_series/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    time_series
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_1_2_45" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tree
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_6_1_2_45" id="__nav_2_6_1_2_45_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_6_1_2_45_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6_1_2_45">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    tree
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extremely_fast_decision_tree/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    extremely_fast_decision_tree
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hoeffding_adaptive_tree_classifier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hoeffding_adaptive_tree_classifier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hoeffding_adaptive_tree_regressor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hoeffding_adaptive_tree_regressor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hoeffding_tree/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hoeffding_tree
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hoeffding_tree_classifier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hoeffding_tree_classifier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hoeffding_tree_regressor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hoeffding_tree_regressor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../isoup_tree_regressor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    isoup_tree_regressor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../last_classifier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    last_classifier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../losses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    losses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../mondrian/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mondrian
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../nodes/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    nodes
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../split_criterion/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    split_criterion
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_1_2_45_16" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    splitter
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_2_6_1_2_45_16" id="__nav_2_6_1_2_45_16_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="6" aria-labelledby="__nav_2_6_1_2_45_16_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6_1_2_45_16">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    splitter
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ebst_splitter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ebst_splitter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="exhaustive_splitter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    exhaustive_splitter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gaussian_splitter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gaussian_splitter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="histogram_splitter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    histogram_splitter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="nominal_splitter_classif/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    nominal_splitter_classif
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="nominal_splitter_reg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    nominal_splitter_reg
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="qo_splitter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    qo_splitter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="random_splitter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    random_splitter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sgt_quantizer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sgt_quantizer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tebst_splitter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tebst_splitter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stochastic_gradient_tree/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stochastic_gradient_tree
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test_base
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_splitter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test_splitter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_trees/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    test_trees
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../viz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    viz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../utils/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    utils
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.DynamicQuantizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;DynamicQuantizer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.EBSTSplitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;EBSTSplitter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" EBSTSplitter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.EBSTSplitter.is_numeric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_numeric
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.EBSTSplitter.cond_proba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;cond_proba
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;remove_bad_splits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.ExhaustiveSplitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;ExhaustiveSplitter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" ExhaustiveSplitter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.ExhaustiveSplitter.is_numeric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_numeric
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.ExhaustiveSplitter.is_target_class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_target_class
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.ExhaustiveSplitter.cond_proba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;cond_proba
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.GaussianSplitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;GaussianSplitter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" GaussianSplitter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.GaussianSplitter.is_numeric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_numeric
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.GaussianSplitter.is_target_class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_target_class
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.HistogramSplitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;HistogramSplitter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" HistogramSplitter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.HistogramSplitter.is_numeric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_numeric
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.HistogramSplitter.is_target_class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_target_class
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.QOSplitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;QOSplitter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" QOSplitter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.QOSplitter.is_numeric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_numeric
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.Quantizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;Quantizer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.Splitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;Splitter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" Splitter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.Splitter.is_numeric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_numeric
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.Splitter.is_target_class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_target_class
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;best_evaluated_split_suggestion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.Splitter.cond_proba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;cond_proba
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.Splitter.update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;update
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.StaticQuantizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;StaticQuantizer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.TEBSTSplitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;TEBSTSplitter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" TEBSTSplitter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.TEBSTSplitter.is_numeric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;is_numeric
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.TEBSTSplitter.cond_proba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;cond_proba
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;remove_bad_splits
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h1 id="vendor.river.river.tree.splitter" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-module"></code>            <span class="doc doc-object-name doc-module-name">splitter</span>
+
+
+<a href="#vendor.river.river.tree.splitter" class="headerlink" title="Permanent link">&para;</a></h1>
+
+    <div class="doc doc-contents first">
+
+        <p>This module implements the Attribute Observers (AO) (or tree splitters) that are used by the
+Hoeffding Trees (HT). It also implements the feature quantizers (FQ) used by Stochastic Gradient
+Trees (SGT). AOs are a core aspect of the HTs construction, and might represent one of the major
+bottlenecks when building the trees. The same holds for SGTs and FQs. The correct choice and setup
+of a splitter might result in significant differences in the running time and memory usage of the
+incremental decision trees.</p>
+<p>AOs for classification and regression trees can be differentiated by using the property
+<code>is_target_class</code> (<code>True</code> for splitters designed to classification tasks). An error will be raised
+if one tries to use a classification splitter in a regression tree and vice-versa.
+Lastly, AOs cannot be used in SGT and FQs cannot be used in Hoeffding Trees. So, care must be taken
+when choosing the correct feature splitter.</p>
+
+
+
+
+
+
+<p><span class="doc-section-title">Modules:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            base (vendor.river.river.tree.splitter.base)" href="base/#vendor.river.river.tree.splitter.base">base</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            ebst_splitter (vendor.river.river.tree.splitter.ebst_splitter)" href="ebst_splitter/#vendor.river.river.tree.splitter.ebst_splitter">ebst_splitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            exhaustive_splitter (vendor.river.river.tree.splitter.exhaustive_splitter)" href="exhaustive_splitter/#vendor.river.river.tree.splitter.exhaustive_splitter">exhaustive_splitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            gaussian_splitter (vendor.river.river.tree.splitter.gaussian_splitter)" href="gaussian_splitter/#vendor.river.river.tree.splitter.gaussian_splitter">gaussian_splitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            histogram_splitter (vendor.river.river.tree.splitter.histogram_splitter)" href="histogram_splitter/#vendor.river.river.tree.splitter.histogram_splitter">histogram_splitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            nominal_splitter_classif (vendor.river.river.tree.splitter.nominal_splitter_classif)" href="nominal_splitter_classif/#vendor.river.river.tree.splitter.nominal_splitter_classif">nominal_splitter_classif</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            nominal_splitter_reg (vendor.river.river.tree.splitter.nominal_splitter_reg)" href="nominal_splitter_reg/#vendor.river.river.tree.splitter.nominal_splitter_reg">nominal_splitter_reg</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            qo_splitter (vendor.river.river.tree.splitter.qo_splitter)" href="qo_splitter/#vendor.river.river.tree.splitter.qo_splitter">qo_splitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            random_splitter (vendor.river.river.tree.splitter.random_splitter)" href="random_splitter/#vendor.river.river.tree.splitter.random_splitter">random_splitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            sgt_quantizer (vendor.river.river.tree.splitter.sgt_quantizer)" href="sgt_quantizer/#vendor.river.river.tree.splitter.sgt_quantizer">sgt_quantizer</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            tebst_splitter (vendor.river.river.tree.splitter.tebst_splitter)" href="tebst_splitter/#vendor.river.river.tree.splitter.tebst_splitter">tebst_splitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+<p><span class="doc-section-title">Classes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            DynamicQuantizer (vendor.river.river.tree.splitter.DynamicQuantizer)" href="#vendor.river.river.tree.splitter.DynamicQuantizer">DynamicQuantizer</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Adapted version of the Quantizer Observer (QO)[^1] that is applied to Stochastic Gradient</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            EBSTSplitter (vendor.river.river.tree.splitter.EBSTSplitter)" href="#vendor.river.river.tree.splitter.EBSTSplitter">EBSTSplitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>iSOUP-Tree's Extended Binary Search Tree (E-BST).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            ExhaustiveSplitter (vendor.river.river.tree.splitter.ExhaustiveSplitter)" href="#vendor.river.river.tree.splitter.ExhaustiveSplitter">ExhaustiveSplitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Numeric attribute observer for classification tasks that is based on</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            GaussianSplitter (vendor.river.river.tree.splitter.GaussianSplitter)" href="#vendor.river.river.tree.splitter.GaussianSplitter">GaussianSplitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Numeric attribute observer for classification tasks that is based on</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            HistogramSplitter (vendor.river.river.tree.splitter.HistogramSplitter)" href="#vendor.river.river.tree.splitter.HistogramSplitter">HistogramSplitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Numeric attribute observer for classification tasks that discretizes features</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            QOSplitter (vendor.river.river.tree.splitter.QOSplitter)" href="#vendor.river.river.tree.splitter.QOSplitter">QOSplitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Quantization observer (QO).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            Quantizer (vendor.river.river.tree.splitter.Quantizer)" href="#vendor.river.river.tree.splitter.Quantizer">Quantizer</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Base class for the feature quantizers used in Stochastic Gradient Trees[^1].</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.Splitter)" href="#vendor.river.river.tree.splitter.Splitter">Splitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Base class for the tree splitters.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            StaticQuantizer (vendor.river.river.tree.splitter.StaticQuantizer)" href="#vendor.river.river.tree.splitter.StaticQuantizer">StaticQuantizer</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Quantization strategy originally used in Stochastic Gradient Trees (SGT)[^1].</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            TEBSTSplitter (vendor.river.river.tree.splitter.TEBSTSplitter)" href="#vendor.river.river.tree.splitter.TEBSTSplitter">TEBSTSplitter</a></code></b>
+          –
+          <div class="doc-md-description">
+            <p>Truncated E-BST.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.tree.splitter.DynamicQuantizer" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">DynamicQuantizer</span>
+
+
+<a href="#vendor.river.river.tree.splitter.DynamicQuantizer" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">DynamicQuantizer</span><span class="p">(</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.DynamicQuantizer(radius)">radius</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n"><span title="vendor.river.river.tree.splitter.DynamicQuantizer(std_prop)">std_prop</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            Quantizer (vendor.river.river.tree.splitter.base.Quantizer)" href="base/#vendor.river.river.tree.splitter.base.Quantizer">Quantizer</a></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            DynamicQuantizer (vendor.river.river.tree.splitter.DynamicQuantizer)" href="#vendor.river.river.tree.splitter.DynamicQuantizer" id="mermaid-link-vendor.river.river.tree.splitter.DynamicQuantizer"></a>
+                  <a class="autorefs autorefs-internal" title="            Quantizer (vendor.river.river.tree.splitter.base.Quantizer)" href="base/#vendor.river.river.tree.splitter.base.Quantizer" id="mermaid-link-vendor.river.river.tree.splitter.base.Quantizer"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.tree.splitter.DynamicQuantizer">
+              flowchart TD
+              vendor.river.river.tree.splitter.DynamicQuantizer[DynamicQuantizer]
+              vendor.river.river.tree.splitter.base.Quantizer[Quantizer]
+
+                              vendor.river.river.tree.splitter.base.Quantizer --> vendor.river.river.tree.splitter.DynamicQuantizer
+                
+
+
+              click vendor.river.river.tree.splitter.DynamicQuantizer href "" "vendor.river.river.tree.splitter.DynamicQuantizer"
+              click vendor.river.river.tree.splitter.base.Quantizer href "" "vendor.river.river.tree.splitter.base.Quantizer"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.tree.splitter.DynamicQuantizer');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Adapted version of the Quantizer Observer (QO)<sup id="vendor.river.river.tree.splitter.DynamicQuantizer--fnref:1"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.DynamicQuantizer--fn:1">1</a></sup> that is applied to Stochastic Gradient
+Trees (SGT).</p>
+<p>This feature quantizer starts by partitioning the inputs using the passed <code>radius</code> value.
+As more splits are created in the SGTs, new feature quantizers will use <code>std * std_prop</code> as
+the quantization radius. In the expression, <code>std</code> represents the standard deviation of the
+input data, which is calculated incrementally.</p>
+<h4 id="vendor.river.river.tree.splitter.DynamicQuantizer--parameters">Parameters<a class="headerlink" href="#vendor.river.river.tree.splitter.DynamicQuantizer--parameters" title="Permanent link">&para;</a></h4>
+<p>radius
+    The initial quantization radius.
+std_prop
+    The proportion of the standard deviation that is going to be used to define the radius
+    value for new quantizer instances following the initial one.</p>
+<h4 id="vendor.river.river.tree.splitter.DynamicQuantizer--references">References<a class="headerlink" href="#vendor.river.river.tree.splitter.DynamicQuantizer--references" title="Permanent link">&para;</a></h4>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.tree.splitter.DynamicQuantizer--fn:1">
+<p>Mastelini, S.M. and de Leon Ferreira, A.C.P., 2021. Using dynamical quantization
+to perform split attempts in online tree regressors. Pattern Recognition Letters.&#160;<a class="footnote-backref" href="#vendor.river.river.tree.splitter.DynamicQuantizer--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.tree.splitter.EBSTSplitter" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">EBSTSplitter</span>
+
+
+<a href="#vendor.river.river.tree.splitter.EBSTSplitter" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">EBSTSplitter</span><span class="p">()</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.base.Splitter)" href="base/#vendor.river.river.tree.splitter.base.Splitter">Splitter</a></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            EBSTSplitter (vendor.river.river.tree.splitter.EBSTSplitter)" href="#vendor.river.river.tree.splitter.EBSTSplitter" id="mermaid-link-vendor.river.river.tree.splitter.EBSTSplitter"></a>
+                  <a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.base.Splitter)" href="base/#vendor.river.river.tree.splitter.base.Splitter" id="mermaid-link-vendor.river.river.tree.splitter.base.Splitter"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.tree.splitter.EBSTSplitter">
+              flowchart TD
+              vendor.river.river.tree.splitter.EBSTSplitter[EBSTSplitter]
+              vendor.river.river.tree.splitter.base.Splitter[Splitter]
+
+                              vendor.river.river.tree.splitter.base.Splitter --> vendor.river.river.tree.splitter.EBSTSplitter
+                
+
+
+              click vendor.river.river.tree.splitter.EBSTSplitter href "" "vendor.river.river.tree.splitter.EBSTSplitter"
+              click vendor.river.river.tree.splitter.base.Splitter href "" "vendor.river.river.tree.splitter.base.Splitter"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.tree.splitter.EBSTSplitter');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>iSOUP-Tree's Extended Binary Search Tree (E-BST).</p>
+<p>This class implements the Extended Binary Search Tree<sup id="vendor.river.river.tree.splitter.EBSTSplitter--fnref:1"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.EBSTSplitter--fn:1">1</a></sup> (E-BST)
+structure, using the variant employed by Osojnik et al.<sup id="vendor.river.river.tree.splitter.EBSTSplitter--fnref:2"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.EBSTSplitter--fn:2">2</a></sup> in the
+iSOUP-Tree algorithm. This structure is employed to observe the target
+space distribution.</p>
+<p>Proposed along with Fast Incremental Model Tree with Drift Detection<sup id="vendor.river.river.tree.splitter.EBSTSplitter--fnref2:1"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.EBSTSplitter--fn:1">1</a></sup> (FIMT-DD), E-BST was
+the first attribute observer (AO) proposed for incremental Hoeffding Tree regressors. This
+AO works by storing all observations between splits in an extended binary search tree
+structure. E-BST stores the input feature realizations and statistics of the target(s) that
+enable calculating the split heuristic at any time. To alleviate time and memory costs, E-BST
+implements a memory management routine, where the worst split candidates are pruned from the
+binary tree.</p>
+<p>In this variant, only the left branch statistics are stored and the complete split-enabling
+statistics are calculated with an in-order traversal of the binary search tree.</p>
+<h4 id="vendor.river.river.tree.splitter.EBSTSplitter--references">References<a class="headerlink" href="#vendor.river.river.tree.splitter.EBSTSplitter--references" title="Permanent link">&para;</a></h4>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.tree.splitter.EBSTSplitter--fn:1">
+<p>Ikonomovska, E., Gama, J., &amp; Džeroski, S. (2011). Learning model trees from evolving
+data streams. Data mining and knowledge discovery, 23(1), 128-168.&#160;<a class="footnote-backref" href="#vendor.river.river.tree.splitter.EBSTSplitter--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#vendor.river.river.tree.splitter.EBSTSplitter--fnref2:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="vendor.river.river.tree.splitter.EBSTSplitter--fn:2">
+<p><a href="http://kt.ijs.si/theses/phd_aljaz_osojnik.pdf">Osojnik, Aljaž. 2017. Structured output prediction on Data Streams
+(Doctoral Dissertation)</a>&#160;<a class="footnote-backref" href="#vendor.river.river.tree.splitter.EBSTSplitter--fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            cond_proba (vendor.river.river.tree.splitter.EBSTSplitter.cond_proba)" href="#vendor.river.river.tree.splitter.EBSTSplitter.cond_proba">cond_proba</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Not implemented in regression splitters.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            remove_bad_splits (vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits)" href="#vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits">remove_bad_splits</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Remove bad splits.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            is_numeric
+
+
+  
+      property
+   (vendor.river.river.tree.splitter.EBSTSplitter.is_numeric)" href="#vendor.river.river.tree.splitter.EBSTSplitter.is_numeric">is_numeric</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Determine whether or not the splitter works with numerical features.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.tree.splitter.EBSTSplitter.is_numeric" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_numeric</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.EBSTSplitter.is_numeric" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">is_numeric</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Determine whether or not the splitter works with numerical features.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.tree.splitter.EBSTSplitter.cond_proba" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">cond_proba</span>
+
+
+<a href="#vendor.river.river.tree.splitter.EBSTSplitter.cond_proba" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">cond_proba</span><span class="p">(</span><span class="n"><span title="vendor.river.river.tree.splitter.EBSTSplitter.cond_proba(att_val)">att_val</span></span><span class="p">,</span> <span class="n"><span title="vendor.river.river.tree.splitter.EBSTSplitter.cond_proba(target_val)">target_val</span></span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Not implemented in regression splitters.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">remove_bad_splits</span>
+
+
+<a href="#vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">remove_bad_splits</span><span class="p">(</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits(criterion)">criterion</span></span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits(last_check_ratio)">last_check_ratio</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits(last_check_vr)">last_check_vr</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits(last_check_e)">last_check_e</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits(pre_split_dist)">pre_split_dist</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Remove bad splits.</p>
+<p>Based on FIMT-DD's <sup id="vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits--fnref:1"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits--fn:1">1</a></sup> procedure to remove bad split candidates from the E-BST. This
+mechanism is triggered every time a split attempt fails. The rationale is to remove
+points whose split merit is much worse than the best candidate overall (for which the
+growth decision already failed).</p>
+<p>Let <span class="arithmatex">\(m_1\)</span> be the merit of the best split point and <span class="arithmatex">\(m_2\)</span> be the merit of the
+second best split candidate. The ratio <span class="arithmatex">\(r = m_2/m_1\)</span> along with the Hoeffding bound
+(<span class="arithmatex">\(\epsilon\)</span>) are used to decide upon creating a split. A split occurs when
+<span class="arithmatex">\(r &lt; 1 - \epsilon\)</span>. A split candidate, with merit <span class="arithmatex">\(m_i\)</span>, is considered badr
+if <span class="arithmatex">\(m_i / m_1 &lt; r - 2\epsilon\)</span>. The rationale is the following: if the merit ratio
+for this point is smaller than the lower bound of <span class="arithmatex">\(r\)</span>, then the true merit of that
+split relative to the best one is small. Hence, this candidate can be safely removed.</p>
+<p>To avoid excessive and costly manipulations of the E-BST to update the stored statistics,
+only the nodes whose children are all bad split points are pruned, as defined in <sup id="vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits--fnref2:1"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits--fn:1">1</a></sup>.</p>
+<h5 id="vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits--parameters">Parameters<a class="headerlink" href="#vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits--parameters" title="Permanent link">&para;</a></h5>
+<p>criterion
+    The split criterion used by the regression tree.
+last_check_ratio
+    The ratio between the merit of the second best split candidate and the merit of the
+    best split candidate observed in the last failed split attempt.
+last_check_vr
+    The merit (variance reduction) of the best split candidate observed in the last
+    failed split attempt.
+last_check_e
+    The Hoeffding bound value calculated in the last failed split attempt.
+pre_split_dist
+    The complete statistics of the target observed in the leaf node.</p>
+<h5 id="vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits--references">References<a class="headerlink" href="#vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits--references" title="Permanent link">&para;</a></h5>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits--fn:1">
+<p>Ikonomovska, E., Gama, J., &amp; Džeroski, S. (2011). Learning model trees from evolving
+data streams. Data mining and knowledge discovery, 23(1), 128-168.&#160;<a class="footnote-backref" href="#vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#vendor.river.river.tree.splitter.EBSTSplitter.remove_bad_splits--fnref2:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.tree.splitter.ExhaustiveSplitter" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">ExhaustiveSplitter</span>
+
+
+<a href="#vendor.river.river.tree.splitter.ExhaustiveSplitter" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">ExhaustiveSplitter</span><span class="p">()</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.base.Splitter)" href="base/#vendor.river.river.tree.splitter.base.Splitter">Splitter</a></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            ExhaustiveSplitter (vendor.river.river.tree.splitter.ExhaustiveSplitter)" href="#vendor.river.river.tree.splitter.ExhaustiveSplitter" id="mermaid-link-vendor.river.river.tree.splitter.ExhaustiveSplitter"></a>
+                  <a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.base.Splitter)" href="base/#vendor.river.river.tree.splitter.base.Splitter" id="mermaid-link-vendor.river.river.tree.splitter.base.Splitter"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.tree.splitter.ExhaustiveSplitter">
+              flowchart TD
+              vendor.river.river.tree.splitter.ExhaustiveSplitter[ExhaustiveSplitter]
+              vendor.river.river.tree.splitter.base.Splitter[Splitter]
+
+                              vendor.river.river.tree.splitter.base.Splitter --> vendor.river.river.tree.splitter.ExhaustiveSplitter
+                
+
+
+              click vendor.river.river.tree.splitter.ExhaustiveSplitter href "" "vendor.river.river.tree.splitter.ExhaustiveSplitter"
+              click vendor.river.river.tree.splitter.base.Splitter href "" "vendor.river.river.tree.splitter.base.Splitter"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.tree.splitter.ExhaustiveSplitter');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Numeric attribute observer for classification tasks that is based on
+a Binary Search Tree.</p>
+<p>This algorithm<sup id="vendor.river.river.tree.splitter.ExhaustiveSplitter--fnref:1"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.ExhaustiveSplitter--fn:1">1</a></sup> is also referred to as exhaustive attribute observer,
+since it ends up storing all the observations between split attempts<sup id="vendor.river.river.tree.splitter.ExhaustiveSplitter--fnref:2"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.ExhaustiveSplitter--fn:2">2</a></sup>.</p>
+<p>This splitter cannot perform probability density estimations, so it does not work well
+when coupled with tree leaves using naive bayes models.</p>
+<h4 id="vendor.river.river.tree.splitter.ExhaustiveSplitter--references">References<a class="headerlink" href="#vendor.river.river.tree.splitter.ExhaustiveSplitter--references" title="Permanent link">&para;</a></h4>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.tree.splitter.ExhaustiveSplitter--fn:1">
+<p>Domingos, P. and Hulten, G., 2000, August. Mining high-speed data streams.
+In Proceedings of the sixth ACM SIGKDD international conference on Knowledge discovery
+and data mining (pp. 71-80).&#160;<a class="footnote-backref" href="#vendor.river.river.tree.splitter.ExhaustiveSplitter--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="vendor.river.river.tree.splitter.ExhaustiveSplitter--fn:2">
+<p>Pfahringer, B., Holmes, G. and Kirkby, R., 2008, May. Handling numeric attributes in
+hoeffding trees. In Pacific-Asia Conference on Knowledge Discovery and Data Mining
+(pp. 296-307). Springer, Berlin, Heidelberg.&#160;<a class="footnote-backref" href="#vendor.river.river.tree.splitter.ExhaustiveSplitter--fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            cond_proba (vendor.river.river.tree.splitter.ExhaustiveSplitter.cond_proba)" href="#vendor.river.river.tree.splitter.ExhaustiveSplitter.cond_proba">cond_proba</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>The underlying data structure used to monitor the input does not allow probability</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            is_numeric
+
+
+  
+      property
+   (vendor.river.river.tree.splitter.ExhaustiveSplitter.is_numeric)" href="#vendor.river.river.tree.splitter.ExhaustiveSplitter.is_numeric">is_numeric</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Determine whether or not the splitter works with numerical features.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            is_target_class
+
+
+  
+      property
+   (vendor.river.river.tree.splitter.ExhaustiveSplitter.is_target_class)" href="#vendor.river.river.tree.splitter.ExhaustiveSplitter.is_target_class">is_target_class</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Check on which kind of learning task the splitter is designed to work.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.tree.splitter.ExhaustiveSplitter.is_numeric" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_numeric</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.ExhaustiveSplitter.is_numeric" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">is_numeric</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Determine whether or not the splitter works with numerical features.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.tree.splitter.ExhaustiveSplitter.is_target_class" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_target_class</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.ExhaustiveSplitter.is_target_class" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">is_target_class</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Check on which kind of learning task the splitter is designed to work.</p>
+<p>If <code>True</code>, the splitter works with classification trees, otherwise it is designed for
+regression trees.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.tree.splitter.ExhaustiveSplitter.cond_proba" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">cond_proba</span>
+
+
+<a href="#vendor.river.river.tree.splitter.ExhaustiveSplitter.cond_proba" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">cond_proba</span><span class="p">(</span><span class="n"><span title="vendor.river.river.tree.splitter.ExhaustiveSplitter.cond_proba(att_val)">att_val</span></span><span class="p">,</span> <span class="n"><span title="vendor.river.river.tree.splitter.ExhaustiveSplitter.cond_proba(target_val)">target_val</span></span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>The underlying data structure used to monitor the input does not allow probability
+density estimations. Hence, it always returns zero for any given input.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.tree.splitter.GaussianSplitter" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">GaussianSplitter</span>
+
+
+<a href="#vendor.river.river.tree.splitter.GaussianSplitter" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">GaussianSplitter</span><span class="p">(</span><span class="n"><span title="vendor.river.river.tree.splitter.GaussianSplitter(n_splits)">n_splits</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.base.Splitter)" href="base/#vendor.river.river.tree.splitter.base.Splitter">Splitter</a></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            GaussianSplitter (vendor.river.river.tree.splitter.GaussianSplitter)" href="#vendor.river.river.tree.splitter.GaussianSplitter" id="mermaid-link-vendor.river.river.tree.splitter.GaussianSplitter"></a>
+                  <a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.base.Splitter)" href="base/#vendor.river.river.tree.splitter.base.Splitter" id="mermaid-link-vendor.river.river.tree.splitter.base.Splitter"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.tree.splitter.GaussianSplitter">
+              flowchart TD
+              vendor.river.river.tree.splitter.GaussianSplitter[GaussianSplitter]
+              vendor.river.river.tree.splitter.base.Splitter[Splitter]
+
+                              vendor.river.river.tree.splitter.base.Splitter --> vendor.river.river.tree.splitter.GaussianSplitter
+                
+
+
+              click vendor.river.river.tree.splitter.GaussianSplitter href "" "vendor.river.river.tree.splitter.GaussianSplitter"
+              click vendor.river.river.tree.splitter.base.Splitter href "" "vendor.river.river.tree.splitter.base.Splitter"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.tree.splitter.GaussianSplitter');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Numeric attribute observer for classification tasks that is based on
+Gaussian estimators.</p>
+<p>The distribution of each class is approximated using a Gaussian distribution. Hence,
+the probability density function can be easily calculated.</p>
+<h4 id="vendor.river.river.tree.splitter.GaussianSplitter--parameters">Parameters<a class="headerlink" href="#vendor.river.river.tree.splitter.GaussianSplitter--parameters" title="Permanent link">&para;</a></h4>
+<p>n_splits
+    The number of partitions to consider when querying for split candidates.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            is_numeric
+
+
+  
+      property
+   (vendor.river.river.tree.splitter.GaussianSplitter.is_numeric)" href="#vendor.river.river.tree.splitter.GaussianSplitter.is_numeric">is_numeric</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Determine whether or not the splitter works with numerical features.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            is_target_class
+
+
+  
+      property
+   (vendor.river.river.tree.splitter.GaussianSplitter.is_target_class)" href="#vendor.river.river.tree.splitter.GaussianSplitter.is_target_class">is_target_class</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Check on which kind of learning task the splitter is designed to work.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.tree.splitter.GaussianSplitter.is_numeric" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_numeric</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.GaussianSplitter.is_numeric" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">is_numeric</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Determine whether or not the splitter works with numerical features.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.tree.splitter.GaussianSplitter.is_target_class" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_target_class</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.GaussianSplitter.is_target_class" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">is_target_class</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Check on which kind of learning task the splitter is designed to work.</p>
+<p>If <code>True</code>, the splitter works with classification trees, otherwise it is designed for
+regression trees.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.tree.splitter.HistogramSplitter" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">HistogramSplitter</span>
+
+
+<a href="#vendor.river.river.tree.splitter.HistogramSplitter" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">HistogramSplitter</span><span class="p">(</span><span class="n"><span title="vendor.river.river.tree.splitter.HistogramSplitter(n_bins)">n_bins</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n"><span title="vendor.river.river.tree.splitter.HistogramSplitter(n_splits)">n_splits</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.base.Splitter)" href="base/#vendor.river.river.tree.splitter.base.Splitter">Splitter</a></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            HistogramSplitter (vendor.river.river.tree.splitter.HistogramSplitter)" href="#vendor.river.river.tree.splitter.HistogramSplitter" id="mermaid-link-vendor.river.river.tree.splitter.HistogramSplitter"></a>
+                  <a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.base.Splitter)" href="base/#vendor.river.river.tree.splitter.base.Splitter" id="mermaid-link-vendor.river.river.tree.splitter.base.Splitter"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.tree.splitter.HistogramSplitter">
+              flowchart TD
+              vendor.river.river.tree.splitter.HistogramSplitter[HistogramSplitter]
+              vendor.river.river.tree.splitter.base.Splitter[Splitter]
+
+                              vendor.river.river.tree.splitter.base.Splitter --> vendor.river.river.tree.splitter.HistogramSplitter
+                
+
+
+              click vendor.river.river.tree.splitter.HistogramSplitter href "" "vendor.river.river.tree.splitter.HistogramSplitter"
+              click vendor.river.river.tree.splitter.base.Splitter href "" "vendor.river.river.tree.splitter.base.Splitter"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.tree.splitter.HistogramSplitter');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Numeric attribute observer for classification tasks that discretizes features
+using histograms.</p>
+<h4 id="vendor.river.river.tree.splitter.HistogramSplitter--parameters">Parameters<a class="headerlink" href="#vendor.river.river.tree.splitter.HistogramSplitter--parameters" title="Permanent link">&para;</a></h4>
+<p>n_bins
+    The maximum number of bins in the histogram.
+n_splits
+    The number of split points to evaluate when querying for the best split
+    candidate.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            is_numeric
+
+
+  
+      property
+   (vendor.river.river.tree.splitter.HistogramSplitter.is_numeric)" href="#vendor.river.river.tree.splitter.HistogramSplitter.is_numeric">is_numeric</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Determine whether or not the splitter works with numerical features.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            is_target_class
+
+
+  
+      property
+   (vendor.river.river.tree.splitter.HistogramSplitter.is_target_class)" href="#vendor.river.river.tree.splitter.HistogramSplitter.is_target_class">is_target_class</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Check on which kind of learning task the splitter is designed to work.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.tree.splitter.HistogramSplitter.is_numeric" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_numeric</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.HistogramSplitter.is_numeric" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">is_numeric</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Determine whether or not the splitter works with numerical features.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.tree.splitter.HistogramSplitter.is_target_class" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_target_class</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.HistogramSplitter.is_target_class" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">is_target_class</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Check on which kind of learning task the splitter is designed to work.</p>
+<p>If <code>True</code>, the splitter works with classification trees, otherwise it is designed for
+regression trees.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.tree.splitter.QOSplitter" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">QOSplitter</span>
+
+
+<a href="#vendor.river.river.tree.splitter.QOSplitter" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">QOSplitter</span><span class="p">(</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.QOSplitter(radius)">radius</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n"><span title="vendor.river.river.tree.splitter.QOSplitter(allow_multiway_splits)">allow_multiway_splits</span></span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.base.Splitter)" href="base/#vendor.river.river.tree.splitter.base.Splitter">Splitter</a></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            QOSplitter (vendor.river.river.tree.splitter.QOSplitter)" href="#vendor.river.river.tree.splitter.QOSplitter" id="mermaid-link-vendor.river.river.tree.splitter.QOSplitter"></a>
+                  <a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.base.Splitter)" href="base/#vendor.river.river.tree.splitter.base.Splitter" id="mermaid-link-vendor.river.river.tree.splitter.base.Splitter"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.tree.splitter.QOSplitter">
+              flowchart TD
+              vendor.river.river.tree.splitter.QOSplitter[QOSplitter]
+              vendor.river.river.tree.splitter.base.Splitter[Splitter]
+
+                              vendor.river.river.tree.splitter.base.Splitter --> vendor.river.river.tree.splitter.QOSplitter
+                
+
+
+              click vendor.river.river.tree.splitter.QOSplitter href "" "vendor.river.river.tree.splitter.QOSplitter"
+              click vendor.river.river.tree.splitter.base.Splitter href "" "vendor.river.river.tree.splitter.base.Splitter"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.tree.splitter.QOSplitter');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Quantization observer (QO).</p>
+<p>This splitter utilizes a hash-based quantization algorithm to keep track of the target
+statistics and evaluate split candidates. QO, relies on the radius parameter to define
+discretization intervals for each incoming feature. Split candidates are defined as the
+midpoints between two consecutive hash slots. Both binary splits and multi-way splits can be
+created by this attribute observer. This class implements the algorithm described
+in <sup id="vendor.river.river.tree.splitter.QOSplitter--fnref:1"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.QOSplitter--fn:1">1</a></sup>.</p>
+<p>The smaller the quantization radius, the more hash slots will be created to accommodate the
+discretized data. Hence, both the running time and memory consumption increase, but the
+resulting splits ought to be closer to the ones obtained by a batch exhaustive approach.
+On the other hand, if the radius is too large, fewer slots will be created, less memory and
+running time will be required, but at the cost of coarse split suggestions.</p>
+<p>QO assumes that all features have the same range. It is always advised to scale the features
+to apply this splitter. That can be done using the <code>preprocessing</code> module. A good "rule of
+thumb" is to scale data using <code>preprocessing.StandardScaler</code> and define the radius as a
+proportion of the features' standard deviation. For instance, the default radius value
+would correspond to one quarter of the normalized features' standard deviation (since the
+scaled data has zero mean and unit variance). If the features come from normal
+distributions, by following the empirical rule, roughly <code>32</code> hash slots will be created.</p>
+<h4 id="vendor.river.river.tree.splitter.QOSplitter--parameters">Parameters<a class="headerlink" href="#vendor.river.river.tree.splitter.QOSplitter--parameters" title="Permanent link">&para;</a></h4>
+<p>radius
+    The quantization radius. QO discretizes the incoming feature in intervals of equal length
+    that are defined by this parameter.
+allow_multiway_splits
+    Whether or not allow that multiway splits are evaluated. Numeric multi-way splits use
+    the same quantization strategy of QO to create multiple tree branches. The same
+    quantization radius is used, and each stored slot represents the split enabling
+    statistics of one branch.</p>
+<h4 id="vendor.river.river.tree.splitter.QOSplitter--references">References<a class="headerlink" href="#vendor.river.river.tree.splitter.QOSplitter--references" title="Permanent link">&para;</a></h4>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.tree.splitter.QOSplitter--fn:1">
+<p>Mastelini, S.M. and de Leon Ferreira, A.C.P., 2021. Using dynamical quantization to
+perform split attempts in online tree regressors. Pattern Recognition Letters.&#160;<a class="footnote-backref" href="#vendor.river.river.tree.splitter.QOSplitter--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            is_numeric
+
+
+  
+      property
+   (vendor.river.river.tree.splitter.QOSplitter.is_numeric)" href="#vendor.river.river.tree.splitter.QOSplitter.is_numeric">is_numeric</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Determine whether or not the splitter works with numerical features.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.tree.splitter.QOSplitter.is_numeric" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_numeric</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.QOSplitter.is_numeric" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">is_numeric</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Determine whether or not the splitter works with numerical features.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.tree.splitter.Quantizer" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">Quantizer</span>
+
+
+<a href="#vendor.river.river.tree.splitter.Quantizer" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="river.base.Estimator">Estimator</span></code>, <code><a class="autorefs autorefs-external" title="abc.ABC" href="https://docs.python.org/3/library/abc.html#abc.ABC">ABC</a></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            Quantizer (vendor.river.river.tree.splitter.Quantizer)" href="#vendor.river.river.tree.splitter.Quantizer" id="mermaid-link-vendor.river.river.tree.splitter.Quantizer"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.tree.splitter.Quantizer">
+              flowchart TD
+              vendor.river.river.tree.splitter.Quantizer[Quantizer]
+
+              
+
+              click vendor.river.river.tree.splitter.Quantizer href "" "vendor.river.river.tree.splitter.Quantizer"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.tree.splitter.Quantizer');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Base class for the feature quantizers used in Stochastic Gradient Trees<sup id="vendor.river.river.tree.splitter.Quantizer--fnref:1"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.Quantizer--fn:1">1</a></sup>.</p>
+<h4 id="vendor.river.river.tree.splitter.Quantizer--references">References<a class="headerlink" href="#vendor.river.river.tree.splitter.Quantizer--references" title="Permanent link">&para;</a></h4>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.tree.splitter.Quantizer--fn:1">
+<p>Gouk, H., Pfahringer, B., &amp; Frank, E. (2019, October). Stochastic Gradient Trees.
+In Asian Conference on Machine Learning (pp. 1094-1109).&#160;<a class="footnote-backref" href="#vendor.river.river.tree.splitter.Quantizer--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.tree.splitter.Splitter" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">Splitter</span>
+
+
+<a href="#vendor.river.river.tree.splitter.Splitter" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="river.base.Estimator">Estimator</span></code>, <code><a class="autorefs autorefs-external" title="abc.ABC" href="https://docs.python.org/3/library/abc.html#abc.ABC">ABC</a></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.Splitter)" href="#vendor.river.river.tree.splitter.Splitter" id="mermaid-link-vendor.river.river.tree.splitter.Splitter"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.tree.splitter.Splitter">
+              flowchart TD
+              vendor.river.river.tree.splitter.Splitter[Splitter]
+
+              
+
+              click vendor.river.river.tree.splitter.Splitter href "" "vendor.river.river.tree.splitter.Splitter"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.tree.splitter.Splitter');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Base class for the tree splitters.</p>
+<p>Each Attribute Observer (AO) or Splitter monitors one input feature and finds the best
+split point for this attribute. AOs can also perform other tasks related to the monitored
+feature, such as estimating its probability density function (classification case).</p>
+<p>This class should not be instantiated, as none of its methods are implemented.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            best_evaluated_split_suggestion
+
+
+  
+      abstractmethod
+   (vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion)" href="#vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion">best_evaluated_split_suggestion</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Get the best split suggestion given a criterion and the target's statistics.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            cond_proba
+
+
+  
+      abstractmethod
+   (vendor.river.river.tree.splitter.Splitter.cond_proba)" href="#vendor.river.river.tree.splitter.Splitter.cond_proba">cond_proba</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Get the probability for an attribute value given a class.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            update
+
+
+  
+      abstractmethod
+   (vendor.river.river.tree.splitter.Splitter.update)" href="#vendor.river.river.tree.splitter.Splitter.update">update</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Update statistics of this observer given an attribute value, its target value</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            is_numeric
+
+
+  
+      property
+   (vendor.river.river.tree.splitter.Splitter.is_numeric)" href="#vendor.river.river.tree.splitter.Splitter.is_numeric">is_numeric</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Determine whether or not the splitter works with numerical features.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            is_target_class
+
+
+  
+      property
+   (vendor.river.river.tree.splitter.Splitter.is_target_class)" href="#vendor.river.river.tree.splitter.Splitter.is_target_class">is_target_class</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Check on which kind of learning task the splitter is designed to work.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.tree.splitter.Splitter.is_numeric" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_numeric</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.Splitter.is_numeric" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">is_numeric</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Determine whether or not the splitter works with numerical features.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.tree.splitter.Splitter.is_target_class" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_target_class</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.Splitter.is_target_class" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">is_target_class</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Check on which kind of learning task the splitter is designed to work.</p>
+<p>If <code>True</code>, the splitter works with classification trees, otherwise it is designed for
+regression trees.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">best_evaluated_split_suggestion</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">best_evaluated_split_suggestion</span><span class="p">(</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion(criterion)">criterion</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SplitCriterion (vendor.river.river.tree.split_criterion.base.SplitCriterion)" href="../split_criterion/base/#vendor.river.river.tree.split_criterion.base.SplitCriterion">SplitCriterion</a></span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion(pre_split_dist)">pre_split_dist</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion(att_idx)">att_idx</span></span><span class="p">:</span> <span class="n"><span title="river.base.typing.FeatureName">FeatureName</span></span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion(binary_only)">binary_only</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            BranchFactory
+
+
+  
+      dataclass
+   (vendor.river.river.tree.utils.BranchFactory)" href="../utils/#vendor.river.river.tree.utils.BranchFactory">BranchFactory</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Get the best split suggestion given a criterion and the target's statistics.</p>
+<h5 id="vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion--parameters">Parameters<a class="headerlink" href="#vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion--parameters" title="Permanent link">&para;</a></h5>
+<p>criterion
+    The split criterion to use.
+pre_split_dist
+    The target statistics before the split.
+att_idx
+    The attribute index.
+binary_only
+    True if only binary splits are allowed.</p>
+<h5 id="vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion--returns">Returns<a class="headerlink" href="#vendor.river.river.tree.splitter.Splitter.best_evaluated_split_suggestion--returns" title="Permanent link">&para;</a></h5>
+<div class="language-text highlight"><pre><span></span><code>Suggestion of the best attribute split.
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.tree.splitter.Splitter.cond_proba" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">cond_proba</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.Splitter.cond_proba" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">cond_proba</span><span class="p">(</span><span class="n"><span title="vendor.river.river.tree.splitter.Splitter.cond_proba(att_val)">att_val</span></span><span class="p">,</span> <span class="n"><span title="vendor.river.river.tree.splitter.Splitter.cond_proba(target_val)">target_val</span></span><span class="p">:</span> <span class="n"><span title="river.base.typing.ClfTarget">ClfTarget</span></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Get the probability for an attribute value given a class.</p>
+<h5 id="vendor.river.river.tree.splitter.Splitter.cond_proba--parameters">Parameters<a class="headerlink" href="#vendor.river.river.tree.splitter.Splitter.cond_proba--parameters" title="Permanent link">&para;</a></h5>
+<p>att_val
+    The value of the attribute.
+target_val
+    The target (class label) value.</p>
+<h5 id="vendor.river.river.tree.splitter.Splitter.cond_proba--returns">Returns<a class="headerlink" href="#vendor.river.river.tree.splitter.Splitter.cond_proba--returns" title="Permanent link">&para;</a></h5>
+<div class="language-text highlight"><pre><span></span><code>Probability for an attribute value given a class.
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.tree.splitter.Splitter.update" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">update</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.Splitter.update" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">update</span><span class="p">(</span><span class="n"><span title="vendor.river.river.tree.splitter.Splitter.update(att_val)">att_val</span></span><span class="p">,</span> <span class="n"><span title="vendor.river.river.tree.splitter.Splitter.update(target_val)">target_val</span></span><span class="p">:</span> <span class="n"><span title="river.base.typing.Target">Target</span></span><span class="p">,</span> <span class="n"><span title="vendor.river.river.tree.splitter.Splitter.update(w)">w</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Update statistics of this observer given an attribute value, its target value
+and the weight of the instance observed.</p>
+<h5 id="vendor.river.river.tree.splitter.Splitter.update--parameters">Parameters<a class="headerlink" href="#vendor.river.river.tree.splitter.Splitter.update--parameters" title="Permanent link">&para;</a></h5>
+<p>att_val
+    The value of the monitored attribute.
+target_val
+    The target value.
+w
+    The weight of the instance.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.tree.splitter.StaticQuantizer" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">StaticQuantizer</span>
+
+
+<a href="#vendor.river.river.tree.splitter.StaticQuantizer" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">StaticQuantizer</span><span class="p">(</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.StaticQuantizer(n_bins)">n_bins</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.StaticQuantizer(warm_start)">warm_start</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.StaticQuantizer(buckets)">buckets</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            Quantizer (vendor.river.river.tree.splitter.base.Quantizer)" href="base/#vendor.river.river.tree.splitter.base.Quantizer">Quantizer</a></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            StaticQuantizer (vendor.river.river.tree.splitter.StaticQuantizer)" href="#vendor.river.river.tree.splitter.StaticQuantizer" id="mermaid-link-vendor.river.river.tree.splitter.StaticQuantizer"></a>
+                  <a class="autorefs autorefs-internal" title="            Quantizer (vendor.river.river.tree.splitter.base.Quantizer)" href="base/#vendor.river.river.tree.splitter.base.Quantizer" id="mermaid-link-vendor.river.river.tree.splitter.base.Quantizer"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.tree.splitter.StaticQuantizer">
+              flowchart TD
+              vendor.river.river.tree.splitter.StaticQuantizer[StaticQuantizer]
+              vendor.river.river.tree.splitter.base.Quantizer[Quantizer]
+
+                              vendor.river.river.tree.splitter.base.Quantizer --> vendor.river.river.tree.splitter.StaticQuantizer
+                
+
+
+              click vendor.river.river.tree.splitter.StaticQuantizer href "" "vendor.river.river.tree.splitter.StaticQuantizer"
+              click vendor.river.river.tree.splitter.base.Quantizer href "" "vendor.river.river.tree.splitter.base.Quantizer"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.tree.splitter.StaticQuantizer');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Quantization strategy originally used in Stochastic Gradient Trees (SGT)<sup id="vendor.river.river.tree.splitter.StaticQuantizer--fnref:1"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.StaticQuantizer--fn:1">1</a></sup>.</p>
+<p>Firstly, a buffer of size <code>warm_start</code> is stored. The data stored in the buffer is then used
+to quantize the input feature into <code>n_bins</code> intervals. These intervals will be replicated
+to every new quantizer. Feature values lying outside of the limits defined by the initial
+buffer will be mapped to the head or tail of the list of intervals.</p>
+<h4 id="vendor.river.river.tree.splitter.StaticQuantizer--parameters">Parameters<a class="headerlink" href="#vendor.river.river.tree.splitter.StaticQuantizer--parameters" title="Permanent link">&para;</a></h4>
+<p>n_bins
+    The number of bins (intervals) to divide the input feature.
+warm_start
+    The number of observations used to initialize the quantization intervals.
+buckets
+    This parameter is only used internally by the quantizer, so it must not be set.
+    Once the intervals are defined, new instances of this quantizer will receive the
+    quantization information via this parameter.</p>
+<h4 id="vendor.river.river.tree.splitter.StaticQuantizer--references">References<a class="headerlink" href="#vendor.river.river.tree.splitter.StaticQuantizer--references" title="Permanent link">&para;</a></h4>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.tree.splitter.StaticQuantizer--fn:1">
+<p>Gouk, H., Pfahringer, B., &amp; Frank, E. (2019, October). Stochastic Gradient Trees.
+In Asian Conference on Machine Learning (pp. 1094-1109).&#160;<a class="footnote-backref" href="#vendor.river.river.tree.splitter.StaticQuantizer--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="vendor.river.river.tree.splitter.TEBSTSplitter" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">TEBSTSplitter</span>
+
+
+<a href="#vendor.river.river.tree.splitter.TEBSTSplitter" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">TEBSTSplitter</span><span class="p">(</span><span class="n"><span title="vendor.river.river.tree.splitter.TEBSTSplitter(digits)">digits</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="            EBSTSplitter (vendor.river.river.tree.splitter.ebst_splitter.EBSTSplitter)" href="ebst_splitter/#vendor.river.river.tree.splitter.ebst_splitter.EBSTSplitter">EBSTSplitter</a></code></p>
+
+            <div style="display: none">
+              <a class="autorefs autorefs-internal" title="            TEBSTSplitter (vendor.river.river.tree.splitter.TEBSTSplitter)" href="#vendor.river.river.tree.splitter.TEBSTSplitter" id="mermaid-link-vendor.river.river.tree.splitter.TEBSTSplitter"></a>
+                  <a class="autorefs autorefs-internal" title="            EBSTSplitter (vendor.river.river.tree.splitter.ebst_splitter.EBSTSplitter)" href="ebst_splitter/#vendor.river.river.tree.splitter.ebst_splitter.EBSTSplitter" id="mermaid-link-vendor.river.river.tree.splitter.ebst_splitter.EBSTSplitter"></a>
+                  <a class="autorefs autorefs-internal" title="            Splitter (vendor.river.river.tree.splitter.base.Splitter)" href="base/#vendor.river.river.tree.splitter.base.Splitter" id="mermaid-link-vendor.river.river.tree.splitter.base.Splitter"></a>
+            </div>
+            <pre class="mermaid"><code id="mermaid-diagram-vendor.river.river.tree.splitter.TEBSTSplitter">
+              flowchart TD
+              vendor.river.river.tree.splitter.TEBSTSplitter[TEBSTSplitter]
+              vendor.river.river.tree.splitter.ebst_splitter.EBSTSplitter[EBSTSplitter]
+              vendor.river.river.tree.splitter.base.Splitter[Splitter]
+
+                              vendor.river.river.tree.splitter.ebst_splitter.EBSTSplitter --> vendor.river.river.tree.splitter.TEBSTSplitter
+                                vendor.river.river.tree.splitter.base.Splitter --> vendor.river.river.tree.splitter.ebst_splitter.EBSTSplitter
+                
+
+
+
+              click vendor.river.river.tree.splitter.TEBSTSplitter href "" "vendor.river.river.tree.splitter.TEBSTSplitter"
+              click vendor.river.river.tree.splitter.ebst_splitter.EBSTSplitter href "" "vendor.river.river.tree.splitter.ebst_splitter.EBSTSplitter"
+              click vendor.river.river.tree.splitter.base.Splitter href "" "vendor.river.river.tree.splitter.base.Splitter"
+            </code></pre>
+            <script>
+              var diagram = document.getElementById('mermaid-diagram-vendor.river.river.tree.splitter.TEBSTSplitter');
+              diagram.innerHTML = diagram.innerHTML.replace(/click ([\w.]+) href "" "\1"/g, function(match, nodeID, offset) {
+                try {
+                  const link = document.getElementById("mermaid-link-" + nodeID).href;
+                  return `click ${nodeID} href "${link}" "${nodeID}"`
+                } catch (e) {
+                  return '';
+                }
+              });
+            </script>
+
+
+        <p>Truncated E-BST.</p>
+<p>Variation of E-BST that rounds the incoming feature values before passing them to the binary
+search tree (BST). By doing so, the attribute observer might reduce its processing time and
+memory usage since small variations in the input values will end up being mapped to the same
+BST node.</p>
+<h4 id="vendor.river.river.tree.splitter.TEBSTSplitter--parameters">Parameters<a class="headerlink" href="#vendor.river.river.tree.splitter.TEBSTSplitter--parameters" title="Permanent link">&para;</a></h4>
+<p>digits
+    The number of decimal places used to round the input feature values.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><span class="doc-section-title">Methods:</span></p>
+    <ul>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            cond_proba (vendor.river.river.tree.splitter.TEBSTSplitter.cond_proba)" href="#vendor.river.river.tree.splitter.TEBSTSplitter.cond_proba">cond_proba</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Not implemented in regression splitters.</p>
+            </div>
+          </li>
+          <li class="doc-section-item field-body">
+            <b><code><a class="autorefs autorefs-internal" title="            remove_bad_splits (vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits)" href="#vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits">remove_bad_splits</a></code></b>
+            –
+            <div class="doc-md-description">
+              <p>Remove bad splits.</p>
+            </div>
+          </li>
+    </ul>
+
+
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code><a class="autorefs autorefs-internal" title="            is_numeric
+
+
+  
+      property
+   (vendor.river.river.tree.splitter.TEBSTSplitter.is_numeric)" href="#vendor.river.river.tree.splitter.TEBSTSplitter.is_numeric">is_numeric</a></code></b>
+              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Determine whether or not the splitter works with numerical features.</p>
+          </div>
+        </li>
+    </ul>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="vendor.river.river.tree.splitter.TEBSTSplitter.is_numeric" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">is_numeric</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#vendor.river.river.tree.splitter.TEBSTSplitter.is_numeric" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="n">is_numeric</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Determine whether or not the splitter works with numerical features.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.tree.splitter.TEBSTSplitter.cond_proba" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">cond_proba</span>
+
+
+<a href="#vendor.river.river.tree.splitter.TEBSTSplitter.cond_proba" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">cond_proba</span><span class="p">(</span><span class="n"><span title="vendor.river.river.tree.splitter.TEBSTSplitter.cond_proba(att_val)">att_val</span></span><span class="p">,</span> <span class="n"><span title="vendor.river.river.tree.splitter.TEBSTSplitter.cond_proba(target_val)">target_val</span></span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Not implemented in regression splitters.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">remove_bad_splits</span>
+
+
+<a href="#vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span class="nf">remove_bad_splits</span><span class="p">(</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits(criterion)">criterion</span></span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits(last_check_ratio)">last_check_ratio</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits(last_check_vr)">last_check_vr</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits(last_check_e)">last_check_e</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></span><span class="p">,</span>
+    <span class="n"><span title="vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits(pre_split_dist)">pre_split_dist</span></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Remove bad splits.</p>
+<p>Based on FIMT-DD's <sup id="vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits--fnref:1"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits--fn:1">1</a></sup> procedure to remove bad split candidates from the E-BST. This
+mechanism is triggered every time a split attempt fails. The rationale is to remove
+points whose split merit is much worse than the best candidate overall (for which the
+growth decision already failed).</p>
+<p>Let <span class="arithmatex">\(m_1\)</span> be the merit of the best split point and <span class="arithmatex">\(m_2\)</span> be the merit of the
+second best split candidate. The ratio <span class="arithmatex">\(r = m_2/m_1\)</span> along with the Hoeffding bound
+(<span class="arithmatex">\(\epsilon\)</span>) are used to decide upon creating a split. A split occurs when
+<span class="arithmatex">\(r &lt; 1 - \epsilon\)</span>. A split candidate, with merit <span class="arithmatex">\(m_i\)</span>, is considered badr
+if <span class="arithmatex">\(m_i / m_1 &lt; r - 2\epsilon\)</span>. The rationale is the following: if the merit ratio
+for this point is smaller than the lower bound of <span class="arithmatex">\(r\)</span>, then the true merit of that
+split relative to the best one is small. Hence, this candidate can be safely removed.</p>
+<p>To avoid excessive and costly manipulations of the E-BST to update the stored statistics,
+only the nodes whose children are all bad split points are pruned, as defined in <sup id="vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits--fnref2:1"><a class="footnote-ref" href="#vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits--fn:1">1</a></sup>.</p>
+<h5 id="vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits--parameters">Parameters<a class="headerlink" href="#vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits--parameters" title="Permanent link">&para;</a></h5>
+<p>criterion
+    The split criterion used by the regression tree.
+last_check_ratio
+    The ratio between the merit of the second best split candidate and the merit of the
+    best split candidate observed in the last failed split attempt.
+last_check_vr
+    The merit (variance reduction) of the best split candidate observed in the last
+    failed split attempt.
+last_check_e
+    The Hoeffding bound value calculated in the last failed split attempt.
+pre_split_dist
+    The complete statistics of the target observed in the leaf node.</p>
+<h5 id="vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits--references">References<a class="headerlink" href="#vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits--references" title="Permanent link">&para;</a></h5>
+<div class="footnote">
+<hr />
+<ol>
+<li id="vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits--fn:1">
+<p>Ikonomovska, E., Gama, J., &amp; Džeroski, S. (2011). Learning model trees from evolving
+data streams. Data mining and knowledge discovery, 23(1), 128-168.&#160;<a class="footnote-backref" href="#vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits--fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#vendor.river.river.tree.splitter.TEBSTSplitter.remove_bad_splits--fnref2:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../split_criterion/variance_reduction_split_criterion/" class="md-footer__link md-footer__link--prev" aria-label="Previous: variance_reduction_split_criterion">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                variance_reduction_split_criterion
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="base/" class="md-footer__link md-footer__link--next" aria-label="Next: base">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                base
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../../..", "features": ["content.code.copy", "content.code.annotate", "navigation.tabs", "navigation.tabs.sticky", "navigation.instant", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "navigation.sections", "toc.follow"], "search": "../../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
