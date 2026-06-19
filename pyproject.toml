@@ -42,10 +42,36 @@ extra-paths = ["vendor/river"]
 [tool.ruff]
 line-length = 79
 extend-exclude = ["vendor"]
-# Math/linear-algebra code uses uppercase identifiers (X, A, U, S, V matrices);
-# pep8-naming rules fight standard mathematical notation, so ignore them.
-lint.select = ["E4", "E7", "E9", "F", "T20", "ANN"]  # defaults + flake8-print + annotations
-lint.ignore = ["N802", "N803", "N806", "N816", "N817"]
+lint.select = ["ALL"]
+lint.ignore = [
+    # === Backlog: being fixed group-by-group; removed as each is resolved ===
+    "PTH100", "PTH103", "PTH110", "PTH118", "PTH119", "PTH120", "PTH123", "PTH207",
+    "SIM105", "SIM115",
+    "NPY002",
+    "PD011",
+    "S113", "S301",
+    "PERF401",
+    "TC002", "TC003",
+    "TD002", "TD003",
+    "PGH003",
+    "SLF001",  # pending: per-line noqa or public-accessor improvement
+    # === Permanent: inappropriate for numerical/research code ===
+    "N802", "N803", "N806", "N816", "N817",  # math uses uppercase identifiers
+    "D100", "D101", "D102", "D103", "D104", "D105", "D107",  # docstrings optional
+    "D401", "D404", "D417",                  # docstring style
+    "ERA001",                                # commented-out research scratch
+    "E501",                                  # line length (doctests/notebooks)
+    "FBT001", "FBT002", "FBT003",            # boolean args
+    "FIX002",                                # line-contains-todo (TODOs are tracked)
+    "S101",                                  # assert
+    "PLR2004",                               # magic values
+    "PLR0912", "PLR0913", "PLR0915", "C901", # complexity
+    "ARG002", "PLW2901", "PLW0127", "PLC0206", "B007", "B018",
+    "INP001",                                # implicit namespace package
+    "PLC0415",                               # intentional lazy imports
+    "TRY002", "TRY004",                      # exception style
+    "DTZ005",                                # tz-naive datetime
+]
 
 # T201/T203 (print): prints are the output medium in notebooks and the
 # benchmark report script — allowed there, enforced everywhere else.
