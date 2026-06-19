@@ -1,9 +1,39 @@
-## Unreleased
+## v4.0.1 (2026-06-19)
+
+### Fixes
+
+- **ci**: bump/release with built-in GITHUB_TOKEN, not stale PAT (#21)
+- **ci**: make version bump actually run; robust docs trigger (#20)
+- **docs**: deploy gh-pages with built-in GITHUB_TOKEN; add workflow_dispatch (#19)
+- **ci**: don't fail CI on codecov upload for Dependabot/fork PRs (#18)
+- **ci**: correct workflow_run names + harden the workflow bundle (#16)
+- **lint**: resolve real violations; drop from ruff ignore
+- **examples**: annotate trusted pickle loads with noqa S301
+- **datasets**: add timeout to requests.get calls (S113)
 
 ### Refactor
 
+- **metrics**: extract distance variants; clear commented code (ERA001); per-file-ignore notebooks
+- **lint**: extract magic-value constants and add package inits (PLR2004/INP001); drop from ignore
+- **api**: make boolean params keyword-only (FBT001/2/3); drop from ignore
+- **types**: scope SLF001 to research notebooks (SLF001)
+- **types**: replace blanket type-ignores with fixes/specific codes (PGH003)
+- **pandas**: use .to_numpy() over .values (PD011)
+- **sim**: use context managers and contextlib.suppress (SIM105/SIM115)
+- **perf**: replace append-loops with comprehensions (PERF401)
+- **imports**: move type-only imports into TYPE_CHECKING (TC002/TC003)
+- **pathlib**: convert os.path to pathlib (PTH)
 - **logging**: replace prints with logging in functions/; enable T201
 - remove unused bayes_opt_parallel.py
+
+### Docs
+
+- allow the deploy job to run on workflow_dispatch too (not only
+workflow_run), so manual deploys work and the trigger is explicit.
+- **lint**: fix N817/D105/D107/D401/D404/D417/W505; drop from ignore
+- **docstrings**: add Google-style docstrings to public API (D100-D104)
+- **todo**: add author and linked issues to TODOs (TD002/TD003)
+- **ruff**: document NPY002 as deliberately preserved
 
 ## v4.0.0 (2026-04-15)
 
