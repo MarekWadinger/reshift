@@ -2,7 +2,8 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-from river.utils.rolling import Rolling as R, Rollable
+from river.utils.rolling import Rollable
+from river.utils.rolling import Rolling as R
 
 
 def separate_args_kwargs(

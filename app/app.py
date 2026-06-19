@@ -4,15 +4,16 @@ import datetime
 import os
 import sys
 from io import BytesIO
+
 import numpy as np
 import pandas as pd
 import streamlit as st
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
-from streamlit.delta_generator import DeltaGenerator
 from river.compose import Pipeline
 from river.decomposition import OnlineDMD, OnlineDMDwC
 from river.preprocessing import Hankelizer
+from streamlit.delta_generator import DeltaGenerator
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
@@ -207,7 +208,7 @@ def compute_metrics(
             )
             res_ = dict(zip(["F1", "FAR", "MAR"], binary, strict=False))
             res_.update(
-                dict(zip(["Delay", "FN", "FP", "TP"], add, strict=False))
+                dict(zip(["Delay", "FN", "FP", "TP"], add, strict=False)),
             )
             res_.update(nab)
             res_ = dict(res_.items())

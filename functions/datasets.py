@@ -131,7 +131,9 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
     if not os.path.exists(file_path):
 
         def download_csv_from_git(
-            url: str, save_path: str, add_base: bool = True
+            url: str,
+            save_path: str,
+            add_base: bool = True,
         ) -> None:
             # Parse the URL to get the folder name
             parsed_url = urlparse(url)

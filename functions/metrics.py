@@ -277,7 +277,8 @@ def extract_cp_confusion_matrix(
 
 
 def confusion_matrix(
-    true: pd.Series, prediction: pd.Series
+    true: pd.Series,
+    prediction: pd.Series,
 ) -> tuple[Any, Any, Any, Any]:
     true_ = true == 1
     prediction_ = prediction == 1

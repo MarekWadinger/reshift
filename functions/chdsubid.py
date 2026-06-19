@@ -40,7 +40,8 @@ def get_default_timedelays(
 
 
 def get_default_rank(
-    X: np.ndarray | pd.DataFrame, noise_variance: float | None = None
+    X: np.ndarray | pd.DataFrame,
+    noise_variance: float | None = None,
 ) -> int:
     """Get default rank for the given data matrix.
 
