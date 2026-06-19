@@ -1,9 +1,20 @@
 [project]
 name = "odmd-subid-cpd"
 version = "4.0.1"
-description = "Add your description here"
+description = "Real-time change-point detection for industrial data streams via Online Dynamic Mode Decomposition with Control (ODMDwC)."
 readme = "README.md"
 requires-python = ">=3.14"
+keywords = [
+    "change-point-detection",
+    "anomaly-detection",
+    "dynamic-mode-decomposition",
+    "koopman-operator",
+    "subspace-identification",
+    "online-learning",
+    "streaming",
+    "time-series",
+    "river",
+]
 dependencies = [
     "matplotlib<4.0.0",
     "numpy<3.0.0",
@@ -79,6 +90,8 @@ lint.pycodestyle.max-line-length = 79
 [tool.ruff.lint.per-file-ignores]
 "*.ipynb" = ["T201", "T203", "SLF001", "ERA001"]
 "benchmarks/*" = ["T201", "T203"]
+# Comparison helper shells out to `git clone` and prints in its smoke check.
+"examples/cpdmd_compare.py" = ["S603", "S607", "T201"]
 
 # Codebase uses Google-style docstrings (Args:/Returns:/Raises:).
 [tool.ruff.lint.pydocstyle]

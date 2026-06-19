@@ -1,22 +1,43 @@
-# Change-Point Detection based on Online DMD with Control
+<p align="center">
+  <img src="docs/assets/logo.png" alt="odmd-subid-cpd" width="200">
+</p>
 
-[![Quality and Tests](https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml/badge.svg)](https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/MarekWadinger/odmd-subid-cpd/branch/main/graph/badge.svg?token=BIS0A7CF1F)](https://codecov.io/gh/MarekWadinger/odmd-subid-cpd)
+<h1 align="center">odmd-subid-cpd</h1>
+
+<p align="center">
+  <strong>Catch the moment a machine or process changes its behaviour — live, before it becomes a failure.</strong>
+</p>
+
+<p align="center">
+  <em>Online, model-free change-point detection for noisy, multivariate industrial sensor streams.<br/>Control-aware, noise-robust, and tuned to keep false alarms low — no physical model, no batch retraining.</em>
+</p>
+
+<p align="center">
+  <a href="https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml"><img src="https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml/badge.svg" alt="Quality and Tests"></a>
+  <a href="https://codecov.io/gh/MarekWadinger/odmd-subid-cpd"><img src="https://codecov.io/gh/MarekWadinger/odmd-subid-cpd/branch/main/graph/badge.svg?token=BIS0A7CF1F" alt="codecov"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/python-3.14+-blue.svg" alt="Python 3.14+">
+  <a href="https://arxiv.org/abs/2407.05976"><img src="https://img.shields.io/badge/arXiv-2407.05976-b31b1b.svg" alt="arXiv"></a>
+</p>
+
+---
+
+## Highlights
+
+- **Adaptive linearization** -- ODMDwC tracks non-linear system behaviour online, keeping detected change magnitude proportional to the real shift.
+- **Control-aware** -- exploits control inputs to tell operator-driven dynamics apart from genuine anomalies.
+- **Noise-robust** -- truncated ODMDwC with higher-order time-delay embeddings captures broadband features and suppresses noise.
+- **Benchmark-leading** -- outperforms SVD- and autoencoder-based CPD on the SKAB and CATS datasets (NAB score).
+- **Streaming-native** -- built on [`river`](https://riverml.xyz): single-pass, constant-memory updates, no batch retraining or physical model.
+- **Tunable by intuition** -- practical hyperparameter guidance instead of black-box knobs.
+
+![Illustrative example: ODMD-CPD detecting a change point in a data stream](publications/IEEECSS/figures/web-app-chart.png)
+
+## Overview
 
 As the energy sector races toward radical climate action, scaling new solutions is essential. Automated control has been crucial to efficient operations, and detecting unforeseen critical shifts can be a game-changer for safety.
 
-![ilustratory example](/publications/figures/web-app-chart.png)
-
-This repository presents a novel approach to change-point detection (CPD) that leverages Online Dynamic Mode Decomposition with Control (ODMDwC). Designed specifically for complex industrial systems where timely detection of behavioral shifts is critical, this method captures both spatial and temporal system patterns and adapts dynamically to non-linear system changes due to factors like aging and seasonality.
-
-Our ODMDwC-based method addresses real-world challenges of non-uniform data streams in safety-critical systems by providing reliable CPD without dependency on exhaustive physical models. It leverages control input to enhance change detection performance, yielding robust and intuitive results even in environments with high noise.
-
-## 🚀 Features
-
-- **Adaptive Linearization**: ODMDwC dynamically adapts to system behavior, maintaining a correspondence between detected changes and their actual extent.
-- **Truncated ODMDwC with Time-Delay Embeddings**: Incorporates higher-order time-delay embeddings to improve noise robustness and capture broadband features.
-- **Enhanced CPD Performance**: The method outperforms SVD-based and other common CPD methods on benchmark datasets, improving detection accuracy while reducing false positives.
-- **Intuitive Hyperparameter Tuning**: Offers practical guidelines for hyperparameter selection to streamline model application.
+This repository implements change-point detection (CPD) based on **Online Dynamic Mode Decomposition with Control (ODMDwC)**. Designed for complex industrial systems where timely detection of behavioural shifts is critical, it captures both spatial and temporal system patterns and adapts dynamically to non-linear changes from factors like aging and seasonality. It addresses non-uniform data streams in safety-critical systems without depending on exhaustive physical models, leveraging control input to yield robust, intuitive results even under high noise.
 
 ## Benchmark Evaluation
 

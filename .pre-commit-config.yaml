@@ -41,7 +41,7 @@ repos:
     rev: "v0.49.0"
     hooks:
       - id: markdownlint
-        args: ["-f", "--disable", "MD051", "--disable", "MD013"]
+        args: ["-f", "--disable", "MD051", "--disable", "MD013", "--disable", "MD033", "--disable", "MD041"]
         stages: [pre-commit]
   - repo: local
     hooks:
