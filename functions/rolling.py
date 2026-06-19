@@ -1,3 +1,5 @@
+"""Rolling window wrappers for batch-compatible online learning objects."""
+
 from typing import Any
 
 import numpy as np
@@ -11,7 +13,8 @@ def separate_args_kwargs(
 ) -> tuple[list[Any], dict[str, Any]]:
     """Separate args and kwargs from a list of tuples.
 
-    Imagine transposing a list of tuples. This function separates list of args and kwargs tuples and makes args and kwargs containing most compatible iterables.
+    Imagine transposing a list of tuples. This function separates list of args and kwargs tuples and makes args and
+    kwargs containing most compatible iterables.
 
     Examples:
         >>> separate_args_kwargs(
@@ -123,9 +126,21 @@ class Rolling(R):
         super().__init__(obj, window_size)
 
     def learn_one(self, *args: Any, **kwargs: Any) -> None:  # noqa: ANN401
+        """Update the rolling window with a single sample.
+
+        Args:
+            *args: Positional arguments forwarded to the wrapped object's ``update``.
+            **kwargs: Keyword arguments forwarded to the wrapped object's ``update``.
+        """
         self.update(*args, **kwargs)
 
     def update_many(self, *args: Any, **kwargs: Any) -> None:  # noqa: ANN401
+        """Update the rolling window with a batch of samples, reverting stale ones first.
+
+        Args:
+            *args: Positional arguments where the first defines the batch size.
+            **kwargs: Keyword arguments forwarded to the wrapped object's ``update_many``.
+        """
         # First arg defines the number of samples to update
         n_update = (
             len(args[0]) if len(args) > 0 else len(next(iter(kwargs.values())))
@@ -179,4 +194,10 @@ class Rolling(R):
             self.window.append(sample)
 
     def learn_many(self, *args: Any, **kwargs: Any) -> None:  # noqa: ANN401
+        """Update the rolling window with a batch of samples (alias for ``update_many``).
+
+        Args:
+            *args: Positional arguments forwarded to ``update_many``.
+            **kwargs: Keyword arguments forwarded to ``update_many``.
+        """
         self.update_many(*args, **kwargs)

@@ -1,3 +1,5 @@
+"""Dataset loaders for anomaly detection benchmarks."""
+
 import logging
 import os
 from pathlib import Path
@@ -13,6 +15,19 @@ _TIMEOUT = 30
 
 
 def load_dateset(file_path: str, url: str, save: bool = False) -> np.ndarray:
+    """Load a numeric dataset from a local file or download it from a URL.
+
+    Args:
+        file_path: Path to the local file. Read directly if it exists.
+        url: Remote URL to download the dataset from when the file is absent.
+        save: Persist the downloaded data to ``file_path`` when True.
+
+    Returns:
+        One-dimensional array of floats parsed from the dataset.
+
+    Raises:
+        ValueError: If the HTTP response status code is not 200.
+    """
     # Check if the file exists
     if Path(file_path).exists():
         # Read the data from the file into a numpy array
@@ -46,6 +61,11 @@ def load_dateset(file_path: str, url: str, save: bool = False) -> np.ndarray:
 
 
 def load_nprs43() -> np.ndarray:
+    """Load the NPRS43 time-series benchmark dataset.
+
+    Returns:
+        One-dimensional array containing the NPRS43 signal.
+    """
     return load_dateset(
         "data/nprs/nprs43.txt",
         "https://www.cs.ucr.edu/~eamonn/discords/nprs43.txt",
@@ -54,6 +74,11 @@ def load_nprs43() -> np.ndarray:
 
 
 def load_nprs44() -> np.ndarray:
+    """Load the NPRS44 time-series benchmark dataset.
+
+    Returns:
+        One-dimensional array containing the NPRS44 signal.
+    """
     return load_dateset(
         "data/nprs/nprs44.txt",
         "https://www.cs.ucr.edu/~eamonn/discords/nprs44.txt",
@@ -62,6 +87,16 @@ def load_nprs44() -> np.ndarray:
 
 
 def load_cats(resample_s: None | int = None) -> pd.DataFrame:
+    """Load the CATS multivariate time-series dataset.
+
+    Downloads and caches the dataset as a CSV on first call.
+
+    Args:
+        resample_s: Resample period in seconds. No resampling when None.
+
+    Returns:
+        DataFrame with a DatetimeIndex and one column per sensor.
+    """
     file_path: str = "data/cats/data.csv"
     url = "https://zenodo.org/records/7646897/files/data.parquet"
 
@@ -73,14 +108,11 @@ def load_cats(resample_s: None | int = None) -> pd.DataFrame:
         def download_and_read_parquet_with_progress(url: str) -> pd.DataFrame:
             """Download and cache a Parquet file from the given URL.
 
-            Parameters
-            ----------
-                url (str): The URL of the Parquet file to download and read.
+            Args:
+                url: The URL of the Parquet file to download and read.
 
-            Returns
-            -------
-                pandas DataFrame: The DataFrame containing the data from the Parquet file.
-
+            Returns:
+                DataFrame containing the data from the Parquet file.
             """
             from io import BytesIO
 
@@ -124,6 +156,17 @@ def load_cats(resample_s: None | int = None) -> pd.DataFrame:
 
 
 def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
+    """Load the SKAB benchmark dataset from a local directory or GitHub.
+
+    Downloads all CSV files from the SKAB repository on first call and
+    organises them by sub-folder name.
+
+    Args:
+        file_path: Root directory where SKAB data is stored or will be saved.
+
+    Returns:
+        Mapping from sub-folder name to a list of DataFrames, one per CSV file.
+    """
     from urllib.parse import urlparse
 
     url = "https://api.github.com/repos/waico/SKAB/contents/data"
@@ -194,6 +237,21 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
 def load_usp(
     file_path: str = "data/usp-stream-data",
 ) -> dict[str, pd.DataFrame]:
+    """Load the USP stream benchmark dataset from ARFF files.
+
+    Reads all ``.arff`` files found under ``file_path`` and converts them to
+    numeric DataFrames with a unified ``class`` column.
+
+    Args:
+        file_path: Root directory containing the extracted USP dataset.
+
+    Returns:
+        Mapping from dataset name to the corresponding numeric DataFrame.
+
+    Raises:
+        NotImplementedError: If the dataset directory does not exist (automatic
+            download is not implemented; the user must download it manually).
+    """
     from scipy.io.arff import loadarff
     from tqdm import tqdm
 
@@ -273,6 +331,14 @@ def load_usp(
 
 
 def load_bess() -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Load the KOKAM BESS normalised dataset and ground-truth labels.
+
+    Downloads the CSV files from GitHub on first call and caches them locally.
+
+    Returns:
+        Tuple of (features DataFrame, ground-truth DataFrame), both indexed by
+        datetime.
+    """
     folder_path: str = "data/kokam"
     X_path: str = f"{folder_path}/kokam_norm.csv"
     y_path: str = f"{folder_path}/kokam_ground_truth.csv"

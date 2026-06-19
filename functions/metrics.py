@@ -196,7 +196,8 @@ def extract_cp_confusion_matrix(
 
     Returns:
         dict: A dictionary containing:
-            - 'TPs' (dict): Dictionary of true positives with window indices as keys and lists of [start, predicted, end] times as values.
+            - 'TPs' (dict): Dictionary of true positives with window indices as keys and lists of
+              [start, predicted, end] times as values.
             - 'FPs' (list): List of false positive timestamps.
             - 'FNs' (list): List of false negative window indices or timestamps.
 
@@ -278,6 +279,15 @@ def confusion_matrix(
     true: pd.Series,
     prediction: pd.Series,
 ) -> tuple[Any, Any, Any, Any]:
+    """Compute binary confusion matrix counts from ground-truth and predicted labels.
+
+    Args:
+        true: Ground-truth binary labels (1 for positive).
+        prediction: Predicted binary labels (1 for positive).
+
+    Returns:
+        Tuple of (TP, TN, FP, FN) counts.
+    """
     true_ = true == 1
     prediction_ = prediction == 1
     TP = (true_ & prediction_).sum()
@@ -399,7 +409,8 @@ def single_evaluate_nab(
             If not "improved", an exception is raised.
         scale_koef (int, optional):
             The scaling coefficient. Default is 1.
-            1 - depends on the relative step, which means that if there are too many points in the scoring window, the difference will be too large.
+            1 - depends on the relative step, which means that if there are too many points in the scoring window,
+            the difference will be too large.
             too many points in the scoring window, the drop will be too
             stiff in the middle.
             2- the leftmost point is not equal to Atp and the right is not equal to Afp.
@@ -492,12 +503,18 @@ def chp_score(
             Can be in various formats:
             - pd.Series with binary int labels (1 is anomaly, 0 is not anomaly)
             - list of pd.Series with binary int labels for multiple datasets
-        metric (str): Metric to use for evaluation. Options are {'nab', 'binary', 'average_time', 'confusion_matrix'}. Default is 'nab'.
-        window_width (str): Width of detection window as a pd.Timedelta string. Default is None.
-        portion (float): Portion of the width of the length of prediction divided by the number of real CPs in the dataset. Default is 0.1.
-        anomaly_window_destination (str): Location of the detection window relative to the anomaly. Options are {'lefter', 'righter', 'center'}. Default is 'lefter'.
-        clear_anomalies_mode (bool): If True, only the first value inside the detection window is taken. If False, only the last value inside the detection window is taken. Default is True.
-        intersection_mode (str): How to handle overlapping detection windows. Options are {'cut left window', 'cut right window', 'both'}. Default is 'cut right window'.
+        metric (str): Metric to use for evaluation. Options are {'nab', 'binary', 'average_time',
+            'confusion_matrix'}. Default is 'nab'.
+        window_width (str): Width of detection window as a pd.Timedelta string.
+            Default is None.
+        portion (float): Portion of the width of the length of prediction divided by the number of real CPs in
+            the dataset. Default is 0.1.
+        anomaly_window_destination (str): Location of the detection window relative to the anomaly. Options are
+            {'lefter', 'righter', 'center'}. Default is 'lefter'.
+        clear_anomalies_mode (bool): If True, only the first value inside the detection window is taken. If False,
+            only the last value inside the detection window is taken. Default is True.
+        intersection_mode (str): How to handle overlapping detection windows. Options are
+            {'cut left window', 'cut right window', 'both'}. Default is 'cut right window'.
         table_of_coef (pd.DataFrame): Application profiles of NAB metric. Default is None.
         scale_func (str): Scoring function in NAB metric. Options are {'default', 'improved'}. Default is 'improved'.
         scale_koef (float): Smoothing factor for the scoring function. Default is 1.
@@ -506,9 +523,11 @@ def chp_score(
     Returns:
         tuple or dict: Value of the metrics depending on the chosen metric.
             - 'nab': dict with keys 'Standard', 'LowFP', 'LowFN' and corresponding float values.
-            - 'average_time': tuple with average time (float), missing changepoints (int), false positives (int), number of true changepoints (int).
+            - 'average_time': tuple with average time (float), missing changepoints (int), false positives (int),
+              number of true changepoints (int).
             - 'binary': tuple with F1 metric (float), false alarm rate (float), missing alarm rate (float).
-            - 'confusion_matrix': tuple with true positives (int), true negatives (int), false positives (int), false negatives (int).
+            - 'confusion_matrix': tuple with true positives (int), true negatives (int), false positives (int),
+              false negatives (int).
 
     Examples:
         >>> y_true = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]

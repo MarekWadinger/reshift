@@ -1,3 +1,5 @@
+"""Plotting utilities for change-point detection results."""
+
 from typing import TYPE_CHECKING, Literal
 
 import matplotlib.dates as mdates
@@ -15,11 +17,8 @@ if TYPE_CHECKING:
 def is_tex_available() -> bool:
     """Check if LaTeX is available on the system.
 
-    Returns
-    -------
-    bool
+    Returns:
         True if LaTeX is available, False otherwise.
-
     """
     import shutil
 
@@ -60,20 +59,14 @@ def set_size(
 ) -> tuple[float, float]:
     """Set figure dimensions to avoid scaling in LaTeX.
 
-    Parameters
-    ----------
-    width: float or string
-            Document width in points, or string of predined document type
-    fraction: float, optional
-            Fraction of the height which you wish the figure to occupy
-    subplots: array-like, optional
-            The number of rows and columns of subplots.
+    Args:
+        width: Document width in points, or a predefined document type string
+            (``"article"``, ``"thesis"``, or ``"beamer"``).
+        fraction: Fraction of the width that the figure should occupy.
+        subplots: Number of rows and columns of subplots.
 
-    Returns
-    -------
-    fig_dim: tuple
-            Dimensions of figure in inches
-
+    Returns:
+        Figure dimensions ``(width_in, height_in)`` in inches.
     """
     if width == "article":
         width_pt = 390.0
@@ -121,19 +114,28 @@ def plot_chd(
     axs: np.ndarray | None = None,
     **fig_kwargs: object,
 ) -> tuple[Figure, np.ndarray]:
-    """Plot hange-Point Detection Results.
+    """Plot Change-Point Detection results.
 
     Args:
-        datas: List of data to plot. Each data is plot on a separate subplot.
-        y_true: True change-point locations. Plotted as vertical lines.
-        labels: List of labels for each data.
-        idx_start: Starting index to plot. Plot from the beginning if None.
-        idx_end: Ending index to plot. Plot till the end if None.
-        idx_in_start: Starting index for inlay plot. No inlay plot if None.
-        idx_in_end: Ending index for inlay plot. No inlay plot if None.
-        grace_period: Grace period for change-point. Plots grayed out region where peak of detection could be expected.
-        normalize: Normalize data. If False, no normalization is done.
+        datas: Data series to plot, one per subplot. May be a dict (keys
+            become y-axis labels) or a list.
+        y_true: True change-point locations drawn as vertical lines.
+        labels: Legend label for each data series.
+        idx_start: First index to plot. Defaults to 0 when None.
+        idx_end: Last index to plot (exclusive). Plots to end when None.
+        ids_in_start: Start indices for inlay zoom regions. No inlays when
+            None.
+        ids_in_end: End indices for inlay zoom regions. No inlays when None.
+        grace_period: Offset (in samples) after each change-point shown as a
+            dashed vertical line indicating the expected detection window.
+        normalize: Overlay a twin-axis normalised trace when True.
+        axs: Pre-existing array of ``Axes`` to draw into. A new figure is
+            created when None.
+        **fig_kwargs: Additional keyword arguments forwarded to
+            :func:`set_size` (e.g. ``width``, ``fraction``).
 
+    Returns:
+        Tuple of ``(figure, axes_array)``.
     """
     fig_kwargs_: dict[str, object] = {
         "width": "article",

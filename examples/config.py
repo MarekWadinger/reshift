@@ -1,3 +1,5 @@
+"""Benchmark configuration: datasets, tracks, and model registry for change-detection evaluation."""
+
 from __future__ import annotations
 
 import sys
@@ -57,6 +59,8 @@ class NPDataset(base.Dataset):
 
 
 class ChangeDetectionTrack(Track):
+    """Evaluation track that bundles synthetic step-change datasets."""
+
     def __init__(self) -> None:
         # datasets = [ds.WaterFlow(), ds.WebTraffic(), ds.synth.AnomalySine()]
         datasets = [

@@ -45,10 +45,12 @@ class DMD:
 
     @property
     def C(self) -> np.ndarray:
+        """Return the discrete temporal dynamics (Vandermonde) matrix."""
         return np.vander(self.Lambda, self.n, increasing=True)
 
     @property
     def xi(self) -> np.ndarray:
+        """Return the mode amplitudes computed via sparse L1-regularized optimization."""
         from scipy.optimize import minimize
 
         def objective_function(x: np.ndarray) -> np.floating:
@@ -135,7 +137,20 @@ class DMD:
 
 
 class DMDwC(DMD):
+    """DMD with control inputs (DMDc), optionally with a known actuation matrix B.
+
+    Args:
+        r: Number of modes to retain.
+        B: Known actuation matrix. If ``None``, it is identified from data.
+    """
+
     def __init__(self, r: int, B: np.ndarray | None = None) -> None:
+        """Initialize DMDwC.
+
+        Args:
+            r: Number of modes to retain.
+            B: Known actuation matrix. If ``None``, it is identified from data.
+        """
         super().__init__(r)
         self.B = B
         self.known_B = B is not None
@@ -147,6 +162,16 @@ class DMDwC(DMD):
         Y: np.ndarray | None = None,
         U: np.ndarray | None = None,
     ) -> None:
+        """Fit the DMDwC model to state snapshots and optional control inputs.
+
+        Args:
+            X: State snapshot matrix of shape (n, m).
+            Y: Next-state snapshot matrix of shape (n, m). Derived from X if ``None``.
+            U: Control input matrix of shape (n, l). Falls back to plain DMD if ``None``.
+
+        Raises:
+            ValueError: If X and U have differing numbers of time steps.
+        """
         if U is None:
             super().fit(X, Y)
             return

@@ -139,6 +139,12 @@ def run_rust_pipeline(m: int, r: int, window_size: int, n_samples: int) -> int:
 
 
 def print_results(t_total: int, n_samples: int) -> None:
+    """Print a formatted timing breakdown for the profiled pipeline run.
+
+    Args:
+        t_total: Wall-clock time for the full run in nanoseconds.
+        n_samples: Number of samples processed.
+    """
     print(f"\n{'=' * 70}")
     print(f"Pipeline: {n_samples} samples, total = {t_total / 1e6:.1f} ms")
     print(f"Per sample: {t_total / n_samples / 1e3:.1f} µs")

@@ -1,3 +1,5 @@
+"""Streamlit app for change-point detection in industrial data streams using Online DMD."""
+
 from __future__ import annotations
 
 import datetime
@@ -30,6 +32,7 @@ if TYPE_CHECKING:
 
 # --- Functions ---
 def update_selection_X() -> None:
+    """Sync selected state-variable columns from the multiselect widget."""
     st.session_state.selected_X = st.session_state.multiselect_X
     st.session_state.m = len(st.session_state.selected_X)
     if st.session_state.m > 0:
@@ -39,6 +42,7 @@ def update_selection_X() -> None:
 
 
 def update_selection_U() -> None:
+    """Sync selected control-variable columns from the multiselect widget."""
     st.session_state.selected_U = st.session_state.multiselect_U
     st.session_state.l = len(st.session_state.selected_U)
 
@@ -50,6 +54,18 @@ def progressive_val_predict(
     compute_alt_scores: bool = False,
     _progress_bar: DeltaGenerator | None = None,
 ) -> tuple[np.ndarray, dict[str, np.ndarray]]:
+    """Run prequential (score-then-learn) evaluation over all samples.
+
+    Args:
+        X: State-variable observations, one row per time step.
+        U: Control-variable observations aligned with X.
+        _model: Fitted or partially-fitted detector or pipeline.
+        compute_alt_scores: When True, also record the raw DMD distance diff.
+        _progress_bar: Optional Streamlit progress bar updated each step.
+
+    Returns:
+        Tuple of (anomaly scores array, metadata dict of auxiliary arrays).
+    """
     # CREATE REFERENCE TO LAST STEP OF PIPELINE (TRACK STATE OF MODEL)
     model_ = (
         _model._last_step  # noqa: SLF001  # river Pipeline exposes no public last-step accessor
@@ -91,6 +107,14 @@ def progressive_val_predict(
 
 
 def export_fig(fig: Figure) -> bytes:
+    """Serialize a matplotlib figure to PDF bytes.
+
+    Args:
+        fig: The figure to export.
+
+    Returns:
+        Raw PDF bytes suitable for a file download.
+    """
     buf = BytesIO()
     fig.savefig(buf, format="pdf")
     buf.seek(0)
@@ -103,6 +127,16 @@ def concat_results(
     scores_dmd: np.ndarray,
     scores_dmd_diff: np.ndarray,
 ) -> pd.DataFrame:
+    """Combine state data with DMD anomaly scores into a single DataFrame.
+
+    Args:
+        X: Original state-variable observations.
+        scores_dmd: Per-step Online-DMD anomaly scores.
+        scores_dmd_diff: Per-step DMD distance-difference scores.
+
+    Returns:
+        DataFrame with X columns plus DMD and DMD (diff) score columns.
+    """
     return pd.concat(
         [
             X,
@@ -121,6 +155,18 @@ def plot(
     Y_: np.ndarray | None,
     test_size: int,
 ) -> tuple[Figure, np.ndarray | Axes]:
+    """Render the change-point detection results chart.
+
+    Args:
+        X: State-variable observations.
+        scores_dmd: Online-DMD anomaly scores.
+        scores_dmd_diff: DMD distance-difference scores.
+        Y_: Indices of ground-truth change points, or None if unavailable.
+        test_size: Grace period length passed to the plot helper.
+
+    Returns:
+        Tuple of (matplotlib Figure, axes array or single Axes).
+    """
     fig, axs = plot_chd(
         [X.to_numpy(), scores_dmd.real, scores_dmd_diff.real],
         Y_,
@@ -137,6 +183,17 @@ def compute_metrics(
     scores_dmd: np.ndarray,
     test_size: int,
 ) -> pd.DataFrame:
+    """Compute change-point detection metrics for several detector variants.
+
+    Args:
+        Y: Ground-truth binary labels (1 = change point).
+        scores_dmd: Online-DMD anomaly scores.
+        test_size: Window width (in samples) used for time-tolerant scoring.
+
+    Returns:
+        DataFrame of F1, FAR, MAR, Delay, TP, FN, FP, and NAB scores
+        indexed by detector name.
+    """
     start_date = "2023-01-01 00:00:00"
     date_range = pd.date_range(start=start_date, periods=len(Y), freq="s")
     y_true = pd.Series(Y, index=date_range)
@@ -228,6 +285,14 @@ def compute_metrics(
 
 @st.cache_data
 def export_df(df: pd.DataFrame) -> bytes:
+    """Encode a DataFrame as UTF-8 CSV bytes for download.
+
+    Args:
+        df: DataFrame to serialize.
+
+    Returns:
+        UTF-8 encoded CSV bytes.
+    """
     return df.to_csv().encode("utf-8")
 
 

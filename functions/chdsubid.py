@@ -28,6 +28,18 @@ def get_default_timedelays(
     h: int,
     n_features_max: int | None = None,
 ) -> tuple[int, int]:
+    """Compute default time-delay embedding parameters from window half-length.
+
+    Args:
+        h: Half the window size, used as the maximum number of time delays.
+        n_features_max: Maximum number of features in the Hankel matrix. When
+            provided, the number of delays and step size are adjusted so the
+            embedded matrix does not exceed this column budget.
+
+    Returns:
+        Tuple of (number of delays, step size).
+
+    """
     if n_features_max is None:
         return h, 1
     if h < n_features_max:
@@ -52,7 +64,9 @@ def get_default_rank(
         int: Default rank
 
     References:
-        [1] Gavish, M., and Donoho L. D. (2014). The Optimal Hard Threshold for Singular Values is 4/sqrt(3). IEEE Transactions on Information Theory 60.8 (2014): 5040-5053. doi:[10.1109/TIT.2014.2323359](https://doi.org/10.1109/TIT.2014.2323359).
+        [1] Gavish, M., and Donoho L. D. (2014). The Optimal Hard Threshold for Singular Values is 4/sqrt(3). IEEE
+        Transactions on Information Theory 60.8 (2014): 5040-5053.
+        doi:[10.1109/TIT.2014.2323359](https://doi.org/10.1109/TIT.2014.2323359).
 
     """
     n, m = X.shape
@@ -98,7 +112,9 @@ def get_default_params(
         window_size (int): Window size. What kind of structural changes are we looking for?
 
     References:
-        [2] Moskvina, V., & Zhigljavsky, A. (2003). An Algorithm Based on Singular Spectrum Analysis for Change-Point Detection. Communications in Statistics - Simulation and Computation, 32(2), 319-352. doi:[10.1081/SAC-120017494](https://doi.org/10.1081/SAC-120017494).
+        [2] Moskvina, V., & Zhigljavsky, A. (2003). An Algorithm Based on Singular Spectrum Analysis for Change-Point Detection.
+        Communications in Statistics - Simulation and Computation, 32(2), 319-352.
+        doi:[10.1081/SAC-120017494](https://doi.org/10.1081/SAC-120017494).
 
     """
     if window_size == 0:
@@ -129,7 +145,9 @@ def get_default_params(
 class SubIDChangeDetector(AnomalyDetector):
     """Change-Point Detection on Subspace Identification.
 
-    This class implements a change-point detection algorithm based on subspace identification. It uses a subspace identification algorithm to transform the data and then computes the distance between the original data and the transformed data. The distance is then used to detect changes in the data distribution.
+    This class implements a change-point detection algorithm based on subspace identification. It uses a subspace
+    identification algorithm to transform the data and then computes the distance between the original data and the
+    transformed data. The distance is then used to detect changes in the data distribution.
 
     Args:
         subid (MiniBatchTransformer | Transformer | Rolling): Subspace identification algorithm
@@ -209,6 +227,14 @@ class SubIDChangeDetector(AnomalyDetector):
 
     @property
     def distances(self) -> tuple[complex, complex]:
+        """Return the per-sample reconstruction distances for the reference and test windows.
+
+        Returns:
+            Tuple of (D_train, D_test) where each value is the mean reconstruction
+            distance over the respective window. Returns (1+0j, 1+0j) when there is
+            insufficient data or the grace period has not elapsed.
+
+        """
         if self._distances is None:
             # Do inference after grace period and enough data is available
             lenght_X = len(self._X)
@@ -245,6 +271,12 @@ class SubIDChangeDetector(AnomalyDetector):
 
     @property
     def drift_detected(self) -> bool:
+        """Indicate whether a change-point has been detected.
+
+        Returns:
+            True when the anomaly score exceeds the threshold, False otherwise.
+
+        """
         if self._drift_detected is None:
             drift_detected = self.score > self.threshold
             self._drift_detected = drift_detected
@@ -254,6 +286,12 @@ class SubIDChangeDetector(AnomalyDetector):
 
     @property
     def score(self) -> float:
+        """Compute the anomaly score as the relative increase in reconstruction error.
+
+        Returns:
+            Non-negative float; values above ``threshold`` indicate a change-point.
+
+        """
         if self._score is None:
             # Under some circumstances score < 0
             #  - lower test noise
@@ -288,7 +326,10 @@ class SubIDChangeDetector(AnomalyDetector):
     def _compute_distance(self, X: pd.DataFrame, X_t: pd.DataFrame) -> float:
         """Compute the distance between the data matrix and its transformation.
 
-        This formulation computes a measure of how much information in the dataset represented by Y is preserved or retained when projected onto the space spanned by W. The difference between the covariance matrix of Y and the projected version is computed, and the sum of all elements in this difference matrix gives an overall measure of dissimilarity or distortion.
+        This formulation computes a measure of how much information in the dataset represented by Y is preserved or
+        retained when projected onto the space spanned by W. The difference between the covariance matrix of Y and the
+        projected version is computed, and the sum of all elements in this difference matrix gives an overall measure
+        of dissimilarity or distortion.
 
         Args:
             X: data matrix
@@ -299,7 +340,7 @@ class SubIDChangeDetector(AnomalyDetector):
 
         """
         # Project the transformed data to the original space
-        #  Similar scores are obtained combining this step with 2 norm and without projection and differencing covariances. Latter is less expensive
+        #  Similar scores are obtained combining this step with 2 norm and without projection and differencing covariances. Latter is less expensive  # noqa: W505
         # if hasattr(self.subid, "modes"):
         #     X_p = X_t @ self.subid.modes.T
         # elif hasattr(self.subid, "_U"):
@@ -361,6 +402,13 @@ class SubIDChangeDetector(AnomalyDetector):
 
     @property
     def learn_delay(self) -> int:
+        """Return the effective number of samples between observation and learning.
+
+        Returns:
+            Number of samples that must be buffered before a new observation is
+            used to update the subspace model.
+
+        """
         if self.start_soon:
             delay = max(0, len(self._X) - self._learn_delay)
         else:
@@ -368,6 +416,13 @@ class SubIDChangeDetector(AnomalyDetector):
         return delay
 
     def learn_many(self, X: pd.DataFrame, **params: Any) -> None:  # noqa: ANN401
+        """Update the subspace model with a mini-batch of observations.
+
+        Args:
+            X: DataFrame of new observations, one row per time step.
+            **params: Extra keyword arguments forwarded to the underlying model.
+
+        """
         n = len(X)
         # If buffer is too small, learn in chunks
         buffer_len = self.ref_size + self.lag + self.test_size
@@ -405,9 +460,25 @@ class SubIDChangeDetector(AnomalyDetector):
         self.n_seen += n
 
     def predict_one(self) -> bool | None:
+        """Return the cached drift detection result without consuming a new sample.
+
+        Returns:
+            True if drift was detected on the last scored sample, False if not,
+            or None when no score has been computed yet.
+
+        """
         return self._drift_detected
 
     def score_one(self, x: dict) -> float:
+        """Score a single observation without permanently updating the buffer.
+
+        Args:
+            x: Feature dictionary for the new observation.
+
+        Returns:
+            Anomaly score; values above ``threshold`` indicate a change-point.
+
+        """
         # Temporarily add the new sample to the buffer
         self._X.append(x)
 
@@ -419,6 +490,13 @@ class SubIDChangeDetector(AnomalyDetector):
         return score
 
     def update(self, x: dict, **params: Any) -> None:  # noqa: ANN401
+        """Append one observation and update the subspace model when ready.
+
+        Args:
+            x: Feature dictionary for the new observation.
+            **params: Extra keyword arguments forwarded to the underlying model.
+
+        """
         self._X.append(x)
         # Learn the model if data past the time lag and test size is availabe
         # If learn_after_grace is False learn only when grace period is not yet over

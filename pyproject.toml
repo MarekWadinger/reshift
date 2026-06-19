@@ -49,37 +49,34 @@ lint.ignore = [
     # data is regenerated. np.random.default_rng(seed) yields a different stream
     # than np.random.seed()+np.random.normal(), so migrating now would change the
     # seeded synthetic datasets and invalidate committed results/figures.
-    "NPY002",  # legacy RNG kept for reproducibility
-    "N802",
-    "N803",
-    "N806",
-    "N816",
-    "N817",    # math uses uppercase identifiers
-    "D100",
-    "D101",
-    "D102",
-    "D103",
-    "D104",
-    "D105",
-    "D107",    # docstrings optional
-    "D401",
-    "D404",
-    "D417",    # docstring style
-    "ERA001",  # commented-out research scratch
-    "E501",    # line length (doctests/notebooks)
-    "FBT001",
-    "FBT002",
-    "FBT003",  # boolean args
-    "FIX002",  # line-contains-todo (TODOs are tracked)
-    "S101",    # assert
-    "PLR2004", # magic values
-    "PLR0912",
-    "PLR0913",
-    "PLR0915",
-    "C901",    # complexity
-    "INP001",  # implicit namespace package
-    "PLC0415", # intentional lazy imports
+    "NPY002",  # legacy RNG kept for reproducibility (see TODO above)
+    "N802",    # function names use math notation (e.g. C(), A())
+    "N803",    # argument names use math notation (X, U, Y)
+    "N806",    # local vars use math notation (X, A, U, S, V)
+    "N816",    # mixed-case math vars at module scope
+    "N817",    # acronym imports (e.g. Rolling as R)
+    "D105",    # magic-method docstrings optional
+    "D107",    # __init__ documented via the class docstring
+    "D401",    # imperative-mood first line not enforced
+    "D404",    # allow docstrings beginning with "This"
+    "D417",    # partial Args lists allowed (don't require every param)
+    "ERA001",  # commented-out code kept as research scratch
+    "E501",    # code line length (doctests/notebooks exceed 79)
+    "FBT001",  # boolean positional arg in function definition
+    "FBT002",  # boolean default positional arg
+    "FBT003",  # boolean positional value in call
+    "FIX002",  # line contains TODO (TODOs are tracked via issues)
+    "S101",    # assert used for runtime invariants
+    "PLR2004", # magic-value comparison (numeric constants are inherent)
+    "PLR0912", # too many branches (algorithmic code)
+    "PLR0913", # too many arguments (model/config constructors)
+    "PLR0915", # too many statements (algorithmic code)
+    "C901",    # function too complex (algorithmic code)
+    "INP001",  # implicit namespace package (no __init__ needed)
+    "PLC0415", # intentional lazy imports (optional/heavy deps)
 ]
+lint.pycodestyle.max-doc-length = 129
+lint.pycodestyle.max-line-length = 79
 
 # T201/T203 (print): prints are the output medium in notebooks and the
 # benchmark report script — allowed there, enforced everywhere else.
@@ -88,6 +85,10 @@ lint.ignore = [
 [tool.ruff.lint.per-file-ignores]
 "*.ipynb" = ["T201", "T203", "SLF001"]
 "benchmarks/*" = ["T201", "T203"]
+
+# Codebase uses Google-style docstrings (Args:/Returns:/Raises:).
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.coverage.run]
 omit = ["tests/*"]

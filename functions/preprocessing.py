@@ -1,3 +1,5 @@
+"""Preprocessing utilities for Hankelization and feature construction."""
+
 import itertools
 from typing import Any, Literal
 
@@ -57,12 +59,25 @@ class Hankelizer(H):
         self.transform_track: list[dict] = []
 
     def learn_many(self, X: pd.DataFrame) -> None:
+        """Learn from a batch of samples and record the transformation track.
+
+        Args:
+            X: Input DataFrame of shape (n_samples, n_features).
+        """
         self.transform_track = []
         for x in X.to_dict(orient="records"):
             self.learn_one(x)
             self.transform_track.append(self.transform_one(x))
 
     def transform_many(self, X: pd.DataFrame) -> pd.DataFrame:
+        """Transform a batch of samples using the recorded transformation track.
+
+        Args:
+            X: Input DataFrame of shape (n_samples, n_features).
+
+        Returns:
+            Transformed DataFrame with Hankel-delayed features.
+        """
         # if transform_track is empty, it means that the transform is called first
         # so we need to learn the data first and reset the state
         if not self.transform_track:
@@ -74,6 +89,14 @@ class Hankelizer(H):
 
 
 def normalize(x: Any) -> np.ndarray:  # noqa: ANN401
+    """Normalize an array to the range [0, 1] using min-max scaling.
+
+    Args:
+        x: Input array-like to normalize.
+
+    Returns:
+        Array scaled to [0, 1].
+    """
     return (x - np.nanmin(x)) / (np.nanmax(x) - np.nanmin(x))
 
 
@@ -164,6 +187,15 @@ def hankel(
 
 
 def polynomial_extension(df: pd.DataFrame, degree: int) -> pd.DataFrame:
+    """Extend a DataFrame with polynomial feature combinations up to a given degree.
+
+    Args:
+        df: Input DataFrame whose columns are used to generate polynomial terms.
+        degree: Maximum polynomial degree for feature combinations.
+
+    Returns:
+        DataFrame containing all polynomial feature combinations up to ``degree``.
+    """
     poly_features = pd.DataFrame()
 
     # Iterate over the combinations of columns up to the specified degree
