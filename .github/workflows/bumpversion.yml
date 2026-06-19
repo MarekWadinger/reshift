@@ -2,7 +2,7 @@ name: Bump version
 
 on:
   workflow_run:
-    workflows: ["ci"]
+    workflows: ["Code Quality and Tests"]  # the name: in ci.yml, not the filename
     branches: [main]
     types:
       - completed
@@ -20,12 +20,20 @@ jobs:
         with:
           fetch-depth: 0
           token: "${{ secrets.COMMITIZEN_TOKEN }}"
+      - name: Detect bumpable commits
+        id: bump_check
+        continue-on-error: true
+        run: |
+          pipx install commitizen
+          cz bump --dry-run
       - name: Create bump and changelog
+        if: steps.bump_check.outcome == 'success'
         uses: commitizen-tools/commitizen-action@master
         with:
           github_token: ${{ secrets.COMMITIZEN_TOKEN }}
           changelog_increment_filename: body.md
       - name: Release
+        if: steps.bump_check.outcome == 'success'
         uses: ncipollo/release-action@v1
         with:
           tag: v${{ env.REVISION }}
