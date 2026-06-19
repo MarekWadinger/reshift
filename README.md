@@ -14,7 +14,7 @@
 
 <p align="center">
   <a href="https://github.com/MarekWadinger/reshift/actions/workflows/ci.yml"><img src="https://github.com/MarekWadinger/reshift/actions/workflows/ci.yml/badge.svg" alt="Quality and Tests"></a>
-  <a href="https://codecov.io/gh/MarekWadinger/reshift"><img src="https://codecov.io/gh/MarekWadinger/reshift/branch/main/graph/badge.svg?token=BIS0A7CF1F" alt="codecov"></a>
+  <a href="https://codecov.io/gh/MarekWadinger/reshift"><img src="https://codecov.io/gh/MarekWadinger/reshift/branch/main/graph/badge.svg" alt="codecov"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
   <img src="https://img.shields.io/badge/python-3.14+-blue.svg" alt="Python 3.14+">
   <a href="https://arxiv.org/abs/2407.05976"><img src="https://img.shields.io/badge/arXiv-2407.05976-b31b1b.svg" alt="arXiv"></a>
