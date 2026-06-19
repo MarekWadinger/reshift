@@ -45,7 +45,6 @@ extend-exclude = ["vendor"]
 lint.select = ["ALL"]
 lint.ignore = [
     # === Backlog: being fixed group-by-group; removed as each is resolved ===
-    "TD002", "TD003",
     "PGH003",
     "SLF001",  # pending: per-line noqa or public-accessor improvement
     # === Permanent: inappropriate for numerical/research code ===

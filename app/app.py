@@ -157,7 +157,7 @@ def compute_metrics(
         "Online DMD": pd.Series(scores_dmd > 0.25, index=date_range),
     }
 
-    # TODO: Seems like the window width is not aligned correctly with index
+    # TODO(MarekWadinger): window width not aligned correctly with index (#9)
     window_params = {
         "valid": {
             "window_width": f"{test_size}s",
@@ -391,7 +391,7 @@ if submit_params:
     runtime_info = st.info("Preparing run")
     X = df[st.session_state.selected_X]
     U = df[st.session_state.selected_U]
-    # TODO: enable hankelization of us on the fly
+    # TODO(MarekWadinger): enable hankelization of us on the fly (#8)
     U_ = pd.DataFrame(hankel(U, hn=hl))
 
     # Initialize Hankelizer

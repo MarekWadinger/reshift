@@ -146,7 +146,7 @@ class Rolling(R):
             self.obj.update(*args, **kwargs)
 
         # Check if all the lengths are the same
-        # TODO: for args and kwargs with different length (should be always 1)
+        # TODO(MarekWadinger): handle args/kwargs of differing length (should be 1) (#14)
         #  we need to append it to every sample. This is the case of weights...
         args_ids = [
             i

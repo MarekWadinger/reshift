@@ -80,7 +80,7 @@ class DMD:
         self.Lambda, W = np.linalg.eig(self.A_bar)
 
         # Compute the coefficient matrix
-        # TODO: Find out whether to use X or Y (X usage ~ u @ W obviously)
+        # TODO(MarekWadinger): clarify whether to use X or Y (X usage ~ u @ W) (#13)
         # self.Phi = X @ v[: r, :].conj().T @ np.diag(sigma_inv) @ W
         self.Phi = u_ @ W
         # self.A = self.Phi @ np.diag(self.Lambda) @ np.linalg.pinv(self.Phi)

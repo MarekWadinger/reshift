@@ -179,7 +179,7 @@ class SubIDChangeDetector(AnomalyDetector):
         assert self.test_size + self.lag >= 0
         self._learn_delay = self.lag + self.test_size
         # assert self.grace_period < self.test_size
-        # TODO: basically grace period should be omitted and detection start once Transformer is fitted
+        # TODO(MarekWadinger): omit grace period; start detection once Transformer is fitted (#11)
         self.grace_period = grace_period
         self.learn_after_grace = learn_after_grace
         self.start_soon = start_soon
@@ -247,13 +247,13 @@ class SubIDChangeDetector(AnomalyDetector):
             #  - ...
             D_train, D_test = self.distances
             score = (D_test / D_train) - 1
-            # TODO: explore interesting scoring option
-            # TODO: explore weighting of individual terms
+            # TODO(MarekWadinger): explore interesting scoring option (#12)
+            # TODO(MarekWadinger): explore weighting of individual terms (#12)
             # score = D_train - D_test
-            # TODO: figure out proper way of utilizing imaginary part of score
+            # TODO(MarekWadinger): utilize imaginary part of score properly (#12)
             if isinstance(score, complex):
                 score: float = score.real + np.abs(score.imag)
-            # TODO: comment on score shawing
+            # TODO(MarekWadinger): document score shaping (#12)
             score = max(score, 0.0)
             self._score = score
         else:
