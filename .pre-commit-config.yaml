@@ -1,6 +1,8 @@
 # https://pre-commit.com
 default_install_hook_types:
   - pre-commit
+  - pre-push
+  - commit-msg
   - post-checkout
   - post-merge
   - post-rewrite
@@ -35,7 +37,7 @@ repos:
       - id: mixed-line-ending
         stages: [pre-commit]
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: "v0.48.0"
+    rev: "v0.49.0"
     hooks:
       - id: markdownlint
         args: ["-f", "--disable", "MD051", "--disable", "MD013"]
@@ -46,14 +48,13 @@ repos:
         name: ruff
         entry: uv run ruff check
         language: system
-        args: [--fix, --exit-non-zero-on-fix, --line-length=79]
+        args: [--fix, --exit-non-zero-on-fix]
         types_or: [python, pyi, jupyter]
         stages: [pre-commit]
       - id: ruff-format
         name: ruff-format
         entry: uv run ruff format
         language: system
-        args: [--line-length=79]
         types_or: [python, pyi, jupyter]
         stages: [pre-commit]
       - id: ty
@@ -61,19 +62,6 @@ repos:
         entry: uv run ty check
         language: system
         types_or: [python, pyi, jupyter]
-        stages: [pre-commit]
-      - id: eslint
-        name: eslint
-        entry: npx --prefix frontend eslint --config frontend/eslint.config.js --max-warnings=0
-        language: system
-        files: ^frontend/src/.*\.(ts|tsx)$
-        stages: [pre-commit]
-      - id: prettier
-        name: prettier
-        entry: npx --prefix frontend prettier --write --list-different
-        language: system
-        files: ^frontend/.*\.(ts|tsx|css|json)$
-        exclude: (package-lock\.json|tsconfig.*\.json)$
         stages: [pre-commit]
   - repo: local
     hooks:
@@ -94,13 +82,33 @@ repos:
           - --pin-patterns
           - "[pin];[donotremove]"
         stages: [pre-push]
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.13.9
+  - repo: local
     hooks:
       - id: commitizen
+        name: commitizen
+        entry: uv run cz check --commit-msg-file
+        language: system
         stages: [commit-msg]
+        pass_filenames: true
+  - repo: https://github.com/MarekWadinger/doc-checks
+    rev: v0.4.0
+    hooks:
+      - id: doc-check-make-refs
+        stages: [pre-commit]
+      - id: doc-check-cd-refs
+        stages: [pre-commit]
+      - id: doc-check-py-imports
+        stages: [pre-commit]
+      - id: doc-check-trees
+        stages: [pre-commit]
+      - id: doc-check-env-vars
+        stages: [pre-commit]
+      - id: doc-check-endpoints
+        stages: [pre-commit]
+      - id: doc-check-mermaid
+        stages: [pre-commit]
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.2
+    rev: 0.11.22
     hooks:
       - id: uv-sync
         args: ["--frozen"]
