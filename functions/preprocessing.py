@@ -131,7 +131,7 @@ def hankel(
     if isinstance(X, pd.DataFrame):
         feature_names_in_ = X.columns
         index_in_ = X.index
-        X = X.values
+        X = X.to_numpy()
     else:
         feature_names_in_ = None
 

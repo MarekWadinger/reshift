@@ -119,7 +119,7 @@ def plot(
     test_size: int,
 ) -> tuple[Figure, np.ndarray | Axes]:
     fig, axs = plot_chd(
-        [X.values, scores_dmd.real, scores_dmd_diff.real],
+        [X.to_numpy(), scores_dmd.real, scores_dmd_diff.real],
         Y_,
         labels=["X", "DMD", "DMD (diff)"],
         grace_period=test_size,
@@ -450,7 +450,7 @@ if submit_params:
     runtime_info.info("Plotting results ...")
     # Plot results
     if data_gt:
-        Y: np.ndarray | None = df_gt.iloc[:, 0].values
+        Y: np.ndarray | None = df_gt.iloc[:, 0].to_numpy()
         Y_: np.ndarray | None = np.where(Y == 1)[0]
     else:
         Y = None

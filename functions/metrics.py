@@ -621,7 +621,8 @@ def chp_score(
                 )
             elif input_variant == 1:
                 assert all(
-                    dataset.index.values == dataset.sort_index().index.values,
+                    dataset.index.to_numpy()
+                    == dataset.sort_index().index.to_numpy(),
                 )
 
     check_sort(true, input_variant)

@@ -315,7 +315,9 @@ class SubIDChangeDetector(AnomalyDetector):
         # # 2-norm is n_features insensitive
         # Q = np.sum(np.linalg.norm(X.values - X_t.values, axis=0, ord=2))
         # # 1-norm is n_measurements sensitive
-        return np.sum(np.linalg.norm(X.values - X_t.values, axis=0, ord=1))
+        return np.sum(
+            np.linalg.norm(X.to_numpy() - X_t.to_numpy(), axis=0, ord=1),
+        )
         # # Overall Similarity - divided by number of measurements, corresponds to magnitude of change
         # Q = np.linalg.norm(X.values - X_t.values, ord=1).real
 
