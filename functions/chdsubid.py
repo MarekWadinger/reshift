@@ -1,7 +1,7 @@
 """Change Detection based on Subspace Identification algorithm."""
 
 from collections import deque
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast, overload
 
 import numpy as np
 import pandas as pd
@@ -71,6 +71,20 @@ def get_default_rank(
     return sum(s > tau)
 
 
+@overload
+def get_default_params(
+    X: np.ndarray,
+    U: None = None,
+    window_size: int = 0,
+    max_rank: int = 10,
+) -> tuple[int, int, int, int, int]: ...
+@overload
+def get_default_params(
+    X: np.ndarray,
+    U: np.ndarray,
+    window_size: int = 0,
+    max_rank: int = 10,
+) -> tuple[int, int, int, int, int, int]: ...
 def get_default_params(
     X: np.ndarray,
     U: np.ndarray | None = None,
@@ -466,7 +480,7 @@ class DMDChangeDetector(SubIDChangeDetector):
 
     def _transform_many(self, X: pd.DataFrame) -> pd.DataFrame:
         if isinstance(self.subid, Rolling):
-            subid_: Transformer = self.subid.obj  # type: ignore
+            subid_ = cast("Transformer", self.subid.obj)
         else:
             subid_ = self.subid
         if hasattr(subid_, "A_allclose") and subid_.A_allclose:

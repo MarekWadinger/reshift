@@ -135,12 +135,12 @@ class Rolling(R):
             args_kwargs = [self.window[i] for i in range(n_revert)]
             args_old, kwargs_old = separate_args_kwargs(args_kwargs)
             if hasattr(self.obj, "revert_many"):
-                self.obj.revert_many(*args_old, **kwargs_old)  # type: ignore
+                self.obj.revert_many(*args_old, **kwargs_old)  # ty: ignore[call-non-callable]
             else:
                 # In this case revert should support multiple samples
                 self.obj.revert(*args_old, **kwargs_old)
         if hasattr(self.obj, "update_many"):
-            self.obj.update_many(*args, **kwargs)  # type: ignore
+            self.obj.update_many(*args, **kwargs)  # ty: ignore[call-non-callable]
         else:
             # In this case update should support multiple samples
             self.obj.update(*args, **kwargs)

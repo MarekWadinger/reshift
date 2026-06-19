@@ -20,7 +20,7 @@ from functions.rolling import Rolling
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-DriftDetector.score_one = DriftDetector.drift_detected  # type: ignore
+DriftDetector.score_one = DriftDetector.drift_detected  # ty: ignore[unresolved-attribute]
 
 
 FILE_DIR = str(Path(__file__).resolve().parent)
