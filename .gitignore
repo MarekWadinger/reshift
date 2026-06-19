@@ -58,6 +58,7 @@ docs/reference/
 !*.gitignore
 !*.github
 !*.gitattributes
+!.gitmodules
 
 # LaTeX
 *.aux

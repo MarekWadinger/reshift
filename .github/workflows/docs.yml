@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@main
+        with:
+          submodules: recursive
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5

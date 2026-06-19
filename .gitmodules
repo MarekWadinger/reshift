@@ -1,0 +1,4 @@
+[submodule "vendor/river"]
+	path = vendor/river
+	url = https://github.com/MarekWadinger/river.git
+	branch = feat/rust-rolling-dmd
