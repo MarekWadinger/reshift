@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#change-point-detection-based-on-online-dmd-with-control" class="md-skip">
+        <a href="#highlights" class="md-skip">
           Skip to content
         </a>
       
@@ -332,8 +332,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -376,8 +374,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -386,10 +382,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#features" class="md-nav__link">
+  <a href="#highlights" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🚀 Features
+        Highlights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
       
     </span>
   </a>
@@ -555,8 +562,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -565,10 +570,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#features" class="md-nav__link">
+  <a href="#highlights" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🚀 Features
+        Highlights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
       
     </span>
   </a>
@@ -654,20 +670,42 @@
 
 
 <!-- markdownlint-disable MD041 -->
-<h1 id="change-point-detection-based-on-online-dmd-with-control">Change-Point Detection based on Online DMD with Control<a class="headerlink" href="#change-point-detection-based-on-online-dmd-with-control" title="Permanent link">&para;</a></h1>
-<p><a href="https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml"><img alt="Quality and Tests" src="https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml/badge.svg" /></a>
-<a href="https://codecov.io/gh/MarekWadinger/odmd-subid-cpd"><img alt="codecov" src="https://codecov.io/gh/MarekWadinger/odmd-subid-cpd/branch/main/graph/badge.svg?token=BIS0A7CF1F" /></a></p>
-<p>As the energy sector races toward radical climate action, scaling new solutions is essential. Automated control has been crucial to efficient operations, and detecting unforeseen critical shifts can be a game-changer for safety.</p>
-<p><img alt="ilustratory example" src="/publications/figures/web-app-chart.png" /></p>
-<p>This repository presents a novel approach to change-point detection (CPD) that leverages Online Dynamic Mode Decomposition with Control (ODMDwC). Designed specifically for complex industrial systems where timely detection of behavioral shifts is critical, this method captures both spatial and temporal system patterns and adapts dynamically to non-linear system changes due to factors like aging and seasonality.</p>
-<p>Our ODMDwC-based method addresses real-world challenges of non-uniform data streams in safety-critical systems by providing reliable CPD without dependency on exhaustive physical models. It leverages control input to enhance change detection performance, yielding robust and intuitive results even in environments with high noise.</p>
-<h2 id="features">🚀 Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
+<p align="center">
+  <img src="docs/assets/logo.png" alt="odmd-subid-cpd" width="200">
+</p>
+
+<h1 align="center">odmd-subid-cpd</h1>
+
+<p align="center">
+  <strong>Catch the moment a machine or process changes its behaviour — live, before it becomes a failure.</strong>
+</p>
+
+<p align="center">
+  <em>Online, model-free change-point detection for noisy, multivariate industrial sensor streams.<br/>Control-aware, noise-robust, and tuned to keep false alarms low — no physical model, no batch retraining.</em>
+</p>
+
+<p align="center">
+  <a href="https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml"><img src="https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml/badge.svg" alt="Quality and Tests"></a>
+  <a href="https://codecov.io/gh/MarekWadinger/odmd-subid-cpd"><img src="https://codecov.io/gh/MarekWadinger/odmd-subid-cpd/branch/main/graph/badge.svg?token=BIS0A7CF1F" alt="codecov"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/python-3.14+-blue.svg" alt="Python 3.14+">
+  <a href="https://arxiv.org/abs/2407.05976"><img src="https://img.shields.io/badge/arXiv-2407.05976-b31b1b.svg" alt="arXiv"></a>
+</p>
+
+<hr />
+<h2 id="highlights">Highlights<a class="headerlink" href="#highlights" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Adaptive Linearization</strong>: ODMDwC dynamically adapts to system behavior, maintaining a correspondence between detected changes and their actual extent.</li>
-<li><strong>Truncated ODMDwC with Time-Delay Embeddings</strong>: Incorporates higher-order time-delay embeddings to improve noise robustness and capture broadband features.</li>
-<li><strong>Enhanced CPD Performance</strong>: The method outperforms SVD-based and other common CPD methods on benchmark datasets, improving detection accuracy while reducing false positives.</li>
-<li><strong>Intuitive Hyperparameter Tuning</strong>: Offers practical guidelines for hyperparameter selection to streamline model application.</li>
+<li><strong>Adaptive linearization</strong> -- ODMDwC tracks non-linear system behaviour online, keeping detected change magnitude proportional to the real shift.</li>
+<li><strong>Control-aware</strong> -- exploits control inputs to tell operator-driven dynamics apart from genuine anomalies.</li>
+<li><strong>Noise-robust</strong> -- truncated ODMDwC with higher-order time-delay embeddings captures broadband features and suppresses noise.</li>
+<li><strong>Benchmark-leading</strong> -- outperforms SVD- and autoencoder-based CPD on the SKAB and CATS datasets (NAB score).</li>
+<li><strong>Streaming-native</strong> -- built on <a href="https://riverml.xyz"><code>river</code></a>: single-pass, constant-memory updates, no batch retraining or physical model.</li>
+<li><strong>Tunable by intuition</strong> -- practical hyperparameter guidance instead of black-box knobs.</li>
 </ul>
+<p><img alt="Illustrative example: ODMD-CPD detecting a change point in a data stream" src="publications/IEEECSS/figures/web-app-chart.png" /></p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>As the energy sector races toward radical climate action, scaling new solutions is essential. Automated control has been crucial to efficient operations, and detecting unforeseen critical shifts can be a game-changer for safety.</p>
+<p>This repository implements change-point detection (CPD) based on <strong>Online Dynamic Mode Decomposition with Control (ODMDwC)</strong>. Designed for complex industrial systems where timely detection of behavioural shifts is critical, it captures both spatial and temporal system patterns and adapts dynamically to non-linear changes from factors like aging and seasonality. It addresses non-uniform data streams in safety-critical systems without depending on exhaustive physical models, leveraging control input to yield robust, intuitive results even under high noise.</p>
 <h2 id="benchmark-evaluation">Benchmark Evaluation<a class="headerlink" href="#benchmark-evaluation" title="Permanent link">&para;</a></h2>
 <p>We validated our approach on both synthetic and real-world datasets, including:</p>
 <ol>
