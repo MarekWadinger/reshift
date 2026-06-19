@@ -1,12 +1,14 @@
+"""Preprocessing utilities for Hankelization and feature construction."""
+
 import itertools
-from typing import Literal
+from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
-from river.preprocessing import Hankelizer as H
+from river.preprocessing import Hankelizer as RiverHankelizer
 
 
-class Hankelizer(H):
+class Hankelizer(RiverHankelizer):
     """Mini-batch Hankelizer that keeps track of the transformation.
 
     Similar to the original Hankelizer, it
@@ -24,11 +26,11 @@ class Hankelizer(H):
         Using Mini-batch Hankelizer is equivalent to
         >>> import numpy as np
         >>> import pandas as pd
-        >>> from river.preprocessing import Hankelizer as H
+        >>> from river.preprocessing import Hankelizer as RiverHankelizer
         >>> X_train = pd.DataFrame(np.random.rand(10, 2), columns=["a", "b"])
         >>> hn = 3
         >>> hankelizer = Hankelizer(hn)
-        >>> hankelizer_old = H(hn)
+        >>> hankelizer_old = RiverHankelizer(hn)
 
         >>> hankelizer.learn_many(X_train)
         >>> X_t_new = hankelizer.transform_many(X_train)
@@ -45,21 +47,39 @@ class Hankelizer(H):
         >>> X_t_first = hankelizer.transform_many(X_train)
         >>> X_t_first.equals(X_t_new)
         True
+
     """
 
     def __init__(
-        self, w: int = 2, return_partial: bool | Literal["copy"] = "copy"
-    ):
+        self,
+        w: int = 2,
+        *,
+        return_partial: bool | Literal["copy"] = "copy",
+    ) -> None:
+        """Initialize the Hankelizer with window size and partial-return mode."""
         super().__init__(w, return_partial)
         self.transform_track: list[dict] = []
 
-    def learn_many(self, X: pd.DataFrame):
+    def learn_many(self, X: pd.DataFrame) -> None:
+        """Learn from a batch of samples and record the transformation track.
+
+        Args:
+            X: Input DataFrame of shape (n_samples, n_features).
+        """
         self.transform_track = []
         for x in X.to_dict(orient="records"):
             self.learn_one(x)
             self.transform_track.append(self.transform_one(x))
 
-    def transform_many(self, X: pd.DataFrame):
+    def transform_many(self, X: pd.DataFrame) -> pd.DataFrame:
+        """Transform a batch of samples using the recorded transformation track.
+
+        Args:
+            X: Input DataFrame of shape (n_samples, n_features).
+
+        Returns:
+            Transformed DataFrame with Hankel-delayed features.
+        """
         # if transform_track is empty, it means that the transform is called first
         # so we need to learn the data first and reset the state
         if not self.transform_track:
@@ -70,7 +90,15 @@ class Hankelizer(H):
         return df
 
 
-def normalize(x):
+def normalize(x: Any) -> np.ndarray:  # noqa: ANN401
+    """Normalize an array to the range [0, 1] using min-max scaling.
+
+    Args:
+        x: Input array-like to normalize.
+
+    Returns:
+        Array scaled to [0, 1].
+    """
     return (x - np.nanmin(x)) / (np.nanmax(x) - np.nanmin(x))
 
 
@@ -78,6 +106,7 @@ def hankel(
     X: np.ndarray | pd.DataFrame,
     hn: int,
     step: int = 1,
+    *,
     return_partial: bool | Literal["copy"] = "copy",
 ) -> np.ndarray | pd.DataFrame:
     """Create a Hankel matrix from a given input array.
@@ -86,12 +115,12 @@ def hankel(
         X (np.ndarray): The input array.
         hn (int): The number of columns in the Hankel matrix.
         step (int, optional): The step size for the delays. Defaults to 1.
-        cut_rollover (bool, optional): Whether to cut the rollover part of the Hankel matrix. Defaults to True.
+        return_partial (bool | "copy", optional): Whether to return partial rows. Defaults to "copy".
 
     Returns:
         np.ndarray: The Hankel matrix.
 
-    TODO:
+    Todo:
         - [ ] Add support for 2D arrays.
 
     Example:
@@ -120,6 +149,7 @@ def hankel(
             [ 1.,  9.,  3.,  7.,  5.,  5.],
             [ 2.,  8.,  4.,  6.,  1.,  9.],
             [ 3.,  7.,  5.,  5.,  2.,  8.]])
+
     """
     if hn <= 1:
         return X
@@ -127,14 +157,11 @@ def hankel(
     if isinstance(X, pd.DataFrame):
         feature_names_in_ = X.columns
         index_in_ = X.index
-        X = X.values
+        X = X.to_numpy()
     else:
         feature_names_in_ = None
 
-    if len(X.shape) > 1:
-        n = X.shape[1]
-    else:
-        n = 1
+    n = X.shape[1] if len(X.shape) > 1 else 1
 
     hX = np.empty((X.shape[0], hn * n))
     # Roll forth so that the last hankel columns are the start of the array
@@ -143,7 +170,8 @@ def hankel(
         hX[:, i : i + n] = X if len(X.shape) > 1 else X.reshape(-1, 1)
         if return_partial == "copy" and i / n < hn - 1:
             hX[: hn - int(i / n) - 1, i : i + n] = hX[
-                hn - int(i / n) - 1, i : i + n
+                hn - int(i / n) - 1,
+                i : i + n,
             ]
         elif return_partial and i / n < hn - 1:
             hX[: hn - int(i / n) - 1, i : i + n] = np.nan
@@ -153,19 +181,31 @@ def hankel(
     if feature_names_in_ is not None:
         return pd.DataFrame(
             hX,
-            columns=[f"{f}_{i}" for i in range(hn) for f in feature_names_in_],
+            columns=pd.Index(
+                [f"{f}_{i}" for i in range(hn) for f in feature_names_in_],
+            ),
             index=index_in_,
         )
     return hX
 
 
-def polynomial_extension(df, degree):
+def polynomial_extension(df: pd.DataFrame, degree: int) -> pd.DataFrame:
+    """Extend a DataFrame with polynomial feature combinations up to a given degree.
+
+    Args:
+        df: Input DataFrame whose columns are used to generate polynomial terms.
+        degree: Maximum polynomial degree for feature combinations.
+
+    Returns:
+        DataFrame containing all polynomial feature combinations up to ``degree``.
+    """
     poly_features = pd.DataFrame()
 
     # Iterate over the combinations of columns up to the specified degree
     for d in range(1, degree + 1):
         for combination in itertools.combinations_with_replacement(
-            df.columns, d
+            df.columns,
+            d,
         ):
             col_name = "*".join(str(c) for c in combination)
 

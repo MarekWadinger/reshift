@@ -1,13 +1,28 @@
-"""This module is modified part of evaluation from library [tsad](https://github.com/waico/tsad)"""
+"""Modified evaluation utilities from the [tsad](https://github.com/waico/tsad) library."""
 
-from typing import Any
+from __future__ import annotations
+
+import logging
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pandas as pd
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
-def filter_detecting_boundaries(detecting_boundaries):
-    """Filters out empty sublists from a list of detecting boundaries.
+logger = logging.getLogger(__name__)
+
+# Input-variant codes returned by check_errors(): 1=Series, 2=list-of-timestamps, 3=pre-built boundaries
+_VARIANT_SERIES = 1
+_VARIANT_LIST_TS = 2
+_VARIANT_BOUNDARIES = 3
+
+
+def filter_detecting_boundaries(
+    detecting_boundaries: list[list[Any]],
+) -> list[list[Any]]:
+    """Filter out empty sublists from a list of detecting boundaries.
 
     Args:
         detecting_boundaries (list of list): A list containing sublists,
@@ -22,37 +37,35 @@ def filter_detecting_boundaries(detecting_boundaries):
 
         >>> filter_detecting_boundaries([[], []])
         []
+
     """
-    _detecting_boundaries = []
-    for couple in detecting_boundaries.copy():
-        if len(couple) != 0:
-            _detecting_boundaries.append(couple)
-    detecting_boundaries = _detecting_boundaries
-    return detecting_boundaries
+    return [
+        couple for couple in detecting_boundaries.copy() if len(couple) != 0
+    ]
 
 
 def single_detecting_boundaries(
-    true_series,
-    true_list_ts,
-    prediction,
-    portion,
-    window_width,
-    anomaly_window_destination,
-    intersection_mode,
-):
-    """Extract detecting_boundaries from series or list of timestamps"""
+    true_series: pd.Series | None,
+    true_list_ts: list[pd.Timestamp] | None,
+    prediction: pd.Series,
+    portion: float,
+    window_width: str | None,
+    anomaly_window_destination: str,
+    intersection_mode: str,
+) -> list[list[Any]]:
+    """Extract detecting_boundaries from series or list of timestamps."""
     if (true_series is not None) and (true_list_ts is not None):
-        raise Exception("Choose the ONE type")
-    elif true_series is not None:
+        msg = "Choose the ONE type"
+        raise ValueError(msg)
+    if true_series is not None:
         true_timestamps = true_series[true_series == 1].index
     elif true_list_ts is not None:
         if len(true_list_ts) == 0:
             return [[]]
-        else:
-            true_timestamps = true_list_ts
+        true_timestamps = true_list_ts
     else:
-        raise Exception("Choose the type")
-    #
+        msg = "Choose the type"
+        raise ValueError(msg)
     detecting_boundaries = []
     td = (
         pd.Timedelta(window_width)
@@ -60,7 +73,7 @@ def single_detecting_boundaries(
         else pd.Timedelta(
             (prediction.index[-1] - prediction.index[0])
             / (len(true_timestamps) + 1)
-            * portion
+            * portion,
         )
     )
     for val in true_timestamps:
@@ -69,24 +82,23 @@ def single_detecting_boundaries(
         elif anomaly_window_destination == "righter":
             detecting_boundaries.append([val, val + td])
         elif anomaly_window_destination == "center":
-            detecting_boundaries.append([val - td / 2, val + td / 2])
+            detecting_boundaries.append([val - td // 2, val + td // 2])  # ty: ignore[unsupported-operator]
         else:
-            raise RuntimeError("choose anomaly_window_destination")
+            msg = "choose anomaly_window_destination"
+            raise RuntimeError(msg)
 
     # block for resolving intersection problem:
     # important to watch right boundary to be never included to avoid windows intersection
     if len(detecting_boundaries) == 0:
         return detecting_boundaries
 
-    new_detecting_boundaries = detecting_boundaries.copy()
+    new_detecting_boundaries: list[list[Any]] = detecting_boundaries.copy()
     intersection_count = 0
     for i in range(len(new_detecting_boundaries) - 1):
         if (
             new_detecting_boundaries[i][1]
             >= new_detecting_boundaries[i + 1][0]
         ):
-            # transform print to list of intersections
-            # print(f'Intersection of scoring windows {new_detecting_boundaries[i][1], new_detecting_boundaries[i+1][0]}')
             intersection_count += 1
             if intersection_mode == "cut left window":
                 new_detecting_boundaries[i][1] = new_detecting_boundaries[
@@ -103,13 +115,12 @@ def single_detecting_boundaries(
                 ][0]
                 new_detecting_boundaries[i + 1][0] = _a
             else:
-                raise Exception("choose the intersection_mode")
-    # print(f'There are {intersection_count} intersections of scoring windows')
-    detecting_boundaries = new_detecting_boundaries.copy()
-    return detecting_boundaries
+                msg = "choose the intersection_mode"
+                raise ValueError(msg)
+    return new_detecting_boundaries.copy()
 
 
-def check_errors(my_list):
+def check_errors(my_list: list[Any] | pd.Series) -> int:
     """Check format of input true data.
 
     Args:
@@ -120,29 +131,30 @@ def check_errors(my_list):
 
     Raises:
         Exception: If non-uniform data format is found at any level.
+
     """
     assert isinstance(my_list, list)
     mx = 1
-    #     ravel = []
     level_list: dict[int, Any] = {}
 
-    def check_error(my_list):
+    def check_error(my_list: list[Any]) -> bool:
         return not (
             (all(isinstance(my_el, list) for my_el in my_list))
             or (all(isinstance(my_el, pd.Series) for my_el in my_list))
             or (all(isinstance(my_el, pd.Timestamp) for my_el in my_list))
         )
 
-    def recurse(my_list, level=1):
+    def recurse(my_list: list[Any], level: int = 1) -> None:
         nonlocal mx
         nonlocal level_list
 
         if check_error(my_list):
-            raise Exception(
-                f"Non uniform data format in level {level}: {my_list}"
+            msg = f"Non uniform data format in level {level}: {my_list}"
+            raise ValueError(
+                msg,
             )
 
-        if level not in level_list.keys():
+        if level not in level_list:
             level_list[level] = []  # for checking format
 
         for my_el in my_list:
@@ -152,25 +164,31 @@ def check_errors(my_list):
                 recurse(my_el, level + 1)
 
     recurse(my_list)
-    for level in level_list:
-        if check_error(level_list[level]):
-            raise Exception(
-                f"Non uniform data format in level {level}: {my_list}"
+    for level, level_items in level_list.items():
+        if check_error(level_items):
+            msg = f"Non uniform data format in level {level}: {my_list}"
+            raise ValueError(
+                msg,
             )
 
-    if 3 in level_list:
-        for el in level_list[2]:
-            if not ((len(el) == 2) or (len(el) == 0)):
-                raise Exception(
-                    f"Non uniform data format in level {2}: {my_list}"
+    if _VARIANT_BOUNDARIES in level_list:
+        for el in level_list[_VARIANT_LIST_TS]:
+            if not ((len(el) == _VARIANT_LIST_TS) or (len(el) == 0)):
+                msg = f"Non uniform data format in level {_VARIANT_LIST_TS}: {my_list}"
+                raise ValueError(
+                    msg,
                 )
     return mx
 
 
 def extract_cp_confusion_matrix(
-    detecting_boundaries, prediction, point=0, binary=False
-):
-    """Extracts the confusion matrix for change point detection.
+    detecting_boundaries: list[list[Any]],
+    prediction: pd.Series,
+    point: int = 0,
+    *,
+    binary: bool = False,
+) -> dict[str, Any]:
+    """Extract the confusion matrix for change point detection.
 
     Args:
         detecting_boundaries (list of list of int): List of pairs of start and end times for detecting boundaries.
@@ -180,15 +198,15 @@ def extract_cp_confusion_matrix(
 
     Returns:
         dict: A dictionary containing:
-            - 'TPs' (dict): Dictionary of true positives with window indices as keys and lists of [start, predicted, end] times as values.
+            - 'TPs' (dict): Dictionary of true positives with window indices as keys and lists of
+              [start, predicted, end] times as values.
             - 'FPs' (list): List of false positive timestamps.
             - 'FNs' (list): List of false negative window indices or timestamps.
+
     """
-    _detecting_boundaries = []
-    for couple in detecting_boundaries.copy():
-        if len(couple) != 0:
-            _detecting_boundaries.append(couple)
-    detecting_boundaries = _detecting_boundaries
+    detecting_boundaries = [
+        couple for couple in detecting_boundaries.copy() if len(couple) != 0
+    ]
 
     times_pred = prediction[prediction.dropna() == 1].sort_index().index
 
@@ -199,7 +217,7 @@ def extract_cp_confusion_matrix(
 
     if len(detecting_boundaries) != 0:
         my_dict["FPs"].append(
-            times_pred[times_pred < detecting_boundaries[0][0]]
+            times_pred[times_pred < detecting_boundaries[0][0]],
         )  # left
         for i in range(len(detecting_boundaries)):
             times_pred_window = times_pred[
@@ -226,18 +244,18 @@ def extract_cp_confusion_matrix(
                     my_dict["FNs"].append(
                         times_prediction_in_window[
                             ~times_prediction_in_window.isin(times_pred_window)
-                        ]
+                        ],
                     )
             if len(detecting_boundaries) > i + 1:
                 my_dict["FPs"].append(
                     times_pred[
                         (times_pred > detecting_boundaries[i][1])
                         & (times_pred < detecting_boundaries[i + 1][0])
-                    ]
+                    ],
                 )
 
         my_dict["FPs"].append(
-            times_pred[times_pred > detecting_boundaries[i][1]]
+            times_pred[times_pred > detecting_boundaries[i][1]],
         )  # right
     else:
         my_dict["FPs"].append(times_pred)
@@ -259,7 +277,19 @@ def extract_cp_confusion_matrix(
     return my_dict
 
 
-def confusion_matrix(true, prediction):
+def confusion_matrix(
+    true: pd.Series,
+    prediction: pd.Series,
+) -> tuple[Any, Any, Any, Any]:
+    """Compute binary confusion matrix counts from ground-truth and predicted labels.
+
+    Args:
+        true: Ground-truth binary labels (1 for positive).
+        prediction: Predicted binary labels (1 for positive).
+
+    Returns:
+        Tuple of (TP, TN, FP, FN) counts.
+    """
     true_ = true == 1
     prediction_ = prediction == 1
     TP = (true_ & prediction_).sum()
@@ -270,16 +300,19 @@ def confusion_matrix(true, prediction):
 
 
 def single_average_delay(
-    detecting_boundaries,
-    prediction,
-    anomaly_window_destination,
-    clear_anomalies_mode,
-):
-    """anomaly_window_destination: 'lefter', 'righter', 'center'. Default='right'"""
+    detecting_boundaries: list[list[Any]],
+    prediction: pd.Series,
+    anomaly_window_destination: str,
+    *,
+    clear_anomalies_mode: bool,
+) -> tuple[int, list[Any], int, int]:
+    """anomaly_window_destination: 'lefter', 'righter', 'center'. Default='right'."""
     detecting_boundaries = filter_detecting_boundaries(detecting_boundaries)
     point = 0 if clear_anomalies_mode else -1
     dict_cp_confusion = extract_cp_confusion_matrix(
-        detecting_boundaries, prediction, point=point
+        detecting_boundaries,
+        prediction,
+        point=point,
     )
 
     missing = 0
@@ -290,44 +323,46 @@ def single_average_delay(
     FP += len(dict_cp_confusion["FPs"])
     missing += len(dict_cp_confusion["FNs"])
     all_true_anom += len(dict_cp_confusion["TPs"]) + len(
-        dict_cp_confusion["FNs"]
+        dict_cp_confusion["FNs"],
     )
 
     if anomaly_window_destination == "lefter":
 
-        def average_time(output_cp_cm_tp):
+        def average_time(output_cp_cm_tp: list[Any]) -> pd.Timedelta:
             return output_cp_cm_tp[2] - output_cp_cm_tp[1]
     elif anomaly_window_destination == "righter":
 
-        def average_time(output_cp_cm_tp):
+        def average_time(output_cp_cm_tp: list[Any]) -> pd.Timedelta:
             return output_cp_cm_tp[1] - output_cp_cm_tp[0]
     elif anomaly_window_destination == "center":
 
-        def average_time(output_cp_cm_tp):
+        def average_time(output_cp_cm_tp: list[Any]) -> pd.Timedelta:
             return output_cp_cm_tp[1] - (
                 output_cp_cm_tp[0]
                 + (output_cp_cm_tp[2] - output_cp_cm_tp[0]) / 2
             )
     else:
-        raise Exception("Choose anomaly_window_destination")
+        msg = "Choose anomaly_window_destination"
+        raise ValueError(msg)
 
-    for fp_case_window in dict_cp_confusion["TPs"]:
-        detectHistory.append(
-            average_time(dict_cp_confusion["TPs"][fp_case_window])
-        )
+    detectHistory.extend(
+        average_time(dict_cp_confusion["TPs"][fp_case_window])
+        for fp_case_window in dict_cp_confusion["TPs"]
+    )
     return missing, detectHistory, FP, all_true_anom
 
 
 def my_scale(
-    fp_case_window=None,
-    A_tp=1,
-    A_fp=0,
-    koef=1,
-    detalization=1000,
-    clear_anomalies_mode=True,
-    plot_figure=False,
-):
-    """Ts - segment on which the window is applied"""
+    fp_case_window: list[Any] | None = None,
+    A_tp: float = 1,
+    A_fp: float = 0,
+    koef: float = 1,
+    detalization: int = 1000,
+    *,
+    clear_anomalies_mode: bool = True,
+    plot_figure: bool = False,
+) -> np.ndarray:
+    """Ts - segment on which the window is applied."""
     x = np.linspace(-np.pi / 2, np.pi / 2, detalization)
     x = x if clear_anomalies_mode else x[::-1]
     y = (
@@ -343,23 +378,22 @@ def my_scale(
         event = int(
             (fp_case_window[1] - fp_case_window[0])
             / (fp_case_window[-1] - fp_case_window[0])
-            * detalization
+            * detalization,
         )
         if event >= len(x):
             event = len(x) - 1
-        score = y[event]
-        return score
-    else:
-        return y
+        return y[event]
+    return y
 
 
 def single_evaluate_nab(
-    detecting_boundaries,
-    prediction,
-    table_of_coef=None,
-    clear_anomalies_mode=True,
-    scale_func="improved",
-    scale_koef=1,
+    detecting_boundaries: list[list[Any]],
+    prediction: pd.Series,
+    table_of_coef: pd.DataFrame | None = None,
+    *,
+    clear_anomalies_mode: bool = True,
+    scale_func: str | Callable[..., np.ndarray] = "improved",
+    scale_koef: float = 1,
 ) -> np.ndarray:
     """Evaluate the NAB (Numenta Anomaly Benchmark) score for a given set of predictions.
 
@@ -371,7 +405,8 @@ def single_evaluate_nab(
             The list of predicted anomaly points.
         table_of_coef (pandas DataFrame, optional):
             Table of coefficients for NAB score function.
-            Default is a 3x4 DataFrame with indices 'Standard', 'LowFP', 'LowFN' and columns 'A_tp', 'A_fp', 'A_tn', 'A_fn'.
+            Default is a 3x4 DataFrame with indices 'Standard', 'LowFP', 'LowFN'
+            and columns 'A_tp', 'A_fp', 'A_tn', 'A_fn'.
         clear_anomalies_mode (bool, optional):
             If True, the left of Atp boundary is equal to the right of Afp.
             Otherwise, fault mode, when the left of Afp boundary is the right of Atp. Default is True.
@@ -380,7 +415,8 @@ def single_evaluate_nab(
             If not "improved", an exception is raised.
         scale_koef (int, optional):
             The scaling coefficient. Default is 1.
-            1 - depends on the relative step, which means that if there are too many points in the scoring window, the difference will be too large.
+            1 - depends on the relative step, which means that if there are too many points in the scoring window,
+            the difference will be too large.
             too many points in the scoring window, the drop will be too
             stiff in the middle.
             2- the leftmost point is not equal to Atp and the right is not equal to Afp.
@@ -391,11 +427,13 @@ def single_evaluate_nab(
             A 3xN array where N is the number of profiles ('Standard', 'LowFP', 'LowFN').
             The first row contains the scores, the second row contains the null scores,
             and the third row contains the perfect scores.
+
     """
     if scale_func == "improved":
         scale_func = my_scale
     else:
-        raise Exception("choose the scale_func")
+        msg = "choose the scale_func"
+        raise ValueError(msg)
 
     # filter
     detecting_boundaries = filter_detecting_boundaries(detecting_boundaries)
@@ -406,7 +444,7 @@ def single_evaluate_nab(
                 [1.0, -0.11, 1.0, -1.0],
                 [1.0, -0.22, 1.0, -1.0],
                 [1.0, -0.11, 1.0, -2.0],
-            ]
+            ],
         )
         table_of_coef.index = pd.Index(["Standard", "LowFP", "LowFN"])
         table_of_coef.index.name = "Metric"
@@ -415,7 +453,9 @@ def single_evaluate_nab(
     # GO
     point = 0 if clear_anomalies_mode else -1
     dict_cp_confusion = extract_cp_confusion_matrix(
-        detecting_boundaries, prediction, point=point
+        detecting_boundaries,
+        prediction,
+        point=point,
     )
 
     Scores, Scores_perfect, Scores_null = [], [], []
@@ -436,24 +476,25 @@ def single_evaluate_nab(
         Scores_null.append(len(detecting_boundaries) * A_fn)
 
     return np.array(
-        [np.array(Scores), np.array(Scores_null), np.array(Scores_perfect)]
+        [np.array(Scores), np.array(Scores_null), np.array(Scores_perfect)],
     )
 
 
 def chp_score(
-    true,
-    prediction,
-    metric="nab",
-    window_width=None,
-    portion=0.1,
-    anomaly_window_destination="lefter",
-    clear_anomalies_mode=True,
-    intersection_mode="cut right window",
-    table_of_coef=None,
-    scale_func="improved",
-    scale_koef=1,
-    verbose=False,
-):
+    true: pd.Series | list[Any],
+    prediction: pd.Series | list[pd.Series],
+    metric: str = "nab",
+    window_width: str | None = None,
+    portion: float = 0.1,
+    anomaly_window_destination: str = "lefter",
+    intersection_mode: str = "cut right window",
+    table_of_coef: pd.DataFrame | None = None,
+    scale_func: str | Callable[..., np.ndarray] = "improved",
+    scale_koef: float = 1,
+    *,
+    clear_anomalies_mode: bool = True,
+    verbose: bool = False,
+) -> Any:  # noqa: ANN401  # return shape is polymorphic in `metric` (dict/tuple)
     """Calculate various metrics for evaluating anomaly or changepoint detection.
 
     Args:
@@ -469,12 +510,18 @@ def chp_score(
             Can be in various formats:
             - pd.Series with binary int labels (1 is anomaly, 0 is not anomaly)
             - list of pd.Series with binary int labels for multiple datasets
-        metric (str): Metric to use for evaluation. Options are {'nab', 'binary', 'average_time', 'confusion_matrix'}. Default is 'nab'.
-        window_width (str): Width of detection window as a pd.Timedelta string. Default is None.
-        portion (float): Portion of the width of the length of prediction divided by the number of real CPs in the dataset. Default is 0.1.
-        anomaly_window_destination (str): Location of the detection window relative to the anomaly. Options are {'lefter', 'righter', 'center'}. Default is 'lefter'.
-        clear_anomalies_mode (bool): If True, only the first value inside the detection window is taken. If False, only the last value inside the detection window is taken. Default is True.
-        intersection_mode (str): How to handle overlapping detection windows. Options are {'cut left window', 'cut right window', 'both'}. Default is 'cut right window'.
+        metric (str): Metric to use for evaluation. Options are {'nab', 'binary', 'average_time',
+            'confusion_matrix'}. Default is 'nab'.
+        window_width (str): Width of detection window as a pd.Timedelta string.
+            Default is None.
+        portion (float): Portion of the width of the length of prediction divided by the number of real CPs in
+            the dataset. Default is 0.1.
+        anomaly_window_destination (str): Location of the detection window relative to the anomaly. Options are
+            {'lefter', 'righter', 'center'}. Default is 'lefter'.
+        clear_anomalies_mode (bool): If True, only the first value inside the detection window is taken. If False,
+            only the last value inside the detection window is taken. Default is True.
+        intersection_mode (str): How to handle overlapping detection windows. Options are
+            {'cut left window', 'cut right window', 'both'}. Default is 'cut right window'.
         table_of_coef (pd.DataFrame): Application profiles of NAB metric. Default is None.
         scale_func (str): Scoring function in NAB metric. Options are {'default', 'improved'}. Default is 'improved'.
         scale_koef (float): Smoothing factor for the scoring function. Default is 1.
@@ -483,9 +530,11 @@ def chp_score(
     Returns:
         tuple or dict: Value of the metrics depending on the chosen metric.
             - 'nab': dict with keys 'Standard', 'LowFP', 'LowFN' and corresponding float values.
-            - 'average_time': tuple with average time (float), missing changepoints (int), false positives (int), number of true changepoints (int).
+            - 'average_time': tuple with average time (float), missing changepoints (int), false positives (int),
+              number of true changepoints (int).
             - 'binary': tuple with F1 metric (float), false alarm rate (float), missing alarm rate (float).
-            - 'confusion_matrix': tuple with true positives (int), true negatives (int), false positives (int), false negatives (int).
+            - 'confusion_matrix': tuple with true positives (int), true negatives (int), false positives (int),
+              false negatives (int).
 
     Examples:
         >>> y_true = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
@@ -566,17 +615,20 @@ def chp_score(
         (Timedelta('0 days 00:00:00'), 0, 0, 1)
         === NAB ===
         {'Standard': 100.0, 'LowFP': 100.0, 'LowFN': 100.0}
+
     """
-    assert isinstance(true, pd.Series) or isinstance(true, list)
+    assert isinstance(true, (pd.Series, list))
     # checking prediction
     if isinstance(prediction, pd.Series):
         true = [true]
         prediction = [prediction]
     elif isinstance(prediction, list):
         if not all(isinstance(my_el, pd.Series) for my_el in prediction):
-            raise Exception("Incorrect format for prediction")
+            msg = "Incorrect format for prediction"
+            raise ValueError(msg)
     else:
-        raise Exception("Incorrect format for prediction")
+        msg = "Incorrect format for prediction"
+        raise TypeError(msg)
 
     # checking dataset length: Number of dataset unequal
     assert len(true) == len(prediction)
@@ -584,33 +636,37 @@ def chp_score(
     # final check
     input_variant = check_errors(true)
 
-    def check_sort(my_list, input_variant):
+    def check_sort(my_list: list[Any] | pd.Series, input_variant: int) -> None:
         for dataset in my_list:
-            if input_variant == 2:
+            if input_variant == _VARIANT_LIST_TS:
                 assert all(np.sort(dataset) == np.array(dataset))
-            elif input_variant == 3:
+            elif input_variant == _VARIANT_BOUNDARIES:
                 assert all(
-                    np.sort(np.concatenate(dataset)) == np.concatenate(dataset)
+                    np.sort(np.concatenate(dataset))
+                    == np.concatenate(dataset),
                 )
-            elif input_variant == 1:
+            elif input_variant == _VARIANT_SERIES:
                 assert all(
-                    dataset.index.values == dataset.sort_index().index.values
+                    dataset.index.to_numpy()
+                    == dataset.sort_index().index.to_numpy(),
                 )
 
     check_sort(true, input_variant)
-    check_sort(prediction, 1)
+    check_sort(prediction, _VARIANT_SERIES)
 
     # part 2. To detected boundaries
     if (
-        ((metric == "nab") or (metric == "average_time"))
+        (metric in {"nab", "average_time"})
         and (window_width is None)
-        and (input_variant != 3)
+        and (input_variant != _VARIANT_BOUNDARIES)
     ):
-        print(
-            f"Since you didn't choose window_width and portion, portion will be default ({portion})"
+        logger.warning(
+            "Since you didn't choose window_width and portion, "
+            "portion will be default (%s)",
+            portion,
         )
 
-    if input_variant == 1:
+    if input_variant == _VARIANT_SERIES:
         detecting_boundaries = [
             single_detecting_boundaries(
                 true_series=true[i],
@@ -624,7 +680,7 @@ def chp_score(
             for i in range(len(true))
         ]
 
-    elif input_variant == 2:
+    elif input_variant == _VARIANT_LIST_TS:
         detecting_boundaries = [
             single_detecting_boundaries(
                 true_series=None,
@@ -638,14 +694,15 @@ def chp_score(
             for i in range(len(true))
         ]
 
-    elif input_variant == 3:
+    elif input_variant == _VARIANT_BOUNDARIES:
         detecting_boundaries = true.copy()
         # Next anti fool system [[[t1,t2]],[]] -> [[[t1,t2]],[[]]]
         for i in range(len(detecting_boundaries)):
             if len(detecting_boundaries[i]) == 0:
                 detecting_boundaries[i] = [[]]
     else:
-        raise Exception("Unknown format for true data")
+        msg = "Unknown format for true data"
+        raise ValueError(msg)
 
     if metric == "nab":
         matrix = np.zeros((3, 3))
@@ -657,7 +714,6 @@ def chp_score(
                 clear_anomalies_mode=clear_anomalies_mode,
                 scale_func=scale_func,
                 scale_koef=scale_koef,
-                # plot_figure=plot_figure,
             )
             matrix = matrix + matrix_
 
@@ -670,13 +726,13 @@ def chp_score(
                     * (matrix[0, t] - matrix[1, t])
                     / (matrix[2, t] - matrix[1, t]),
                     2,
-                )
+                ),
             )
             if verbose:
-                print(profile_name, " - ", results[profile_name])
+                logger.info("%s - %s", profile_name, results[profile_name])
         return results
 
-    elif metric == "average_time":
+    if metric == "average_time":
         missing, FP, all_true_anom = 0, 0, 0
         detectHistory: list[Any] = []
         for i in range(len(prediction)):
@@ -697,32 +753,35 @@ def chp_score(
         add = np.mean(detectHistory)
         add = float(add) if isinstance(add, np.floating) else add
         if verbose:
-            print("Amount of true anomalies", all_true_anom)
-            print(f"A number of missed CPs = {missing}")
-            print(f"A number of FPs = {int(FP)}")
-            print("Average time", add)
+            logger.info("Amount of true anomalies %s", all_true_anom)
+            logger.info("A number of missed CPs = %s", missing)
+            logger.info("A number of FPs = %s", int(FP))
+            logger.info("Average time %s", add)
         return add, missing, int(FP), all_true_anom
 
-    elif (metric == "binary") or (metric == "confusion_matrix"):
+    if metric in {"binary", "confusion_matrix"}:
         if all(isinstance(my_el, pd.Series) for my_el in true):
             TP, TN, FP, FN = 0, 0, 0, 0
             for i in range(len(prediction)):
                 TP_, TN_, FP_, FN_ = confusion_matrix(true[i], prediction[i])
                 TP, TN, FP, FN = TP + TP_, TN + TN_, FP + FP_, FN + FN_
         else:
-            print(
-                "For this metric it is better if you use pd.Series format for true \nwith common index of true and prediction"
+            logger.warning(
+                "For this metric it is better if you use pd.Series format "
+                "for true with common index of true and prediction",
             )
             TP, TN, FP, FN = 0, 0, 0, 0
             for i in range(len(prediction)):
                 dict_cp_confusion = extract_cp_confusion_matrix(
-                    detecting_boundaries[i], prediction[i], binary=True
+                    detecting_boundaries[i],
+                    prediction[i],
+                    binary=True,
                 )
                 TP += np.sum(
                     [
                         len(dict_cp_confusion["TPs"][window][1])
                         for window in dict_cp_confusion["TPs"]
-                    ]
+                    ],
                 )
                 FP += len(dict_cp_confusion["FPs"])
                 FN += len(dict_cp_confusion["FNs"])
@@ -733,17 +792,19 @@ def chp_score(
             far = float(round(FP / (FP + TN) * 100, 2))
             mar = float(round(FN / (FN + TP) * 100, 2))
             if verbose:
-                print(f"False Alarm Rate {far} %")
-                print(f"Missing Alarm Rate {mar} %")
-                print(f"F1 metric {f1}")
+                logger.info("False Alarm Rate %s %%", far)
+                logger.info("Missing Alarm Rate %s %%", mar)
+                logger.info("F1 metric %s", f1)
             return f1, far, mar
 
-        elif metric == "confusion_matrix":
+        if metric == "confusion_matrix":
             if verbose:
-                print("TP", TP)
-                print("TN", TN)
-                print("FP", FP)
-                print("FN", FN)
+                logger.info("TP %s", TP)
+                logger.info("TN %s", TN)
+                logger.info("FP %s", FP)
+                logger.info("FN %s", FN)
             return TP, TN, FP, FN
     else:
-        raise Exception("Choose the performance metric")
+        msg = "Choose the performance metric"
+        raise ValueError(msg)
+    return None

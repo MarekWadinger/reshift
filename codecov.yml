@@ -1,0 +1,23 @@
+# https://docs.codecov.com/docs/codecovyml-reference
+coverage:
+  status:
+    project:
+      default:
+        target: auto          # compare against the base commit
+        threshold: 1%         # allow a 1% drop without failing
+    patch:
+      default:
+        target: auto          # new/changed lines in the PR
+
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: false      # always post the PR comment
+
+# Coverage comes from doctests in the `functions/` package.
+ignore:
+  - "vendor/**"
+  - "examples/**"
+  - "benchmarks/**"
+  - "scripts/**"
+  - "tests/**"

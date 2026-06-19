@@ -9,7 +9,7 @@ on:
 
 jobs:
   bump-version:
-    if: "!startsWith(github.event.head_commit.message, 'bump:') && ${{ github.event.workflow_run.conclusion == 'success' }}"
+    if: ${{ github.event.workflow_run.conclusion == 'success' && !startsWith(github.event.workflow_run.head_commit.message, 'bump:') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

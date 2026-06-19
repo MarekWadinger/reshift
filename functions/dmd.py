@@ -1,16 +1,8 @@
-"""Dynamic Mode Decomposition (DMD) in scikkit-learn API.
-
-This module contains the implementation of the Online DMD, Windowed DMD,
-and DMD with Control algorithm. It is based on the paper by Zhang et al.
-[^1] and implementation of authors available at [GitHub](https://github.com/haozhg/odmd).
-However, this implementation provides a more flexible interface aligned with
-River API covers and separates update and revert methods in Windowed DMD.
-
-Todo:
-    - [ ] Align design with (n, m) convention (currently (m, n)).
+"""Dynamic Mode Decomposition (DMD) in scikit-learn API.
 
 References:
     [^1]: Schmid, P. (2022). Dynamic Mode Decomposition and Its Variants. 54(1), pp.225-254. doi:[10.1146/annurev-fluid-030121-015835](https://doi.org/10.1146/annurev-fluid-030121-015835).
+
 """
 
 import numpy as np
@@ -37,9 +29,11 @@ class DMD:
 
     References:
         [^1]: Schmid, P. (2022). Dynamic Mode Decomposition and Its Variants. 54(1), pp.225-254. doi:[10.1146/annurev-fluid-030121-015835](https://doi.org/10.1146/annurev-fluid-030121-015835).
+
     """
 
-    def __init__(self, r: int = 0):
+    def __init__(self, r: int = 0) -> None:
+        """Initialize DMD with the desired truncation rank."""
         self.r = r
         self.m: int
         self.n: int
@@ -52,15 +46,18 @@ class DMD:
 
     @property
     def C(self) -> np.ndarray:
+        """Return the discrete temporal dynamics (Vandermonde) matrix."""
         return np.vander(self.Lambda, self.n, increasing=True)
 
     @property
     def xi(self) -> np.ndarray:
+        """Return the mode amplitudes computed via sparse L1-regularized optimization."""
         from scipy.optimize import minimize
 
-        def objective_function(x):
+        def objective_function(x: np.ndarray) -> np.floating:
             return np.linalg.norm(
-                self._Y - self.Phi @ np.diag(x) @ self.C, "fro"
+                self._Y - self.Phi @ np.diag(x) @ self.C,
+                "fro",
             ) + 0.5 * np.linalg.norm(x, 1)
 
         # Minimize the objective function
@@ -68,16 +65,13 @@ class DMD:
         self._xi = xi
         return self.xi
 
-    def _fit(self, X: np.ndarray, Y: np.ndarray):
+    def _fit(self, X: np.ndarray, Y: np.ndarray) -> None:
         # Perform singular value decomposition on X
         r = self.r if self.r > 0 else self.m
-        # u_, sigma, v = np.linalg.svd(X, full_matrices=False)
-        # # Truncate the singular value matrices
         if r < self.m:
             u_, sigma, v = sp.sparse.linalg.svds(X, k=r)
         else:
             u_, sigma, v = np.linalg.svd(X, full_matrices=False)
-        # u_, sigma, v = u_[:, :r], sigma[:r], v[:r, :]
         sigma_inv = np.reciprocal(sigma)
         # Compute the low-rank approximation of Koopman matrix
         self.A_bar = u_.conj().T @ Y @ v.conj().T @ np.diag(sigma_inv)
@@ -86,13 +80,11 @@ class DMD:
         self.Lambda, W = np.linalg.eig(self.A_bar)
 
         # Compute the coefficient matrix
-        # TODO: Find out whether to use X or Y (X usage ~ u @ W obviously)
-        # self.Phi = X @ v[: r, :].conj().T @ np.diag(sigma_inv) @ W
+        # TODO(MarekWadinger): clarify X vs Y for Phi; X path uses v[:r], sigma_inv, W (#13)
         self.Phi = u_ @ W
-        # self.A = self.Phi @ np.diag(self.Lambda) @ np.linalg.pinv(self.Phi)
         self.A = Y @ v.conj().T @ np.diag(sigma_inv) @ u_.conj().T
 
-    def fit(self, X: np.ndarray, Y: np.ndarray | None = None):
+    def fit(self, X: np.ndarray, Y: np.ndarray | None = None) -> None:
         """Fit the DMD model to the input X.
 
         Args:
@@ -127,9 +119,11 @@ class DMD:
 
         Returns:
             predictions: Predicted data matrix for the specified number of prediction steps.
+
         """
         if self.A is None or self.m is None:
-            raise RuntimeError("Fit the model before making predictions.")
+            msg = "Fit the model before making predictions."
+            raise RuntimeError(msg)
 
         mat = np.zeros((forecast + 1, self.m))
         mat[0, :] = x
@@ -139,7 +133,20 @@ class DMD:
 
 
 class DMDwC(DMD):
-    def __init__(self, r: int, B: np.ndarray | None = None):
+    """DMD with control inputs (DMDc), optionally with a known actuation matrix B.
+
+    Args:
+        r: Number of modes to retain.
+        B: Known actuation matrix. If ``None``, it is identified from data.
+    """
+
+    def __init__(self, r: int, B: np.ndarray | None = None) -> None:
+        """Initialize DMDwC.
+
+        Args:
+            r: Number of modes to retain.
+            B: Known actuation matrix. If ``None``, it is identified from data.
+        """
         super().__init__(r)
         self.B = B
         self.known_B = B is not None
@@ -150,7 +157,17 @@ class DMDwC(DMD):
         X: np.ndarray,
         Y: np.ndarray | None = None,
         U: np.ndarray | None = None,
-    ):
+    ) -> None:
+        """Fit the DMDwC model to state snapshots and optional control inputs.
+
+        Args:
+            X: State snapshot matrix of shape (n, m).
+            Y: Next-state snapshot matrix of shape (n, m). Derived from X if ``None``.
+            U: Control input matrix of shape (n, l). Falls back to plain DMD if ``None``.
+
+        Raises:
+            ValueError: If X and U have differing numbers of time steps.
+        """
         if U is None:
             super().fit(X, Y)
             return
@@ -163,9 +180,12 @@ class DMDwC(DMD):
             U_ = U_[:-1, :]
 
         if X.shape[0] != U_.shape[0]:
-            raise ValueError(
+            msg = (
                 "X and u must have the same number of time steps.\n"
                 f"X: {X.shape[0]}, u: {U_.shape[0]}"
+            )
+            raise ValueError(
+                msg,
             )
 
         X = X.T  # PATCH#1: Match (m, n) implementation
@@ -196,22 +216,26 @@ class DMDwC(DMD):
         """Predict future values using the trained DMD model.
 
         Args:
-        - forecast: int
-            Number of steps to predict into the future.
+            x: Initial state vector of shape (m,).
+            forecast: Number of steps to predict into the future.
+            U: Control input matrix of shape (forecast, l). Required when B is set.
 
         Returns:
-        - predictions: numpy.ndarray
             Predicted data matrix for the specified number of prediction steps.
+
         """
         if U is None:
-            mat = super().predict(x, forecast)
-            return mat
+            return super().predict(x, forecast)
         if self.A is None or self.m is None:
-            raise RuntimeError("Fit the model before making predictions.")
+            msg = "Fit the model before making predictions."
+            raise RuntimeError(msg)
         if forecast != 1 and U.shape[0] != forecast:
-            raise ValueError(
+            msg = (
                 "u must have forecast number of time steps.\n"
                 f"u: {U.shape[1]}, forecast: {forecast}"
+            )
+            raise ValueError(
+                msg,
             )
 
         mat = np.zeros((forecast + 1, self.m - self.l))

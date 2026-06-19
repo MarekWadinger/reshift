@@ -1,0 +1,17 @@
+# vendor/ is vendored third-party source — not ours to audit.
+# doc-checks self-globs the tree, so pre-commit's exclude can't reach it;
+# every hook needs its own exclude_globs.
+make_refs:
+  exclude_globs: ['vendor/**']
+cd_refs:
+  exclude_globs: ['vendor/**']
+py_imports:
+  exclude_globs: ['vendor/**']
+trees:
+  exclude_globs: ['vendor/**']
+env_vars:
+  exclude_globs: ['vendor/**']
+endpoints:
+  exclude_globs: ['vendor/**']
+mermaid:
+  exclude_globs: ['vendor/**']

@@ -25,10 +25,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.14"]
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: recursive
 
     - name: Install uv
       uses: astral-sh/setup-uv@v5
@@ -41,16 +43,18 @@ jobs:
       run: uv python install ${{ matrix.python-version }}
 
     - name: Install dependencies
-      run: uv sync --group dev --extra examples --group app
+      run: uv sync --group dev --group examples --group app
 
     - name: Test with pytest
-      run: uv run pytest --cov=. --cov-report=xml --cov-report=term-missing
+      run: uv run pytest --cov --cov-report=xml --cov-report=term-missing
 
     - name: Upload coverage to Codecov
-      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13'
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.14'
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./coverage.xml
+        fail_ci_if_error: false
 
     - name: Minimize uv cache
       run: uv cache prune --ci
@@ -60,6 +64,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: recursive
 
     - name: Install uv
       uses: astral-sh/setup-uv@v5
@@ -69,7 +75,7 @@ jobs:
         cache-dependency-glob: "uv.lock"
 
     - name: Set up Python
-      run: uv python install 3.13
+      run: uv python install 3.14
 
     - name: Install dependencies
       run: uv sync --group dev
@@ -77,8 +83,8 @@ jobs:
     - name: Lint with ruff
       run: uv run ruff check .
 
-    - name: Type check with mypy
-      run: uv run mypy . --ignore-missing-imports
+    - name: Type check with ty
+      run: uv run ty check
 
     - name: Minimize uv cache
       run: uv cache prune --ci

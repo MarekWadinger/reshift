@@ -1,7 +1,11 @@
+"""Streamlit app for change-point detection in industrial data streams using Online DMD."""
+
+from __future__ import annotations
+
 import datetime
-import os
 import sys
 from io import BytesIO
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -10,7 +14,9 @@ from river.compose import Pipeline
 from river.decomposition import OnlineDMD, OnlineDMDwC
 from river.preprocessing import Hankelizer
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+from typing import TYPE_CHECKING
 
 from functions.chdsubid import SubIDChangeDetector, get_default_rank
 from functions.metrics import chp_score
@@ -18,19 +24,28 @@ from functions.plot import plot_chd
 from functions.preprocessing import hankel
 from functions.rolling import Rolling
 
+if TYPE_CHECKING:
+    from matplotlib.axes import Axes
+    from matplotlib.figure import Figure
+    from streamlit.delta_generator import DeltaGenerator
+
+DMD_SCORE_THRESHOLD_HIGH = 0.5
+DMD_SCORE_THRESHOLD = 0.25
+
 
 # --- Functions ---
-def update_selection_X():
+def update_selection_X() -> None:
+    """Sync selected state-variable columns from the multiselect widget."""
     st.session_state.selected_X = st.session_state.multiselect_X
     st.session_state.m = len(st.session_state.selected_X)
-    st.session_state.m
     if st.session_state.m > 0:
         st.session_state.disable_params = False
     else:
         st.session_state.disable_params = True
 
 
-def update_selection_U():
+def update_selection_U() -> None:
+    """Sync selected control-variable columns from the multiselect widget."""
     st.session_state.selected_U = st.session_state.multiselect_U
     st.session_state.l = len(st.session_state.selected_U)
 
@@ -39,14 +54,28 @@ def progressive_val_predict(
     X: pd.DataFrame,
     U: pd.DataFrame,
     _model: SubIDChangeDetector | Pipeline,
-    compute_alt_scores=False,
-    _progress_bar=None,
-):
+    *,
+    compute_alt_scores: bool = False,
+    _progress_bar: DeltaGenerator | None = None,
+) -> tuple[np.ndarray, dict[str, np.ndarray]]:
+    """Run prequential (score-then-learn) evaluation over all samples.
+
+    Args:
+        X: State-variable observations, one row per time step.
+        U: Control-variable observations aligned with X.
+        _model: Fitted or partially-fitted detector or pipeline.
+        compute_alt_scores: When True, also record the raw DMD distance diff.
+        _progress_bar: Optional Streamlit progress bar updated each step.
+
+    Returns:
+        Tuple of (anomaly scores array, metadata dict of auxiliary arrays).
+    """
     # CREATE REFERENCE TO LAST STEP OF PIPELINE (TRACK STATE OF MODEL)
-    if isinstance(_model, Pipeline):
-        model_ = _model._last_step
-    else:
-        model_ = _model
+    model_ = (
+        _model._last_step  # noqa: SLF001  # river Pipeline exposes no public last-step accessor
+        if isinstance(_model, Pipeline)
+        else _model
+    )
 
     y_pred = np.zeros(X.shape[0], dtype=float)
     meta: dict[str, np.ndarray] = {}
@@ -54,13 +83,14 @@ def progressive_val_predict(
         meta["scores_dmd_diff"] = np.zeros(X.shape[0], dtype=float)
 
     if U.empty:
-        U = pd.DataFrame(index=X.index, columns=[None])
+        U = pd.DataFrame(index=X.index, columns=pd.Index([None]))
     # Run pipeline
     for i, (x, u) in enumerate(
         zip(
             X.to_dict(orient="records"),
             U.to_dict(orient="records"),
-        )
+            strict=False,
+        ),
     ):
         y_pred[i] = _model.score_one(x)
         if compute_alt_scores:
@@ -70,16 +100,25 @@ def progressive_val_predict(
         if None in u:
             _model.learn_one(x)
         else:
-            _model.learn_one(x, **{"u": u})
+            _model.learn_one(x, u=u)
 
         if _progress_bar:
             _progress_bar.progress(
-                i / st.session_state.n, text="Running experiment ..."
+                i / st.session_state.n,
+                text="Running experiment ...",
             )
     return y_pred, meta
 
 
-def export_fig(fig) -> bytes:
+def export_fig(fig: Figure) -> bytes:
+    """Serialize a matplotlib figure to PDF bytes.
+
+    Args:
+        fig: The figure to export.
+
+    Returns:
+        Raw PDF bytes suitable for a file download.
+    """
     buf = BytesIO()
     fig.savefig(buf, format="pdf")
     buf.seek(0)
@@ -87,8 +126,22 @@ def export_fig(fig) -> bytes:
 
 
 @st.cache_data
-def concat_results(X, scores_dmd, scores_dmd_diff):
-    df = pd.concat(
+def concat_results(
+    X: pd.DataFrame,
+    scores_dmd: np.ndarray,
+    scores_dmd_diff: np.ndarray,
+) -> pd.DataFrame:
+    """Combine state data with DMD anomaly scores into a single DataFrame.
+
+    Args:
+        X: Original state-variable observations.
+        scores_dmd: Per-step Online-DMD anomaly scores.
+        scores_dmd_diff: Per-step DMD distance-difference scores.
+
+    Returns:
+        DataFrame with X columns plus DMD and DMD (diff) score columns.
+    """
+    return pd.concat(
         [
             X,
             pd.Series(scores_dmd.real, index=X.index, name="DMD"),
@@ -96,13 +149,30 @@ def concat_results(X, scores_dmd, scores_dmd_diff):
         ],
         axis=1,
     )
-    return df
 
 
 @st.cache_data
-def plot(X, scores_dmd, scores_dmd_diff, Y_, test_size):
+def plot(
+    X: pd.DataFrame,
+    scores_dmd: np.ndarray,
+    scores_dmd_diff: np.ndarray,
+    Y_: np.ndarray | None,
+    test_size: int,
+) -> tuple[Figure, np.ndarray | Axes]:
+    """Render the change-point detection results chart.
+
+    Args:
+        X: State-variable observations.
+        scores_dmd: Online-DMD anomaly scores.
+        scores_dmd_diff: DMD distance-difference scores.
+        Y_: Indices of ground-truth change points, or None if unavailable.
+        test_size: Grace period length passed to the plot helper.
+
+    Returns:
+        Tuple of (matplotlib Figure, axes array or single Axes).
+    """
     fig, axs = plot_chd(
-        [X.values, scores_dmd.real, scores_dmd_diff.real],
+        [X.to_numpy(), scores_dmd.real, scores_dmd_diff.real],
         Y_,
         labels=["X", "DMD", "DMD (diff)"],
         grace_period=test_size,
@@ -112,7 +182,22 @@ def plot(X, scores_dmd, scores_dmd_diff, Y_, test_size):
 
 
 @st.cache_data
-def compute_metrics(Y, scores_dmd, test_size):
+def compute_metrics(
+    Y: np.ndarray,
+    scores_dmd: np.ndarray,
+    test_size: int,
+) -> pd.DataFrame:
+    """Compute change-point detection metrics for several detector variants.
+
+    Args:
+        Y: Ground-truth binary labels (1 = change point).
+        scores_dmd: Online-DMD anomaly scores.
+        test_size: Window width (in samples) used for time-tolerant scoring.
+
+    Returns:
+        DataFrame of F1, FAR, MAR, Delay, TP, FN, FP, and NAB scores
+        indexed by detector name.
+    """
     start_date = "2023-01-01 00:00:00"
     date_range = pd.date_range(start=start_date, periods=len(Y), freq="s")
     y_true = pd.Series(Y, index=date_range)
@@ -120,20 +205,29 @@ def compute_metrics(Y, scores_dmd, test_size):
     experiments: dict[str, pd.Series] = {
         "Perfect detector": y_true,
         "Random detector": pd.Series(
-            np.random.randint(2, size=y_true.shape[0]), index=date_range
+            np.random.randint(2, size=y_true.shape[0]),
+            index=date_range,
         ),
         "Null detector": pd.Series(
-            np.zeros(y_true.shape[0]), index=date_range
+            np.zeros(y_true.shape[0]),
+            index=date_range,
         ),
         "Always positive": pd.Series(
-            np.ones(y_true.shape[0]), index=date_range
+            np.ones(y_true.shape[0]),
+            index=date_range,
         ),
         "Online DMD (t=0)": pd.Series(scores_dmd > 0.0, index=date_range),
-        "Online DMD (t=0.5)": pd.Series(scores_dmd > 0.5, index=date_range),
-        "Online DMD": pd.Series(scores_dmd > 0.25, index=date_range),
+        "Online DMD (t=0.5)": pd.Series(
+            scores_dmd > DMD_SCORE_THRESHOLD_HIGH,
+            index=date_range,
+        ),
+        "Online DMD": pd.Series(
+            scores_dmd > DMD_SCORE_THRESHOLD,
+            index=date_range,
+        ),
     }
 
-    # TODO: Seems like the window width is not aligned correctly with index
+    # TODO(MarekWadinger): window width not aligned correctly with index (#9)
     window_params = {
         "valid": {
             "window_width": f"{test_size}s",
@@ -155,14 +249,14 @@ def compute_metrics(Y, scores_dmd, test_size):
     ]
 
     df_res = pd.DataFrame(
-        columns=[m for m in metrics],
-        index=list(experiments.keys()),
+        columns=pd.Index(list(metrics)),
+        index=pd.Index(list(experiments.keys())),
     )
 
     for name, po in experiments.items():
         pc = po.astype(int).diff().abs().fillna(0.0)
         res = {}
-        for window_name, kwargs in window_params.items():
+        for kwargs in window_params.values():
             binary = chp_score(
                 y_true,
                 po,
@@ -186,10 +280,12 @@ def compute_metrics(Y, scores_dmd, test_size):
                     "anomaly_window_destination"
                 ],
             )
-            res_ = dict(zip(["F1", "FAR", "MAR"], binary))
-            res_.update(dict(zip(["Delay", "FN", "FP", "TP"], add)))
+            res_ = dict(zip(["F1", "FAR", "MAR"], binary, strict=False))
+            res_.update(
+                dict(zip(["Delay", "FN", "FP", "TP"], add, strict=False)),
+            )
             res_.update(nab)
-            res_ = {k: v for k, v in res_.items()}
+            res_ = dict(res_.items())
             res.update(res_)
         df_res[name] = res
     df_res.sort_values("Standard", ascending=False)
@@ -198,7 +294,15 @@ def compute_metrics(Y, scores_dmd, test_size):
 
 
 @st.cache_data
-def export_df(df):
+def export_df(df: pd.DataFrame) -> bytes:
+    """Encode a DataFrame as UTF-8 CSV bytes for download.
+
+    Args:
+        df: DataFrame to serialize.
+
+    Returns:
+        UTF-8 encoded CSV bytes.
+    """
     return df.to_csv().encode("utf-8")
 
 
@@ -233,10 +337,12 @@ if "disable_params" not in st.session_state:
 st.sidebar.title("Upload Data")
 
 data = st.sidebar.file_uploader(
-    "Upload a CSV file with snapshots", type=["csv"]
+    "Upload a CSV file with snapshots",
+    type=["csv"],
 )
 data_gt = st.sidebar.file_uploader(
-    "Upload a CSV file with ground truth (Optional)", type=["csv"]
+    "Upload a CSV file with ground truth (Optional)",
+    type=["csv"],
 )
 
 st.sidebar.title("Partition Data")
@@ -273,7 +379,7 @@ if data:
         df_gt = pd.read_csv(data_gt, index_col=0)
         if len(df_gt) != len(df):
             st.error(
-                "The number of snapshots in the ground truth file is different from the number of snapshots in the data file."
+                "The number of snapshots in the ground truth file is different from the number of snapshots in the data file.",
             )
         df_gt.index = pd.to_datetime(df_gt.index)
 
@@ -309,7 +415,7 @@ with st.sidebar.form(key="params_form", border=False):
     )
     if ref_size + lag + test_size > st.session_state.n:
         st.error(
-            "The sum of the base windows size, lag, and test windows size should be less than the number of snapshots."
+            "The sum of the base windows size, lag, and test windows size should be less than the number of snapshots.",
         )
     hm = st.slider(
         "Time-delays states (Default: 0)",
@@ -328,14 +434,14 @@ with st.sidebar.form(key="params_form", border=False):
 
 # === Main ===
 st.title(
-    "Change-Point Detection in Industrial Data Streams based on Online DMD with Control"
+    "Change-Point Detection in Industrial Data Streams based on Online DMD with Control",
 )
 
 # === Enable after submitting parameters ===
 if submit_params:
     if ref_size + lag + test_size > st.session_state.n:
         st.error(
-            "The sum of the base windows size, lag, and test windows size should be less than the number of snapshots."
+            "The sum of the base windows size, lag, and test windows size should be less than the number of snapshots.",
         )
     p = min(
         10,
@@ -344,7 +450,7 @@ if submit_params:
                 df[:window_size][st.session_state.selected_X],
                 hm,
                 hm // 60 // st.session_state.m,
-            )
+            ),
         ),
     )
 
@@ -355,7 +461,7 @@ if submit_params:
                 df[:window_size][st.session_state.selected_X],
                 hm,
                 hm // 60 // st.session_state.m,
-            )
+            ),
         ),
     )
 
@@ -363,7 +469,7 @@ if submit_params:
     runtime_info = st.info("Preparing run")
     X = df[st.session_state.selected_X]
     U = df[st.session_state.selected_U]
-    # TODO: enable hankelization of us on the fly
+    # TODO(MarekWadinger): enable hankelization of us on the fly (#8)
     U_ = pd.DataFrame(hankel(U, hn=hl))
 
     # Initialize Hankelizer
@@ -422,16 +528,16 @@ if submit_params:
     runtime_info.info("Plotting results ...")
     # Plot results
     if data_gt:
-        Y: np.ndarray | None = df_gt.iloc[:, 0].values
+        Y: np.ndarray | None = df_gt.iloc[:, 0].to_numpy()
         Y_: np.ndarray | None = np.where(Y == 1)[0]
     else:
         Y = None
         Y_ = None
     fig, axs = plot(X, scores_dmd, scores_dmd_diff, Y_, test_size)
 
-    now = datetime.datetime.now().strftime("%Y%m%d-%H_%M_%S")
+    now = datetime.datetime.now(tz=datetime.UTC).strftime("%Y%m%d-%H_%M_%S")
     tab1, tab2, tab3 = st.tabs(
-        ["📈 **Chart**", "🗃 **Data**", "🏆 **Metrics**"]
+        ["📈 **Chart**", "🗃 **Data**", "🏆 **Metrics**"],
     )
     tab1.write(fig)
     buf = export_fig(fig)

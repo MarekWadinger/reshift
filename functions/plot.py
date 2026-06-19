@@ -1,24 +1,28 @@
-from typing import Literal
+"""Plotting utilities for change-point detection results."""
+
+from typing import TYPE_CHECKING, Literal
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
-import numpy as np
 from matplotlib.axes import Axes
+from pandas import DataFrame
 
 from .preprocessing import normalize as _normalize
+
+if TYPE_CHECKING:
+    import numpy as np
+    from matplotlib.figure import Figure
 
 
 def is_tex_available() -> bool:
     """Check if LaTeX is available on the system.
 
     Returns:
-    -------
-    bool
         True if LaTeX is available, False otherwise.
     """
     import shutil
 
-    return shutil.which("latex") is not None
+    return all(shutil.which(cmd) is not None for cmd in ("latex", "dvipng"))
 
 
 plt.rcParams.update(
@@ -37,7 +41,7 @@ plt.rcParams.update(
         "figure.subplot.right": 0.95,
         "figure.subplot.top": 0.95,
         # "backend": "macOsX"
-    }
+    },
 )
 
 locator = mdates.AutoDateLocator()
@@ -49,25 +53,20 @@ formatter = mdates.ConciseDateFormatter(
 
 
 def set_size(
-    width: float | int | Literal["article", "thesis", "beamer"] = 307.28987,
-    fraction=1.0,
-    subplots=(1, 1),
-):
+    width: float | Literal["article", "thesis", "beamer"] = 307.28987,
+    fraction: float = 1.0,
+    subplots: tuple[int, int] = (1, 1),
+) -> tuple[float, float]:
     """Set figure dimensions to avoid scaling in LaTeX.
 
-    Parameters
-    ----------
-    width: float or string
-            Document width in points, or string of predined document type
-    fraction: float, optional
-            Fraction of the height which you wish the figure to occupy
-    subplots: array-like, optional
-            The number of rows and columns of subplots.
+    Args:
+        width: Document width in points, or a predefined document type string
+            (``"article"``, ``"thesis"``, or ``"beamer"``).
+        fraction: Fraction of the width that the figure should occupy.
+        subplots: Number of rows and columns of subplots.
 
     Returns:
-    -------
-    fig_dim: tuple
-            Dimensions of figure in inches
+        Figure dimensions ``(width_in, height_in)`` in inches.
     """
     if width == "article":
         width_pt = 390.0
@@ -102,7 +101,8 @@ GRAY_ALPHA025 = "#dedede"
 
 
 def plot_chd(
-    datas: dict[str, np.ndarray | None] | list[np.ndarray | None],
+    datas: dict[str, np.ndarray | DataFrame | None]
+    | list[np.ndarray | DataFrame | None],
     y_true: list[float] | np.ndarray | None = None,
     labels: list[str] | None = None,
     idx_start: int | None = None,
@@ -110,25 +110,35 @@ def plot_chd(
     ids_in_start: list[int] | None = None,
     ids_in_end: list[int] | None = None,
     grace_period: int | None = None,
+    *,
     normalize: bool = False,
     axs: np.ndarray | None = None,
-    **fig_kwargs: dict,
-):
-    """Plot hange-Point Detection Results.
+    **fig_kwargs: object,
+) -> tuple[Figure, np.ndarray]:
+    """Plot Change-Point Detection results.
 
     Args:
-        datas: List of data to plot. Each data is plot on a separate subplot.
-        y_true: True change-point locations. Plotted as vertical lines.
-        labels: List of labels for each data.
-        idx_start: Starting index to plot. Plot from the beginning if None.
-        idx_end: Ending index to plot. Plot till the end if None.
-        idx_in_start: Starting index for inlay plot. No inlay plot if None.
-        idx_in_end: Ending index for inlay plot. No inlay plot if None.
-        grace_period: Grace period for change-point. Plots grayed out region where peak of detection could be expected.
-        normalize: Normalize data. If False, no normalization is done.
+        datas: Data series to plot, one per subplot. May be a dict (keys
+            become y-axis labels) or a list.
+        y_true: True change-point locations drawn as vertical lines.
+        labels: Legend label for each data series.
+        idx_start: First index to plot. Defaults to 0 when None.
+        idx_end: Last index to plot (exclusive). Plots to end when None.
+        ids_in_start: Start indices for inlay zoom regions. No inlays when
+            None.
+        ids_in_end: End indices for inlay zoom regions. No inlays when None.
+        grace_period: Offset (in samples) after each change-point shown as a
+            dashed vertical line indicating the expected detection window.
+        normalize: Overlay a twin-axis normalised trace when True.
+        axs: Pre-existing array of ``Axes`` to draw into. A new figure is
+            created when None.
+        **fig_kwargs: Additional keyword arguments forwarded to
+            :func:`set_size` (e.g. ``width``, ``fraction``).
 
+    Returns:
+        Tuple of ``(figure, axes_array)``.
     """
-    fig_kwargs_ = {
+    fig_kwargs_: dict[str, object] = {
         "width": "article",
         "subplots": (len(datas), 1),
         "fraction": 0.5,
@@ -140,24 +150,24 @@ def plot_chd(
             1,
             sharex="col",
             sharey="row",
-            figsize=set_size(**fig_kwargs_),  # type: ignore
+            figsize=set_size(**fig_kwargs_),
         )
     else:
         axs_ = axs
         fig = axs[0].figure
 
     idx_start = 0 if idx_start is None else idx_start
-    # idx_end = len(datas[0]) if idx_end is None else idx_end
 
     if labels is None:
         labels = [""] * len(datas)
 
-    for ax, data, label in zip(axs_, datas, labels):
+    for ax, data, label in zip(axs_, datas, labels, strict=False):
         if isinstance(data, str) and isinstance(datas, dict):
             name = data
-            data = datas[data]
+            data_val = datas[data]
         else:
             name = ""
+            data_val = data
         if not isinstance(ax, Axes):
             return fig, axs_
 
@@ -166,27 +176,35 @@ def plot_chd(
                 ax.axvline(i, color=RED_ALPHA05)
                 if grace_period:
                     ax.axvline(
-                        i + grace_period, color=RED_ALPHA05, linestyle="--"
+                        i + grace_period,
+                        color=RED_ALPHA05,
+                        linestyle="--",
                     )
-        if data is not None:
-            ax.plot(data[idx_start:idx_end], label=label)
+        if data_val is not None:
+            # Check if data is a DataFrame with multiple columns
+            if isinstance(data_val, DataFrame) and len(data_val.columns) > 1:
+                # Plot each column with its name as the label
+                for col in data_val.columns:
+                    ax.plot(data_val[col].iloc[idx_start:idx_end], label=col)
+            else:
+                ax.plot(data_val[idx_start:idx_end], label=label)
             if normalize:
                 ax_norm = ax.twinx()
-                ax_norm.plot(  # type: ignore
-                    _normalize(data[idx_start:idx_end]),
+                ax_norm.plot(
+                    _normalize(data_val[idx_start:idx_end]),
                     label=label + " (norm)",
                 )
             if name != "":
                 ax.set_ylabel(name)
             if label != "":
                 ax.legend()
-            ax.grid(True, axis="y")
+            ax.grid(visible=True, axis="y")
             ax.ticklabel_format(style="sci", axis="y", scilimits=(2, 1))
 
             if ids_in_start is not None and ids_in_end is not None:
                 n_ins = len(ids_in_start)
                 for i, (idx_in_start, idx_in_end) in enumerate(
-                    zip(ids_in_start, ids_in_end)
+                    zip(ids_in_start, ids_in_end, strict=False),
                 ):
                     x_in = range(idx_in_start, idx_in_end)
                     # Add inlay plot
@@ -196,26 +214,28 @@ def plot_chd(
                             0.4,
                             (0.6 / n_ins) - 0.05,
                             0.6,
-                        )
+                        ),
                     )  # Adjust the position and size of the inlay plot
                     if y_true is not None:
-                        for i in y_true:
-                            if idx_in_start < i < idx_in_end:
-                                inlay_ax.axvline(i, color=RED_ALPHA05)
+                        for cp in y_true:
+                            if idx_in_start < cp < idx_in_end:
+                                inlay_ax.axvline(cp, color=RED_ALPHA05)
                                 if grace_period:
                                     inlay_ax.axvline(
-                                        i + grace_period,
+                                        cp + grace_period,
                                         color=RED_ALPHA05,
                                         linestyle="--",
                                     )
                     inlay_ax.plot(
-                        x_in, data[idx_in_start:idx_in_end], label=label
+                        x_in,
+                        data_val[idx_in_start:idx_in_end],
+                        label=label,
                     )
-                    inlay_ax.grid(True, axis="y")
+                    inlay_ax.grid(visible=True, axis="y")
                     inlay_ax.set_yticklabels([])
                     inlay_ax.set_xticklabels([])
                     inlay_ax.patch.set_alpha(
-                        0.75
+                        0.75,
                     )  # Set the background transparency
                     ax.indicate_inset_zoom(inlay_ax, edgecolor="black")
 

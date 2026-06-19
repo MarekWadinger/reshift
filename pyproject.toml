@@ -1,9 +1,9 @@
 [project]
 name = "odmd-subid-cpd"
-version = "1.0.0"
+version = "4.0.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.14"
 dependencies = [
     "matplotlib<4.0.0",
     "numpy<3.0.0",
@@ -14,67 +14,84 @@ dependencies = [
     "tqdm>=4.67.1",
 ]
 
-[project.optional-dependencies]
-examples = [
-    "bayesian-optimization~=1.4.3",
-    "jupyter~=1.0.0",
-    "notebook~=7.1.2",
-]
-
 [tool.pytest.ini_options]
 addopts = [
     "--doctest-modules",
-    "--doctest-glob=README.md",
-    "--ignore=build.py",
     "--ignore=scripts/",
-    "--ignore=docs/",
     "--verbose",
     "-ra",
     "-m not datasets and not slow",
     "--color=yes",
     "--junitxml=reports/junit/junit.xml",
     "--html=reports/junit/report/index.html",
-    "--cov=.",
-    "--cov-report=xml:reports/coverage/coverage.xml",
-    "--cov-report=html:reports/coverage/report",
 ]
+# Coverage is opt-in (CI and `make testcov`), not forced on every run, so
+# `make test` stays fast. Invoke with `--cov` (uses [tool.coverage.run] source).
 doctest_optionflags = [
     "NORMALIZE_WHITESPACE",
     "NUMBER",
     "ELLIPSIS",
     "IGNORE_EXCEPTION_DETAIL",
 ]
-norecursedirs = ["examples", ".*"]
+norecursedirs = ["examples", "vendor", ".*"]
+
+[tool.ty.environment]
+extra-paths = ["vendor/river"]
+
+# vendor/ is on the search path for import resolution but must not itself be
+# type-checked (it's third-party river source, not ours).
+[tool.ty.src]
+exclude = ["vendor"]
 
 [tool.ruff]
-lint.ignore = ["E501"]
-lint.select = ["E", "F", "I", "UP"] # https://beta.ruff.rs/docs/rules/
-
-[tool.mypy]
-check_untyped_defs = true
-
-[[tool.mypy.overrides]]
-module = [
-    "river.*",
-    "mmh3.*",
-    "numpy.*",
-    "sklearn.*",
-    "pytest.*",
-    "pandas.*",
-    "scipy.*",
-    "graphviz.*",
-    "vaex.*",
-    "torch.*",
-    "sqlalchemy.*",
-    "requests.*",
+line-length = 79
+extend-exclude = ["vendor"]
+lint.select = ["ALL"]
+lint.ignore = [
+    # === Permanent: inappropriate for numerical/research code ===
+    # TODO(MarekWadinger): migrate to np.random.Generator only when reference
+    # data is regenerated. np.random.default_rng(seed) yields a different stream
+    # than np.random.seed()+np.random.normal(), so migrating now would change the
+    # seeded synthetic datasets and invalidate committed results/figures.
+    "NPY002",  # legacy RNG kept for reproducibility (see TODO above)
+    "N802",    # function names use math notation (e.g. C(), A())
+    "N803",    # argument names use math notation (X, U, Y)
+    "N806",    # local vars use math notation (X, A, U, S, V)
+    "N816",    # mixed-case math vars at module scope
+    "E501",    # code line length (replaced by W505)
+    "FIX002",  # line contains TODO (TODOs are tracked via issues)
+    "S101",    # assert used for runtime invariants
+    "PLR0912", # too many branches (algorithmic code)
+    "PLR0913", # too many arguments (model/config constructors)
+    "PLR0915", # too many statements (algorithmic code)
+    "C901",    # function too complex (algorithmic code)
+    "PLC0415", # intentional lazy imports (optional/heavy deps)
 ]
-ignore_missing_imports = true
+lint.pycodestyle.max-doc-length = 120
+lint.pycodestyle.max-line-length = 79
+
+# T201/T203 (print): prints are the output medium in notebooks and the
+# benchmark report script — allowed there, enforced everywhere else.
+# SLF001: analysis notebooks legitimately inspect river decomposition
+# internals (_svd, _S, _U, _Y) that have no public accessor.
+# ERA001: notebooks carry "# [donotremove]"/"# [pin]" markers (for the
+# jupyter-cleanup hook) that ruff misreads as commented-out code.
+[tool.ruff.lint.per-file-ignores]
+"*.ipynb" = ["T201", "T203", "SLF001", "ERA001"]
+"benchmarks/*" = ["T201", "T203"]
+
+# Codebase uses Google-style docstrings (Args:/Returns:/Raises:).
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.coverage.run]
+source = ["functions"]
+branch = true
 omit = ["tests/*"]
 
 [tool.coverage.report]
 exclude_lines = [
+    "pragma: no cover",
     "def __repr__",
     "if self.debug:",
     "if settings.DEBUG",
@@ -87,37 +104,46 @@ exclude_lines = [
     "@(abc\\.)?abstractmethod",
 ]
 
+[tool.uv]
+# Sync all dev-time groups by default so `uv run ruff`/`ty` (pre-commit)
+# resolve every import. Groups aren't published, so pip users are unaffected.
+default-groups = ["dev", "app", "docs", "examples"]
+
 [tool.uv.sources]
-river = { git = "https://github.com/MarekWadinger/river.git" }
+river = { path = "vendor/river", editable = true }
 
 [dependency-groups]
-app = [
-    "streamlit<2.0.0",
+app = ["streamlit<2.0.0"]
+examples = [
+    "bayesian-optimization~=1.4.3",
+    "jupyter>=1.1.1",
+    "notebook>=7.5.5",
+    "pydmd>=2025.8.1",
 ]
 dev = [
-    "commitizen>=4.8.3",
-    "mypy>=1.16.1",
-    "pre-commit>=4.2.0",
-    "pytest>=8.4.1",
-    "pytest-cov>=6.2.1",
-    "pytest-html>=4.1.1",
-    "ruff>=0.12.1",
-    "types-Markdown",
-    "types-PyYAML",
-    "types-Pygments",
-    "types-cachetools",
-    "types-colorama",
-    "types-decorator",
-    "types-defusedxml",
-    "types-jsonschema",
-    "types-pexpect",
-    "types-protobuf",
-    "types-pycurl",
-    "types-python-dateutil",
-    "types-pytz",
-    "types-tensorflow",
-    "types-toml",
-    "types-tqdm",
+    "commitizen>=4.16.3",
+    "pre-commit>=4.6.0",
+    "pytest>=9.1.0",
+    "pytest-cov>=7.1.0",
+    "pytest-html>=4.2.0",
+    "ruff>=0.15.18",
+    "ty>=0.0.51",
+    "types-cachetools>=7.0.0.20260518",
+    "types-colorama>=0.4.15.20260508",
+    "types-decorator>=5.2.0.20260519",
+    "types-defusedxml>=0.7.0.20260504",
+    "types-jsonschema>=4.26.0.20260518",
+    "types-markdown>=3.10.2.20260518",
+    "types-pexpect>=4.9.0.20260518",
+    "types-protobuf>=7.34.1.20260518",
+    "types-pycurl>=7.46.0.20260618",
+    "types-pygments>=2.20.0.20260518",
+    "types-python-dateutil>=2.9.0.20260518",
+    "types-pytz>=2026.2.0.20260518",
+    "types-pyyaml>=6.0.12.20260518",
+    "types-tensorflow>=2.18.0.20260518",
+    "types-toml>=0.10.8.20260518",
+    "types-tqdm>=4.68.0.20260608",
 ]
 docs = [
     "black<30.0.0",
@@ -130,3 +156,51 @@ docs = [
     "mkdocs-section-index>=0.3.10",
     "mkdocstrings-python<2.0.0",
 ]
+
+[tool.commitizen]
+# Why cz_customize and not cz_conventional_commits: the built-in conventional cz
+# HARDCODES commit_parser/changelog_pattern as class attributes (feat|fix|refactor|
+# perf only), so the [tool.commitizen] commit_parser key is silently ignored and
+# `docs` can never reach the changelog. cz_customize is the only supported way to
+# add it (see https://commitizen-tools.github.io/commitizen/customization/).
+name = "cz_customize"
+tag_format = "v$version"
+version_provider = "pep621"
+update_changelog_on_bump = true
+major_version_zero = false
+# No changelog_start_rev: the pre-v2.0.0 CAPS convention (ADD:/UPDATE:/FIX:) does
+# not match the case-sensitive parser below, so that era is auto-excluded from
+# generation and is instead captured by a hand-curated v1.0.0 section appended to
+# CHANGELOG.md. Bumps are incremental and never rewrite that manual section.
+
+[tool.commitizen.customize]
+# bump_pattern/bump_map are copied verbatim from commitizen's own defaults, so
+# SemVer bumping is identical to standard conventional commits. DEPRECATION NOTE:
+# commitizen has deprecated these module defaults in favour of BUMP_PATTERN/BUMP_MAP
+# and will remove them in v5 -- re-check this block against upstream on the next
+# major commitizen upgrade.
+bump_pattern = "^((BREAKING[\\-\\ ]CHANGE|\\w+)(\\(.+\\))?!?):"
+bump_map = { "^.+!$" = "MAJOR", "^BREAKING[\\-\\ ]CHANGE" = "MAJOR", "^feat" = "MINOR", "^fix" = "PATCH", "^refactor" = "PATCH", "^perf" = "PATCH" }
+# Changelog: standard types + docs (the only addition over the built-in).
+changelog_pattern = "^(feat|fix|perf|refactor|docs)(\\(.+\\))?(!)?:"
+commit_parser = "^(?P<change_type>feat|fix|perf|refactor|docs)(?:\\((?P<scope>[^()\r\n]*)\\)|\\()?(?P<breaking>!)?:\\s(?P<message>.*)?"
+change_type_order = [
+    "BREAKING CHANGE",
+    "Features",
+    "Fixes",
+    "Performance",
+    "Refactor",
+    "Docs",
+]
+# schema_pattern restores `cz check` commit-msg validation (cz_customize without it
+# accepts ANY message). Full conventional vocabulary, copied from commitizen's
+# built-in -- intentionally broader than the changelog set above (chore/ci/test/etc.
+# are valid commits even though they don't appear in the changelog).
+schema_pattern = '(?s)(build|bump|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\S+\))?!?: ([^\n\r]+)((\n\n.*)|(\s*))?$'
+
+[tool.commitizen.customize.change_type_map]
+feat = "Features"
+fix = "Fixes"
+perf = "Performance"
+refactor = "Refactor"
+docs = "Docs"
