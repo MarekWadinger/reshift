@@ -154,9 +154,8 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
                         file_url = item["download_url"]
                         file_name = Path(file_url).name
                         file_path = str(Path(folder_path) / file_name)
-                        Path(file_path).open("wb").write(
-                            requests.get(file_url).content,
-                        )
+                        with Path(file_path).open("wb") as f:
+                            f.write(requests.get(file_url).content)
                     elif item["type"] == "dir":
                         download_csv_from_git(item["url"], folder_path)
 
@@ -281,7 +280,8 @@ def load_bess() -> tuple[pd.DataFrame, pd.DataFrame]:
                 # Get the contents of the folder
                 response = requests.get(url)
                 if response.status_code == 200:
-                    Path(save_path).open("wb").write(response.content)
+                    with Path(save_path).open("wb") as f:
+                        f.write(response.content)
 
             download_csv_from_git(url, path)
 
