@@ -44,8 +44,6 @@ line-length = 79
 extend-exclude = ["vendor"]
 lint.select = ["ALL"]
 lint.ignore = [
-    # === Backlog: being fixed group-by-group; removed as each is resolved ===
-    "SLF001",  # pending: per-line noqa or public-accessor improvement
     # === Permanent: inappropriate for numerical/research code ===
     # TODO(MarekWadinger): migrate to np.random.Generator only when reference
     # data is regenerated. np.random.default_rng(seed) yields a different stream
@@ -71,8 +69,10 @@ lint.ignore = [
 
 # T201/T203 (print): prints are the output medium in notebooks and the
 # benchmark report script — allowed there, enforced everywhere else.
+# SLF001: analysis notebooks legitimately inspect river decomposition
+# internals (_svd, _S, _U, _Y) that have no public accessor.
 [tool.ruff.lint.per-file-ignores]
-"*.ipynb" = ["T201", "T203"]
+"*.ipynb" = ["T201", "T203", "SLF001"]
 "benchmarks/*" = ["T201", "T203"]
 
 [tool.coverage.run]

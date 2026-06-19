@@ -52,7 +52,11 @@ def progressive_val_predict(
     _progress_bar: DeltaGenerator | None = None,
 ) -> tuple[np.ndarray, dict[str, np.ndarray]]:
     # CREATE REFERENCE TO LAST STEP OF PIPELINE (TRACK STATE OF MODEL)
-    model_ = _model._last_step if isinstance(_model, Pipeline) else _model
+    model_ = (
+        _model._last_step  # noqa: SLF001  # river Pipeline exposes no public last-step accessor
+        if isinstance(_model, Pipeline)
+        else _model
+    )
 
     y_pred = np.zeros(X.shape[0], dtype=float)
     meta: dict[str, np.ndarray] = {}
