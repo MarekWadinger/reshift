@@ -35,24 +35,22 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ["3.14"]
 
-    # Build river's two Rust extensions into one dir we can cache. uv rebuilds
-    # editable path deps every run, so without this cargo recompiles MKL + all
-    # crate deps from scratch on each job/OS.
-    env:
-      CARGO_TARGET_DIR: ${{ github.workspace }}/rust-target
-
     steps:
     - uses: actions/checkout@v5
       with:
         submodules: recursive
 
-    - name: Cache Rust build
+    # Cache cargo crate downloads for river's Rust extensions. The compiled
+    # target/ isn't cached: uv rebuilds the editable path dep in a fresh temp
+    # dir, so cargo's path-keyed fingerprint always misses (sccache would fix
+    # that, but its GHA backend is currently broken). This still saves the
+    # crate-fetch time across runs and across the lint/test jobs.
+    - name: Cache cargo registry
       uses: actions/cache@v4
       with:
         path: |
           ~/.cargo/registry
           ~/.cargo/git
-          ${{ github.workspace }}/rust-target
         key: ${{ runner.os }}-cargo-${{ hashFiles('vendor/river/Cargo.lock') }}
         restore-keys: ${{ runner.os }}-cargo-
 
@@ -89,21 +87,17 @@ jobs:
   lint:
     runs-on: ubuntu-latest
 
-    env:
-      CARGO_TARGET_DIR: ${{ github.workspace }}/rust-target
-
     steps:
     - uses: actions/checkout@v5
       with:
         submodules: recursive
 
-    - name: Cache Rust build
+    - name: Cache cargo registry
       uses: actions/cache@v4
       with:
         path: |
           ~/.cargo/registry
           ~/.cargo/git
-          ${{ github.workspace }}/rust-target
         key: ${{ runner.os }}-cargo-${{ hashFiles('vendor/river/Cargo.lock') }}
         restore-keys: ${{ runner.os }}-cargo-
 
