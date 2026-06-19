@@ -1,9 +1,12 @@
 """This module is modified part of evaluation from library [tsad](https://github.com/waico/tsad)."""
 
+import logging
 from typing import Any
 
 import numpy as np
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 def filter_detecting_boundaries(detecting_boundaries):
@@ -624,8 +627,10 @@ def chp_score(
         and (window_width is None)
         and (input_variant != 3)
     ):
-        print(
-            f"Since you didn't choose window_width and portion, portion will be default ({portion})",
+        logger.warning(
+            "Since you didn't choose window_width and portion, "
+            "portion will be default (%s)",
+            portion,
         )
 
     if input_variant == 1:
@@ -692,7 +697,7 @@ def chp_score(
                 ),
             )
             if verbose:
-                print(profile_name, " - ", results[profile_name])
+                logger.info("%s - %s", profile_name, results[profile_name])
         return results
 
     if metric == "average_time":
@@ -716,10 +721,10 @@ def chp_score(
         add = np.mean(detectHistory)
         add = float(add) if isinstance(add, np.floating) else add
         if verbose:
-            print("Amount of true anomalies", all_true_anom)
-            print(f"A number of missed CPs = {missing}")
-            print(f"A number of FPs = {int(FP)}")
-            print("Average time", add)
+            logger.info("Amount of true anomalies %s", all_true_anom)
+            logger.info("A number of missed CPs = %s", missing)
+            logger.info("A number of FPs = %s", int(FP))
+            logger.info("Average time %s", add)
         return add, missing, int(FP), all_true_anom
 
     if metric in {"binary", "confusion_matrix"}:
@@ -729,8 +734,9 @@ def chp_score(
                 TP_, TN_, FP_, FN_ = confusion_matrix(true[i], prediction[i])
                 TP, TN, FP, FN = TP + TP_, TN + TN_, FP + FP_, FN + FN_
         else:
-            print(
-                "For this metric it is better if you use pd.Series format for true \nwith common index of true and prediction",
+            logger.warning(
+                "For this metric it is better if you use pd.Series format "
+                "for true with common index of true and prediction",
             )
             TP, TN, FP, FN = 0, 0, 0, 0
             for i in range(len(prediction)):
@@ -754,17 +760,17 @@ def chp_score(
             far = float(round(FP / (FP + TN) * 100, 2))
             mar = float(round(FN / (FN + TP) * 100, 2))
             if verbose:
-                print(f"False Alarm Rate {far} %")
-                print(f"Missing Alarm Rate {mar} %")
-                print(f"F1 metric {f1}")
+                logger.info("False Alarm Rate %s %%", far)
+                logger.info("Missing Alarm Rate %s %%", mar)
+                logger.info("F1 metric %s", f1)
             return f1, far, mar
 
         if metric == "confusion_matrix":
             if verbose:
-                print("TP", TP)
-                print("TN", TN)
-                print("FP", FP)
-                print("FN", FN)
+                logger.info("TP %s", TP)
+                logger.info("TN %s", TN)
+                logger.info("FP %s", FP)
+                logger.info("FN %s", FN)
             return TP, TN, FP, FN
     else:
         msg = "Choose the performance metric"

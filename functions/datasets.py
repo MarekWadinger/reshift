@@ -1,8 +1,11 @@
+import logging
 import os
 
 import numpy as np
 import pandas as pd
 import requests
+
+logger = logging.getLogger(__name__)
 
 
 def load_dateset(file_path, url, save: bool = False):
@@ -34,7 +37,7 @@ def load_dateset(file_path, url, save: bool = False):
         directory = os.path.dirname(file_path)
         if not os.path.exists(directory):
             os.makedirs(directory)
-        print(f"Saving dataset to {file_path}")
+        logger.info("Saving dataset to %s", file_path)
         # Save the data to file_path
         np.savetxt(file_path, data)
     return data
@@ -88,9 +91,11 @@ def load_cats(resample_s: None | int = None) -> pd.DataFrame:
                 buffer.write(data)
                 bytes_downloaded += len(data)
                 progress = bytes_downloaded / total_size * 100
-                print(
-                    f"Downloaded {bytes_downloaded}/{total_size} bytes ({progress:.2f}%)\r",
-                    end="",
+                logger.debug(
+                    "Downloaded %d/%d bytes (%.2f%%)",
+                    bytes_downloaded,
+                    total_size,
+                    progress,
                 )
 
             # Reset buffer position to the beginning before reading
@@ -111,7 +116,7 @@ def load_cats(resample_s: None | int = None) -> pd.DataFrame:
         df = df.resample(f"{resample_s}s").median().iloc[resample_s:]
 
     if not os.path.exists(file_path):
-        print(f"Saving dataset to {file_path}")
+        logger.info("Saving dataset to %s", file_path)
         # Save the data to file_path
         df.to_csv(file_path)
 
@@ -146,7 +151,7 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
                     if item["type"] == "file" and item["name"].endswith(
                         ".csv",
                     ):
-                        print(f"Downloading {item['name']: <79s}", end="\r")
+                        logger.info("Downloading %s", item["name"])
                         file_url = item["download_url"]
                         file_name = os.path.basename(p=file_url)
                         file_path = os.path.join(folder_path, file_name)

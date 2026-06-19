@@ -44,9 +44,14 @@ line-length = 79
 extend-exclude = ["vendor"]
 # Math/linear-algebra code uses uppercase identifiers (X, A, U, S, V matrices);
 # pep8-naming rules fight standard mathematical notation, so ignore them.
-# T201/T203: prints are intentional in benchmarks/scripts; the unsafe fix
-# silently deletes print calls, so ignore the rule entirely.
-lint.ignore = ["N802", "N803", "N806", "N816", "N817", "T201", "T203"]
+lint.select = ["E4", "E7", "E9", "F", "T20"]  # ruff defaults + flake8-print
+lint.ignore = ["N802", "N803", "N806", "N816", "N817"]
+
+# T201/T203 (print): prints are the output medium in notebooks and the
+# benchmark report script — allowed there, enforced everywhere else.
+[tool.ruff.lint.per-file-ignores]
+"*.ipynb" = ["T201", "T203"]
+"benchmarks/*" = ["T201", "T203"]
 
 [tool.coverage.run]
 omit = ["tests/*"]
