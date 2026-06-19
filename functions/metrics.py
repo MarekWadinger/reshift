@@ -13,6 +13,11 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+# Input-variant codes returned by check_errors(): 1=Series, 2=list-of-timestamps, 3=pre-built boundaries
+_VARIANT_SERIES = 1
+_VARIANT_LIST_TS = 2
+_VARIANT_BOUNDARIES = 3
+
 
 def filter_detecting_boundaries(
     detecting_boundaries: list[list[Any]],
@@ -170,10 +175,10 @@ def check_errors(my_list: list[Any] | pd.Series) -> int:
                 msg,
             )
 
-    if 3 in level_list:
-        for el in level_list[2]:
-            if not ((len(el) == 2) or (len(el) == 0)):
-                msg = f"Non uniform data format in level {2}: {my_list}"
+    if _VARIANT_BOUNDARIES in level_list:
+        for el in level_list[_VARIANT_LIST_TS]:
+            if not ((len(el) == _VARIANT_LIST_TS) or (len(el) == 0)):
+                msg = f"Non uniform data format in level {_VARIANT_LIST_TS}: {my_list}"
                 raise ValueError(
                     msg,
                 )
@@ -637,27 +642,27 @@ def chp_score(
 
     def check_sort(my_list: list[Any] | pd.Series, input_variant: int) -> None:
         for dataset in my_list:
-            if input_variant == 2:
+            if input_variant == _VARIANT_LIST_TS:
                 assert all(np.sort(dataset) == np.array(dataset))
-            elif input_variant == 3:
+            elif input_variant == _VARIANT_BOUNDARIES:
                 assert all(
                     np.sort(np.concatenate(dataset))
                     == np.concatenate(dataset),
                 )
-            elif input_variant == 1:
+            elif input_variant == _VARIANT_SERIES:
                 assert all(
                     dataset.index.to_numpy()
                     == dataset.sort_index().index.to_numpy(),
                 )
 
     check_sort(true, input_variant)
-    check_sort(prediction, 1)
+    check_sort(prediction, _VARIANT_SERIES)
 
     # part 2. To detected boundaries
     if (
         (metric in {"nab", "average_time"})
         and (window_width is None)
-        and (input_variant != 3)
+        and (input_variant != _VARIANT_BOUNDARIES)
     ):
         logger.warning(
             "Since you didn't choose window_width and portion, "
@@ -665,7 +670,7 @@ def chp_score(
             portion,
         )
 
-    if input_variant == 1:
+    if input_variant == _VARIANT_SERIES:
         detecting_boundaries = [
             single_detecting_boundaries(
                 true_series=true[i],
@@ -679,7 +684,7 @@ def chp_score(
             for i in range(len(true))
         ]
 
-    elif input_variant == 2:
+    elif input_variant == _VARIANT_LIST_TS:
         detecting_boundaries = [
             single_detecting_boundaries(
                 true_series=None,
@@ -693,7 +698,7 @@ def chp_score(
             for i in range(len(true))
         ]
 
-    elif input_variant == 3:
+    elif input_variant == _VARIANT_BOUNDARIES:
         detecting_boundaries = true.copy()
         # Next anti fool system [[[t1,t2]],[]] -> [[[t1,t2]],[[]]]
         for i in range(len(detecting_boundaries)):

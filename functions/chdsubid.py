@@ -22,6 +22,8 @@ if TYPE_CHECKING:
 _RustTypes = (RustRollingDMD, RustRollingDMDwC)
 _RollingTypes = (Rolling, RustRollingDMD, RustRollingDMDwC)
 
+_HANKEL_DIM_THRESHOLD = 100
+
 
 # # Default parameters
 def get_default_timedelays(
@@ -132,12 +134,12 @@ def get_default_params(
     lag = 0
     test_size = window_size
     # Optimal low-rank representation of signal with unknown noise variance
-    if hn * X.shape[1] < 100:
+    if hn * X.shape[1] < _HANKEL_DIM_THRESHOLD:
         q = min(get_default_rank(hankel(X, hn, step)), max_rank)
     else:
         q = max_rank
     if U is not None:
-        if hn * U.shape[1] < 100:
+        if hn * U.shape[1] < _HANKEL_DIM_THRESHOLD:
             p = min(get_default_rank(hankel(U, hn, step)), max_rank)
         else:
             p = max_rank

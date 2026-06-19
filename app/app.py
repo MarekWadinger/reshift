@@ -29,6 +29,9 @@ if TYPE_CHECKING:
     from matplotlib.figure import Figure
     from streamlit.delta_generator import DeltaGenerator
 
+DMD_SCORE_THRESHOLD_HIGH = 0.5
+DMD_SCORE_THRESHOLD = 0.25
+
 
 # --- Functions ---
 def update_selection_X() -> None:
@@ -214,8 +217,14 @@ def compute_metrics(
             index=date_range,
         ),
         "Online DMD (t=0)": pd.Series(scores_dmd > 0.0, index=date_range),
-        "Online DMD (t=0.5)": pd.Series(scores_dmd > 0.5, index=date_range),
-        "Online DMD": pd.Series(scores_dmd > 0.25, index=date_range),
+        "Online DMD (t=0.5)": pd.Series(
+            scores_dmd > DMD_SCORE_THRESHOLD_HIGH,
+            index=date_range,
+        ),
+        "Online DMD": pd.Series(
+            scores_dmd > DMD_SCORE_THRESHOLD,
+            index=date_range,
+        ),
     }
 
     # TODO(MarekWadinger): window width not aligned correctly with index (#9)

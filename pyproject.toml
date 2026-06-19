@@ -58,12 +58,10 @@ lint.ignore = [
     "E501",    # code line length (replaced by W505)
     "FIX002",  # line contains TODO (TODOs are tracked via issues)
     "S101",    # assert used for runtime invariants
-    "PLR2004", # magic-value comparison (numeric constants are inherent)
     "PLR0912", # too many branches (algorithmic code)
     "PLR0913", # too many arguments (model/config constructors)
     "PLR0915", # too many statements (algorithmic code)
     "C901",    # function too complex (algorithmic code)
-    "INP001",  # implicit namespace package (no __init__ needed)
     "PLC0415", # intentional lazy imports (optional/heavy deps)
 ]
 lint.pycodestyle.max-doc-length = 120

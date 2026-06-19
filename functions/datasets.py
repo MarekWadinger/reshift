@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 # Seconds before a dataset download request gives up (avoids hanging forever).
 _TIMEOUT = 30
+_HTTP_OK = 200
 
 
 def load_dateset(
@@ -41,7 +42,7 @@ def load_dateset(
     # If the file does not exist, download the data
     response = requests.get(url, timeout=_TIMEOUT)
 
-    if response.status_code == 200:
+    if response.status_code == _HTTP_OK:
         lines = response.text.split("\n")
         data = np.array(
             [float(line.strip()) for line in lines if line.strip()],
@@ -197,7 +198,7 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
 
             # Get the contents of the folder
             response = requests.get(url, timeout=_TIMEOUT)
-            if response.status_code == 200:
+            if response.status_code == _HTTP_OK:
                 for item in response.json():
                     if item["type"] == "file" and item["name"].endswith(
                         ".csv",
@@ -267,7 +268,7 @@ def load_usp(
 
     if not Path(file_path).exists():
         response = requests.get(url, timeout=_TIMEOUT)
-        if response.status_code == 200:
+        if response.status_code == _HTTP_OK:
             msg = (
                 f"Please, download the data from the following URL: {url}.\n"
                 "Feel free to contribute by implementing the download process."
@@ -359,7 +360,7 @@ def load_bess() -> tuple[pd.DataFrame, pd.DataFrame]:
             def download_csv_from_git(url: str, save_path: str) -> None:
                 # Get the contents of the folder
                 response = requests.get(url, timeout=_TIMEOUT)
-                if response.status_code == 200:
+                if response.status_code == _HTTP_OK:
                     with Path(save_path).open("wb") as f:
                         f.write(response.content)
 
