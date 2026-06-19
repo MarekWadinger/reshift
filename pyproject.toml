@@ -45,11 +45,15 @@ extend-exclude = ["vendor"]
 lint.select = ["ALL"]
 lint.ignore = [
     # === Backlog: being fixed group-by-group; removed as each is resolved ===
-    "NPY002",
     "TD002", "TD003",
     "PGH003",
     "SLF001",  # pending: per-line noqa or public-accessor improvement
     # === Permanent: inappropriate for numerical/research code ===
+    # TODO(MarekWadinger): migrate to np.random.Generator only when reference
+    # data is regenerated. np.random.default_rng(seed) yields a different stream
+    # than np.random.seed()+np.random.normal(), so migrating now would change the
+    # seeded synthetic datasets and invalidate committed results/figures.
+    "NPY002",                                # legacy RNG kept for reproducibility
     "N802", "N803", "N806", "N816", "N817",  # math uses uppercase identifiers
     "D100", "D101", "D102", "D103", "D104", "D105", "D107",  # docstrings optional
     "D401", "D404", "D417",                  # docstring style
