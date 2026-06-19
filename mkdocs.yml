@@ -1,10 +1,10 @@
 site_name: ODMD-SUBID-CPD
 site_author: Marek Wadinger
-site_url: https://marekwadinger.github.io/odmd-subid-cpd/
+site_url: https://marekwadinger.github.io/reshift/
 
 # Repository
-repo_name: odmd-subid-cpd
-repo_url: https://github.com/MarekWadinger/odmd-subid-cpd
+repo_name: reshift
+repo_url: https://github.com/MarekWadinger/reshift
 edit_uri: ""
 
 watch: [mkdocs.yml, README.md]

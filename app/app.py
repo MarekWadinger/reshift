@@ -18,11 +18,11 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from typing import TYPE_CHECKING
 
-from functions.chdsubid import SubIDChangeDetector, get_default_rank
-from functions.metrics import chp_score
-from functions.plot import plot_chd
-from functions.preprocessing import hankel
-from functions.rolling import Rolling
+from reshift.chdsubid import SubIDChangeDetector, get_default_rank
+from reshift.metrics import chp_score
+from reshift.plot import plot_chd
+from reshift.preprocessing import hankel
+from reshift.rolling import Rolling
 
 if TYPE_CHECKING:
     from matplotlib.axes import Axes

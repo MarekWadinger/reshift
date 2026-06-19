@@ -16,8 +16,8 @@ from river.preprocessing import Hankelizer
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from typing import TYPE_CHECKING
 
-from functions.chdsubid import SubIDChangeDetector
-from functions.rolling import Rolling
+from reshift.chdsubid import SubIDChangeDetector
+from reshift.rolling import Rolling
 
 if TYPE_CHECKING:
     from collections.abc import Iterator

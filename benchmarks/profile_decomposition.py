@@ -19,7 +19,7 @@ from river.decomposition.rust_rolling_dmd import RustRollingDMD
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from functions.rolling import Rolling
+from reshift.rolling import Rolling
 
 # --- Monkey-patch instrumentation ---
 

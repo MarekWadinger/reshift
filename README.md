@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/assets/logo.png" alt="odmd-subid-cpd" width="200">
+  <img src="docs/assets/logo.png" alt="reshift" width="200">
 </p>
 
-<h1 align="center">odmd-subid-cpd</h1>
+<h1 align="center">reshift</h1>
 
 <p align="center">
   <strong>Catch the moment a machine or process changes its behaviour — live, before it becomes a failure.</strong>
@@ -13,8 +13,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml"><img src="https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml/badge.svg" alt="Quality and Tests"></a>
-  <a href="https://codecov.io/gh/MarekWadinger/odmd-subid-cpd"><img src="https://codecov.io/gh/MarekWadinger/odmd-subid-cpd/branch/main/graph/badge.svg?token=BIS0A7CF1F" alt="codecov"></a>
+  <a href="https://github.com/MarekWadinger/reshift/actions/workflows/ci.yml"><img src="https://github.com/MarekWadinger/reshift/actions/workflows/ci.yml/badge.svg" alt="Quality and Tests"></a>
+  <a href="https://codecov.io/gh/MarekWadinger/reshift"><img src="https://codecov.io/gh/MarekWadinger/reshift/branch/main/graph/badge.svg?token=BIS0A7CF1F" alt="codecov"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
   <img src="https://img.shields.io/badge/python-3.14+-blue.svg" alt="Python 3.14+">
   <a href="https://arxiv.org/abs/2407.05976"><img src="https://img.shields.io/badge/arXiv-2407.05976-b31b1b.svg" alt="arXiv"></a>
@@ -99,7 +99,7 @@ Feel free to contribute in any way you like, we're always open to new ideas and
 approaches.
 
 - Feel welcome to
-[open an issue](https://github.com/MarekWadinger/odmd-subid-cpd/issues/new/choose)
+[open an issue](https://github.com/MarekWadinger/reshift/issues/new/choose)
 if you think you've spotted a bug or a performance issue.
 
 ## 🛠 For Developers
@@ -125,6 +125,6 @@ If you have VSCode installed, you can use the devcontainer feature to create a c
 If you don't have Rust installed, the Docker approach is the way to go:
 
 ```sh
-docker build -t odmd-subid-cpd .
-docker run -p 8888:8888 -v .:/app odmd-subid-cpd
+docker build -t reshift .
+docker run -p 8888:8888 -v .:/app reshift
 ```

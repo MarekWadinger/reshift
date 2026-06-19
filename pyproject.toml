@@ -1,5 +1,5 @@
 [project]
-name = "odmd-subid-cpd"
+name = "reshift"
 version = "4.0.1"
 description = "Real-time change-point detection for industrial data streams via Online Dynamic Mode Decomposition with Control (ODMDwC)."
 readme = "README.md"
@@ -98,7 +98,7 @@ lint.pycodestyle.max-line-length = 79
 convention = "google"
 
 [tool.coverage.run]
-source = ["functions"]
+source = ["reshift"]
 branch = true
 omit = ["tests/*"]
 
