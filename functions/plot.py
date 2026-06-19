@@ -157,7 +157,6 @@ def plot_chd(
         fig = axs[0].figure
 
     idx_start = 0 if idx_start is None else idx_start
-    # idx_end = len(datas[0]) if idx_end is None else idx_end
 
     if labels is None:
         labels = [""] * len(datas)

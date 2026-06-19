@@ -59,7 +59,6 @@ lint.ignore = [
     "N803",    # argument names use math notation (X, U, Y)
     "N806",    # local vars use math notation (X, A, U, S, V)
     "N816",    # mixed-case math vars at module scope
-    "ERA001",  # commented-out code kept as research scratch
     "E501",    # code line length (replaced by W505)
     "FIX002",  # line contains TODO (TODOs are tracked via issues)
     "S101",    # assert used for runtime invariants
@@ -76,8 +75,10 @@ lint.pycodestyle.max-line-length = 79
 # benchmark report script — allowed there, enforced everywhere else.
 # SLF001: analysis notebooks legitimately inspect river decomposition
 # internals (_svd, _S, _U, _Y) that have no public accessor.
+# ERA001: notebooks carry "# [donotremove]"/"# [pin]" markers (for the
+# jupyter-cleanup hook) that ruff misreads as commented-out code.
 [tool.ruff.lint.per-file-ignores]
-"*.ipynb" = ["T201", "T203", "SLF001"]
+"*.ipynb" = ["T201", "T203", "SLF001", "ERA001"]
 "benchmarks/*" = ["T201", "T203"]
 
 # Codebase uses Google-style docstrings (Args:/Returns:/Raises:).

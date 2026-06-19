@@ -65,7 +65,6 @@ class ChangeDetectionTrack(Track):
 
     def __init__(self) -> None:
         """Initialize the change detection track with synthetic step-change datasets."""
-        # datasets = [ds.WaterFlow(), ds.WebTraffic(), ds.synth.AnomalySine()]
         datasets = [
             NPDataset(
                 np.loadtxt(

@@ -149,6 +149,54 @@ def get_default_params(
     return window_size, ref_size, test_size, lag, q
 
 
+# --- Reconstruction-distance metrics ---------------------------------------
+# Each maps an original window X and its reconstruction X_t to a scalar
+# dissimilarity used for change scoring. SubIDChangeDetector uses
+# `dist_featurewise_l1` by default; the alternatives were explored during
+# development (issue #12) and are kept as named, testable functions rather
+# than commented-out code. All operate on plain numpy arrays.
+def dist_featurewise_l1(X: np.ndarray, X_t: np.ndarray) -> float:
+    """Sum of per-feature (column-wise) L1 reconstruction errors (default).
+
+    The 1-norm is sensitive to the number of measurements.
+    """
+    return float(np.sum(np.linalg.norm(X - X_t, axis=0, ord=1)))
+
+
+def dist_featurewise_l2(X: np.ndarray, X_t: np.ndarray) -> float:
+    """Sum of per-feature (column-wise) L2 reconstruction errors.
+
+    The 2-norm is insensitive to the number of features.
+    """
+    return float(np.sum(np.linalg.norm(X - X_t, axis=0, ord=2)))
+
+
+def dist_measurement_l2(X: np.ndarray, X_t: np.ndarray) -> float:
+    """Sum of per-measurement (row-wise) L2 errors (total measurement error)."""
+    return float(np.sum(np.linalg.norm(X - X_t, axis=1, ord=2)))
+
+
+def dist_overall_l1(X: np.ndarray, X_t: np.ndarray) -> float:
+    """Overall L1 error; scales with the magnitude of change."""
+    return float(np.linalg.norm(X - X_t, ord=1).real)
+
+
+def dist_sum_square_diff(X: np.ndarray, X_t: np.ndarray) -> float:
+    """Difference of summed squares (squared-L1 energy), after Kawahara (2007)."""
+    return float(np.sum(X**2) - np.sum(X_t**2))
+
+
+def dist_frobenius_cov(X: np.ndarray, X_t: np.ndarray) -> float:
+    """Frobenius norm of the data-vs-reconstruction covariance difference.
+
+    Gives scores comparable to projecting and differencing covariances, but
+    is cheaper since it skips the projection step.
+    """
+    return float(
+        np.linalg.norm(np.inner(X, X) - np.inner(X_t, X_t), ord="fro"),
+    )
+
+
 class SubIDChangeDetector(AnomalyDetector):
     """Change-Point Detection on Subspace Identification.
 
@@ -308,10 +356,9 @@ class SubIDChangeDetector(AnomalyDetector):
             #  - ...
             D_train, D_test = self.distances
             score = (D_test / D_train) - 1
-            # TODO(MarekWadinger): explore interesting scoring option (#12)
-            # TODO(MarekWadinger): explore weighting of individual terms (#12)
-            # score = D_train - D_test
-            # TODO(MarekWadinger): utilize imaginary part of score properly (#12)
+            # TODO(MarekWadinger): explore scoring options (#12) -- e.g. an
+            # absolute distance difference, weighting individual terms, and a
+            # proper use of the score's imaginary part
             if isinstance(score, complex):
                 score: float = score.real + np.abs(score.imag)
             # TODO(MarekWadinger): document score shaping (#12)
@@ -348,42 +395,9 @@ class SubIDChangeDetector(AnomalyDetector):
             Distance between the data matrix and its transformation.
 
         """
-        # Project the transformed data to the original space
-        #  Similar scores are obtained combining this step with 2 norm and without projection and differencing covariances. Latter is less expensive  # noqa: W505
-        # if hasattr(self.subid, "modes"):
-        #     X_p = X_t @ self.subid.modes.T
-        # elif hasattr(self.subid, "_U"):
-        #     X_p = X_t @ self.subid._U.T
-        # Opt 1: Using Frobenius norm
-        # Q = float(
-        #     np.linalg.norm(np.inner(X, X) - np.inner(X_p, X_p), ord="fro")
-        # )
-        # return Q
-        # Opt 2: Using squared L1 norm (Kawahara 2007)
-        # XX = np.sum(X.values**2)
-        # # # XX = np.linalg.norm(X, 1)
-        # # # # Using following normalization changes the score baseline based on
-        # # # #  the ratio of test and base size
-        # XX_std = 1  # np.sqrt(XX)
-        # XtXt = np.sum(X_t.values**2)
-        # # # XtXt = np.linalg.norm(X_t, 1)
-        # XtXt_std = 1  # np.sqrt(XtXt)
-        # return complex(XX / XX_std - XtXt / XtXt_std)
-        # Opt 3: Using norm with projected data
-        # Q = np.sum(np.linalg.norm(X.values - X_p.values, ord=1, axis=1))
-        # return float(Q)
-        # Opt 4: Using norm with projected data
-        #  Total Measurement Error
-        # Q = np.sum(np.linalg.norm(X.values - X_t.values, axis=1, ord=2))
-        # Total Feature-Wise Error
-        # # 2-norm is n_features insensitive
-        # Q = np.sum(np.linalg.norm(X.values - X_t.values, axis=0, ord=2))
-        # # 1-norm is n_measurements sensitive
-        return np.sum(
-            np.linalg.norm(X.to_numpy() - X_t.to_numpy(), axis=0, ord=1),
-        )
-        # # Overall Similarity - divided by number of measurements, corresponds to magnitude of change
-        # Q = np.linalg.norm(X.values - X_t.values, ord=1).real
+        # Default metric; see the dist_* functions above for the alternatives
+        # explored during development (issue #12).
+        return dist_featurewise_l1(X.to_numpy(), X_t.to_numpy())
 
     def _reset_score(self) -> None:
         self._score = None

@@ -99,8 +99,6 @@ def single_detecting_boundaries(
             new_detecting_boundaries[i][1]
             >= new_detecting_boundaries[i + 1][0]
         ):
-            # transform print to list of intersections
-            # print(f'Intersection of scoring windows {new_detecting_boundaries[i][1], new_detecting_boundaries[i + 1][0]}')  # noqa: W505
             intersection_count += 1
             if intersection_mode == "cut left window":
                 new_detecting_boundaries[i][1] = new_detecting_boundaries[
@@ -119,7 +117,6 @@ def single_detecting_boundaries(
             else:
                 msg = "choose the intersection_mode"
                 raise ValueError(msg)
-    # print(f'There are {intersection_count} intersections of scoring windows')
     return new_detecting_boundaries.copy()
 
 
@@ -138,7 +135,6 @@ def check_errors(my_list: list[Any] | pd.Series) -> int:
     """
     assert isinstance(my_list, list)
     mx = 1
-    #     ravel = []
     level_list: dict[int, Any] = {}
 
     def check_error(my_list: list[Any]) -> bool:
@@ -718,7 +714,6 @@ def chp_score(
                 clear_anomalies_mode=clear_anomalies_mode,
                 scale_func=scale_func,
                 scale_koef=scale_koef,
-                # plot_figure=plot_figure,
             )
             matrix = matrix + matrix_
 

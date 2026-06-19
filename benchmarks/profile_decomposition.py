@@ -282,12 +282,6 @@ def print_results(t_total: int, n_samples: int) -> None:
         + rolling_overhead
         + dict_create
     )
-    # dmd.revert overhead (dict conv + _truncate + _update_A_P already counted from update side)
-    # dmd_revert_overhead = (
-    #     dmd_revert_total
-    #     - (truncate_total - svd_update_total)
-    #     - (update_ap_total / 2)
-    # )
     # Align overhead line likewise
     print(
         f"{'  dmd.revert overhead (dict, _x_first):':<45} {unaccounted / 1e6:>12.1f} ms   {(unaccounted / t_total * 100):>7.2f}%",

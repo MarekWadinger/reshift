@@ -68,13 +68,10 @@ class DMD:
     def _fit(self, X: np.ndarray, Y: np.ndarray) -> None:
         # Perform singular value decomposition on X
         r = self.r if self.r > 0 else self.m
-        # u_, sigma, v = np.linalg.svd(X, full_matrices=False)
-        # # Truncate the singular value matrices
         if r < self.m:
             u_, sigma, v = sp.sparse.linalg.svds(X, k=r)
         else:
             u_, sigma, v = np.linalg.svd(X, full_matrices=False)
-        # u_, sigma, v = u_[:, :r], sigma[:r], v[:r, :]
         sigma_inv = np.reciprocal(sigma)
         # Compute the low-rank approximation of Koopman matrix
         self.A_bar = u_.conj().T @ Y @ v.conj().T @ np.diag(sigma_inv)
@@ -83,10 +80,8 @@ class DMD:
         self.Lambda, W = np.linalg.eig(self.A_bar)
 
         # Compute the coefficient matrix
-        # TODO(MarekWadinger): clarify whether to use X or Y (X usage ~ u @ W) (#13)
-        # self.Phi = X @ v[: r, :].conj().T @ np.diag(sigma_inv) @ W
+        # TODO(MarekWadinger): clarify X vs Y for Phi; X path uses v[:r], sigma_inv, W (#13)
         self.Phi = u_ @ W
-        # self.A = self.Phi @ np.diag(self.Lambda) @ np.linalg.pinv(self.Phi)
         self.A = Y @ v.conj().T @ np.diag(sigma_inv) @ u_.conj().T
 
     def fit(self, X: np.ndarray, Y: np.ndarray | None = None) -> None:
