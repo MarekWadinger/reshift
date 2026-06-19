@@ -44,7 +44,9 @@ line-length = 79
 extend-exclude = ["vendor"]
 # Math/linear-algebra code uses uppercase identifiers (X, A, U, S, V matrices);
 # pep8-naming rules fight standard mathematical notation, so ignore them.
-lint.ignore = ["N802", "N803", "N806", "N816", "N817"]
+# T201/T203: prints are intentional in benchmarks/scripts; the unsafe fix
+# silently deletes print calls, so ignore the rule entirely.
+lint.ignore = ["N802", "N803", "N806", "N816", "N817", "T201", "T203"]
 
 [tool.coverage.run]
 omit = ["tests/*"]

@@ -20,10 +20,13 @@ def load_dateset(file_path, url, save: bool = False):
             [float(line.strip()) for line in lines if line.strip()],
         )
     else:
-        raise ValueError(
+        msg = (
             f"Error {response.status_code} while downloading the nprs44. "
             f"Check connection or download and store manually from {url} "
-            f"to {file_path}",
+            f"to {file_path}"
+        )
+        raise ValueError(
+            msg,
         )
 
     if save:
@@ -94,8 +97,7 @@ def load_cats(resample_s: None | int = None) -> pd.DataFrame:
             buffer.seek(0)
 
             # Read the Parquet file from the buffer into a pandas DataFrame
-            df = pd.read_parquet(buffer)
-            return df
+            return pd.read_parquet(buffer)
 
         df = download_and_read_parquet_with_progress(url)
 
@@ -123,7 +125,9 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
 
     if not os.path.exists(file_path):
 
-        def download_csv_from_git(url, save_path, add_base: bool = True):
+        def download_csv_from_git(
+            url, save_path, add_base: bool = True
+        ) -> None:
             # Parse the URL to get the folder name
             parsed_url = urlparse(url)
             folder_name = os.path.basename(parsed_url.path)
@@ -188,9 +192,12 @@ def load_usp(
     if not os.path.exists(file_path):
         response = requests.get(url)
         if response.status_code == 200:
-            raise NotImplementedError(
+            msg = (
                 f"Please, download the data from the following URL: {url}.\n"
-                "Feel free to contribute by implementing the download process.",
+                "Feel free to contribute by implementing the download process."
+            )
+            raise NotImplementedError(
+                msg,
             )
 
     def convert_dtypes_numeric(df):
@@ -265,7 +272,7 @@ def load_bess() -> tuple[pd.DataFrame, pd.DataFrame]:
             os.makedirs(folder_path, exist_ok=True)
 
             # Read the data from the file into a numpy array
-            def download_csv_from_git(url, save_path):
+            def download_csv_from_git(url, save_path) -> None:
                 # Get the contents of the folder
                 response = requests.get(url)
                 if response.status_code == 200:

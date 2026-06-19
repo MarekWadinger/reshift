@@ -29,7 +29,7 @@ N_CHECKPOINTS = 0
 class NPDataset(base.Dataset):
     """Base class for numpy array datasets."""
 
-    def __init__(self, X, y=None):
+    def __init__(self, X, y=None) -> None:
         self.X = X
         self.y = y
         if self.y is not None:
@@ -50,7 +50,7 @@ class NPDataset(base.Dataset):
 
 
 class ChangeDetectionTrack(Track):
-    def __init__(self):
+    def __init__(self) -> None:
         datasets = []
         # datasets = [ds.WaterFlow(), ds.WebTraffic(), ds.synth.AnomalySine()]
         for i in range(1):

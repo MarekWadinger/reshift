@@ -20,7 +20,7 @@ from functions.rolling import Rolling
 
 
 # --- Functions ---
-def update_selection_X():
+def update_selection_X() -> None:
     st.session_state.selected_X = st.session_state.multiselect_X
     st.session_state.m = len(st.session_state.selected_X)
     st.session_state.m
@@ -30,7 +30,7 @@ def update_selection_X():
         st.session_state.disable_params = True
 
 
-def update_selection_U():
+def update_selection_U() -> None:
     st.session_state.selected_U = st.session_state.multiselect_U
     st.session_state.l = len(st.session_state.selected_U)
 
@@ -43,10 +43,7 @@ def progressive_val_predict(
     _progress_bar=None,
 ):
     # CREATE REFERENCE TO LAST STEP OF PIPELINE (TRACK STATE OF MODEL)
-    if isinstance(_model, Pipeline):
-        model_ = _model._last_step
-    else:
-        model_ = _model
+    model_ = _model._last_step if isinstance(_model, Pipeline) else _model
 
     y_pred = np.zeros(X.shape[0], dtype=float)
     meta: dict[str, np.ndarray] = {}
@@ -60,6 +57,7 @@ def progressive_val_predict(
         zip(
             X.to_dict(orient="records"),
             U.to_dict(orient="records"),
+            strict=False,
         ),
     ):
         y_pred[i] = _model.score_one(x)
@@ -89,7 +87,7 @@ def export_fig(fig) -> bytes:
 
 @st.cache_data
 def concat_results(X, scores_dmd, scores_dmd_diff):
-    df = pd.concat(
+    return pd.concat(
         [
             X,
             pd.Series(scores_dmd.real, index=X.index, name="DMD"),
@@ -97,7 +95,6 @@ def concat_results(X, scores_dmd, scores_dmd_diff):
         ],
         axis=1,
     )
-    return df
 
 
 @st.cache_data
@@ -159,14 +156,14 @@ def compute_metrics(Y, scores_dmd, test_size):
     ]
 
     df_res = pd.DataFrame(
-        columns=pd.Index([m for m in metrics]),
+        columns=pd.Index(list(metrics)),
         index=pd.Index(list(experiments.keys())),
     )
 
     for name, po in experiments.items():
         pc = po.astype(int).diff().abs().fillna(0.0)
         res = {}
-        for window_name, kwargs in window_params.items():
+        for kwargs in window_params.values():
             binary = chp_score(
                 y_true,
                 po,
@@ -190,10 +187,12 @@ def compute_metrics(Y, scores_dmd, test_size):
                     "anomaly_window_destination"
                 ],
             )
-            res_ = dict(zip(["F1", "FAR", "MAR"], binary))
-            res_.update(dict(zip(["Delay", "FN", "FP", "TP"], add)))
+            res_ = dict(zip(["F1", "FAR", "MAR"], binary, strict=False))
+            res_.update(
+                dict(zip(["Delay", "FN", "FP", "TP"], add, strict=False))
+            )
             res_.update(nab)
-            res_ = {k: v for k, v in res_.items()}
+            res_ = dict(res_.items())
             res.update(res_)
         df_res[name] = res
     df_res.sort_values("Standard", ascending=False)

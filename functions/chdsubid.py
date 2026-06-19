@@ -1,20 +1,23 @@
 """Change Detection based on Subspace Identification algorithm."""
 
 from collections import deque
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pandas as pd
 from river.anomaly.base import AnomalyDetector
 from river.base import MiniBatchTransformer, Transformer
-from river.decomposition import OnlineDMD, OnlineDMDwC
 from river.decomposition.rust_rolling_dmd import (
     RustRollingDMD,
     RustRollingDMDwC,
 )
-from river.utils.rolling import Rolling as RiverRolling
 
 from .preprocessing import hankel
 from .rolling import Rolling
+
+if TYPE_CHECKING:
+    from river.decomposition import OnlineDMD, OnlineDMDwC
+    from river.utils.rolling import Rolling as RiverRolling
 
 _RustTypes = (RustRollingDMD, RustRollingDMDwC)
 _RollingTypes = (Rolling, RustRollingDMD, RustRollingDMDwC)
@@ -62,8 +65,7 @@ def get_default_rank(X, noise_variance: float | None = None):
         )
 
         tau = lambda_opt * np.sqrt(n * noise_variance)
-    r = sum(s > tau)
-    return r
+    return sum(s > tau)
 
 
 def get_default_params(X, U=None, window_size: int = 0, max_rank=10):
@@ -150,15 +152,16 @@ class SubIDChangeDetector(AnomalyDetector):
         grace_period: int = 0,
         learn_after_grace: bool = True,
         start_soon: bool = False,
-    ):
+    ) -> None:
         self.subid = subid
         self.threshold = threshold
         if ref_size == 0 and isinstance(subid, _RollingTypes):
             ref_size = subid.window_size
             # Since window_size is maxlen of deque in Rolling it may be None
             if ref_size is None:
+                msg = "window_size must be provided for Rolling subid"
                 raise ValueError(
-                    "window_size must be provided for Rolling subid",
+                    msg,
                 )
         self.ref_size = ref_size
         self.test_size = test_size if test_size is not None else ref_size
@@ -250,7 +253,7 @@ class SubIDChangeDetector(AnomalyDetector):
         return score
 
     @property
-    def _supervised(self):
+    def _supervised(self) -> bool:
         """Indicates whether or not the estimator is supervised or not.
 
         This is useful internally for determining if an estimator expects to be provided with a `y`
@@ -304,12 +307,11 @@ class SubIDChangeDetector(AnomalyDetector):
         # # 2-norm is n_features insensitive
         # Q = np.sum(np.linalg.norm(X.values - X_t.values, axis=0, ord=2))
         # # 1-norm is n_measurements sensitive
-        Q = np.sum(np.linalg.norm(X.values - X_t.values, axis=0, ord=1))
+        return np.sum(np.linalg.norm(X.values - X_t.values, axis=0, ord=1))
         # # Overall Similarity - divided by number of measurements, corresponds to magnitude of change
         # Q = np.linalg.norm(X.values - X_t.values, ord=1).real
-        return Q
 
-    def _reset_score(self):
+    def _reset_score(self) -> None:
         self._score = None
         self._distances = None
         self._drift_detected = None
@@ -437,7 +439,7 @@ class DMDChangeDetector(SubIDChangeDetector):
         lag: int = 0,
         grace_period: int = 0,
         learn_after_grace: bool = True,
-    ):
+    ) -> None:
         super().__init__(
             subid=subid,
             ref_size=ref_size,

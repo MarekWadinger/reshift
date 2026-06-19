@@ -24,7 +24,7 @@ from functions.rolling import Rolling
 _timings: dict[str, list[float]] = defaultdict(list)
 
 
-def _instrument(cls, method_name, label):
+def _instrument(cls, method_name, label) -> None:
     original = getattr(cls, method_name)
 
     @wraps(original)
@@ -133,12 +133,10 @@ def run_rust_pipeline(m: int, r: int, window_size: int, n_samples: int):
     t_total_start = time.perf_counter_ns()
     for i in range(n_samples):
         rust_dmd.update(x=data[i : i + 1])
-    t_total = time.perf_counter_ns() - t_total_start
-
-    return t_total
+    return time.perf_counter_ns() - t_total_start
 
 
-def print_results(t_total, n_samples):
+def print_results(t_total, n_samples) -> None:
     print(f"\n{'=' * 70}")
     print(f"Pipeline: {n_samples} samples, total = {t_total / 1e6:.1f} ms")
     print(f"Per sample: {t_total / n_samples / 1e3:.1f} µs")
@@ -242,7 +240,7 @@ def print_results(t_total, n_samples):
     print(f"{'=' * 70}")
 
     # Helper for better table-style alignment (labels left, ms right, pct right)
-    def fmt(label, ms, percent):
+    def fmt(label, ms, percent) -> str:
         return f"{label:<45} {ms:>12.1f} ms   {percent:>7.2f}%"
 
     def line(label, val):

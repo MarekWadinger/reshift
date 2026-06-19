@@ -52,11 +52,11 @@ class Hankelizer(H):
         self,
         w: int = 2,
         return_partial: bool | Literal["copy"] = "copy",
-    ):
+    ) -> None:
         super().__init__(w, return_partial)
         self.transform_track: list[dict] = []
 
-    def learn_many(self, X: pd.DataFrame):
+    def learn_many(self, X: pd.DataFrame) -> None:
         self.transform_track = []
         for x in X.to_dict(orient="records"):
             self.learn_one(x)
@@ -135,10 +135,7 @@ def hankel(
     else:
         feature_names_in_ = None
 
-    if len(X.shape) > 1:
-        n = X.shape[1]
-    else:
-        n = 1
+    n = X.shape[1] if len(X.shape) > 1 else 1
 
     hX = np.empty((X.shape[0], hn * n))
     # Roll forth so that the last hankel columns are the start of the array

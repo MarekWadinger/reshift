@@ -1,4 +1,4 @@
-"""This module is modified part of evaluation from library [tsad](https://github.com/waico/tsad)"""
+"""This module is modified part of evaluation from library [tsad](https://github.com/waico/tsad)."""
 
 from typing import Any
 
@@ -28,8 +28,7 @@ def filter_detecting_boundaries(detecting_boundaries):
     for couple in detecting_boundaries.copy():
         if len(couple) != 0:
             _detecting_boundaries.append(couple)
-    detecting_boundaries = _detecting_boundaries
-    return detecting_boundaries
+    return _detecting_boundaries
 
 
 def single_detecting_boundaries(
@@ -41,9 +40,10 @@ def single_detecting_boundaries(
     anomaly_window_destination,
     intersection_mode,
 ):
-    """Extract detecting_boundaries from series or list of timestamps"""
+    """Extract detecting_boundaries from series or list of timestamps."""
     if (true_series is not None) and (true_list_ts is not None):
-        raise Exception("Choose the ONE type")
+        msg = "Choose the ONE type"
+        raise Exception(msg)
     if true_series is not None:
         true_timestamps = true_series[true_series == 1].index
     elif true_list_ts is not None:
@@ -51,7 +51,8 @@ def single_detecting_boundaries(
             return [[]]
         true_timestamps = true_list_ts
     else:
-        raise Exception("Choose the type")
+        msg = "Choose the type"
+        raise Exception(msg)
     detecting_boundaries = []
     td = (
         pd.Timedelta(window_width)
@@ -70,7 +71,8 @@ def single_detecting_boundaries(
         elif anomaly_window_destination == "center":
             detecting_boundaries.append([val - td // 2, val + td // 2])  # type: ignore
         else:
-            raise RuntimeError("choose anomaly_window_destination")
+            msg = "choose anomaly_window_destination"
+            raise RuntimeError(msg)
 
     # block for resolving intersection problem:
     # important to watch right boundary to be never included to avoid windows intersection
@@ -102,10 +104,10 @@ def single_detecting_boundaries(
                 ][0]
                 new_detecting_boundaries[i + 1][0] = _a
             else:
-                raise Exception("choose the intersection_mode")
+                msg = "choose the intersection_mode"
+                raise Exception(msg)
     # print(f'There are {intersection_count} intersections of scoring windows')
-    detecting_boundaries = new_detecting_boundaries.copy()
-    return detecting_boundaries
+    return new_detecting_boundaries.copy()
 
 
 def check_errors(my_list):
@@ -126,20 +128,21 @@ def check_errors(my_list):
     #     ravel = []
     level_list: dict[int, Any] = {}
 
-    def check_error(my_list):
+    def check_error(my_list) -> bool:
         return not (
             (all(isinstance(my_el, list) for my_el in my_list))
             or (all(isinstance(my_el, pd.Series) for my_el in my_list))
             or (all(isinstance(my_el, pd.Timestamp) for my_el in my_list))
         )
 
-    def recurse(my_list, level=1):
+    def recurse(my_list, level=1) -> None:
         nonlocal mx
         nonlocal level_list
 
         if check_error(my_list):
+            msg = f"Non uniform data format in level {level}: {my_list}"
             raise Exception(
-                f"Non uniform data format in level {level}: {my_list}",
+                msg,
             )
 
         if level not in level_list:
@@ -154,15 +157,17 @@ def check_errors(my_list):
     recurse(my_list)
     for level in level_list:
         if check_error(level_list[level]):
+            msg = f"Non uniform data format in level {level}: {my_list}"
             raise Exception(
-                f"Non uniform data format in level {level}: {my_list}",
+                msg,
             )
 
     if 3 in level_list:
         for el in level_list[2]:
             if not ((len(el) == 2) or (len(el) == 0)):
+                msg = f"Non uniform data format in level {2}: {my_list}"
                 raise Exception(
-                    f"Non uniform data format in level {2}: {my_list}",
+                    msg,
                 )
     return mx
 
@@ -279,7 +284,7 @@ def single_average_delay(
     anomaly_window_destination,
     clear_anomalies_mode,
 ):
-    """anomaly_window_destination: 'lefter', 'righter', 'center'. Default='right'"""
+    """anomaly_window_destination: 'lefter', 'righter', 'center'. Default='right'."""
     detecting_boundaries = filter_detecting_boundaries(detecting_boundaries)
     point = 0 if clear_anomalies_mode else -1
     dict_cp_confusion = extract_cp_confusion_matrix(
@@ -315,7 +320,8 @@ def single_average_delay(
                 + (output_cp_cm_tp[2] - output_cp_cm_tp[0]) / 2
             )
     else:
-        raise Exception("Choose anomaly_window_destination")
+        msg = "Choose anomaly_window_destination"
+        raise Exception(msg)
 
     for fp_case_window in dict_cp_confusion["TPs"]:
         detectHistory.append(
@@ -333,7 +339,7 @@ def my_scale(
     clear_anomalies_mode=True,
     plot_figure=False,
 ):
-    """Ts - segment on which the window is applied"""
+    """Ts - segment on which the window is applied."""
     x = np.linspace(-np.pi / 2, np.pi / 2, detalization)
     x = x if clear_anomalies_mode else x[::-1]
     y = (
@@ -353,8 +359,7 @@ def my_scale(
         )
         if event >= len(x):
             event = len(x) - 1
-        score = y[event]
-        return score
+        return y[event]
     return y
 
 
@@ -401,7 +406,8 @@ def single_evaluate_nab(
     if scale_func == "improved":
         scale_func = my_scale
     else:
-        raise Exception("choose the scale_func")
+        msg = "choose the scale_func"
+        raise Exception(msg)
 
     # filter
     detecting_boundaries = filter_detecting_boundaries(detecting_boundaries)
@@ -576,16 +582,18 @@ def chp_score(
         {'Standard': 100.0, 'LowFP': 100.0, 'LowFN': 100.0}
 
     """
-    assert isinstance(true, pd.Series) or isinstance(true, list)
+    assert isinstance(true, (pd.Series, list))
     # checking prediction
     if isinstance(prediction, pd.Series):
         true = [true]
         prediction = [prediction]
     elif isinstance(prediction, list):
         if not all(isinstance(my_el, pd.Series) for my_el in prediction):
-            raise Exception("Incorrect format for prediction")
+            msg = "Incorrect format for prediction"
+            raise Exception(msg)
     else:
-        raise Exception("Incorrect format for prediction")
+        msg = "Incorrect format for prediction"
+        raise Exception(msg)
 
     # checking dataset length: Number of dataset unequal
     assert len(true) == len(prediction)
@@ -593,7 +601,7 @@ def chp_score(
     # final check
     input_variant = check_errors(true)
 
-    def check_sort(my_list, input_variant):
+    def check_sort(my_list, input_variant) -> None:
         for dataset in my_list:
             if input_variant == 2:
                 assert all(np.sort(dataset) == np.array(dataset))
@@ -612,7 +620,7 @@ def chp_score(
 
     # part 2. To detected boundaries
     if (
-        ((metric == "nab") or (metric == "average_time"))
+        (metric in {"nab", "average_time"})
         and (window_width is None)
         and (input_variant != 3)
     ):
@@ -655,7 +663,8 @@ def chp_score(
             if len(detecting_boundaries[i]) == 0:
                 detecting_boundaries[i] = [[]]
     else:
-        raise Exception("Unknown format for true data")
+        msg = "Unknown format for true data"
+        raise Exception(msg)
 
     if metric == "nab":
         matrix = np.zeros((3, 3))
@@ -713,7 +722,7 @@ def chp_score(
             print("Average time", add)
         return add, missing, int(FP), all_true_anom
 
-    if (metric == "binary") or (metric == "confusion_matrix"):
+    if metric in {"binary", "confusion_matrix"}:
         if all(isinstance(my_el, pd.Series) for my_el in true):
             TP, TN, FP, FN = 0, 0, 0, 0
             for i in range(len(prediction)):
@@ -758,4 +767,6 @@ def chp_score(
                 print("FN", FN)
             return TP, TN, FP, FN
     else:
-        raise Exception("Choose the performance metric")
+        msg = "Choose the performance metric"
+        raise Exception(msg)
+    return None

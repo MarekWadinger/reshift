@@ -32,7 +32,7 @@ class DMD:
 
     """
 
-    def __init__(self, r: int = 0):
+    def __init__(self, r: int = 0) -> None:
         self.r = r
         self.m: int
         self.n: int
@@ -62,7 +62,7 @@ class DMD:
         self._xi = xi
         return self.xi
 
-    def _fit(self, X: np.ndarray, Y: np.ndarray):
+    def _fit(self, X: np.ndarray, Y: np.ndarray) -> None:
         # Perform singular value decomposition on X
         r = self.r if self.r > 0 else self.m
         # u_, sigma, v = np.linalg.svd(X, full_matrices=False)
@@ -86,7 +86,7 @@ class DMD:
         # self.A = self.Phi @ np.diag(self.Lambda) @ np.linalg.pinv(self.Phi)
         self.A = Y @ v.conj().T @ np.diag(sigma_inv) @ u_.conj().T
 
-    def fit(self, X: np.ndarray, Y: np.ndarray | None = None):
+    def fit(self, X: np.ndarray, Y: np.ndarray | None = None) -> None:
         """Fit the DMD model to the input X.
 
         Args:
@@ -124,7 +124,8 @@ class DMD:
 
         """
         if self.A is None or self.m is None:
-            raise RuntimeError("Fit the model before making predictions.")
+            msg = "Fit the model before making predictions."
+            raise RuntimeError(msg)
 
         mat = np.zeros((forecast + 1, self.m))
         mat[0, :] = x
@@ -134,7 +135,7 @@ class DMD:
 
 
 class DMDwC(DMD):
-    def __init__(self, r: int, B: np.ndarray | None = None):
+    def __init__(self, r: int, B: np.ndarray | None = None) -> None:
         super().__init__(r)
         self.B = B
         self.known_B = B is not None
@@ -145,7 +146,7 @@ class DMDwC(DMD):
         X: np.ndarray,
         Y: np.ndarray | None = None,
         U: np.ndarray | None = None,
-    ):
+    ) -> None:
         if U is None:
             super().fit(X, Y)
             return
@@ -158,9 +159,12 @@ class DMDwC(DMD):
             U_ = U_[:-1, :]
 
         if X.shape[0] != U_.shape[0]:
-            raise ValueError(
+            msg = (
                 "X and u must have the same number of time steps.\n"
-                f"X: {X.shape[0]}, u: {U_.shape[0]}",
+                f"X: {X.shape[0]}, u: {U_.shape[0]}"
+            )
+            raise ValueError(
+                msg,
             )
 
         X = X.T  # PATCH#1: Match (m, n) implementation
@@ -200,14 +204,17 @@ class DMDwC(DMD):
 
         """
         if U is None:
-            mat = super().predict(x, forecast)
-            return mat
+            return super().predict(x, forecast)
         if self.A is None or self.m is None:
-            raise RuntimeError("Fit the model before making predictions.")
+            msg = "Fit the model before making predictions."
+            raise RuntimeError(msg)
         if forecast != 1 and U.shape[0] != forecast:
-            raise ValueError(
+            msg = (
                 "u must have forecast number of time steps.\n"
-                f"u: {U.shape[1]}, forecast: {forecast}",
+                f"u: {U.shape[1]}, forecast: {forecast}"
+            )
+            raise ValueError(
+                msg,
             )
 
         mat = np.zeros((forecast + 1, self.m - self.l))

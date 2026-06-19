@@ -1,12 +1,14 @@
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
-import numpy as np
 from matplotlib.axes import Axes
 from pandas import DataFrame
 
 from .preprocessing import normalize as _normalize
+
+if TYPE_CHECKING:
+    import numpy as np
 
 
 def is_tex_available() -> bool:
@@ -156,7 +158,7 @@ def plot_chd(
     if labels is None:
         labels = [""] * len(datas)
 
-    for ax, data, label in zip(axs_, datas, labels):
+    for ax, data, label in zip(axs_, datas, labels, strict=False):
         if isinstance(data, str) and isinstance(datas, dict):
             name = data
             data = datas[data]
@@ -198,7 +200,7 @@ def plot_chd(
             if ids_in_start is not None and ids_in_end is not None:
                 n_ins = len(ids_in_start)
                 for i, (idx_in_start, idx_in_end) in enumerate(
-                    zip(ids_in_start, ids_in_end),
+                    zip(ids_in_start, ids_in_end, strict=False),
                 ):
                     x_in = range(idx_in_start, idx_in_end)
                     # Add inlay plot

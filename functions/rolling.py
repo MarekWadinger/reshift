@@ -53,7 +53,7 @@ def separate_args_kwargs(list_of_tuples):
             else:
                 kwargs_[key].append(value)
 
-    args_ = list(map(list, zip(*args_)))
+    args_ = list(map(list, zip(*args_, strict=False)))
 
     args__: list[np.ndarray | pd.DataFrame] = []
     for i, arg in enumerate(args_):
@@ -116,16 +116,16 @@ class Rolling(R):
 
     """
 
-    def __init__(self, obj, window_size):
+    def __init__(self, obj, window_size) -> None:
         super().__init__(obj, window_size)
 
-    def learn_one(self, *args, **kwargs):
+    def learn_one(self, *args, **kwargs) -> None:
         self.update(*args, **kwargs)
 
-    def update_many(self, *args, **kwargs):
+    def update_many(self, *args, **kwargs) -> None:
         # First arg defines the number of samples to update
         n_update = (
-            len(args[0]) if len(args) > 0 else len(list(kwargs.values())[0])
+            len(args[0]) if len(args) > 0 else len(next(iter(kwargs.values())))
         )
         n_revert = len(self.window) + n_update - self.window_size
         if n_revert > 0:
@@ -175,5 +175,5 @@ class Rolling(R):
             )
             self.window.append(sample)
 
-    def learn_many(self, *args, **kwargs):
+    def learn_many(self, *args, **kwargs) -> None:
         self.update_many(*args, **kwargs)
