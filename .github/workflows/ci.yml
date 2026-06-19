@@ -48,12 +48,15 @@ jobs:
       run: uv run pytest --cov --cov-report=xml --cov-report=term-missing
 
     - name: Upload coverage to Codecov
-      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.14'
+      # Skip on Dependabot/fork PRs: they have no access to secrets, so the
+      # token is empty and the upload can't run. PR gating is done by codecov's
+      # status checks, not by this step — so never fail CI on an upload hiccup.
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.14' && github.actor != 'dependabot[bot]'
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./coverage.xml
-        fail_ci_if_error: true
+        fail_ci_if_error: false
 
     - name: Minimize uv cache
       run: uv cache prune --ci
