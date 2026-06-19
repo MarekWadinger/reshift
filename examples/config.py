@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import sys
-from collections.abc import Iterator
 from pathlib import Path
 
 import numpy as np
@@ -13,8 +12,13 @@ from river.evaluate import Track
 from river.preprocessing import Hankelizer
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
+from typing import TYPE_CHECKING
+
 from functions.chdsubid import SubIDChangeDetector
 from functions.rolling import Rolling
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 DriftDetector.score_one = DriftDetector.drift_detected  # type: ignore
 

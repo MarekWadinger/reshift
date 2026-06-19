@@ -3,13 +3,13 @@ from typing import TYPE_CHECKING, Literal
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
-from matplotlib.figure import Figure
 from pandas import DataFrame
 
 from .preprocessing import normalize as _normalize
 
 if TYPE_CHECKING:
     import numpy as np
+    from matplotlib.figure import Figure
 
 
 def is_tex_available() -> bool:

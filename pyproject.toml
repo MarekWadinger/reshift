@@ -50,7 +50,6 @@ lint.ignore = [
     "PD011",
     "S113", "S301",
     "PERF401",
-    "TC002", "TC003",
     "TD002", "TD003",
     "PGH003",
     "SLF001",  # pending: per-line noqa or public-accessor improvement

@@ -8,20 +8,24 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import streamlit as st
-from matplotlib.axes import Axes
-from matplotlib.figure import Figure
 from river.compose import Pipeline
 from river.decomposition import OnlineDMD, OnlineDMDwC
 from river.preprocessing import Hankelizer
-from streamlit.delta_generator import DeltaGenerator
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+from typing import TYPE_CHECKING
 
 from functions.chdsubid import SubIDChangeDetector, get_default_rank
 from functions.metrics import chp_score
 from functions.plot import plot_chd
 from functions.preprocessing import hankel
 from functions.rolling import Rolling
+
+if TYPE_CHECKING:
+    from matplotlib.axes import Axes
+    from matplotlib.figure import Figure
+    from streamlit.delta_generator import DeltaGenerator
 
 
 # --- Functions ---
