@@ -24,10 +24,9 @@ addopts = [
     "--color=yes",
     "--junitxml=reports/junit/junit.xml",
     "--html=reports/junit/report/index.html",
-    "--cov=.",
-    "--cov-report=xml:reports/coverage/coverage.xml",
-    "--cov-report=html:reports/coverage/report",
 ]
+# Coverage is opt-in (CI and `make testcov`), not forced on every run, so
+# `make test` stays fast. Invoke with `--cov` (uses [tool.coverage.run] source).
 doctest_optionflags = [
     "NORMALIZE_WHITESPACE",
     "NUMBER",
@@ -86,6 +85,8 @@ lint.pycodestyle.max-line-length = 79
 convention = "google"
 
 [tool.coverage.run]
+source = ["functions"]
+branch = true
 omit = ["tests/*"]
 
 [tool.coverage.report]

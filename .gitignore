@@ -40,6 +40,12 @@ plots/
 # Results
 results/
 
+# Coverage and test reports
+.coverage
+coverage.xml
+htmlcov/
+reports/
+
 # Misc
 config.ini
 !reports/.coveragerc

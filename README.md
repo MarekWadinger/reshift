@@ -1,6 +1,6 @@
 # Change-Point Detection based on Online DMD with Control
 
-[![Quality and Tests](https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/code-quality-tests.yml/badge.svg)](https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/code-quality-tests.yml)
+[![Quality and Tests](https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml/badge.svg)](https://github.com/MarekWadinger/odmd-subid-cpd/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/MarekWadinger/odmd-subid-cpd/branch/main/graph/badge.svg?token=BIS0A7CF1F)](https://codecov.io/gh/MarekWadinger/odmd-subid-cpd)
 
 As the energy sector races toward radical climate action, scaling new solutions is essential. Automated control has been crucial to efficient operations, and detecting unforeseen critical shifts can be a game-changer for safety.

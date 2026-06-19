@@ -67,7 +67,7 @@ test: ## Run tests without coverage (fast, for local dev)
 
 .PHONY: testcov
 testcov: ## Run tests with coverage and generate an HTML report
-	uv run pytest
+	uv run pytest --cov --cov-report=html:reports/coverage/report --cov-report=term-missing
 	@echo "Coverage report generated at reports/coverage/report/index.html"
 
 .PHONY: pre-commit
@@ -257,7 +257,7 @@ clean: clean-tex ## Remove build artifacts, cache files, and coverage reports
 	find . -type f -name '*.pyc' -delete
 	rm -rf .pytest_cache .mypy_cache .ruff_cache
 	rm -rf reports/
-	rm -rf .coverage htmlcov/
+	rm -rf .coverage coverage.xml htmlcov/
 	rm -f *.aux *.bbl *.bcf *.blg *.fdb_latexmk *.fls *.lof *.log *.lot \
 	      *.toc *.run.xml *.synctex.gz *.bbl-SAVE-ERROR indent.log \
 	      $(MAIN)-diff.tex $(MAIN)-diff.pdf
