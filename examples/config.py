@@ -57,9 +57,9 @@ class ChangeDetectionTrack(Track):
             datasets.append(
                 NPDataset(
                     np.loadtxt(
-                        f"{FILE_DIR}/data/synthetic-steps/y{i}.txt"
-                    ).reshape(-1, 1)
-                )
+                        f"{FILE_DIR}/data/synthetic-steps/y{i}.txt",
+                    ).reshape(-1, 1),
+                ),
             )
 
         super().__init__(

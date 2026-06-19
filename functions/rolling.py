@@ -31,6 +31,7 @@ def separate_args_kwargs(list_of_tuples):
         1  7  8, 'y':    a  b
         0  5  6
         1  7  8})
+
     """
     args_: list[Any] = []
     kwargs_: dict[str | int, Any] = {}
@@ -112,6 +113,7 @@ class Rolling(R):
         >>> svd.update_many(x=X)
         >>> np.allclose(np.abs(svd.transform_one(x)[0]), np.abs(rsvd.transform_one(x)[0]))
         True
+
     """
 
     def __init__(self, obj, window_size):
@@ -162,7 +164,7 @@ class Rolling(R):
                         if not isinstance(args[idx], pd.DataFrame)
                         else args[idx].iloc[i]
                         for idx in args_ids
-                    ]
+                    ],
                 ),
                 {
                     k: kwargs[k][i]

@@ -22,7 +22,8 @@ _RollingTypes = (Rolling, RustRollingDMD, RustRollingDMDwC)
 
 # # Default parameters
 def get_default_timedelays(
-    h: int, n_features_max: int | None = None
+    h: int,
+    n_features_max: int | None = None,
 ) -> tuple[int, int]:
     if n_features_max is None:
         return h, 1
@@ -46,6 +47,7 @@ def get_default_rank(X, noise_variance: float | None = None):
 
     References:
         [1] Gavish, M., and Donoho L. D. (2014). The Optimal Hard Threshold for Singular Values is 4/sqrt(3). IEEE Transactions on Information Theory 60.8 (2014): 5040-5053. doi:[10.1109/TIT.2014.2323359](https://doi.org/10.1109/TIT.2014.2323359).
+
     """
     n, m = X.shape
     beta = m / n
@@ -56,7 +58,7 @@ def get_default_rank(X, noise_variance: float | None = None):
     else:
         lambda_opt = np.sqrt(
             2 * (beta + 1)
-            + (8 * beta) / ((beta + 1) + np.sqrt(beta**2 + 14 * beta + 1))
+            + (8 * beta) / ((beta + 1) + np.sqrt(beta**2 + 14 * beta + 1)),
         )
 
         tau = lambda_opt * np.sqrt(n * noise_variance)
@@ -73,6 +75,7 @@ def get_default_params(X, U=None, window_size: int = 0, max_rank=10):
 
     References:
         [2] Moskvina, V., & Zhigljavsky, A. (2003). An Algorithm Based on Singular Spectrum Analysis for Change-Point Detection. Communications in Statistics - Simulation and Computation, 32(2), 319-352. doi:[10.1081/SAC-120017494](https://doi.org/10.1081/SAC-120017494).
+
     """
     if window_size == 0:
         window_size = len(X)
@@ -127,6 +130,7 @@ class SubIDChangeDetector(AnomalyDetector):
             6: xx.ooo
             7: xxx.ooo  (started)
             8: .xxx.ooo
+
     """
 
     def __init__(
@@ -154,7 +158,7 @@ class SubIDChangeDetector(AnomalyDetector):
             # Since window_size is maxlen of deque in Rolling it may be None
             if ref_size is None:
                 raise ValueError(
-                    "window_size must be provided for Rolling subid"
+                    "window_size must be provided for Rolling subid",
                 )
         self.ref_size = ref_size
         self.test_size = test_size if test_size is not None else ref_size
@@ -175,7 +179,7 @@ class SubIDChangeDetector(AnomalyDetector):
         self._drift_detected: bool | None = None
 
         self._X: deque[dict] = deque(
-            maxlen=self.ref_size + self.lag + self.test_size
+            maxlen=self.ref_size + self.lag + self.test_size,
         )
 
     @property
@@ -267,6 +271,7 @@ class SubIDChangeDetector(AnomalyDetector):
 
         Returns:
             Distance between the data matrix and its transformation.
+
         """
         # Project the transformed data to the original space
         #  Similar scores are obtained combining this step with 2 norm and without projection and differencing covariances. Latter is less expensive
@@ -310,9 +315,8 @@ class SubIDChangeDetector(AnomalyDetector):
         self._drift_detected = None
 
     def _transform_many(self, X: pd.DataFrame) -> pd.DataFrame:
-        if (
-            isinstance(self.subid, MiniBatchTransformer)
-            or not isinstance(self.subid, Transformer)
+        if isinstance(self.subid, MiniBatchTransformer) or (
+            not isinstance(self.subid, Transformer)
             and hasattr(self.subid, "transform_many")
         ):
             X_p = pd.DataFrame(self.subid.transform_many(X))
@@ -321,7 +325,7 @@ class SubIDChangeDetector(AnomalyDetector):
                 [
                     self.subid.transform_one(x)
                     for x in X.to_dict(orient="records")
-                ]
+                ],
             )
         return X_p
 
@@ -417,6 +421,7 @@ class DMDChangeDetector(SubIDChangeDetector):
 
     Args:
         SubIDChangeDetector (_type_): _description_
+
     """
 
     def __init__(
@@ -444,7 +449,7 @@ class DMDChangeDetector(SubIDChangeDetector):
         )
         self.subid = subid
         self._Xp: deque[dict] = deque(
-            maxlen=self.ref_size + self.lag + self.test_size
+            maxlen=self.ref_size + self.lag + self.test_size,
         )
 
     def _transform_many(self, X: pd.DataFrame) -> pd.DataFrame:

@@ -2,6 +2,7 @@
 
 References:
     [^1]: Schmid, P. (2022). Dynamic Mode Decomposition and Its Variants. 54(1), pp.225-254. doi:[10.1146/annurev-fluid-030121-015835](https://doi.org/10.1146/annurev-fluid-030121-015835).
+
 """
 
 import numpy as np
@@ -28,6 +29,7 @@ class DMD:
 
     References:
         [^1]: Schmid, P. (2022). Dynamic Mode Decomposition and Its Variants. 54(1), pp.225-254. doi:[10.1146/annurev-fluid-030121-015835](https://doi.org/10.1146/annurev-fluid-030121-015835).
+
     """
 
     def __init__(self, r: int = 0):
@@ -51,7 +53,8 @@ class DMD:
 
         def objective_function(x):
             return np.linalg.norm(
-                self._Y - self.Phi @ np.diag(x) @ self.C, "fro"
+                self._Y - self.Phi @ np.diag(x) @ self.C,
+                "fro",
             ) + 0.5 * np.linalg.norm(x, 1)
 
         # Minimize the objective function
@@ -118,6 +121,7 @@ class DMD:
 
         Returns:
             predictions: Predicted data matrix for the specified number of prediction steps.
+
         """
         if self.A is None or self.m is None:
             raise RuntimeError("Fit the model before making predictions.")
@@ -156,7 +160,7 @@ class DMDwC(DMD):
         if X.shape[0] != U_.shape[0]:
             raise ValueError(
                 "X and u must have the same number of time steps.\n"
-                f"X: {X.shape[0]}, u: {U_.shape[0]}"
+                f"X: {X.shape[0]}, u: {U_.shape[0]}",
             )
 
         X = X.T  # PATCH#1: Match (m, n) implementation
@@ -193,6 +197,7 @@ class DMDwC(DMD):
         Returns:
         - predictions: numpy.ndarray
             Predicted data matrix for the specified number of prediction steps.
+
         """
         if U is None:
             mat = super().predict(x, forecast)
@@ -202,7 +207,7 @@ class DMDwC(DMD):
         if forecast != 1 and U.shape[0] != forecast:
             raise ValueError(
                 "u must have forecast number of time steps.\n"
-                f"u: {U.shape[1]}, forecast: {forecast}"
+                f"u: {U.shape[1]}, forecast: {forecast}",
             )
 
         mat = np.zeros((forecast + 1, self.m - self.l))

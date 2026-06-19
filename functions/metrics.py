@@ -22,6 +22,7 @@ def filter_detecting_boundaries(detecting_boundaries):
 
         >>> filter_detecting_boundaries([[], []])
         []
+
     """
     _detecting_boundaries = []
     for couple in detecting_boundaries.copy():
@@ -43,16 +44,14 @@ def single_detecting_boundaries(
     """Extract detecting_boundaries from series or list of timestamps"""
     if (true_series is not None) and (true_list_ts is not None):
         raise Exception("Choose the ONE type")
-    elif true_series is not None:
+    if true_series is not None:
         true_timestamps = true_series[true_series == 1].index
     elif true_list_ts is not None:
         if len(true_list_ts) == 0:
             return [[]]
-        else:
-            true_timestamps = true_list_ts
+        true_timestamps = true_list_ts
     else:
         raise Exception("Choose the type")
-    #
     detecting_boundaries = []
     td = (
         pd.Timedelta(window_width)
@@ -60,7 +59,7 @@ def single_detecting_boundaries(
         else pd.Timedelta(
             (prediction.index[-1] - prediction.index[0])
             / (len(true_timestamps) + 1)
-            * portion
+            * portion,
         )
     )
     for val in true_timestamps:
@@ -120,6 +119,7 @@ def check_errors(my_list):
 
     Raises:
         Exception: If non-uniform data format is found at any level.
+
     """
     assert isinstance(my_list, list)
     mx = 1
@@ -139,10 +139,10 @@ def check_errors(my_list):
 
         if check_error(my_list):
             raise Exception(
-                f"Non uniform data format in level {level}: {my_list}"
+                f"Non uniform data format in level {level}: {my_list}",
             )
 
-        if level not in level_list.keys():
+        if level not in level_list:
             level_list[level] = []  # for checking format
 
         for my_el in my_list:
@@ -155,20 +155,23 @@ def check_errors(my_list):
     for level in level_list:
         if check_error(level_list[level]):
             raise Exception(
-                f"Non uniform data format in level {level}: {my_list}"
+                f"Non uniform data format in level {level}: {my_list}",
             )
 
     if 3 in level_list:
         for el in level_list[2]:
             if not ((len(el) == 2) or (len(el) == 0)):
                 raise Exception(
-                    f"Non uniform data format in level {2}: {my_list}"
+                    f"Non uniform data format in level {2}: {my_list}",
                 )
     return mx
 
 
 def extract_cp_confusion_matrix(
-    detecting_boundaries, prediction, point=0, binary=False
+    detecting_boundaries,
+    prediction,
+    point=0,
+    binary=False,
 ):
     """Extracts the confusion matrix for change point detection.
 
@@ -183,6 +186,7 @@ def extract_cp_confusion_matrix(
             - 'TPs' (dict): Dictionary of true positives with window indices as keys and lists of [start, predicted, end] times as values.
             - 'FPs' (list): List of false positive timestamps.
             - 'FNs' (list): List of false negative window indices or timestamps.
+
     """
     _detecting_boundaries = []
     for couple in detecting_boundaries.copy():
@@ -199,7 +203,7 @@ def extract_cp_confusion_matrix(
 
     if len(detecting_boundaries) != 0:
         my_dict["FPs"].append(
-            times_pred[times_pred < detecting_boundaries[0][0]]
+            times_pred[times_pred < detecting_boundaries[0][0]],
         )  # left
         for i in range(len(detecting_boundaries)):
             times_pred_window = times_pred[
@@ -226,18 +230,18 @@ def extract_cp_confusion_matrix(
                     my_dict["FNs"].append(
                         times_prediction_in_window[
                             ~times_prediction_in_window.isin(times_pred_window)
-                        ]
+                        ],
                     )
             if len(detecting_boundaries) > i + 1:
                 my_dict["FPs"].append(
                     times_pred[
                         (times_pred > detecting_boundaries[i][1])
                         & (times_pred < detecting_boundaries[i + 1][0])
-                    ]
+                    ],
                 )
 
         my_dict["FPs"].append(
-            times_pred[times_pred > detecting_boundaries[i][1]]
+            times_pred[times_pred > detecting_boundaries[i][1]],
         )  # right
     else:
         my_dict["FPs"].append(times_pred)
@@ -279,7 +283,9 @@ def single_average_delay(
     detecting_boundaries = filter_detecting_boundaries(detecting_boundaries)
     point = 0 if clear_anomalies_mode else -1
     dict_cp_confusion = extract_cp_confusion_matrix(
-        detecting_boundaries, prediction, point=point
+        detecting_boundaries,
+        prediction,
+        point=point,
     )
 
     missing = 0
@@ -290,7 +296,7 @@ def single_average_delay(
     FP += len(dict_cp_confusion["FPs"])
     missing += len(dict_cp_confusion["FNs"])
     all_true_anom += len(dict_cp_confusion["TPs"]) + len(
-        dict_cp_confusion["FNs"]
+        dict_cp_confusion["FNs"],
     )
 
     if anomaly_window_destination == "lefter":
@@ -313,7 +319,7 @@ def single_average_delay(
 
     for fp_case_window in dict_cp_confusion["TPs"]:
         detectHistory.append(
-            average_time(dict_cp_confusion["TPs"][fp_case_window])
+            average_time(dict_cp_confusion["TPs"][fp_case_window]),
         )
     return missing, detectHistory, FP, all_true_anom
 
@@ -343,14 +349,13 @@ def my_scale(
         event = int(
             (fp_case_window[1] - fp_case_window[0])
             / (fp_case_window[-1] - fp_case_window[0])
-            * detalization
+            * detalization,
         )
         if event >= len(x):
             event = len(x) - 1
         score = y[event]
         return score
-    else:
-        return y
+    return y
 
 
 def single_evaluate_nab(
@@ -391,6 +396,7 @@ def single_evaluate_nab(
             A 3xN array where N is the number of profiles ('Standard', 'LowFP', 'LowFN').
             The first row contains the scores, the second row contains the null scores,
             and the third row contains the perfect scores.
+
     """
     if scale_func == "improved":
         scale_func = my_scale
@@ -406,7 +412,7 @@ def single_evaluate_nab(
                 [1.0, -0.11, 1.0, -1.0],
                 [1.0, -0.22, 1.0, -1.0],
                 [1.0, -0.11, 1.0, -2.0],
-            ]
+            ],
         )
         table_of_coef.index = pd.Index(["Standard", "LowFP", "LowFN"])
         table_of_coef.index.name = "Metric"
@@ -415,7 +421,9 @@ def single_evaluate_nab(
     # GO
     point = 0 if clear_anomalies_mode else -1
     dict_cp_confusion = extract_cp_confusion_matrix(
-        detecting_boundaries, prediction, point=point
+        detecting_boundaries,
+        prediction,
+        point=point,
     )
 
     Scores, Scores_perfect, Scores_null = [], [], []
@@ -436,7 +444,7 @@ def single_evaluate_nab(
         Scores_null.append(len(detecting_boundaries) * A_fn)
 
     return np.array(
-        [np.array(Scores), np.array(Scores_null), np.array(Scores_perfect)]
+        [np.array(Scores), np.array(Scores_null), np.array(Scores_perfect)],
     )
 
 
@@ -566,6 +574,7 @@ def chp_score(
         (Timedelta('0 days 00:00:00'), 0, 0, 1)
         === NAB ===
         {'Standard': 100.0, 'LowFP': 100.0, 'LowFN': 100.0}
+
     """
     assert isinstance(true, pd.Series) or isinstance(true, list)
     # checking prediction
@@ -590,11 +599,12 @@ def chp_score(
                 assert all(np.sort(dataset) == np.array(dataset))
             elif input_variant == 3:
                 assert all(
-                    np.sort(np.concatenate(dataset)) == np.concatenate(dataset)
+                    np.sort(np.concatenate(dataset))
+                    == np.concatenate(dataset),
                 )
             elif input_variant == 1:
                 assert all(
-                    dataset.index.values == dataset.sort_index().index.values
+                    dataset.index.values == dataset.sort_index().index.values,
                 )
 
     check_sort(true, input_variant)
@@ -607,7 +617,7 @@ def chp_score(
         and (input_variant != 3)
     ):
         print(
-            f"Since you didn't choose window_width and portion, portion will be default ({portion})"
+            f"Since you didn't choose window_width and portion, portion will be default ({portion})",
         )
 
     if input_variant == 1:
@@ -670,13 +680,13 @@ def chp_score(
                     * (matrix[0, t] - matrix[1, t])
                     / (matrix[2, t] - matrix[1, t]),
                     2,
-                )
+                ),
             )
             if verbose:
                 print(profile_name, " - ", results[profile_name])
         return results
 
-    elif metric == "average_time":
+    if metric == "average_time":
         missing, FP, all_true_anom = 0, 0, 0
         detectHistory: list[Any] = []
         for i in range(len(prediction)):
@@ -703,7 +713,7 @@ def chp_score(
             print("Average time", add)
         return add, missing, int(FP), all_true_anom
 
-    elif (metric == "binary") or (metric == "confusion_matrix"):
+    if (metric == "binary") or (metric == "confusion_matrix"):
         if all(isinstance(my_el, pd.Series) for my_el in true):
             TP, TN, FP, FN = 0, 0, 0, 0
             for i in range(len(prediction)):
@@ -711,18 +721,20 @@ def chp_score(
                 TP, TN, FP, FN = TP + TP_, TN + TN_, FP + FP_, FN + FN_
         else:
             print(
-                "For this metric it is better if you use pd.Series format for true \nwith common index of true and prediction"
+                "For this metric it is better if you use pd.Series format for true \nwith common index of true and prediction",
             )
             TP, TN, FP, FN = 0, 0, 0, 0
             for i in range(len(prediction)):
                 dict_cp_confusion = extract_cp_confusion_matrix(
-                    detecting_boundaries[i], prediction[i], binary=True
+                    detecting_boundaries[i],
+                    prediction[i],
+                    binary=True,
                 )
                 TP += np.sum(
                     [
                         len(dict_cp_confusion["TPs"][window][1])
                         for window in dict_cp_confusion["TPs"]
-                    ]
+                    ],
                 )
                 FP += len(dict_cp_confusion["FPs"])
                 FN += len(dict_cp_confusion["FNs"])
@@ -738,7 +750,7 @@ def chp_score(
                 print(f"F1 metric {f1}")
             return f1, far, mar
 
-        elif metric == "confusion_matrix":
+        if metric == "confusion_matrix":
             if verbose:
                 print("TP", TP)
                 print("TN", TN)

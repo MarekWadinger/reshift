@@ -60,7 +60,7 @@ def progressive_val_predict(
         zip(
             X.to_dict(orient="records"),
             U.to_dict(orient="records"),
-        )
+        ),
     ):
         y_pred[i] = _model.score_one(x)
         if compute_alt_scores:
@@ -70,11 +70,12 @@ def progressive_val_predict(
         if None in u:
             _model.learn_one(x)
         else:
-            _model.learn_one(x, **{"u": u})
+            _model.learn_one(x, u=u)
 
         if _progress_bar:
             _progress_bar.progress(
-                i / st.session_state.n, text="Running experiment ..."
+                i / st.session_state.n,
+                text="Running experiment ...",
             )
     return y_pred, meta
 
@@ -120,13 +121,16 @@ def compute_metrics(Y, scores_dmd, test_size):
     experiments: dict[str, pd.Series] = {
         "Perfect detector": y_true,
         "Random detector": pd.Series(
-            np.random.randint(2, size=y_true.shape[0]), index=date_range
+            np.random.randint(2, size=y_true.shape[0]),
+            index=date_range,
         ),
         "Null detector": pd.Series(
-            np.zeros(y_true.shape[0]), index=date_range
+            np.zeros(y_true.shape[0]),
+            index=date_range,
         ),
         "Always positive": pd.Series(
-            np.ones(y_true.shape[0]), index=date_range
+            np.ones(y_true.shape[0]),
+            index=date_range,
         ),
         "Online DMD (t=0)": pd.Series(scores_dmd > 0.0, index=date_range),
         "Online DMD (t=0.5)": pd.Series(scores_dmd > 0.5, index=date_range),
@@ -233,10 +237,12 @@ if "disable_params" not in st.session_state:
 st.sidebar.title("Upload Data")
 
 data = st.sidebar.file_uploader(
-    "Upload a CSV file with snapshots", type=["csv"]
+    "Upload a CSV file with snapshots",
+    type=["csv"],
 )
 data_gt = st.sidebar.file_uploader(
-    "Upload a CSV file with ground truth (Optional)", type=["csv"]
+    "Upload a CSV file with ground truth (Optional)",
+    type=["csv"],
 )
 
 st.sidebar.title("Partition Data")
@@ -273,7 +279,7 @@ if data:
         df_gt = pd.read_csv(data_gt, index_col=0)
         if len(df_gt) != len(df):
             st.error(
-                "The number of snapshots in the ground truth file is different from the number of snapshots in the data file."
+                "The number of snapshots in the ground truth file is different from the number of snapshots in the data file.",
             )
         df_gt.index = pd.to_datetime(df_gt.index)
 
@@ -309,7 +315,7 @@ with st.sidebar.form(key="params_form", border=False):
     )
     if ref_size + lag + test_size > st.session_state.n:
         st.error(
-            "The sum of the base windows size, lag, and test windows size should be less than the number of snapshots."
+            "The sum of the base windows size, lag, and test windows size should be less than the number of snapshots.",
         )
     hm = st.slider(
         "Time-delays states (Default: 0)",
@@ -328,14 +334,14 @@ with st.sidebar.form(key="params_form", border=False):
 
 # === Main ===
 st.title(
-    "Change-Point Detection in Industrial Data Streams based on Online DMD with Control"
+    "Change-Point Detection in Industrial Data Streams based on Online DMD with Control",
 )
 
 # === Enable after submitting parameters ===
 if submit_params:
     if ref_size + lag + test_size > st.session_state.n:
         st.error(
-            "The sum of the base windows size, lag, and test windows size should be less than the number of snapshots."
+            "The sum of the base windows size, lag, and test windows size should be less than the number of snapshots.",
         )
     p = min(
         10,
@@ -344,7 +350,7 @@ if submit_params:
                 df[:window_size][st.session_state.selected_X],
                 hm,
                 hm // 60 // st.session_state.m,
-            )
+            ),
         ),
     )
 
@@ -355,7 +361,7 @@ if submit_params:
                 df[:window_size][st.session_state.selected_X],
                 hm,
                 hm // 60 // st.session_state.m,
-            )
+            ),
         ),
     )
 
@@ -431,7 +437,7 @@ if submit_params:
 
     now = datetime.datetime.now().strftime("%Y%m%d-%H_%M_%S")
     tab1, tab2, tab3 = st.tabs(
-        ["📈 **Chart**", "🗃 **Data**", "🏆 **Metrics**"]
+        ["📈 **Chart**", "🗃 **Data**", "🏆 **Metrics**"],
     )
     tab1.write(fig)
     buf = export_fig(fig)

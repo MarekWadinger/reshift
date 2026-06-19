@@ -45,10 +45,13 @@ class Hankelizer(H):
         >>> X_t_first = hankelizer.transform_many(X_train)
         >>> X_t_first.equals(X_t_new)
         True
+
     """
 
     def __init__(
-        self, w: int = 2, return_partial: bool | Literal["copy"] = "copy"
+        self,
+        w: int = 2,
+        return_partial: bool | Literal["copy"] = "copy",
     ):
         super().__init__(w, return_partial)
         self.transform_track: list[dict] = []
@@ -91,7 +94,7 @@ def hankel(
     Returns:
         np.ndarray: The Hankel matrix.
 
-    TODO:
+    Todo:
         - [ ] Add support for 2D arrays.
 
     Example:
@@ -120,6 +123,7 @@ def hankel(
             [ 1.,  9.,  3.,  7.,  5.,  5.],
             [ 2.,  8.,  4.,  6.,  1.,  9.],
             [ 3.,  7.,  5.,  5.,  2.,  8.]])
+
     """
     if hn <= 1:
         return X
@@ -143,7 +147,8 @@ def hankel(
         hX[:, i : i + n] = X if len(X.shape) > 1 else X.reshape(-1, 1)
         if return_partial == "copy" and i / n < hn - 1:
             hX[: hn - int(i / n) - 1, i : i + n] = hX[
-                hn - int(i / n) - 1, i : i + n
+                hn - int(i / n) - 1,
+                i : i + n,
             ]
         elif return_partial and i / n < hn - 1:
             hX[: hn - int(i / n) - 1, i : i + n] = np.nan
@@ -154,7 +159,7 @@ def hankel(
         return pd.DataFrame(
             hX,
             columns=pd.Index(
-                [f"{f}_{i}" for i in range(hn) for f in feature_names_in_]
+                [f"{f}_{i}" for i in range(hn) for f in feature_names_in_],
             ),
             index=index_in_,
         )
@@ -167,7 +172,8 @@ def polynomial_extension(df, degree):
     # Iterate over the combinations of columns up to the specified degree
     for d in range(1, degree + 1):
         for combination in itertools.combinations_with_replacement(
-            df.columns, d
+            df.columns,
+            d,
         ):
             col_name = "*".join(str(c) for c in combination)
 

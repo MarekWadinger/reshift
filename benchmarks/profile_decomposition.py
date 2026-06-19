@@ -59,7 +59,10 @@ def run_pipeline(m: int, r: int, window_size: int, n_samples: int):
 
     init_size = 300
     dmd = OnlineDMD(
-        r=r, initialize=init_size, w=1.0, exponential_weighting=False
+        r=r,
+        initialize=init_size,
+        w=1.0,
+        exponential_weighting=False,
     )
     rolling = Rolling(dmd, window_size=window_size)
 
@@ -83,7 +86,10 @@ def run_pipeline(m: int, r: int, window_size: int, n_samples: int):
     saved_timings = {k: list(v) for k, v in _timings.items()}
     _timings.clear()
     dmd2 = OnlineDMD(
-        r=r, initialize=init_size, w=1.0, exponential_weighting=False
+        r=r,
+        initialize=init_size,
+        w=1.0,
+        exponential_weighting=False,
     )
     rolling2 = Rolling(dmd2, window_size=window_size)
     t_np_start = time.perf_counter_ns()
@@ -138,7 +144,7 @@ def print_results(t_total, n_samples):
     print(f"Per sample: {t_total / n_samples / 1e3:.1f} µs")
     print(f"{'=' * 70}")
     print(
-        f"{'Component':<25} {'Total ms':>10} {'Per call µs':>12} {'Calls':>8} {'% Total':>8}"
+        f"{'Component':<25} {'Total ms':>10} {'Per call µs':>12} {'Calls':>8} {'% Total':>8}",
     )
     print(f"{'-' * 25} {'-' * 10} {'-' * 12} {'-' * 8} {'-' * 8}")
 
@@ -160,7 +166,7 @@ def print_results(t_total, n_samples):
         total_ms = total_ns / 1e6
         pct = total_ns / t_total * 100
         print(
-            f"{label:<25} {total_ms:>10.1f} {per_call_us:>12.1f} {count:>8} {pct:>7.1f}%"
+            f"{label:<25} {total_ms:>10.1f} {per_call_us:>12.1f} {count:>8} {pct:>7.1f}%",
         )
 
     # Compute "other" time (framework overhead not in any instrumented method)
@@ -170,7 +176,7 @@ def print_results(t_total, n_samples):
     dmd_inner = dmd_update_total + dmd_revert_total
     rolling_overhead = rolling_total - dmd_inner
     print(
-        f"\n{'Rolling overhead':<25} {rolling_overhead / 1e6:>10.1f} {'':>12} {'':>8} {rolling_overhead / t_total * 100:>7.1f}%"
+        f"\n{'Rolling overhead':<25} {rolling_overhead / 1e6:>10.1f} {'':>12} {'':>8} {rolling_overhead / t_total * 100:>7.1f}%",
     )
 
     # Dict conversion overhead estimate
@@ -188,11 +194,11 @@ def print_results(t_total, n_samples):
     truncate_overhead = truncate_total - svd_update_total
 
     print(
-        f"{'dmd.update overhead':<25} {dmd_update_overhead / 1e6:>10.1f} {'':>12} {'':>8} {dmd_update_overhead / t_total * 100:>7.1f}%"
+        f"{'dmd.update overhead':<25} {dmd_update_overhead / 1e6:>10.1f} {'':>12} {'':>8} {dmd_update_overhead / t_total * 100:>7.1f}%",
     )
     print("  (dict conv, init, vstack)")
     print(
-        f"{'_truncate overhead':<25} {truncate_overhead / 1e6:>10.1f} {'':>12} {'':>8} {truncate_overhead / t_total * 100:>7.1f}%"
+        f"{'_truncate overhead':<25} {truncate_overhead / 1e6:>10.1f} {'':>12} {'':>8} {truncate_overhead / t_total * 100:>7.1f}%",
     )
     print("  (matrix rotations, np.linalg.inv)")
 
@@ -205,29 +211,29 @@ def print_results(t_total, n_samples):
     )
     print(f"\n{'=' * 70}")
     print(
-        f"Rust-portable compute:    {rust_portable / 1e6:>10.1f} ms = {rust_portable / t_total * 100:.1f}% of total"
+        f"Rust-portable compute:    {rust_portable / 1e6:>10.1f} ms = {rust_portable / t_total * 100:.1f}% of total",
     )
     print(
-        f"Python framework:         {(t_total - rust_portable) / 1e6:>10.1f} ms = {(t_total - rust_portable) / t_total * 100:.1f}% of total"
+        f"Python framework:         {(t_total - rust_portable) / 1e6:>10.1f} ms = {(t_total - rust_portable) / t_total * 100:.1f}% of total",
     )
     print("\nIf Rust kernels are 100x faster:")
     rust_fast = rust_portable / 100
     new_total = (t_total - rust_portable) + rust_fast
     speedup = t_total / new_total
     print(
-        f"  New total: {new_total / 1e6:.1f} ms ({t_total / 1e6:.1f} -> {new_total / 1e6:.1f})"
+        f"  New total: {new_total / 1e6:.1f} ms ({t_total / 1e6:.1f} -> {new_total / 1e6:.1f})",
     )
     print(f"  End-to-end speedup: {speedup:.1f}x")
 
     dict_create = sum(_timings.get("dict_creation", [0]))
     dict_create = sum(_timings.get("dict_creation", [0]))
     print(
-        f"{'Dict creation (caller)':<25} {dict_create / 1e6:>10.1f} {'':>12} {'':>8} {dict_create / t_total * 100:>7.1f}%"
+        f"{'Dict creation (caller)':<25} {dict_create / 1e6:>10.1f} {'':>12} {'':>8} {dict_create / t_total * 100:>7.1f}%",
     )
 
     np_total = sum(_timings.get("numpy_direct_total", [0]))
     print(
-        f"\nNumpy-direct path (no dict): {np_total / 1e6:.1f} ms = {t_total / np_total:.1f}x faster than dict path"
+        f"\nNumpy-direct path (no dict): {np_total / 1e6:.1f} ms = {t_total / np_total:.1f}x faster than dict path",
     )
 
     # Neatly aligned output for breakdown table
@@ -254,10 +260,10 @@ def print_results(t_total, n_samples):
             + svd_revert_total
             + truncate_overhead
             + update_ap_total,
-        )
+        ),
     )
     print(
-        line("dmd.update overhead (dict, vstack, init):", dmd_update_overhead)
+        line("dmd.update overhead (dict, vstack, init):", dmd_update_overhead),
     )
     print(line("Rolling overhead (deque, revert dispatch):", rolling_overhead))
     print(line("Dict creation in caller:", dict_create))
@@ -278,7 +284,7 @@ def print_results(t_total, n_samples):
     # )
     # Align overhead line likewise
     print(
-        f"{'  dmd.revert overhead (dict, _x_first):':<45} {unaccounted / 1e6:>12.1f} ms   {(unaccounted / t_total * 100):>7.2f}%"
+        f"{'  dmd.revert overhead (dict, _x_first):':<45} {unaccounted / 1e6:>12.1f} ms   {(unaccounted / t_total * 100):>7.2f}%",
     )
 
     print("\nIf ALSO move dict conv + Rolling to Rust (fused pipeline):")
@@ -287,7 +293,7 @@ def print_results(t_total, n_samples):
     new_total_full = (t_total - rust_portable_full) + rust_fast_full
     speedup_full = t_total / new_total_full
     print(
-        f"  Rust-portable: {rust_portable_full / 1e6:.1f} ms = {rust_portable_full / t_total * 100:.1f}%"
+        f"  Rust-portable: {rust_portable_full / 1e6:.1f} ms = {rust_portable_full / t_total * 100:.1f}%",
     )
     print(f"  New total: {new_total_full / 1e6:.1f} ms")
     print(f"  End-to-end speedup: {speedup_full:.1f}x")

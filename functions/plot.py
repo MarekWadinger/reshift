@@ -12,10 +12,11 @@ from .preprocessing import normalize as _normalize
 def is_tex_available() -> bool:
     """Check if LaTeX is available on the system.
 
-    Returns:
+    Returns
     -------
     bool
         True if LaTeX is available, False otherwise.
+
     """
     import shutil
 
@@ -38,7 +39,7 @@ plt.rcParams.update(
         "figure.subplot.right": 0.95,
         "figure.subplot.top": 0.95,
         # "backend": "macOsX"
-    }
+    },
 )
 
 locator = mdates.AutoDateLocator()
@@ -50,7 +51,7 @@ formatter = mdates.ConciseDateFormatter(
 
 
 def set_size(
-    width: float | int | Literal["article", "thesis", "beamer"] = 307.28987,
+    width: float | Literal["article", "thesis", "beamer"] = 307.28987,
     fraction=1.0,
     subplots=(1, 1),
 ):
@@ -65,10 +66,11 @@ def set_size(
     subplots: array-like, optional
             The number of rows and columns of subplots.
 
-    Returns:
+    Returns
     -------
     fig_dim: tuple
             Dimensions of figure in inches
+
     """
     if width == "article":
         width_pt = 390.0
@@ -168,7 +170,9 @@ def plot_chd(
                 ax.axvline(i, color=RED_ALPHA05)
                 if grace_period:
                     ax.axvline(
-                        i + grace_period, color=RED_ALPHA05, linestyle="--"
+                        i + grace_period,
+                        color=RED_ALPHA05,
+                        linestyle="--",
                     )
         if data is not None:
             # Check if data is a DataFrame with multiple columns
@@ -194,7 +198,7 @@ def plot_chd(
             if ids_in_start is not None and ids_in_end is not None:
                 n_ins = len(ids_in_start)
                 for i, (idx_in_start, idx_in_end) in enumerate(
-                    zip(ids_in_start, ids_in_end)
+                    zip(ids_in_start, ids_in_end),
                 ):
                     x_in = range(idx_in_start, idx_in_end)
                     # Add inlay plot
@@ -204,7 +208,7 @@ def plot_chd(
                             0.4,
                             (0.6 / n_ins) - 0.05,
                             0.6,
-                        )
+                        ),
                     )  # Adjust the position and size of the inlay plot
                     if y_true is not None:
                         for i in y_true:
@@ -217,13 +221,15 @@ def plot_chd(
                                         linestyle="--",
                                     )
                     inlay_ax.plot(
-                        x_in, data[idx_in_start:idx_in_end], label=label
+                        x_in,
+                        data[idx_in_start:idx_in_end],
+                        label=label,
                     )
                     inlay_ax.grid(True, axis="y")
                     inlay_ax.set_yticklabels([])
                     inlay_ax.set_xticklabels([])
                     inlay_ax.patch.set_alpha(
-                        0.75
+                        0.75,
                     )  # Set the background transparency
                     ax.indicate_inset_zoom(inlay_ax, edgecolor="black")
 

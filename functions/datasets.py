@@ -17,13 +17,13 @@ def load_dateset(file_path, url, save: bool = False):
     if response.status_code == 200:
         lines = response.text.split("\n")
         data = np.array(
-            [float(line.strip()) for line in lines if line.strip()]
+            [float(line.strip()) for line in lines if line.strip()],
         )
     else:
         raise ValueError(
             f"Error {response.status_code} while downloading the nprs44. "
             f"Check connection or download and store manually from {url} "
-            f"to {file_path}"
+            f"to {file_path}",
         )
 
     if save:
@@ -65,11 +65,14 @@ def load_cats(resample_s: None | int = None) -> pd.DataFrame:
         def download_and_read_parquet_with_progress(url):
             """Download and cache a Parquet file from the given URL.
 
-            Parameters:
+            Parameters
+            ----------
                 url (str): The URL of the Parquet file to download and read.
 
-            Returns:
+            Returns
+            -------
                 pandas DataFrame: The DataFrame containing the data from the Parquet file.
+
             """
             from io import BytesIO
 
@@ -137,7 +140,7 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
             if response.status_code == 200:
                 for item in response.json():
                     if item["type"] == "file" and item["name"].endswith(
-                        ".csv"
+                        ".csv",
                     ):
                         print(f"Downloading {item['name']: <79s}", end="\r")
                         file_url = item["download_url"]
@@ -162,7 +165,9 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
                     # Get the relative path of the file
                     # Create the corresponding directory structure in the dictionary
                     df = pd.read_csv(
-                        os.path.join(root, file), index_col=0, sep=";"
+                        os.path.join(root, file),
+                        index_col=0,
+                        sep=";",
                     )
                     # Store the data frame in the dictionary
                     data_dict[relative_path].append(df)
@@ -185,19 +190,19 @@ def load_usp(
         if response.status_code == 200:
             raise NotImplementedError(
                 f"Please, download the data from the following URL: {url}.\n"
-                "Feel free to contribute by implementing the download process."
+                "Feel free to contribute by implementing the download process.",
             )
 
     def convert_dtypes_numeric(df):
         for col in df:
             df[col] = df[col].map(
-                lambda x: x.decode("utf-8") if isinstance(x, bytes) else x
+                lambda x: x.decode("utf-8") if isinstance(x, bytes) else x,
             )
             # We are only interested in ordinal numeric values
             df[col] = df[col].map(
                 lambda x: (
                     float(x) if isinstance(x, str) and x.isnumeric() else x
-                )
+                ),
             )
         return df
 
@@ -220,13 +225,13 @@ def load_usp(
 
     # Rename the class column to "class" for consistency
     data_dict["chess"] = data_dict["chess"].rename(
-        columns={"outcome": "class"}
+        columns={"outcome": "class"},
     )
     data_dict["airlines"] = data_dict["airlines"].rename(
-        columns={"Delay": "class"}
+        columns={"Delay": "class"},
     )
     data_dict["gassensor"] = data_dict["gassensor"].rename(
-        columns={"Class": "class"}
+        columns={"Class": "class"},
     )
     data_dict["ozone"] = data_dict["ozone"].rename(columns={"Class": "class"})
 
