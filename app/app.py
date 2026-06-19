@@ -32,7 +32,6 @@ if TYPE_CHECKING:
 def update_selection_X() -> None:
     st.session_state.selected_X = st.session_state.multiselect_X
     st.session_state.m = len(st.session_state.selected_X)
-    st.session_state.m
     if st.session_state.m > 0:
         st.session_state.disable_params = False
     else:
@@ -461,7 +460,7 @@ if submit_params:
         Y_ = None
     fig, axs = plot(X, scores_dmd, scores_dmd_diff, Y_, test_size)
 
-    now = datetime.datetime.now().strftime("%Y%m%d-%H_%M_%S")
+    now = datetime.datetime.now(tz=datetime.UTC).strftime("%Y%m%d-%H_%M_%S")
     tab1, tab2, tab3 = st.tabs(
         ["📈 **Chart**", "🗃 **Data**", "🏆 **Metrics**"],
     )

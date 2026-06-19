@@ -51,7 +51,7 @@ def single_detecting_boundaries(
     """Extract detecting_boundaries from series or list of timestamps."""
     if (true_series is not None) and (true_list_ts is not None):
         msg = "Choose the ONE type"
-        raise Exception(msg)
+        raise ValueError(msg)
     if true_series is not None:
         true_timestamps = true_series[true_series == 1].index
     elif true_list_ts is not None:
@@ -60,7 +60,7 @@ def single_detecting_boundaries(
         true_timestamps = true_list_ts
     else:
         msg = "Choose the type"
-        raise Exception(msg)
+        raise ValueError(msg)
     detecting_boundaries = []
     td = (
         pd.Timedelta(window_width)
@@ -113,7 +113,7 @@ def single_detecting_boundaries(
                 new_detecting_boundaries[i + 1][0] = _a
             else:
                 msg = "choose the intersection_mode"
-                raise Exception(msg)
+                raise ValueError(msg)
     # print(f'There are {intersection_count} intersections of scoring windows')
     return new_detecting_boundaries.copy()
 
@@ -149,7 +149,7 @@ def check_errors(my_list: list[Any] | pd.Series) -> int:
 
         if check_error(my_list):
             msg = f"Non uniform data format in level {level}: {my_list}"
-            raise Exception(
+            raise ValueError(
                 msg,
             )
 
@@ -163,10 +163,10 @@ def check_errors(my_list: list[Any] | pd.Series) -> int:
                 recurse(my_el, level + 1)
 
     recurse(my_list)
-    for level in level_list:
-        if check_error(level_list[level]):
+    for level, level_items in level_list.items():
+        if check_error(level_items):
             msg = f"Non uniform data format in level {level}: {my_list}"
-            raise Exception(
+            raise ValueError(
                 msg,
             )
 
@@ -174,7 +174,7 @@ def check_errors(my_list: list[Any] | pd.Series) -> int:
         for el in level_list[2]:
             if not ((len(el) == 2) or (len(el) == 0)):
                 msg = f"Non uniform data format in level {2}: {my_list}"
-                raise Exception(
+                raise ValueError(
                     msg,
                 )
     return mx
@@ -330,7 +330,7 @@ def single_average_delay(
             )
     else:
         msg = "Choose anomaly_window_destination"
-        raise Exception(msg)
+        raise ValueError(msg)
 
     detectHistory.extend(
         average_time(dict_cp_confusion["TPs"][fp_case_window])
@@ -416,7 +416,7 @@ def single_evaluate_nab(
         scale_func = my_scale
     else:
         msg = "choose the scale_func"
-        raise Exception(msg)
+        raise ValueError(msg)
 
     # filter
     detecting_boundaries = filter_detecting_boundaries(detecting_boundaries)
@@ -599,10 +599,10 @@ def chp_score(
     elif isinstance(prediction, list):
         if not all(isinstance(my_el, pd.Series) for my_el in prediction):
             msg = "Incorrect format for prediction"
-            raise Exception(msg)
+            raise ValueError(msg)
     else:
         msg = "Incorrect format for prediction"
-        raise Exception(msg)
+        raise TypeError(msg)
 
     # checking dataset length: Number of dataset unequal
     assert len(true) == len(prediction)
@@ -676,7 +676,7 @@ def chp_score(
                 detecting_boundaries[i] = [[]]
     else:
         msg = "Unknown format for true data"
-        raise Exception(msg)
+        raise ValueError(msg)
 
     if metric == "nab":
         matrix = np.zeros((3, 3))
@@ -781,5 +781,5 @@ def chp_score(
             return TP, TN, FP, FN
     else:
         msg = "Choose the performance metric"
-        raise Exception(msg)
+        raise ValueError(msg)
     return None

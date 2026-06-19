@@ -162,9 +162,10 @@ def plot_chd(
     for ax, data, label in zip(axs_, datas, labels, strict=False):
         if isinstance(data, str) and isinstance(datas, dict):
             name = data
-            data = datas[data]
+            data_val = datas[data]
         else:
             name = ""
+            data_val = data
         if not isinstance(ax, Axes):
             return fig, axs_
 
@@ -177,18 +178,18 @@ def plot_chd(
                         color=RED_ALPHA05,
                         linestyle="--",
                     )
-        if data is not None:
+        if data_val is not None:
             # Check if data is a DataFrame with multiple columns
-            if isinstance(data, DataFrame) and len(data.columns) > 1:
+            if isinstance(data_val, DataFrame) and len(data_val.columns) > 1:
                 # Plot each column with its name as the label
-                for col in data.columns:
-                    ax.plot(data[col].iloc[idx_start:idx_end], label=col)
+                for col in data_val.columns:
+                    ax.plot(data_val[col].iloc[idx_start:idx_end], label=col)
             else:
-                ax.plot(data[idx_start:idx_end], label=label)
+                ax.plot(data_val[idx_start:idx_end], label=label)
             if normalize:
                 ax_norm = ax.twinx()
                 ax_norm.plot(
-                    _normalize(data[idx_start:idx_end]),
+                    _normalize(data_val[idx_start:idx_end]),
                     label=label + " (norm)",
                 )
             if name != "":
@@ -214,18 +215,18 @@ def plot_chd(
                         ),
                     )  # Adjust the position and size of the inlay plot
                     if y_true is not None:
-                        for i in y_true:
-                            if idx_in_start < i < idx_in_end:
-                                inlay_ax.axvline(i, color=RED_ALPHA05)
+                        for cp in y_true:
+                            if idx_in_start < cp < idx_in_end:
+                                inlay_ax.axvline(cp, color=RED_ALPHA05)
                                 if grace_period:
                                     inlay_ax.axvline(
-                                        i + grace_period,
+                                        cp + grace_period,
                                         color=RED_ALPHA05,
                                         linestyle="--",
                                     )
                     inlay_ax.plot(
                         x_in,
-                        data[idx_in_start:idx_in_end],
+                        data_val[idx_in_start:idx_in_end],
                         label=label,
                     )
                     inlay_ax.grid(True, axis="y")

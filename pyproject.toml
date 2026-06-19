@@ -49,22 +49,36 @@ lint.ignore = [
     # data is regenerated. np.random.default_rng(seed) yields a different stream
     # than np.random.seed()+np.random.normal(), so migrating now would change the
     # seeded synthetic datasets and invalidate committed results/figures.
-    "NPY002",                                # legacy RNG kept for reproducibility
-    "N802", "N803", "N806", "N816", "N817",  # math uses uppercase identifiers
-    "D100", "D101", "D102", "D103", "D104", "D105", "D107",  # docstrings optional
-    "D401", "D404", "D417",                  # docstring style
-    "ERA001",                                # commented-out research scratch
-    "E501",                                  # line length (doctests/notebooks)
-    "FBT001", "FBT002", "FBT003",            # boolean args
-    "FIX002",                                # line-contains-todo (TODOs are tracked)
-    "S101",                                  # assert
-    "PLR2004",                               # magic values
-    "PLR0912", "PLR0913", "PLR0915", "C901", # complexity
-    "ARG002", "PLW2901", "PLW0127", "PLC0206", "B007", "B018",
-    "INP001",                                # implicit namespace package
-    "PLC0415",                               # intentional lazy imports
-    "TRY002", "TRY004",                      # exception style
-    "DTZ005",                                # tz-naive datetime
+    "NPY002",  # legacy RNG kept for reproducibility
+    "N802",
+    "N803",
+    "N806",
+    "N816",
+    "N817",    # math uses uppercase identifiers
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D107",    # docstrings optional
+    "D401",
+    "D404",
+    "D417",    # docstring style
+    "ERA001",  # commented-out research scratch
+    "E501",    # line length (doctests/notebooks)
+    "FBT001",
+    "FBT002",
+    "FBT003",  # boolean args
+    "FIX002",  # line-contains-todo (TODOs are tracked)
+    "S101",    # assert
+    "PLR2004", # magic values
+    "PLR0912",
+    "PLR0913",
+    "PLR0915",
+    "C901",    # complexity
+    "INP001",  # implicit namespace package
+    "PLC0415", # intentional lazy imports
 ]
 
 # T201/T203 (print): prints are the output medium in notebooks and the
@@ -169,11 +183,18 @@ major_version_zero = false
 # and will remove them in v5 -- re-check this block against upstream on the next
 # major commitizen upgrade.
 bump_pattern = "^((BREAKING[\\-\\ ]CHANGE|\\w+)(\\(.+\\))?!?):"
-bump_map = {"^.+!$" = "MAJOR", "^BREAKING[\\-\\ ]CHANGE" = "MAJOR", "^feat" = "MINOR", "^fix" = "PATCH", "^refactor" = "PATCH", "^perf" = "PATCH"}
+bump_map = { "^.+!$" = "MAJOR", "^BREAKING[\\-\\ ]CHANGE" = "MAJOR", "^feat" = "MINOR", "^fix" = "PATCH", "^refactor" = "PATCH", "^perf" = "PATCH" }
 # Changelog: standard types + docs (the only addition over the built-in).
 changelog_pattern = "^(feat|fix|perf|refactor|docs)(\\(.+\\))?(!)?:"
 commit_parser = "^(?P<change_type>feat|fix|perf|refactor|docs)(?:\\((?P<scope>[^()\r\n]*)\\)|\\()?(?P<breaking>!)?:\\s(?P<message>.*)?"
-change_type_order = ["BREAKING CHANGE", "Features", "Fixes", "Performance", "Refactor", "Docs"]
+change_type_order = [
+    "BREAKING CHANGE",
+    "Features",
+    "Fixes",
+    "Performance",
+    "Refactor",
+    "Docs",
+]
 # schema_pattern restores `cz check` commit-msg validation (cz_customize without it
 # accepts ANY message). Full conventional vocabulary, copied from commitizen's
 # built-in -- intentionally broader than the changelog set above (chore/ci/test/etc.

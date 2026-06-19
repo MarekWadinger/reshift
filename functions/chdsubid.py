@@ -404,7 +404,7 @@ class SubIDChangeDetector(AnomalyDetector):
                     self.subid.learn_one(x, **params)
         self.n_seen += n
 
-    def predict_one(self, *args: object) -> bool | None:
+    def predict_one(self) -> bool | None:
         return self._drift_detected
 
     def score_one(self, x: dict) -> float:

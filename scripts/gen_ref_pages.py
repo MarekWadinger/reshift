@@ -33,7 +33,6 @@ for path in sorted(src.rglob("*.py")):
         continue
     nav[parts] = doc_path.as_posix()
 
-    parts = parts
     with mkdocs_gen_files.open(full_doc_path, "w") as fd:
         ident = ".".join(parts)
         fd.write(f"::: {ident}")

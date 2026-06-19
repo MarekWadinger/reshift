@@ -258,16 +258,16 @@ def load_usp(
     with tqdm(total=len(files), mininterval=1.0) as pbar:
         for k, df in data_dict.items():
             pbar.set_description(f"Processing {k}")
-            df = convert_dtypes_numeric(df)
-            gt = df["class"].copy(deep=True)
-            df = df.select_dtypes(include="number")
-            if "class" not in df.columns:
+            df_ = convert_dtypes_numeric(df)
+            gt = df_["class"].copy(deep=True)
+            df_ = df_.select_dtypes(include="number")
+            if "class" not in df_.columns:
                 if any(gt.apply(lambda x: isinstance(x, str))):
-                    df["class"] = gt.astype("category").cat.codes
+                    df_["class"] = gt.astype("category").cat.codes
                 else:
-                    df["class"] = gt
-            df.index = pd.to_datetime(df.index, unit="s")
-            data_dict[k] = df
+                    df_["class"] = gt
+            df_.index = pd.to_datetime(df_.index, unit="s")
+            data_dict[k] = df_
             pbar.update(1)
     return data_dict
 
