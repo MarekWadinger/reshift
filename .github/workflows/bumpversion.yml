@@ -2,7 +2,7 @@ name: Bump version
 
 on:
   workflow_run:
-    workflows: ["ci"]
+    workflows: ["Code Quality and Tests"]  # the name: in ci.yml, not the filename
     branches: [main]
     types:
       - completed
