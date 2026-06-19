@@ -51,7 +51,7 @@ class DMD:
     def xi(self) -> np.ndarray:
         from scipy.optimize import minimize
 
-        def objective_function(x):
+        def objective_function(x: np.ndarray) -> np.floating:
             return np.linalg.norm(
                 self._Y - self.Phi @ np.diag(x) @ self.C,
                 "fro",

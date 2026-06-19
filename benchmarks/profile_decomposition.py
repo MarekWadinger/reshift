@@ -4,6 +4,8 @@ Instruments each component to measure where wall-clock time is spent,
 so we can estimate realistic Rust speedup potential.
 """
 
+from __future__ import annotations
+
 import sys
 import time
 from collections import defaultdict
@@ -24,11 +26,11 @@ from functions.rolling import Rolling
 _timings: dict[str, list[float]] = defaultdict(list)
 
 
-def _instrument(cls, method_name, label) -> None:
+def _instrument(cls: type, method_name: str, label: str) -> None:
     original = getattr(cls, method_name)
 
     @wraps(original)
-    def timed(self, *args, **kwargs):
+    def timed(self: object, *args: object, **kwargs: object) -> object:
         t0 = time.perf_counter_ns()
         result = original(self, *args, **kwargs)
         _timings[label].append(time.perf_counter_ns() - t0)
@@ -53,7 +55,7 @@ _instrument(Rolling, "update", "rolling.update")
 
 
 # --- Simulate the pipeline ---
-def run_pipeline(m: int, r: int, window_size: int, n_samples: int):
+def run_pipeline(m: int, r: int, window_size: int, n_samples: int) -> int:
     """Run Hankelizer | Rolling(OnlineDMD) pipeline on synthetic data."""
     rng = np.random.default_rng(42)
 
@@ -103,7 +105,7 @@ def run_pipeline(m: int, r: int, window_size: int, n_samples: int):
     return t_total
 
 
-def run_rust_pipeline(m: int, r: int, window_size: int, n_samples: int):
+def run_rust_pipeline(m: int, r: int, window_size: int, n_samples: int) -> int:
     """Run RustRollingDMD pipeline on synthetic data."""
     rng = np.random.default_rng(42)
 
@@ -136,7 +138,7 @@ def run_rust_pipeline(m: int, r: int, window_size: int, n_samples: int):
     return time.perf_counter_ns() - t_total_start
 
 
-def print_results(t_total, n_samples) -> None:
+def print_results(t_total: int, n_samples: int) -> None:
     print(f"\n{'=' * 70}")
     print(f"Pipeline: {n_samples} samples, total = {t_total / 1e6:.1f} ms")
     print(f"Per sample: {t_total / n_samples / 1e3:.1f} µs")
@@ -240,10 +242,10 @@ def print_results(t_total, n_samples) -> None:
     print(f"{'=' * 70}")
 
     # Helper for better table-style alignment (labels left, ms right, pct right)
-    def fmt(label, ms, percent) -> str:
+    def fmt(label: str, ms: float, percent: float) -> str:
         return f"{label:<45} {ms:>12.1f} ms   {percent:>7.2f}%"
 
-    def line(label, val):
+    def line(label: str, val: float) -> str:
         return fmt(label, val / 1e6, val / t_total * 100)
 
     print(line("svd.update  (QR, SVD, matmul on ~80x2):", svd_update_total))

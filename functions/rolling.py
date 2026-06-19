@@ -2,10 +2,12 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-from river.utils.rolling import Rolling as R
+from river.utils.rolling import Rolling as R, Rollable
 
 
-def separate_args_kwargs(list_of_tuples):
+def separate_args_kwargs(
+    list_of_tuples: list[tuple[tuple, dict]],
+) -> tuple[list[Any], dict[str, Any]]:
     """Separate args and kwargs from a list of tuples.
 
     Imagine transposing a list of tuples. This function separates list of args and kwargs tuples and makes args and kwargs containing most compatible iterables.
@@ -34,9 +36,9 @@ def separate_args_kwargs(list_of_tuples):
 
     """
     args_: list[Any] = []
-    kwargs_: dict[str | int, Any] = {}
+    kwargs_: dict[str, Any] = {}
     args_types = []
-    kwargs_types: dict[str | int, type] = {}
+    kwargs_types: dict[str, type] = {}
     # Extracting args
     for tpl in list_of_tuples:
         # Infer the types based on first tpl
@@ -64,7 +66,7 @@ def separate_args_kwargs(list_of_tuples):
         else:
             args__.append(arg)
 
-    kwargs__: dict[str | int, np.ndarray | pd.DataFrame] = {}
+    kwargs__: dict[str, np.ndarray | pd.DataFrame] = {}
     for k, kwarg in kwargs_.items():
         if issubclass(kwargs_types[k], np.ndarray):
             kwargs__[k] = np.array(kwarg)
@@ -116,13 +118,13 @@ class Rolling(R):
 
     """
 
-    def __init__(self, obj, window_size) -> None:
+    def __init__(self, obj: Rollable, window_size: int) -> None:
         super().__init__(obj, window_size)
 
-    def learn_one(self, *args, **kwargs) -> None:
+    def learn_one(self, *args: Any, **kwargs: Any) -> None:  # noqa: ANN401
         self.update(*args, **kwargs)
 
-    def update_many(self, *args, **kwargs) -> None:
+    def update_many(self, *args: Any, **kwargs: Any) -> None:  # noqa: ANN401
         # First arg defines the number of samples to update
         n_update = (
             len(args[0]) if len(args) > 0 else len(next(iter(kwargs.values())))
@@ -175,5 +177,5 @@ class Rolling(R):
             )
             self.window.append(sample)
 
-    def learn_many(self, *args, **kwargs) -> None:
+    def learn_many(self, *args: Any, **kwargs: Any) -> None:  # noqa: ANN401
         self.update_many(*args, **kwargs)

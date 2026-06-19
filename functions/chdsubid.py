@@ -1,7 +1,7 @@
 """Change Detection based on Subspace Identification algorithm."""
 
 from collections import deque
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pandas as pd
@@ -39,7 +39,9 @@ def get_default_timedelays(
     return h_, step
 
 
-def get_default_rank(X, noise_variance: float | None = None):
+def get_default_rank(
+    X: np.ndarray | pd.DataFrame, noise_variance: float | None = None
+) -> int:
     """Get default rank for the given data matrix.
 
     Args:
@@ -68,7 +70,12 @@ def get_default_rank(X, noise_variance: float | None = None):
     return sum(s > tau)
 
 
-def get_default_params(X, U=None, window_size: int = 0, max_rank=10):
+def get_default_params(
+    X: np.ndarray,
+    U: np.ndarray | None = None,
+    window_size: int = 0,
+    max_rank: int = 10,
+) -> tuple[int, int, int, int, int] | tuple[int, int, int, int, int, int]:
     """Get default parameters for the given dataset and window size.
 
     Args:
@@ -331,7 +338,7 @@ class SubIDChangeDetector(AnomalyDetector):
             )
         return X_p
 
-    def learn_one(self, x: dict, **params) -> None:
+    def learn_one(self, x: dict, **params: Any) -> None:  # noqa: ANN401
         """Allias for update method for interoperability with Pipeline."""
         self.update(x, **params)
 
@@ -343,7 +350,7 @@ class SubIDChangeDetector(AnomalyDetector):
             delay = self._learn_delay
         return delay
 
-    def learn_many(self, X: pd.DataFrame, **params) -> None:
+    def learn_many(self, X: pd.DataFrame, **params: Any) -> None:  # noqa: ANN401
         n = len(X)
         # If buffer is too small, learn in chunks
         buffer_len = self.ref_size + self.lag + self.test_size
@@ -380,7 +387,7 @@ class SubIDChangeDetector(AnomalyDetector):
                     self.subid.learn_one(x, **params)
         self.n_seen += n
 
-    def predict_one(self, *args):
+    def predict_one(self, *args: object) -> bool | None:
         return self._drift_detected
 
     def score_one(self, x: dict) -> float:
@@ -394,7 +401,7 @@ class SubIDChangeDetector(AnomalyDetector):
         self._X.pop()
         return score
 
-    def update(self, x: dict, **params) -> None:
+    def update(self, x: dict, **params: Any) -> None:  # noqa: ANN401
         self._X.append(x)
         # Learn the model if data past the time lag and test size is availabe
         # If learn_after_grace is False learn only when grace period is not yet over

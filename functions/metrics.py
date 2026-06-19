@@ -1,6 +1,9 @@
 """This module is modified part of evaluation from library [tsad](https://github.com/waico/tsad)."""
 
+from __future__ import annotations
+
 import logging
+from collections.abc import Callable
 from typing import Any
 
 import numpy as np
@@ -9,7 +12,9 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def filter_detecting_boundaries(detecting_boundaries):
+def filter_detecting_boundaries(
+    detecting_boundaries: list[list[Any]],
+) -> list[list[Any]]:
     """Filters out empty sublists from a list of detecting boundaries.
 
     Args:
@@ -35,14 +40,14 @@ def filter_detecting_boundaries(detecting_boundaries):
 
 
 def single_detecting_boundaries(
-    true_series,
-    true_list_ts,
-    prediction,
-    portion,
-    window_width,
-    anomaly_window_destination,
-    intersection_mode,
-):
+    true_series: pd.Series | None,
+    true_list_ts: list[pd.Timestamp] | None,
+    prediction: pd.Series,
+    portion: float,
+    window_width: str | None,
+    anomaly_window_destination: str,
+    intersection_mode: str,
+) -> list[list[Any]]:
     """Extract detecting_boundaries from series or list of timestamps."""
     if (true_series is not None) and (true_list_ts is not None):
         msg = "Choose the ONE type"
@@ -82,7 +87,7 @@ def single_detecting_boundaries(
     if len(detecting_boundaries) == 0:
         return detecting_boundaries
 
-    new_detecting_boundaries = detecting_boundaries.copy()
+    new_detecting_boundaries: list[list[Any]] = detecting_boundaries.copy()
     intersection_count = 0
     for i in range(len(new_detecting_boundaries) - 1):
         if (
@@ -113,7 +118,7 @@ def single_detecting_boundaries(
     return new_detecting_boundaries.copy()
 
 
-def check_errors(my_list):
+def check_errors(my_list: list[Any] | pd.Series) -> int:
     """Check format of input true data.
 
     Args:
@@ -131,14 +136,14 @@ def check_errors(my_list):
     #     ravel = []
     level_list: dict[int, Any] = {}
 
-    def check_error(my_list) -> bool:
+    def check_error(my_list: list[Any]) -> bool:
         return not (
             (all(isinstance(my_el, list) for my_el in my_list))
             or (all(isinstance(my_el, pd.Series) for my_el in my_list))
             or (all(isinstance(my_el, pd.Timestamp) for my_el in my_list))
         )
 
-    def recurse(my_list, level=1) -> None:
+    def recurse(my_list: list[Any], level: int = 1) -> None:
         nonlocal mx
         nonlocal level_list
 
@@ -176,11 +181,11 @@ def check_errors(my_list):
 
 
 def extract_cp_confusion_matrix(
-    detecting_boundaries,
-    prediction,
-    point=0,
-    binary=False,
-):
+    detecting_boundaries: list[list[Any]],
+    prediction: pd.Series,
+    point: int = 0,
+    binary: bool = False,
+) -> dict[str, Any]:
     """Extracts the confusion matrix for change point detection.
 
     Args:
@@ -271,7 +276,9 @@ def extract_cp_confusion_matrix(
     return my_dict
 
 
-def confusion_matrix(true, prediction):
+def confusion_matrix(
+    true: pd.Series, prediction: pd.Series
+) -> tuple[Any, Any, Any, Any]:
     true_ = true == 1
     prediction_ = prediction == 1
     TP = (true_ & prediction_).sum()
@@ -282,11 +289,11 @@ def confusion_matrix(true, prediction):
 
 
 def single_average_delay(
-    detecting_boundaries,
-    prediction,
-    anomaly_window_destination,
-    clear_anomalies_mode,
-):
+    detecting_boundaries: list[list[Any]],
+    prediction: pd.Series,
+    anomaly_window_destination: str,
+    clear_anomalies_mode: bool,
+) -> tuple[int, list[Any], int, int]:
     """anomaly_window_destination: 'lefter', 'righter', 'center'. Default='right'."""
     detecting_boundaries = filter_detecting_boundaries(detecting_boundaries)
     point = 0 if clear_anomalies_mode else -1
@@ -309,15 +316,15 @@ def single_average_delay(
 
     if anomaly_window_destination == "lefter":
 
-        def average_time(output_cp_cm_tp):
+        def average_time(output_cp_cm_tp: list[Any]) -> pd.Timedelta:
             return output_cp_cm_tp[2] - output_cp_cm_tp[1]
     elif anomaly_window_destination == "righter":
 
-        def average_time(output_cp_cm_tp):
+        def average_time(output_cp_cm_tp: list[Any]) -> pd.Timedelta:
             return output_cp_cm_tp[1] - output_cp_cm_tp[0]
     elif anomaly_window_destination == "center":
 
-        def average_time(output_cp_cm_tp):
+        def average_time(output_cp_cm_tp: list[Any]) -> pd.Timedelta:
             return output_cp_cm_tp[1] - (
                 output_cp_cm_tp[0]
                 + (output_cp_cm_tp[2] - output_cp_cm_tp[0]) / 2
@@ -334,14 +341,14 @@ def single_average_delay(
 
 
 def my_scale(
-    fp_case_window=None,
-    A_tp=1,
-    A_fp=0,
-    koef=1,
-    detalization=1000,
-    clear_anomalies_mode=True,
-    plot_figure=False,
-):
+    fp_case_window: list[Any] | None = None,
+    A_tp: float = 1,
+    A_fp: float = 0,
+    koef: float = 1,
+    detalization: int = 1000,
+    clear_anomalies_mode: bool = True,
+    plot_figure: bool = False,
+) -> np.ndarray:
     """Ts - segment on which the window is applied."""
     x = np.linspace(-np.pi / 2, np.pi / 2, detalization)
     x = x if clear_anomalies_mode else x[::-1]
@@ -367,12 +374,12 @@ def my_scale(
 
 
 def single_evaluate_nab(
-    detecting_boundaries,
-    prediction,
-    table_of_coef=None,
-    clear_anomalies_mode=True,
-    scale_func="improved",
-    scale_koef=1,
+    detecting_boundaries: list[list[Any]],
+    prediction: pd.Series,
+    table_of_coef: pd.DataFrame | None = None,
+    clear_anomalies_mode: bool = True,
+    scale_func: str | Callable[..., np.ndarray] = "improved",
+    scale_koef: float = 1,
 ) -> np.ndarray:
     """Evaluate the NAB (Numenta Anomaly Benchmark) score for a given set of predictions.
 
@@ -458,19 +465,19 @@ def single_evaluate_nab(
 
 
 def chp_score(
-    true,
-    prediction,
-    metric="nab",
-    window_width=None,
-    portion=0.1,
-    anomaly_window_destination="lefter",
-    clear_anomalies_mode=True,
-    intersection_mode="cut right window",
-    table_of_coef=None,
-    scale_func="improved",
-    scale_koef=1,
-    verbose=False,
-):
+    true: pd.Series | list[Any],
+    prediction: pd.Series | list[pd.Series],
+    metric: str = "nab",
+    window_width: str | None = None,
+    portion: float = 0.1,
+    anomaly_window_destination: str = "lefter",
+    clear_anomalies_mode: bool = True,
+    intersection_mode: str = "cut right window",
+    table_of_coef: pd.DataFrame | None = None,
+    scale_func: str | Callable[..., np.ndarray] = "improved",
+    scale_koef: float = 1,
+    verbose: bool = False,
+) -> Any:  # noqa: ANN401  # return shape is polymorphic in `metric` (dict/tuple)
     """Calculate various metrics for evaluating anomaly or changepoint detection.
 
     Args:
@@ -604,7 +611,7 @@ def chp_score(
     # final check
     input_variant = check_errors(true)
 
-    def check_sort(my_list, input_variant) -> None:
+    def check_sort(my_list: list[Any] | pd.Series, input_variant: int) -> None:
         for dataset in my_list:
             if input_variant == 2:
                 assert all(np.sort(dataset) == np.array(dataset))

@@ -1,5 +1,5 @@
 import itertools
-from typing import Literal
+from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
@@ -62,7 +62,7 @@ class Hankelizer(H):
             self.learn_one(x)
             self.transform_track.append(self.transform_one(x))
 
-    def transform_many(self, X: pd.DataFrame):
+    def transform_many(self, X: pd.DataFrame) -> pd.DataFrame:
         # if transform_track is empty, it means that the transform is called first
         # so we need to learn the data first and reset the state
         if not self.transform_track:
@@ -73,7 +73,7 @@ class Hankelizer(H):
         return df
 
 
-def normalize(x):
+def normalize(x: Any) -> np.ndarray:  # noqa: ANN401
     return (x - np.nanmin(x)) / (np.nanmax(x) - np.nanmin(x))
 
 
@@ -163,7 +163,7 @@ def hankel(
     return hX
 
 
-def polynomial_extension(df, degree):
+def polynomial_extension(df: pd.DataFrame, degree: int) -> pd.DataFrame:
     poly_features = pd.DataFrame()
 
     # Iterate over the combinations of columns up to the specified degree

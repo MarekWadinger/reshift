@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Literal
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 from pandas import DataFrame
 
 from .preprocessing import normalize as _normalize
@@ -54,9 +55,9 @@ formatter = mdates.ConciseDateFormatter(
 
 def set_size(
     width: float | Literal["article", "thesis", "beamer"] = 307.28987,
-    fraction=1.0,
-    subplots=(1, 1),
-):
+    fraction: float = 1.0,
+    subplots: tuple[int, int] = (1, 1),
+) -> tuple[float, float]:
     """Set figure dimensions to avoid scaling in LaTeX.
 
     Parameters
@@ -118,8 +119,8 @@ def plot_chd(
     grace_period: int | None = None,
     normalize: bool = False,
     axs: np.ndarray | None = None,
-    **fig_kwargs: dict,
-):
+    **fig_kwargs: object,
+) -> tuple[Figure, np.ndarray]:
     """Plot hange-Point Detection Results.
 
     Args:

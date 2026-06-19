@@ -8,7 +8,7 @@ import requests
 logger = logging.getLogger(__name__)
 
 
-def load_dateset(file_path, url, save: bool = False):
+def load_dateset(file_path: str, url: str, save: bool = False) -> np.ndarray:
     # Check if the file exists
     if os.path.exists(file_path):
         # Read the data from the file into a numpy array
@@ -68,7 +68,7 @@ def load_cats(resample_s: None | int = None) -> pd.DataFrame:
         df = pd.read_csv(file_path, index_col=0)
     else:
 
-        def download_and_read_parquet_with_progress(url):
+        def download_and_read_parquet_with_progress(url: str) -> pd.DataFrame:
             """Download and cache a Parquet file from the given URL.
 
             Parameters
@@ -131,7 +131,7 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
     if not os.path.exists(file_path):
 
         def download_csv_from_git(
-            url, save_path, add_base: bool = True
+            url: str, save_path: str, add_base: bool = True
         ) -> None:
             # Parse the URL to get the folder name
             parsed_url = urlparse(url)
@@ -205,7 +205,7 @@ def load_usp(
                 msg,
             )
 
-    def convert_dtypes_numeric(df):
+    def convert_dtypes_numeric(df: pd.DataFrame) -> pd.DataFrame:
         for col in df:
             df[col] = df[col].map(
                 lambda x: x.decode("utf-8") if isinstance(x, bytes) else x,
@@ -277,7 +277,7 @@ def load_bess() -> tuple[pd.DataFrame, pd.DataFrame]:
             os.makedirs(folder_path, exist_ok=True)
 
             # Read the data from the file into a numpy array
-            def download_csv_from_git(url, save_path) -> None:
+            def download_csv_from_git(url: str, save_path: str) -> None:
                 # Get the contents of the folder
                 response = requests.get(url)
                 if response.status_code == 200:

@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import os
 import sys
+from typing import Iterator
 
 import numpy as np
 from river import metrics, stream
@@ -29,7 +32,7 @@ N_CHECKPOINTS = 0
 class NPDataset(base.Dataset):
     """Base class for numpy array datasets."""
 
-    def __init__(self, X, y=None) -> None:
+    def __init__(self, X: np.ndarray, y: np.ndarray | None = None) -> None:
         self.X = X
         self.y = y
         if self.y is not None:
@@ -45,7 +48,7 @@ class NPDataset(base.Dataset):
             sparse=False,
         )
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[tuple[dict, object]]:
         return stream.iter_array(self.X, self.y)
 
 

@@ -1,11 +1,15 @@
+from __future__ import annotations
+
 import datetime
 import os
 import sys
 from io import BytesIO
-
 import numpy as np
 import pandas as pd
 import streamlit as st
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
+from streamlit.delta_generator import DeltaGenerator
 from river.compose import Pipeline
 from river.decomposition import OnlineDMD, OnlineDMDwC
 from river.preprocessing import Hankelizer
@@ -39,9 +43,9 @@ def progressive_val_predict(
     X: pd.DataFrame,
     U: pd.DataFrame,
     _model: SubIDChangeDetector | Pipeline,
-    compute_alt_scores=False,
-    _progress_bar=None,
-):
+    compute_alt_scores: bool = False,
+    _progress_bar: DeltaGenerator | None = None,
+) -> tuple[np.ndarray, dict[str, np.ndarray]]:
     # CREATE REFERENCE TO LAST STEP OF PIPELINE (TRACK STATE OF MODEL)
     model_ = _model._last_step if isinstance(_model, Pipeline) else _model
 
@@ -78,7 +82,7 @@ def progressive_val_predict(
     return y_pred, meta
 
 
-def export_fig(fig) -> bytes:
+def export_fig(fig: Figure) -> bytes:
     buf = BytesIO()
     fig.savefig(buf, format="pdf")
     buf.seek(0)
@@ -86,7 +90,11 @@ def export_fig(fig) -> bytes:
 
 
 @st.cache_data
-def concat_results(X, scores_dmd, scores_dmd_diff):
+def concat_results(
+    X: pd.DataFrame,
+    scores_dmd: np.ndarray,
+    scores_dmd_diff: np.ndarray,
+) -> pd.DataFrame:
     return pd.concat(
         [
             X,
@@ -98,7 +106,13 @@ def concat_results(X, scores_dmd, scores_dmd_diff):
 
 
 @st.cache_data
-def plot(X, scores_dmd, scores_dmd_diff, Y_, test_size):
+def plot(
+    X: pd.DataFrame,
+    scores_dmd: np.ndarray,
+    scores_dmd_diff: np.ndarray,
+    Y_: np.ndarray | None,
+    test_size: int,
+) -> tuple[Figure, np.ndarray | Axes]:
     fig, axs = plot_chd(
         [X.values, scores_dmd.real, scores_dmd_diff.real],
         Y_,
@@ -110,7 +124,11 @@ def plot(X, scores_dmd, scores_dmd_diff, Y_, test_size):
 
 
 @st.cache_data
-def compute_metrics(Y, scores_dmd, test_size):
+def compute_metrics(
+    Y: np.ndarray,
+    scores_dmd: np.ndarray,
+    test_size: int,
+) -> pd.DataFrame:
     start_date = "2023-01-01 00:00:00"
     date_range = pd.date_range(start=start_date, periods=len(Y), freq="s")
     y_true = pd.Series(Y, index=date_range)
@@ -201,7 +219,7 @@ def compute_metrics(Y, scores_dmd, test_size):
 
 
 @st.cache_data
-def export_df(df):
+def export_df(df: pd.DataFrame) -> bytes:
     return df.to_csv().encode("utf-8")
 
 
