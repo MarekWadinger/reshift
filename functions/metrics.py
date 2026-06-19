@@ -34,11 +34,9 @@ def filter_detecting_boundaries(
         []
 
     """
-    _detecting_boundaries = []
-    for couple in detecting_boundaries.copy():
-        if len(couple) != 0:
-            _detecting_boundaries.append(couple)
-    return _detecting_boundaries
+    return [
+        couple for couple in detecting_boundaries.copy() if len(couple) != 0
+    ]
 
 
 def single_detecting_boundaries(
@@ -203,11 +201,9 @@ def extract_cp_confusion_matrix(
             - 'FNs' (list): List of false negative window indices or timestamps.
 
     """
-    _detecting_boundaries = []
-    for couple in detecting_boundaries.copy():
-        if len(couple) != 0:
-            _detecting_boundaries.append(couple)
-    detecting_boundaries = _detecting_boundaries
+    detecting_boundaries = [
+        couple for couple in detecting_boundaries.copy() if len(couple) != 0
+    ]
 
     times_pred = prediction[prediction.dropna() == 1].sort_index().index
 
@@ -336,10 +332,10 @@ def single_average_delay(
         msg = "Choose anomaly_window_destination"
         raise Exception(msg)
 
-    for fp_case_window in dict_cp_confusion["TPs"]:
-        detectHistory.append(
-            average_time(dict_cp_confusion["TPs"][fp_case_window]),
-        )
+    detectHistory.extend(
+        average_time(dict_cp_confusion["TPs"][fp_case_window])
+        for fp_case_window in dict_cp_confusion["TPs"]
+    )
     return missing, detectHistory, FP, all_true_anom
 
 

@@ -58,16 +58,15 @@ class NPDataset(base.Dataset):
 
 class ChangeDetectionTrack(Track):
     def __init__(self) -> None:
-        datasets = []
         # datasets = [ds.WaterFlow(), ds.WebTraffic(), ds.synth.AnomalySine()]
-        for i in range(1):
-            datasets.append(
-                NPDataset(
-                    np.loadtxt(
-                        f"{FILE_DIR}/data/synthetic-steps/y{i}.txt",
-                    ).reshape(-1, 1),
-                ),
+        datasets = [
+            NPDataset(
+                np.loadtxt(
+                    f"{FILE_DIR}/data/synthetic-steps/y{i}.txt",
+                ).reshape(-1, 1),
             )
+            for i in range(1)
+        ]
 
         super().__init__(
             "Change detection",
