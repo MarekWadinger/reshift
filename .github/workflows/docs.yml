@@ -7,8 +7,7 @@ on:
       - completed
 
 permissions:
-  contents: read
-  pages: write
+  contents: write
 
 jobs:
   build:
@@ -17,9 +16,11 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout main
-        uses: actions/checkout@main
+        uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
+          token: ${{ secrets.MKDOCS_TOKEN }}
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -29,13 +30,10 @@ jobs:
           cache-dependency-glob: "uv.lock"
 
       - name: Set up Python
-        run: uv python install 3.13
+        run: uv python install 3.14
 
-      - name: Export docs requirements
-        run: uv export --group docs --no-hashes --output-file docs/requirements.txt
+      - name: Install dependencies
+        run: uv sync
 
       - name: Deploy docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.MKDOCS_TOKEN }}
-          REQUIREMENTS: docs/requirements.txt
+        run: uv run mkdocs gh-deploy --force
