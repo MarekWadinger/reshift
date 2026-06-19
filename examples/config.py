@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import os
 import sys
 from collections.abc import Iterator
+from pathlib import Path
 
 import numpy as np
 from river import metrics, stream
@@ -12,14 +12,14 @@ from river.decomposition import OnlineDMD
 from river.evaluate import Track
 from river.preprocessing import Hankelizer
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from functions.chdsubid import SubIDChangeDetector
 from functions.rolling import Rolling
 
 DriftDetector.score_one = DriftDetector.drift_detected  # type: ignore
 
 
-FILE_DIR = os.path.dirname(os.path.abspath(__file__))
+FILE_DIR = str(Path(__file__).resolve().parent)
 HN = 80
 R = 2
 INIT_SIZE = 300

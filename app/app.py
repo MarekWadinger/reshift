@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import datetime
-import os
 import sys
 from io import BytesIO
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -15,7 +15,7 @@ from river.decomposition import OnlineDMD, OnlineDMDwC
 from river.preprocessing import Hankelizer
 from streamlit.delta_generator import DeltaGenerator
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from functions.chdsubid import SubIDChangeDetector, get_default_rank
 from functions.metrics import chp_score

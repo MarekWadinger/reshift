@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -10,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def load_dateset(file_path: str, url: str, save: bool = False) -> np.ndarray:
     # Check if the file exists
-    if os.path.exists(file_path):
+    if Path(file_path).exists():
         # Read the data from the file into a numpy array
         return np.loadtxt(file_path)
 
@@ -34,9 +35,7 @@ def load_dateset(file_path: str, url: str, save: bool = False) -> np.ndarray:
 
     if save:
         # Check if the directory exists, if not create it
-        directory = os.path.dirname(file_path)
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+        Path(file_path).parent.mkdir(parents=True, exist_ok=True)
         logger.info("Saving dataset to %s", file_path)
         # Save the data to file_path
         np.savetxt(file_path, data)
@@ -63,7 +62,7 @@ def load_cats(resample_s: None | int = None) -> pd.DataFrame:
     file_path: str = "data/cats/data.csv"
     url = "https://zenodo.org/records/7646897/files/data.parquet"
 
-    if os.path.exists(file_path):
+    if Path(file_path).exists():
         # Read the data from the file into a numpy array
         df = pd.read_csv(file_path, index_col=0)
     else:
@@ -107,15 +106,13 @@ def load_cats(resample_s: None | int = None) -> pd.DataFrame:
         df = download_and_read_parquet_with_progress(url)
 
         # Check if the directory exists, if not create it
-        directory = os.path.dirname(file_path)
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+        Path(file_path).parent.mkdir(parents=True, exist_ok=True)
 
     df.index = pd.to_datetime(df.index)
     if resample_s is not None:
         df = df.resample(f"{resample_s}s").median().iloc[resample_s:]
 
-    if not os.path.exists(file_path):
+    if not Path(file_path).exists():
         logger.info("Saving dataset to %s", file_path)
         # Save the data to file_path
         df.to_csv(file_path)
@@ -128,7 +125,7 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
 
     url = "https://api.github.com/repos/waico/SKAB/contents/data"
 
-    if not os.path.exists(file_path):
+    if not Path(file_path).exists():
 
         def download_csv_from_git(
             url: str,
@@ -137,14 +134,14 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
         ) -> None:
             # Parse the URL to get the folder name
             parsed_url = urlparse(url)
-            folder_name = os.path.basename(parsed_url.path)
+            folder_name = Path(parsed_url.path).name
 
             # Create the folder if it doesn't exist
             if add_base:
-                folder_path = os.path.join(save_path, folder_name)
+                folder_path = str(Path(save_path) / folder_name)
             else:
                 folder_path = save_path
-            os.makedirs(folder_path, exist_ok=True)
+            Path(folder_path).mkdir(parents=True, exist_ok=True)
 
             # Get the contents of the folder
             response = requests.get(url)
@@ -155,10 +152,11 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
                     ):
                         logger.info("Downloading %s", item["name"])
                         file_url = item["download_url"]
-                        file_name = os.path.basename(p=file_url)
-                        file_path = os.path.join(folder_path, file_name)
-                        with open(file_path, "wb") as file:
-                            file.write(requests.get(file_url).content)
+                        file_name = Path(file_url).name
+                        file_path = str(Path(folder_path) / file_name)
+                        Path(file_path).open("wb").write(
+                            requests.get(file_url).content,
+                        )
                     elif item["type"] == "dir":
                         download_csv_from_git(item["url"], folder_path)
 
@@ -176,7 +174,7 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
                     # Get the relative path of the file
                     # Create the corresponding directory structure in the dictionary
                     df = pd.read_csv(
-                        os.path.join(root, file),
+                        Path(root) / file,
                         index_col=0,
                         sep=";",
                     )
@@ -196,7 +194,7 @@ def load_usp(
         "http://sites.labic.icmc.usp.br/vsouza/repository/usp-stream-data.zip"
     )
 
-    if not os.path.exists(file_path):
+    if not Path(file_path).exists():
         response = requests.get(url)
         if response.status_code == 200:
             msg = (
@@ -231,7 +229,7 @@ def load_usp(
                         pbar.set_description(f"Loading {file}")
                         # Get the relative path of the file
                         # Create the corresponding directory structure in the dictionary
-                        raw_data, meta = loadarff(os.path.join(root, file))
+                        raw_data, meta = loadarff(Path(root) / file)
                         df = pd.DataFrame(raw_data, columns=meta.names())
                         # Store the data frame in the dictionary
                         data_dict[file.split(".")[0]] = df
@@ -275,16 +273,15 @@ def load_bess() -> tuple[pd.DataFrame, pd.DataFrame]:
 
     for path in [X_path, y_path]:
         url = base_url + path
-        if not os.path.exists(path):
-            os.makedirs(folder_path, exist_ok=True)
+        if not Path(path).exists():
+            Path(folder_path).mkdir(parents=True, exist_ok=True)
 
             # Read the data from the file into a numpy array
             def download_csv_from_git(url: str, save_path: str) -> None:
                 # Get the contents of the folder
                 response = requests.get(url)
                 if response.status_code == 200:
-                    with open(save_path, "wb") as file:
-                        file.write(response.content)
+                    Path(save_path).open("wb").write(response.content)
 
             download_csv_from_git(url, path)
 
