@@ -1620,14 +1620,6 @@ dependencies = [
     { name = "tqdm" },
 ]
 
-[package.optional-dependencies]
-examples = [
-    { name = "bayesian-optimization" },
-    { name = "jupyter" },
-    { name = "notebook" },
-    { name = "pydmd" },
-]
-
 [package.dev-dependencies]
 app = [
     { name = "streamlit" },
@@ -1668,22 +1660,23 @@ docs = [
     { name = "mkdocs-section-index" },
     { name = "mkdocstrings-python" },
 ]
+examples = [
+    { name = "bayesian-optimization" },
+    { name = "jupyter" },
+    { name = "notebook" },
+    { name = "pydmd" },
+]
 
 [package.metadata]
 requires-dist = [
-    { name = "bayesian-optimization", marker = "extra == 'examples'", specifier = "~=1.4.3" },
-    { name = "jupyter", marker = "extra == 'examples'", specifier = ">=1.1.1" },
     { name = "matplotlib", specifier = "<4.0.0" },
-    { name = "notebook", marker = "extra == 'examples'", specifier = ">=7.5.5" },
     { name = "numpy", specifier = "<3.0.0" },
     { name = "pandas", specifier = "<3.0.0" },
-    { name = "pydmd", marker = "extra == 'examples'", specifier = ">=2025.8.1" },
     { name = "requests", specifier = ">=2.32.4" },
     { name = "river", editable = "vendor/river" },
     { name = "scipy", specifier = "<2.0.0" },
     { name = "tqdm", specifier = ">=4.67.1" },
 ]
-provides-extras = ["examples"]
 
 [package.metadata.requires-dev]
 app = [{ name = "streamlit", specifier = "<2.0.0" }]
@@ -1722,6 +1715,12 @@ docs = [
     { name = "mkdocs-material", specifier = "<10.0.0" },
     { name = "mkdocs-section-index", specifier = ">=0.3.10" },
     { name = "mkdocstrings-python", specifier = "<2.0.0" },
+]
+examples = [
+    { name = "bayesian-optimization", specifier = "~=1.4.3" },
+    { name = "jupyter", specifier = ">=1.1.1" },
+    { name = "notebook", specifier = ">=7.5.5" },
+    { name = "pydmd", specifier = ">=2025.8.1" },
 ]
 
 [[package]]

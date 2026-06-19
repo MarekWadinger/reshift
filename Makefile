@@ -36,12 +36,12 @@ endef
 
 .PHONY: install
 install: .uv .pre-commit .river ## Install the package, dependencies, and pre-commit for local development
-	uv sync --frozen --all-extras --all-packages --group dev --group docs
+	uv sync --frozen --all-packages --all-groups
 	pre-commit install --install-hooks
 
 .PHONY: sync
 sync: .uv ## Update local packages and uv.lock
-	uv sync --all-extras --all-packages --group dev --group docs
+	uv sync --all-packages --all-groups
 
 # ============================================================================
 # Python Code Quality
