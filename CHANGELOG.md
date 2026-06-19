@@ -1,3 +1,13 @@
+## v5.0.0 (2026-06-19)
+
+### Features
+
+- rename package to reshift (#23)
+
+### Docs
+
+- modernize README + package metadata (logo, pain-first header, keywords) (#22)
+
 ## v4.0.1 (2026-06-19)
 
 ### Fixes
