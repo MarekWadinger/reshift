@@ -5,6 +5,7 @@ on:
     branches: [main]
     types:
       - completed
+  workflow_dispatch:  # allow manual docs deploy
 
 permissions:
   contents: write
@@ -20,7 +21,8 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-          token: ${{ secrets.MKDOCS_TOKEN }}
+          # default GITHUB_TOKEN (has contents: write above) pushes gh-pages;
+          # no PAT needed (the old MKDOCS_TOKEN was stale -> push 128)
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
