@@ -195,6 +195,7 @@ class SubIDChangeDetector(AnomalyDetector):
         threshold: float = 0.25,
         lag: int = 0,
         grace_period: int = 0,
+        *,
         learn_after_grace: bool = True,
         start_soon: bool = False,
     ) -> None:
@@ -546,6 +547,7 @@ class DMDChangeDetector(SubIDChangeDetector):
         threshold: float = 0.25,
         lag: int = 0,
         grace_period: int = 0,
+        *,
         learn_after_grace: bool = True,
     ) -> None:
         """Initialize DMDChangeDetector with subspace model and detection parameters."""

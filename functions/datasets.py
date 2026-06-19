@@ -14,7 +14,12 @@ logger = logging.getLogger(__name__)
 _TIMEOUT = 30
 
 
-def load_dateset(file_path: str, url: str, save: bool = False) -> np.ndarray:
+def load_dateset(
+    file_path: str,
+    url: str,
+    *,
+    save: bool = False,
+) -> np.ndarray:
     """Load a numeric dataset from a local file or download it from a URL.
 
     Args:
@@ -176,6 +181,7 @@ def load_skab(file_path: str = "data/skab") -> dict[str, list[pd.DataFrame]]:
         def download_csv_from_git(
             url: str,
             save_path: str,
+            *,
             add_base: bool = True,
         ) -> None:
             # Parse the URL to get the folder name

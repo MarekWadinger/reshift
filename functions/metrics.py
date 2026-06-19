@@ -184,6 +184,7 @@ def extract_cp_confusion_matrix(
     detecting_boundaries: list[list[Any]],
     prediction: pd.Series,
     point: int = 0,
+    *,
     binary: bool = False,
 ) -> dict[str, Any]:
     """Extract the confusion matrix for change point detection.
@@ -301,6 +302,7 @@ def single_average_delay(
     detecting_boundaries: list[list[Any]],
     prediction: pd.Series,
     anomaly_window_destination: str,
+    *,
     clear_anomalies_mode: bool,
 ) -> tuple[int, list[Any], int, int]:
     """anomaly_window_destination: 'lefter', 'righter', 'center'. Default='right'."""
@@ -355,6 +357,7 @@ def my_scale(
     A_fp: float = 0,
     koef: float = 1,
     detalization: int = 1000,
+    *,
     clear_anomalies_mode: bool = True,
     plot_figure: bool = False,
 ) -> np.ndarray:
@@ -386,6 +389,7 @@ def single_evaluate_nab(
     detecting_boundaries: list[list[Any]],
     prediction: pd.Series,
     table_of_coef: pd.DataFrame | None = None,
+    *,
     clear_anomalies_mode: bool = True,
     scale_func: str | Callable[..., np.ndarray] = "improved",
     scale_koef: float = 1,
@@ -482,11 +486,12 @@ def chp_score(
     window_width: str | None = None,
     portion: float = 0.1,
     anomaly_window_destination: str = "lefter",
-    clear_anomalies_mode: bool = True,
     intersection_mode: str = "cut right window",
     table_of_coef: pd.DataFrame | None = None,
     scale_func: str | Callable[..., np.ndarray] = "improved",
     scale_koef: float = 1,
+    *,
+    clear_anomalies_mode: bool = True,
     verbose: bool = False,
 ) -> Any:  # noqa: ANN401  # return shape is polymorphic in `metric` (dict/tuple)
     """Calculate various metrics for evaluating anomaly or changepoint detection.

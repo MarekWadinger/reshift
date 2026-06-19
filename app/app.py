@@ -51,6 +51,7 @@ def progressive_val_predict(
     X: pd.DataFrame,
     U: pd.DataFrame,
     _model: SubIDChangeDetector | Pipeline,
+    *,
     compute_alt_scores: bool = False,
     _progress_bar: DeltaGenerator | None = None,
 ) -> tuple[np.ndarray, dict[str, np.ndarray]]:

@@ -56,9 +56,6 @@ lint.ignore = [
     "N816",    # mixed-case math vars at module scope
     "ERA001",  # commented-out code kept as research scratch
     "E501",    # code line length (replaced by W505)
-    "FBT001",  # boolean positional arg in function definition
-    "FBT002",  # boolean default positional arg
-    "FBT003",  # boolean positional value in call
     "FIX002",  # line contains TODO (TODOs are tracked via issues)
     "S101",    # assert used for runtime invariants
     "PLR2004", # magic-value comparison (numeric constants are inherent)

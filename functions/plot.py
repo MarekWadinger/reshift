@@ -110,6 +110,7 @@ def plot_chd(
     ids_in_start: list[int] | None = None,
     ids_in_end: list[int] | None = None,
     grace_period: int | None = None,
+    *,
     normalize: bool = False,
     axs: np.ndarray | None = None,
     **fig_kwargs: object,
@@ -198,7 +199,7 @@ def plot_chd(
                 ax.set_ylabel(name)
             if label != "":
                 ax.legend()
-            ax.grid(True, axis="y")
+            ax.grid(visible=True, axis="y")
             ax.ticklabel_format(style="sci", axis="y", scilimits=(2, 1))
 
             if ids_in_start is not None and ids_in_end is not None:
@@ -231,7 +232,7 @@ def plot_chd(
                         data_val[idx_in_start:idx_in_end],
                         label=label,
                     )
-                    inlay_ax.grid(True, axis="y")
+                    inlay_ax.grid(visible=True, axis="y")
                     inlay_ax.set_yticklabels([])
                     inlay_ax.set_xticklabels([])
                     inlay_ax.patch.set_alpha(

@@ -53,6 +53,7 @@ class Hankelizer(RiverHankelizer):
     def __init__(
         self,
         w: int = 2,
+        *,
         return_partial: bool | Literal["copy"] = "copy",
     ) -> None:
         """Initialize the Hankelizer with window size and partial-return mode."""
@@ -105,6 +106,7 @@ def hankel(
     X: np.ndarray | pd.DataFrame,
     hn: int,
     step: int = 1,
+    *,
     return_partial: bool | Literal["copy"] = "copy",
 ) -> np.ndarray | pd.DataFrame:
     """Create a Hankel matrix from a given input array.
