@@ -2,1990 +2,1994 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://marekwadinger.github.io/reshift/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/SUMMARY/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/app/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/app/app/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/benchmarks/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/benchmarks/profile_decomposition/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/examples/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/examples/config/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
+    </url>
+    <url>
+         <loc>https://marekwadinger.github.io/reshift/reference/examples/cpdmd_compare/</loc>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/reshift/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/reshift/chdsubid/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/reshift/datasets/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/reshift/dmd/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/reshift/metrics/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/reshift/plot/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/reshift/preprocessing/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/reshift/rolling/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/scripts/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/scripts/gen_ref_pages/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/benchmarks/model_adapters/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/benchmarks/model_adapters/vw/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/__version__/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/api/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/conftest/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/dummy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/test_estimators/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/active/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/active/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/active/entropy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/filter/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/gaussian/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/hst/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/lof/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/pad/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/sad/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/svm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/test_hst/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/test_lof/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/anomaly/test_svm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/bayes_ucb/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/epsilon_greedy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/evaluate/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/exp3/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/lin_ucb/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/random/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/test_envs/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/test_policies/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/thompson/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/ucb/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/datasets/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/datasets/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/datasets/news/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/envs/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/envs/candy_cane/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/bandit/envs/testbed/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/classifier/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/clusterer/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/drift_detector/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/ensemble/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/estimator/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/multi_output/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/regressor/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/tags/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/test_base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/transformer/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/typing/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/viz/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/base/wrapper/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/checks/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/checks/anomaly/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/checks/clf/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/checks/common/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/checks/model_selection/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/checks/reco/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/checks/utils/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/cluster/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/cluster/clustream/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/cluster/dbstream/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/cluster/denstream/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/cluster/k_means/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/cluster/odac/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/cluster/streamkmeans/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/cluster/test_dbstream/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/cluster/textclust/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compat/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compat/river_to_sklearn/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compat/sklearn_to_river/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compat/test_sklearn/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compose/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compose/func/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compose/grouper/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compose/pipeline/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compose/product/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compose/renamer/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compose/select/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compose/target_transform/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compose/test_/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compose/test_product/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/compose/union/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/conf/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/conf/interval/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/conf/jackknife/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/covariance/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/covariance/emp/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/covariance/test_emp/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/airline_passengers/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/bananas/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/beth/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/bikes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/chick_weights/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/credit_card/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/elec2/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/higgs/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/http/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/insects/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/keystroke/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/malicious_url/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/movielens100k/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/music/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/phishing/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/restaurants/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/segment/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/sms_spam/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/smtp/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/solar_flare/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/taxis/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/test_datasets/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/trec07/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/trump_approval/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/water_flow/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/web_traffic/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/agrawal/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/anomaly_sine/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/concept_drift_stream/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/friedman/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/hyper_plane/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/led/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/logical/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/mixed/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/mv/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/planes_2d/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/random_rbf/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/random_tree/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/sea/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/sine/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/stagger/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/datasets/synth/waveform/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/decomposition/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/decomposition/odmd/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/decomposition/opca/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/decomposition/osvd/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/decomposition/rust_rolling_dmd/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/decomposition/test_odmd/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/decomposition/test_odmdwc/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/decomposition/test_opca/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/decomposition/test_osvd/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/decomposition/test_rust_rolling_dmd/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/adwin/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/dummy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/kswin/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/no_drift/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/page_hinkley/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/retrain/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/test_drift_detectors/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/binary/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/binary/ddm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/binary/eddm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/binary/fhddm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/binary/hddm_a/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/binary/hddm_w/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/datasets/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/datasets/airline_passengers/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/datasets/apple/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/datasets/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/datasets/bitcoin/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/datasets/brent_crude_oil/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/datasets/occupancy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/datasets/run_log/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/drift/datasets/uk_coal_employment/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/ensemble/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/ensemble/bagging/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/ensemble/boosting/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/ensemble/ewa/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/ensemble/stacking/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/ensemble/streaming_random_patches/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/ensemble/voting/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/evaluate/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/evaluate/gen/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/evaluate/progressive_validation/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/evaluate/tracks/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/facto/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/facto/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/facto/ffm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/facto/fm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/facto/fwfm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/facto/hofm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/feature_extraction/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/feature_extraction/agg/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/feature_extraction/kernel_approx/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/feature_extraction/poly/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/feature_extraction/test_agg/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/feature_extraction/test_vectorize/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/feature_extraction/vectorize/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/feature_selection/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/feature_selection/k_best/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/feature_selection/random/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/feature_selection/variance/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/forest/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/forest/adaptive_random_forest/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/forest/aggregated_mondrian_forest/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/forest/online_extra_trees/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/forest/test_amf/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/imblearn/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/imblearn/chebyshev/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/imblearn/hard_sampling/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/imblearn/random/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/linear_model/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/linear_model/alma/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/linear_model/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/linear_model/bayesian_lin_reg/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/linear_model/lin_reg/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/linear_model/log_reg/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/linear_model/pa/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/linear_model/perceptron/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/linear_model/softmax/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/linear_model/test_glm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/accuracy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/balanced_accuracy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/confusion/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/cross_entropy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/fbeta/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/fowlkes_mallows/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/geometric_mean/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/jaccard/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/kappa/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/log_loss/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/mae/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/mape/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/mcc/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/mse/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/mutual_info/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/precision/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/r2/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/rand/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/recall/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/report/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/roc_auc/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/rolling_roc_auc/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/silhouette/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/smape/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/test_confusion/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/test_cross_entropy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/test_fbeta/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/test_log_loss/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/test_metrics/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/test_r2/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/vbeta/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/efficient_rollingrocauc/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/multioutput/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/multioutput/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/multioutput/confusion/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/multioutput/exact_match/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/multioutput/macro/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/multioutput/micro/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/multioutput/per_output/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/multioutput/sample_average/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/metrics/multioutput/test_multioutput_metrics/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/misc/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/misc/sdft/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/misc/skyline/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/model_selection/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/model_selection/bandit/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/model_selection/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/model_selection/greedy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/model_selection/sh/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/model_selection/test_bandit/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/multiclass/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/multiclass/occ/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/multiclass/ovo/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/multiclass/ovr/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/multiclass/test_ovr/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/multioutput/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/multioutput/chain/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/multioutput/encoder/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/naive_bayes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/naive_bayes/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/naive_bayes/bernoulli/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/naive_bayes/complement/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/naive_bayes/gaussian/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/naive_bayes/multinomial/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/naive_bayes/test_naive_bayes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/neighbors/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/neighbors/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/neighbors/knn_classifier/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/neighbors/knn_regressor/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/neighbors/lazy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/neighbors/ann/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/neighbors/ann/nn_vertex/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/neighbors/ann/swinn/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/neural_net/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/neural_net/activations/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/neural_net/mlp/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/ada_bound/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/ada_delta/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/ada_grad/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/ada_max/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/adam/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/ams_grad/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/average/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/ftrl/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/initializers/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/losses/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/momentum/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/nadam/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/nesterov/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/newton/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/rms_prop/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/schedulers/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/sgd/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/optim/test_/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/feature_hasher/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/hankel/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/impute/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/lda/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/one_hot/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/ordinal/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/pred_clipper/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/random_projection/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/scale/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/scale_target/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/test_lda/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/test_random_projection/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/preprocessing/test_scale/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/proba/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/proba/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/proba/beta/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/proba/gaussian/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/proba/multinomial/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/proba/test_gaussian/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/reco/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/reco/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/reco/baseline/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/reco/biased_mf/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/reco/funk_mf/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/reco/normal/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/rules/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/rules/amrules/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/rules/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/sketch/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/sketch/counter/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/sketch/heavy_hitters/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/sketch/histogram/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/sketch/set/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/auto_corr/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/count/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/cov/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/entropy/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/ewmean/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/ewvar/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/iqr/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/kolmogorov_smirnov/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/kurtosis/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/link/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/mad/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/maximum/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/mean/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/minimum/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/mode/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/n_unique/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/pearson/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/ptp/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/quantile/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/sem/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/shift/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/skew/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/summing/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/test_kolmogorov_smirnov/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/test_parallel/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/test_quantile/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/test_stats/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/test_var/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stats/var/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/cache/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/iter_arff/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/iter_array/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/iter_csv/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/iter_libsvm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/iter_pandas/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/iter_polars/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/iter_sklearn/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/iter_sql/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/iter_vaex/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/qa/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/shuffling/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/test_iter_csv/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/test_sql/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/tweet_stream/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/twitch_chat_stream/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/stream/utils/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/time_series/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/time_series/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/time_series/evaluate/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/time_series/holt_winters/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/time_series/metrics/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/time_series/snarimax/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/time_series/test_evaluate/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/time_series/test_holt_winters/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/time_series/test_snarimax/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/extremely_fast_decision_tree/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/hoeffding_adaptive_tree_classifier/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/hoeffding_adaptive_tree_regressor/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/hoeffding_tree/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/hoeffding_tree_classifier/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/hoeffding_tree_regressor/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/isoup_tree_regressor/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/last_classifier/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/losses/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/setup/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/stochastic_gradient_tree/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/test_base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/test_splitter/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/test_trees/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/utils/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/viz/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/mondrian/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/mondrian/mondrian_tree/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/mondrian/mondrian_tree_classifier/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/mondrian/mondrian_tree_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/mondrian/mondrian_tree_regressor/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/arf_htc_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/arf_htr_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/branch/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/efdtc_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/et_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/hatc_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/hatr_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/htc_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/htr_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/isouptr_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/last_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/leaf/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/nodes/sgt_nodes/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/split_criterion/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/split_criterion/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/split_criterion/gini_split_criterion/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/split_criterion/hellinger_distance_criterion/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/split_criterion/info_gain_split_criterion/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/split_criterion/intra_cluster_variance_reduction_split_criterion/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/split_criterion/variance_ratio_split_criterion/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/split_criterion/variance_reduction_split_criterion/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/base/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/ebst_splitter/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/exhaustive_splitter/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/gaussian_splitter/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/histogram_splitter/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/nominal_splitter_classif/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/nominal_splitter_reg/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/qo_splitter/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/random_splitter/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/sgt_quantizer/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/tree/splitter/tebst_splitter/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/context_managers/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/inspect/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/math/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/norm/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/param_grid/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/pretty/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/random/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/rolling/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/sorted_window/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/test_math/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/test_param_grid/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/test_rolling/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
     <url>
          <loc>https://marekwadinger.github.io/reshift/reference/vendor/river/river/utils/test_vectordict/</loc>
-         <lastmod>2026-06-19</lastmod>
+         <lastmod>2026-06-22</lastmod>
     </url>
 </urlset>
