@@ -1,3 +1,13 @@
+## v5.1.0 (2026-06-22)
+
+### Features
+
+- **examples**: compare ODMD-CPD against CPDMD baseline (#28)
+
+### Docs
+
+- drop stale codecov badge token after repo rename (#24)
+
 ## v5.0.0 (2026-06-19)
 
 ### Features
