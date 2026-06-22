@@ -1,0 +1,259 @@
+% ECC26 talk -- toDMDc for Industrial Change Detection
+% Session WeB9 "Fault Detection and Tolerance II", 15 min + 5 Q&A
+% Build: latexmk -pdf slides.tex   (or: pdflatex slides.tex)
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme{default}
+\usecolortheme{seahorse}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+\usepackage{pifont}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\graphicspath{{figs/}}
+
+% --- palette matches the figures -----------------------------------------
+\definecolor{tblue}{HTML}{1F6FB2}
+\definecolor{tred}{HTML}{D1495B}
+\definecolor{tgreen}{HTML}{2A9D8F}
+\definecolor{tgrey}{HTML}{6B7280}
+\setbeamercolor{structure}{fg=tblue}
+\setbeamercolor{frametitle}{fg=tblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\newcommand{\yes}{\textcolor{tgreen}{\ding{51}}}
+\newcommand{\no}{\textcolor{tred}{\ding{55}}}
+\newcommand{\spine}[1]{%
+  {\centering\Large\bfseries\color{tblue} #1\par}}
+
+% --- title ----------------------------------------------------------------
+\title[\bfseries toDMDc change detection]{Truncated Online DMD with Control\\for Industrial Change Detection}
+\author[M. Wadinger]{\textbf{Marek Wadinger}\inst{1} \and Michal Kvasnica\inst{1} \and Yoshinobu Kawahara\inst{2}}
+\institute[]{\inst{1} Slovak University of Technology in Bratislava \quad \inst{2} Osaka University \& RIKEN AIP}
+\date{ECC 2026 \;\textbar\; WeB9 — Fault Detection and Tolerance II}
+
+\begin{document}
+
+% ===================== 1. COLD OPEN ======================================
+\begin{frame}[plain]
+  \titlepage
+  \vspace{-1.2em}
+  \begin{center}
+    \includegraphics[width=0.78\linewidth]{fig_cold_open.pdf}
+  \end{center}
+  \vspace{-0.4em}
+  \spine{The controller acting is not a fault. The system changing is.}
+\end{frame}
+
+% Slide 1 speaker note lives in outline.md; cold open: stakes + spine, pause.
+
+% ===================== 2. MONITORS DECAY =================================
+\begin{frame}{We commission a monitor once. The plant runs for years.}
+  \begin{columns}[T]
+    \begin{column}{0.54\linewidth}
+      \begin{itemize}
+        \item Commissioned once $\rightarrow$ then the plant \textbf{ages, re-seasons, gets re-tuned}, gets new setpoints.
+        \item The model is \textbf{frozen at day one}.
+        \item The gap widens: \textcolor{tred}{false alarms climb, real faults hide}.
+      \end{itemize}
+      \vspace{0.6em}
+      \begin{block}{The real requirement}
+        Not a \emph{better} detector — one that \textbf{stays current} without a human re-tuning it.
+      \end{block}
+    \end{column}
+    \begin{column}{0.44\linewidth}
+      \centering
+      \vspace{2em}
+      {\itshape\color{tgrey}
+      model fixed at $t_0$\\[0.4em]$\bullet$\\[0.4em] plant drifts away\\[0.4em]$\bullet$\\[0.4em] gap $=$ false alarms}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===================== 3. FOUR THINGS MOVE THE SIGNAL ====================
+\begin{frame}{Four things move the signal — three are normal}
+  \begin{columns}[T]
+    \begin{column}{0.48\linewidth}
+      \begin{block}{\textcolor{tgreen}{KNOWN — keep running}}
+        \begin{itemize}
+          \item setpoint / reference
+          \item \textbf{control input}
+          \item aging, seasonality \hfill{\footnotesize(adapt)}
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\linewidth}
+      \begin{block}{\textcolor{tred}{UNKNOWN — act}}
+        \begin{itemize}
+          \item \textbf{fault / transient} — an unexplained change in how the system responds
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{0.8em}
+  \centering
+  A signal-watcher can't tell the \textbf{control input} apart from the \textbf{fault}.\\
+  They look identical. \textcolor{tred}{That is the gap.}
+\end{frame}
+
+% ===================== 4. THE TRAP =======================================
+\begin{frame}{The trap — and what we watch instead}
+  \centering
+  \includegraphics[width=0.9\linewidth]{fig_trap.pdf}\\
+  \vspace{0.2em}
+  {\footnotesize Two \emph{identical} inputs, two different responses. A signal-watcher (SPC, CUSUM,
+  plain reconstruction error) alarms on both.}\\
+  \textbf{We watch the \textcolor{tblue}{map} from input to state — only the second is a fault.}
+\end{frame}
+
+% ===================== 5. ONE MISSING BOX ================================
+\begin{frame}{One missing box}
+  \centering
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabular}{lcccc}
+    \textbf{Method} & Interpretable & Adaptive & Control-aware & \textbf{Num.\ stable}\\
+    \hline
+    Statistical (SPC, CUSUM)      & \yes & \no  & \no  & \yes\\
+    \textbf{Online DMDc}~{\footnotesize[Zhang'19]} & \yes & \yes & \yes & \no\\
+    \rowcolor{tblue!12}\textbf{toDMDc (ours)} & \yes & \yes & \yes & \yes\\
+  \end{tabular}
+  \vspace{1.0em}
+  \begin{itemize}
+    \item Online DMDc had the first three — one box open: it goes \textbf{numerically unstable} on real data.
+    \item \textbf{We close that box.} That's the contribution.
+  \end{itemize}
+\end{frame}
+
+% ===================== 6. THE IDEA (CORE) ================================
+\begin{frame}{The idea: watch the map, not the signal}
+  \begin{columns}[T]
+    \begin{column}{0.46\linewidth}
+      \[ x_{k+1} = A\,x_k + B\,\textcolor{tblue}{\theta_k} \]
+      The input $\theta_k$ is \emph{inside} the model $\Rightarrow$ a control-driven swing is \textbf{predicted} — it barely costs anything.
+      \vspace{0.6em}
+      \[ Q_k=\max\!\Big(0,\ \tfrac{E_{\text{test}}/c}{E_{\text{ref}}/a}-1\Big) \]
+      same dynamics $\to Q\!\approx\!0$;\quad map moved $\to Q\!>\!0$.
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \centering
+      \footnotesize
+      \begin{tabular}{ll}
+        \textcolor{tgrey}{reference window $a$} & low error\\
+        \textcolor{tblue}{test window $c$}      & error jumps on change\\
+      \end{tabular}\\[1.2em]
+      \begin{block}{}
+        \centering We accounted for the input. What's left is the system.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{0.6em}
+  \spine{The controller acting is not a fault. The system changing is.}
+\end{frame}
+
+% ===================== 7. THE FIX (CONTRIBUTION) =========================
+\begin{frame}{The fix: online truncation}
+  \begin{columns}[T]
+    \begin{column}{0.56\linewidth}
+      \begin{itemize}
+        \item Online DMDc fails on \textbf{small singular values} — inverting the noise floor makes the update blow up (literally divides by zero on rank-deficient data).
+        \item We truncate to rank $r$ \textbf{online} — keep the directions that carry the dynamics, drop the noise floor — basis stays orthonormal.
+        \item Cost drops to \textbf{$\mathcal{O}(mr^2)$ per step} — independent of history length.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.42\linewidth}
+      \centering
+      \footnotesize\itshape
+      \textcolor{tred}{no truncation}: update undefined\\
+      $\downarrow$\\
+      \textcolor{tblue}{rank-$r$ truncation}: bounded, real-time
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===================== 8. GUARANTEES =====================================
+\begin{frame}{Two guarantees you can stand behind}
+  \begin{columns}[T]
+    \begin{column}{0.5\linewidth}
+      \begin{block}{Detection delay $\ge c$}
+        The peak \emph{cannot} appear before the test window fills.\\
+        Empirically $c+\,$a few samples ({\bfseries 102 vs.\ $c{=}100$}).\\
+        \textcolor{tblue}{Window size = your reaction budget.}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{block}{Cost $\mathcal{O}(mr^2)$ / update}
+        A handful of operations per sample, \textbf{independent of history length}.\\
+        Runs inside the sample interval.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{0.8em}
+  \centering\footnotesize\itshape
+  (Stationary-convergence and probabilistic bounds are in the paper — not claimed here as guarantees.)
+\end{frame}
+
+% ===================== 9. SPINE PROOF (two-tank) =========================
+\begin{frame}{On a real nonlinear controlled plant}
+  \centering
+  \includegraphics[width=0.88\linewidth]{fig_twotank_proof.pdf}\\
+  \vspace{0.2em}
+  {\footnotesize Two-tank with input delay. Detects all three injected faults — \textbf{sensor bias},
+  an \textbf{input$\to$state gain change}, and \textbf{drift} — the gain change is exactly
+  ``same input, different response''.}
+\end{frame}
+
+% ===================== 10. BESS HERO ====================================
+\begin{frame}{Real-data win: a hardware fault on a live battery}
+  \centering
+  \includegraphics[width=0.9\linewidth]{fig_bess_hx10_crop.pdf}\\
+  \vspace{0.2em}
+  Real cooling-fan fault detected \textbf{$\approx c$ samples after onset} — the delay bound, on data never seen.\\
+  {\footnotesize (Pre-onset bumps sit in the noise floor — not claimed as early warning.)}
+\end{frame}
+
+% ===================== 11. CLOSE ========================================
+\begin{frame}{Closed the box — and it feeds the controller}
+  \centering
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{lcccc}
+    \rowcolor{tblue!12}\textbf{toDMDc} & \yes & \yes & \yes & \yes\ \textbf{(now)}\\
+  \end{tabular}
+  \vspace{0.6em}
+  \begin{itemize}
+    \item Stays current on its own, tells the controller's actions apart from a real fault, delay you can size, cost you can afford.
+    \item \textbf{Exactly the trigger a fault-tolerant scheme consumes} — detection ready to hand off to tolerance.
+    \item Open source, one-line install, the BESS figures reproduce — \texttt{pip install reshift}.
+  \end{itemize}
+  \vspace{0.4em}
+  \spine{The controller acting is not a fault. The system changing is.}
+  \vspace{0.2em}
+  \centering Thank you — happy to take questions.
+\end{frame}
+
+% ===================== BACKUP ===========================================
+\appendix
+\begin{frame}{Backup — two-tank, full run}
+  \centering
+  \includegraphics[width=0.86\linewidth]{fig_twotank_proof.pdf}\\
+  All events: sensor bias, doubled response, linear drift. Score flat through control commands.
+\end{frame}
+
+\begin{frame}{Backup — BESS, full run (bidirectional)}
+  \centering
+  \includegraphics[width=0.86\linewidth]{fig_bess_hx10_full.pdf}\\
+  Largest late peaks are return-to-normal transitions (bidirectional score).
+\end{frame}
+
+\begin{frame}{Backup — adaptation vs.\ detection (the hard question)}
+  \small
+  \textbf{Q:} \emph{A slow fault is a slow change — won't the learning window absorb it?}\\[0.4em]
+  \textbf{A:} Detection precedes learning every step ($\ge c$ before any absorption).
+  Faults are distinguished by \textbf{rate}, not magnitude — multi-resolution windows separate
+  fault-rate from learning-rate. Honest limit: a change slower than $d$ is \emph{by design}
+  treated as adaptation (= aging). Choosing $d$ sets that boundary.
+\end{frame}
+
+\end{document}

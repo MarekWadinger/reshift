@@ -1,0 +1,16 @@
+# latex build artifacts
+*.aux
+*.log
+*.nav
+*.snm
+*.out
+*.toc
+*.vrb
+slides.pdf
+# python caches / intermediate data
+**/__pycache__/
+figs/_*.npy
+figs/_*.npz
+
+# figure previews (PDFs are the slide assets)
+figs/*.png

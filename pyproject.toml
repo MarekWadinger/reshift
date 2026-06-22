@@ -58,7 +58,7 @@ exclude = ["vendor"]
 
 [tool.ruff]
 line-length = 79
-extend-exclude = ["vendor"]
+extend-exclude = ["vendor", "publications/*/talk/figs"]
 lint.select = ["ALL"]
 lint.ignore = [
     # === Permanent: inappropriate for numerical/research code ===
