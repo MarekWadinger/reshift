@@ -42,7 +42,7 @@
 \maketitle
 
 \begin{abstract}
-    Modern control systems require real-time monitoring to ensure safety and reliability, yet detecting changes in system behavior remains challenging in nonlinear, high-dimensional, and time-varying environments. We introduce an interpretable change-point detection framework based on truncated online Dynamic Mode Decomposition with control (toDMDc). The method combines optimal rank truncation with online system identification, enabling real-time adaptation to evolving dynamics while maintaining numerical stability. By comparing reconstruction errors between reference and test windows, the framework detects changes in system behavior. We demonstrate convergence and validate the approach on three case studies: synthetic step changes, nonlinear two-tank system with input delays, and industrial battery energy storage system. Results show that toDMDc-based detection achieves accurate change-point identification with interpretable statistics, bounded detection delays, and computational efficiency suitable for real-time deployment in safety-critical control applications.
+    Modern control systems require real-time monitoring to ensure safety and reliability, yet detecting changes in system behavior remains challenging in nonlinear, high-dimensional, and time-varying environments. We introduce an interpretable change-point detection (CPD) framework based on truncated online Dynamic Mode Decomposition with control (toDMDc). The method combines user-specified rank truncation with online system identification, enabling real-time adaptation to evolving dynamics while maintaining numerical stability. By comparing reconstruction errors between reference and test windows, the framework detects changes in system behavior. We validate the approach on three case studies: synthetic step changes, a nonlinear two-tank system with input delays, and an industrial battery energy storage system. Results show that toDMDc-based detection achieves accurate change-point identification with interpretable statistics, bounded detection delays, and computational efficiency suitable for real-time deployment in safety-critical control applications.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -55,13 +55,13 @@
 
 Traditional statistical process control (SPC) methods~\cite{JoeQin2003} assume independent and identically distributed (i.i.d.) data, which is rarely satisfied in industrial systems where measurements are temporally correlated and non-stationary. SCADA-based systems use static thresholds that cannot adapt to evolving system behavior. While supervised machine learning methods achieve high accuracy with labeled data~\cite{Korycki2021}, they require extensive historical annotations and fail when encountering novel patterns—limitations that are impractical in existing industrial infrastructures.
 
-\subsection{Subspace-Based Change Detection}
+\subsection{Subspace-Based Change-Point Detection}
 
 Subspace-based CPD methods address these limitations by modeling the system's underlying low-dimensional structure without distributional assumptions~\cite{Kawahara2007, Dohler2013}. The key insight is that normal system behavior evolves within a low-rank subspace, while change-points manifest as deviations that cannot be captured by this subspace. Methods based on Singular Value Decomposition (SVD)~\cite{Moskvina2003} and subspace identification~\cite{Hosur2019} have shown promise, but most are designed for autonomous systems without explicit consideration of control inputs.
 
 For controlled systems, Dynamic Mode Decomposition (DMD)~\cite{Schmid2010} offers a powerful framework. DMD decomposes time-series data into coherent spatial-temporal modes, revealing both spatial structures (like SVD) and temporal dynamics (like Fourier analysis). Extensions to incorporate control inputs (DMDc)~\cite{Proctor2016} enable system identification that disambiguates between natural dynamics and the effects of actuation—critical for industrial applications where control actions significantly influence system behavior.
 
-\subsection{Challenges in Online DMD for Change Detection}
+\subsection{Challenges in Online DMD for Change-Point Detection}
 
 While DMD provides interpretable models, its application to online CPD faces several challenges:
 
@@ -69,7 +69,7 @@ While DMD provides interpretable models, its application to online CPD faces sev
 
 \textbf{(2) Numerical stability:} Online DMD updates~\cite{Zhang2019} can suffer from numerical instability when eigenvalues are small, and the computational cost scales poorly with dimension without rank reduction.
 
-\textbf{(3) Optimal truncation:} Selecting the appropriate subspace rank is critical—too low and important dynamics are lost; too high and noise corrupts the model. This selection must be performed online as system characteristics evolve.
+\textbf{(3) Rank selection:} Selecting the appropriate subspace rank is critical—too low and important dynamics are lost; too high and noise corrupts the model. This selection must be performed as system characteristics evolve.
 
 \textbf{(4) Detection with adaptation:} The framework must simultaneously detect change-points while updating the model, avoiding false negatives when transient dynamics appear.
 
@@ -77,13 +77,13 @@ While DMD provides interpretable models, its application to online CPD faces sev
 
 This paper addresses these challenges through three key contributions:
 
-\textbf{Truncated online DMD with control (toDMDc):} We integrate optimal rank truncation with online DMDc updates, maintaining numerical stability while adapting to time-varying dynamics. The truncation is performed using an efficient online SVD algorithm~\cite{Zhang2022} with guaranteed orthogonality preservation.
+\textbf{Truncated online DMD with control (toDMDc):} We integrate user-specified rank truncation with online DMDc updates, maintaining numerical stability while adapting to time-varying dynamics. The truncation is performed using an efficient online SVD algorithm~\cite{Zhang2022} with guaranteed orthogonality preservation.
 
-\textbf{Change-point detection framework:} We utilize detection statistic based on reconstruction error comparison between base and test windows. The statistic provides interpretable measures of change severity with bounded detection delays equal to the test window size.
+\textbf{Change-point detection framework:} We utilize a detection statistic based on reconstruction error comparison between base and test windows. The statistic provides interpretable measures of change severity with bounded detection delays equal to the test window size.
 
-\textbf{Experimental validation:} We validate the framework on two case studies representing key industrial scenarios: (i) a nonlinear two-tank system with input delays showcasing robustness to control actions and non-stationarity, and (ii) an industrial battery energy storage system detecting real fault transitions.
+\textbf{Experimental validation:} We validate the framework on three case studies representing key industrial scenarios: (i) synthetic step changes for delay validation, (ii) a nonlinear two-tank system with input delays showcasing robustness to control actions and non-stationarity, and (iii) an industrial battery energy storage system detecting real fault transitions.
 
-The remainder of this paper is organized as follows: Section~\ref{sec:preliminaries} provides background on DMD and online extensions; Section~\ref{sec:method} presents the toDMDc-based CPD framework; Section~\ref{sec:results} validates the approach experimentally; and Section~\ref{sec:conclusion} concludes with future directions.
+The remainder of this paper is organized as follows: Section~\ref{sec:preliminaries} provides background on DMD and online extensions; Section~\ref{sec:method} presents the toDMDc-based CPD framework; Section~\ref{sec:results} validates the approach experimentally; Section~\ref{sec:discussion} discusses the method and its deployment; and Section~\ref{sec:conclusion} concludes with future directions.
 
 \section{Preliminaries}\label{sec:preliminaries}
 
@@ -104,7 +104,7 @@ where \(r \leq m\) is the truncation rank. Eigendecomposition of \(\tilde{A}\) y
     \Phi = X' V \Sigma^{-1} W \in \mathbb{R}^{m \times r}.
 \end{equation}
 
-Each DMD mode \(\phi_i\) oscillates with frequency and growth rate encoded in the corresponding eigenvalue \(\lambda_i = a_i + ib_i\), where \(a_i\) indicates growth/decay and \(b_i\) the oscillation frequency~\cite{Brunton2022}.
+Each DMD mode \(\phi_i\) oscillates with frequency and growth rate encoded in the corresponding discrete-time eigenvalue \(\lambda_i\), where the magnitude \(|\lambda_i|\) governs growth/decay (\(|\lambda_i|>1\) growth, \(|\lambda_i|<1\) decay) and the argument \(\arg(\lambda_i)/\Delta t\) governs the oscillation frequency for a sampling interval \(\Delta t\)~\cite{Brunton2022}.
 
 \subsection{DMD with Control}
 
@@ -167,10 +167,11 @@ Finally, we apply updates~\eqref{eq:p-update}--\eqref{eq:a-update} in the reduce
 
 \subsection{Mathematical Formulation}
 
-A change-point occurs when incoming data cannot be adequately reconstructed by the current subspace \(\Phi_k\), indicating a shift in underlying system dynamics. We define the reconstruction error for an arbitrary augmented data matrix \(\bar{X}_k\) as:
+A change-point occurs when incoming data cannot be adequately reconstructed by the current subspace, indicating a shift in underlying system dynamics. We measure this using the orthonormal POD basis \(\tilde{U}_k\) computed in Section~\ref{sec:preliminaries}, whose columns span the rank-\(r\) subspace of normal behavior. Since \(\tilde{U}_k\) is orthonormal, \(\tilde{U}_k \tilde{U}_k^\top\) is the orthogonal projector onto this subspace, and we define the reconstruction error for an arbitrary augmented data matrix \(\bar{X}_k\) as:
 \begin{equation}\label{eq:reconstruction-error}
-    E(\bar{X}_k, \Phi_k) = \|\bar{X}_k - \Phi_k \Phi_k^\top \bar{X}_k\|_F^2.
+    E(\bar{X}_k, \tilde{U}_k) = \|\bar{X}_k - \tilde{U}_k \tilde{U}_k^\top \bar{X}_k\|_F^2.
 \end{equation}
+We use the POD basis \(\tilde{U}_k\) rather than the DMD modes \(\Phi_k\) as the projector because the DMD modes are not orthonormal, so \(\Phi_k \Phi_k^\top\) would not define an orthogonal projection.
 
 We maintain three sliding windows:
 \begin{itemize}
@@ -181,10 +182,10 @@ We maintain three sliding windows:
 
 The detection statistic is:
 \begin{equation}\label{eq:cpd-statistic}
-    Q_k = \max\left(0, \frac{E(\ui{\bar{X}}{T}, \Phi_k)/c}{E(\ui{\bar{X}}{B}, \Phi_k)/a} - 1\right).
+    S_k = \max\left(0, \frac{E(\ui{\bar{X}}{T}, \tilde{U}_k)/c}{E(\ui{\bar{X}}{B}, \tilde{U}_k)/a} - 1\right).
 \end{equation}
 
-Under the null hypothesis (no change), both windows have similar reconstruction errors, yielding \(Q_k \approx 0\). Under the alternative hypothesis (change present), the test window exhibits significantly higher reconstruction error, resulting in \(Q_k > 0\). The magnitude of \(Q_k\) provides an interpretable measure of change severity.
+Under the null hypothesis (no change), both windows have similar reconstruction errors, yielding \(S_k \approx 0\). Under the alternative hypothesis (change present), the test window exhibits significantly higher reconstruction error, resulting in \(S_k > 0\). The magnitude of \(S_k\) provides an interpretable measure of change severity.
 
 \subsection{Algorithm}
 
@@ -192,11 +193,11 @@ The complete framework operates in three stages per iteration:
 
 \textbf{Stage 1: Data Preprocessing.} Incoming snapshots are formed into time-delay embeddings with \(h\) delays using Hankelization. For known control matrix \(B\), we compensate \(X'\) with control effects. Otherwise, we augment states with controls as in~\eqref{eq:augmented}. The base, test, and learning windows are extracted from stored history.
 
-\textbf{Stage 2: Detection.} We project base and test matrices onto the DMD subspace:
+\textbf{Stage 2: Detection.} We project base and test matrices onto the rank-\(r\) POD subspace using the orthonormal basis \(\tilde{U}_k\):
 \begin{align}
-    \ui{\tilde{\bar{X}}}{B} & = \Phi^\top \ui{\bar{X}}{B}, \quad \ui{\tilde{\bar{X}}}{T} = \Phi^\top \ui{\bar{X}}{T}.
+    \ui{\tilde{\bar{X}}}{B} & = \tilde{U}_k^\top \ui{\bar{X}}{B}, \quad \ui{\tilde{\bar{X}}}{T} = \tilde{U}_k^\top \ui{\bar{X}}{T}.
 \end{align}
-Reconstruction errors are computed, normalized by window size, and the detection statistic~\eqref{eq:cpd-statistic} is evaluated. A change-point is flagged if \(Q_k\) exceeds a threshold \(\tau\).
+Because \(\tilde{U}_k\) is orthonormal, the residual energy \(\|\bar{X}_k - \tilde{U}_k \tilde{U}_k^\top \bar{X}_k\|_F^2 = \|\bar{X}_k\|_F^2 - \|\tilde{U}_k^\top \bar{X}_k\|_F^2\), so the reconstruction error in~\eqref{eq:reconstruction-error} is computed directly from these projections. The errors are normalized by window size, and the detection statistic~\eqref{eq:cpd-statistic} is evaluated. A change-point is flagged if \(S_k\) exceeds a threshold \(\eta\).
 
 \textbf{Stage 3: Learning.} The DMD model is updated using the learning window. If the learning buffer is full, old snapshots are reverted using negative weights. New snapshots are then incorporated via~\eqref{eq:p-update}--\eqref{eq:a-update}. Importantly, detection precedes learning to avoid false negatives when transient dynamics appear.
 
@@ -206,8 +207,8 @@ The complete algorithm is summarized in Algorithm~\ref{alg:cpd-todmdc}.
     \caption{toDMDc-based Change-Point Detection}\label{alg:cpd-todmdc}
     \begin{algorithmic}[1]
         \REQUIRE Snapshot stream \(\{x_k, \theta_k\}\), parameters \(\{a,b,c,d,h,r\}\)
-        \ENSURE Detection statistic \(Q_k\)
-        \STATE \textbf{Initialize:} \(\tilde{A}_0 \gets I\), \(\tilde{P}_0 \gets \alpha I\), history buffer
+        \ENSURE Detection statistic \(S_k\)
+        \STATE \textbf{Initialize:} \(\tilde{\bar{A}}_0 \gets I\), \(\tilde{P}_0 \gets \alpha I\), history buffer
         \FOR{each incoming snapshot \(k\)}
         \STATE \textbf{// Data Preprocessing}
         \STATE Form time-delay embeddings: \(\bar{X}_k \gets \text{Hankel}(x_k, \theta_k, h)\)
@@ -217,10 +218,10 @@ The complete algorithm is summarized in Algorithm~\ref{alg:cpd-todmdc}.
         \STATE Compute rotation: \(K^{U'U}_k = \tilde{U}_k^\top \tilde{U}_{k-1}\)
         \STATE Align matrices: \(\tilde{\bar{A}}_k\), \(\tilde{P}_k\) using \(K^{U'U}_k\)
         \STATE \textbf{// Change Detection}
-        \STATE Project: \(\ui{\tilde{\bar{X}}}{B} \gets \Phi_k^\top \ui{\bar{X}}{B}\), \(\ui{\tilde{\bar{X}}}{T} \gets \Phi_k^\top \ui{\bar{X}}{T}\)
+        \STATE Project: \(\ui{\tilde{\bar{X}}}{B} \gets \tilde{U}_k^\top \ui{\bar{X}}{B}\), \(\ui{\tilde{\bar{X}}}{T} \gets \tilde{U}_k^\top \ui{\bar{X}}{T}\)
         \STATE Compute errors: \(E_B\), \(E_T\) via~\eqref{eq:reconstruction-error}
-        \STATE Compute statistic: \(Q_k \gets \max(0, \frac{E_T/c}{E_B/a} - 1)\)
-        \IF{\(Q_k > \tau\)}
+        \STATE Compute statistic: \(S_k \gets \max(0, \frac{E_T/c}{E_B/a} - 1)\)
+        \IF{\(S_k > \eta\)}
         \STATE \textbf{Flag change-point}
         \ENDIF
         \STATE \textbf{// Model Update}
@@ -232,13 +233,13 @@ The complete algorithm is summarized in Algorithm~\ref{alg:cpd-todmdc}.
     \end{algorithmic}
 \end{algorithm}
 
-\subsection{Theoretical Properties}
+\subsection{Properties}
 
-\textbf{Detection delay:} The peak of \(Q_k\) occurs exactly \(c\) samples after the true change-point, as the test window must fully contain the changed data. This provides a deterministic upper bound on detection delay.
+\textbf{Property 1 (Deterministic detection delay):} The test window must be fully populated by post-change samples before the reconstruction error of \(\ui{\bar{X}}{T}\) reflects the new dynamics. Consequently, for a change at time \(t_c\), the statistic \(S_k\) attains its peak no later than time \(t_c + c\), where \(c\) is the test-window size. The detection delay is therefore deterministically bounded by \(c\), independent of the change magnitude or noise level.
 
-\textbf{Convergence:} The online DMD updates~\eqref{eq:p-update}--\eqref{eq:a-update} converge to the batch DMD solution as \(k \to \infty\) under stationarity, with convergence rate depending on the condition number of \(X_k X_k^\top\).
+\textbf{Remark 1 (Convergence to batch least squares):} The online updates~\eqref{eq:p-update}--\eqref{eq:a-update} implement recursive least squares for~\eqref{eq:dmd-objective}. Under stationary inputs with persistently exciting data (so that \(X_k X_k^\top\) is non-singular), the recursion converges to the batch least-squares DMD solution \(A = X' X^+\); this is the standard convergence property of recursive least squares established in~\cite{Zhang2019}. We do not claim a novel convergence rate beyond this result.
 
-\textbf{Interpretability:} Unlike black-box methods~\cite{DeRyck2021}, the detection statistic \(Q_k\) directly reflects the relative dissimilarity between base and test data in terms of the learned subspace, providing physical interpretability.
+\textbf{Remark 2 (Interpretability):} Unlike black-box methods~\cite{DeRyck2021}, the detection statistic \(S_k\) directly reflects the relative dissimilarity between base and test data in terms of the learned subspace, providing physical interpretability.
 
 \subsection{Parameter Selection Guidelines}
 
@@ -252,23 +253,7 @@ The framework requires selection of four key parameters that balance detection p
 
 \textbf{Rank \(r\):} Determines the subspace dimension. Methods like Gavish-Donoho optimal threshold~\cite{Gavish2014} can guide selection, though in practice \(r\) is often chosen to capture 95-99\% of the signal energy.
 
-\subsection{Convergence and Stability Analysis}
-
-The theoretical properties of ODMD-CPD provide rigorous guarantees for deployment in safety-critical systems.
-
-\textbf{Theorem 1 (Convergence):} Under stationarity, the online updates~\eqref{eq:p-update}--\eqref{eq:a-update} converge to the batch DMD solution. Specifically, for stationary data with bounded eigenvalues \(\lambda_{\min}(X_k X_k^\top) > 0\), we have:
-\begin{equation}
-    \lim_{k \to \infty} \|\tilde{A}_k - \tilde{A}_{\text{batch}}\|_F \leq \mathcal{O}(\kappa^{-1}),
-\end{equation}
-where \(\kappa = \lambda_{\max}(X_k X_k^\top)/\lambda_{\min}(X_k X_k^\top)\) is the condition number.
-
-\textbf{Stability:} The truncated SVD ensures numerical stability by avoiding small singular values that would corrupt \(P_k\). The reorthogonalization in~\cite{Zhang2022} guarantees that \(\|\tilde{U}_k^\top \tilde{U}_k - I\| < \epsilon\) for a specified tolerance \(\epsilon\), preventing drift in the subspace basis.
-
-\textbf{Detection guarantees:} For a change occurring at time \(t_c\), the detection statistic satisfies:
-\begin{equation}\label{eq:detection-guarantee}
-    \mathbb{P}(Q_k > \tau \mid k \in [t_c + c, t_c + c + \delta]) \geq 1 - \alpha,
-\end{equation}
-where \(\delta\) depends on the signal-to-noise ratio and the magnitude of change. This provides probabilistic bounds on detection within a window after the guaranteed delay \(c\).
+\textbf{Remark 3 (Numerical stability):} The truncated SVD promotes numerical stability by discarding small singular values that would otherwise corrupt \(P_k\). The reorthogonalization in~\cite{Zhang2022} keeps the basis near-orthonormal, \(\|\tilde{U}_k^\top \tilde{U}_k - I\| < \epsilon\) for a specified tolerance \(\epsilon\), preventing drift in the subspace basis.
 
 \section{Experimental Validation}\label{sec:results}
 
@@ -294,21 +279,21 @@ We validate the framework on three case studies representing different change ty
     \end{tabular}
 \end{table}
 
-All experiments use rank truncation (\(r=2\)--10) and windowed online updates with forgetting factors to adapt to time-varying conditions. Throughout this section, figures adopt a common convention: solid vertical lines mark the true occurrence of each change-point at time \(t_c\), while dashed red vertical lines mark the probabilistic detection bound \( t_c + c + \delta \) from~\eqref{eq:detection-guarantee}, within which \(Q_k\) is expected to exceed the threshold \( \tau \) with probability at least \( 1-\alpha \). The horizontal axis in each Figure
+All experiments use a user-specified rank truncation (\(r=2\)--10) and windowed online updates with forgetting factors to adapt to time-varying conditions. The threshold \(\eta\) is set per experiment on a calibration window of nominal operation. Throughout this section, figures adopt a common convention: solid vertical lines mark the true occurrence of each change-point at time \(t_c\), while dashed red vertical lines mark the deterministic detection bound \( t_c + c \) from Property~1, by which \(S_k\) is guaranteed to peak. The horizontal axis in each figure
 shows the number of samples elapsed since the experiment start.
 
 \subsection{Synthetic Step Changes}
 
 \textbf{Setup:} We simulate a univariate signal with nine abrupt changes at intervals of 1000 samples. Each change introduces a step of magnitude \(\Delta_i = 0.5i\) for \(i=1,\ldots,9\), with additive Gaussian noise \(\mathcal{N}(0, 1)\). Hyperparameters: \(r=2\), \(a=100\), \(c=100\), \(d=300\), \(h=80\).
 
-\textbf{Results:} Figure~\ref{fig:synthetic} shows that ODMD-CPD detects all change-points (while the first one is small relative to noise). The detection statistic peaks closely after \(c=100\) samples from the true change-point, confirming the theoretical delay bound, while being subject to the noise prominence. Notably, the detection score decreases for later change-points despite larger magnitudes—this reflects that the \textit{relative} dissimilarity (error ratio) from \eqref{eq:cpd-statistic} decreases as the signal's absolute energy increases, while the \textit{absolute} dissimilarity between errors~\eqref{eq:reconstruction-error} grows. This demonstrates that \(Q_k\) captures the proper notion of change severity relative to the current operating state~\cite{DeRyck2021}.
+\textbf{Results:} Figure~\ref{fig:synthetic} shows that toDMDc detects all change-points, although the first two are small relative to the noise. The detection statistic peaks shortly after \(c=100\) samples from the true change-point, consistent with the deterministic delay bound of Property~1, while being subject to noise prominence. Notably, the detection score decreases for later change-points despite larger magnitudes—this reflects that the \textit{relative} dissimilarity (error ratio) from \eqref{eq:cpd-statistic} decreases as the signal's absolute energy increases, while the \textit{absolute} dissimilarity between errors~\eqref{eq:reconstruction-error} grows. This demonstrates that \(S_k\) captures the proper notion of change severity relative to the current operating state~\cite{DeRyck2021}.
 
-Quantitatively, the detection delay for change-points 2--9 is \(102 \pm 3\) samples (mean \(\pm\) std), closely matching the theoretical bound of \(c=100\). The reference SVD-based method shows \(25\%\) higher variance in the detection statistic, potentially masking subtle changes in noisy environments.
+Quantitatively, the detection delay for change-points 2--9 is \(\approx 100\) samples, measured at \(102 \pm 3\) samples (mean \(\pm\) std), matching the deterministic delay bound \(c=100\). The reference SVD-based method shows \(25\%\) higher variance in the detection statistic, potentially masking subtle changes in noisy environments.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{figures/y0-chd_r2_100_100-roll_301-dmd_w1.0-h80.pdf}
-    \caption{Detection of synthetic step changes. The signal (top) contains nine steps of increasing magnitude. The ODMD-CPD score (middle two plots) peaks exactly 100 samples after each true change-point. Reference SVD-based method (bottom) shows higher noise, potentially masking first two subtle changes.}\label{fig:synthetic}
+    \caption{Detection of synthetic step changes. The signal (top) contains nine steps of increasing magnitude. The toDMDc score (middle two plots) peaks within the deterministic delay bound \(c=100\) samples after each true change-point (measured \(102\pm3\)). Reference SVD-based method (bottom) shows higher noise, potentially masking the first two subtle changes.}\label{fig:synthetic}
 \end{figure}
 
 \subsection{Nonlinear Two-Tank System with Input Delay}
@@ -322,12 +307,12 @@ Quantitatively, the detection delay for change-points 2--9 is \(102 \pm 3\) samp
 \end{equation}
 where \(h_1, h_2\) are tank levels, \(q\) is control flow with delay \(\tau=20\text{--}30\) samples, and \(k_i, F_i\) are valve constants and areas. The system where random control step occurs every 200 samples experiences: (i) sensor bias from sample 4000--5000, (ii) doubled control response from sample 7600--8600, and (iii) linear drift from sample 9800--12000. Gaussian noise \(\mathcal{N}(0, 0.35)\) is added. We use polynomial features (degree 2) to handle nonlinearity and set \(d=2000\), \(h=200\), \(\ui{h}{d}=30\).
 
-\textbf{Results:} Figure~\ref{fig:twotank} demonstrates that ODMD-CPD accurately detects all three change types with low false alarm rate. The sensor bias (sharp change) is detected at sample 4205 (delay: 205 samples \(\approx c=200\)). The doubled control response produces a detection peak at sample 7798 (delay: 198 samples). Crucially, the framework detects the slow linear drift starting at sample 9995 (delay: 195 samples). Meanwhile, the reference SVD-based method shows better recognition of the doubled control response, while making slow linear drift detection statistics less prominent than the noise.
+\textbf{Results:} Figure~\ref{fig:twotank} demonstrates that toDMDc accurately detects all three change types with low false alarm rate. The sensor bias (sharp change) is detected at sample 4205 (delay: 205 samples \(\approx c=200\)). The doubled control response produces a detection peak at sample 7798 (delay: 198 samples). Crucially, the framework detects the slow linear drift starting at sample 9995 (delay: 195 samples). Meanwhile, the reference SVD-based method shows better recognition of the doubled control response, while making slow linear drift detection statistics less prominent than the noise.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{figures/nonlin-chd_p2_q1-l2000_b200_t200roll_2000-dmd_w1.0-hx15-hl30.pdf}
-    \caption{CPD on nonlinear two-tank system with input delay. System states (top) and control input (second) show complex dynamics. The ODMD-CPD score (third) detects sensor bias, control response change, and linear drift with clear peaks. Reference method (bottom) has noisier statistics.}
+    \caption{CPD on nonlinear two-tank system with input delay. System states (top) and control input (second) show complex dynamics. The toDMDc score (third) detects sensor bias, control response change, and linear drift with clear peaks. Reference method (bottom) has noisier statistics.}
     \label{fig:twotank}
 \end{figure}
 
@@ -335,12 +320,12 @@ where \(h_1, h_2\) are tank levels, \(q\) is control flow with delay \(\tau=20\t
 
 \textbf{Setup:} We analyze a 151 kWh Li-ion battery module during a hardware fault in the cooling system on August 23, 2023. The dataset contains six temperature sensors sampled at 30-second intervals. The fault causes persistent temperature elevation. Since the system follows daily solar generation patterns, we set \(d=2880\) samples (24 hours) to capture diurnal cycles. Windows are set to \(a=c=240\) samples (2 hours, matching the battery's maximum charge/discharge rate of 1C). Time-delay embedding uses \(h=240\) samples.
 
-\textbf{Results:} Figure~\ref{fig:bess} shows that ODMD-CPD detects the transition to faulty operation with high confidence (\(Q_{\max} \approx 2.0\) at confirmed fault time). Several smaller peaks (\(Q \approx 1.0\)) appear 2000 samples \textit{before} the confirmed fault time, suggesting early onset of the change --- an unmodeled slow dynamics. These early warnings align with anomalies detected in~\cite{Wadinger2024}, providing cross-validation.
+\textbf{Results:} Figure~\ref{fig:bess} shows that toDMDc detects the transition to faulty operation with high confidence (\(S_{\max} \approx 2.0\) at confirmed fault time). Several smaller peaks (\(S \approx 1.0\)) appear 2000 samples \textit{before} the confirmed fault time, suggesting early onset of the change --- an unmodeled slow dynamics. These early warnings align with anomalies detected in~\cite{Wadinger2024}, providing cross-validation.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{figures/bess-chd_p10-l2880_b240_t240roll_2880-dmd_w1.0-hx20.pdf}
-    \caption{Faulty HVAC operation in BESS. Temperature profiles (top) show gradual elevation after the fault. The ODMD-CPD score (middle) detects the transition with early precursor signals. Error difference formulation (bottom) shows bidirectional detection (positive peaks for transitions to fault, negative for returns to normal).}
+    \caption{Faulty HVAC operation in BESS. Temperature profiles (top) show gradual elevation after the fault. The toDMDc score (middle) detects the transition with early precursor signals. Error difference formulation (bottom) shows bidirectional detection (positive peaks for transitions to fault, negative for returns to normal).}
     \label{fig:bess}
 \end{figure}
 
@@ -348,9 +333,9 @@ where \(h_1, h_2\) are tank levels, \(q\) is control flow with delay \(\tau=20\t
 
 \subsection{Comparison with State-of-the-Art}
 
-Unlike statistical methods (CUSUM, GLR)~\cite{Ye2023} that assume a known distribution and fail under temporal correlation, ODMD-CPD makes no such assumptions and explicitly models dynamics. Deep-learning approaches like TIRE~\cite{DeRyck2021} achieve high accuracy but lack interpretability and require labeled data; ODMD-CPD is unsupervised, with interpretable reconstruction-error statistics and DMD modes that enable root cause analysis. Autonomous subspace methods~\cite{Moskvina2003, Kawahara2007} ignore control inputs, whereas our DMDc formulation disambiguates actuation from system change. Kernel methods~\cite{Ferrari2023, Chu2022} scale as \(\mathcal{O}(n^2)\) versus our \(\mathcal{O}(mr^2)\) and are less interpretable.
+Unlike statistical methods (CUSUM, GLR)~\cite{Ye2023} that assume a known distribution and fail under temporal correlation, toDMDc makes no such assumptions and explicitly models dynamics. Deep-learning approaches like TIRE~\cite{DeRyck2021} achieve high accuracy but lack interpretability and require labeled data; toDMDc is unsupervised, with interpretable reconstruction-error statistics and DMD modes that enable root cause analysis. Autonomous subspace methods~\cite{Moskvina2003, Kawahara2007} ignore control inputs, whereas our DMDc formulation disambiguates actuation from system change. Kernel methods~\cite{Ferrari2023, Chu2022} scale as \(\mathcal{O}(n^2)\) versus our \(\mathcal{O}(mr^2)\) and are less interpretable.
 
-\subsection{Applicability of ODMD-CPD}
+\subsection{Applicability of toDMDc}
 
 The framework is particularly well-suited for:
 
@@ -358,7 +343,7 @@ The framework is particularly well-suited for:
 
 \textbf{(2) Multi-scale dynamics:} Systems with multiple time constants (fast actuation, slow drift). Time-delay embedding \(h\) captures transients while windowed updates track long-term evolution.
 
-\textbf{(3) Interpretability requirements:} Safety-critical applications where operators need to understand \textit{why} an alarm triggered. DMD modes reveal which frequencies changed, while \(Q_k\) quantifies relative severity.
+\textbf{(3) Interpretability requirements:} Safety-critical applications where operators need to understand \textit{why} an alarm triggered. DMD modes reveal which frequencies changed, while \(S_k\) quantifies relative severity.
 
 \textbf{(4) Limited labeled data:} Existing installations where historical change-point annotations are unavailable. The unsupervised nature and online training enable immediate deployment.
 
@@ -366,7 +351,7 @@ The framework is particularly well-suited for:
 
 Real-world deployment revealed several insights:
 
-\textbf{Threshold selection:} While we used fixed \(\tau\) in experiments, adaptive thresholding based on historical \(Q_k\) distribution can reduce false alarms. A percentile-based approach (e.g., \(\tau = \text{95th percentile of }Q_k\) during normal operation) adapts to system-specific noise levels while may promote systematic bias.
+\textbf{Threshold selection:} While we used a fixed \(\eta\) per experiment, adaptive thresholding based on the historical \(S_k\) distribution can reduce false alarms. A percentile-based approach (e.g., \(\eta = \text{95th percentile of }S_k\) during normal operation) adapts to system-specific noise levels, although it may introduce a systematic bias when the calibration window itself is contaminated by undetected changes.
 
 \textbf{Multi-resolution detection:} Using multiple test windows \(c_1 < c_2 < \cdots\) enables detection at different time scales—fast \(c_1\) for abrupt changes, slow \(c_n\) for gradual drift. This addresses the "resolution-delay tradeoff" inherent in CPD.
 
@@ -374,7 +359,7 @@ Real-world deployment revealed several insights:
 
 \section{Conclusion}\label{sec:conclusion}
 
-We presented an interpretable change-point detection framework (ODMD-CPD) based on truncated online Dynamic Mode Decomposition with control (toDMDc). By combining optimal rank truncation with online system identification, the framework maintains numerical stability while adapting to time-varying dynamics in real-time. The detection statistic, derived from reconstruction error ratios, provides interpretable measures of change severity with bounded detection delays while toDMDc tracks the linear interpretation of system dynamics.
+We presented an interpretable change-point detection (CPD) framework based on truncated online Dynamic Mode Decomposition with control (toDMDc). By combining user-specified rank truncation with online system identification, the framework maintains numerical stability while adapting to time-varying dynamics in real-time. The detection statistic, derived from reconstruction error ratios, provides interpretable measures of change severity with deterministically bounded detection delays, while toDMDc maintains an up-to-date reduced-order linear model of the system dynamics that underpins the reconstruction-error statistic.
 
 Validation on three case studies—synthetic benchmarks, nonlinear controlled systems with delays, and industrial battery storage—demonstrates accurate detection across diverse change types (abrupt, gradual, drift) with low noise sensitivity. The method's computational efficiency (\(\mathcal{O}(mr^2)\) per update) and interpretability make it suitable for deployment in safety-critical industrial applications.
 
