@@ -77,3 +77,6 @@ docs/reference/
 *.synctex.gz([0-9])*
 *.spl
 *.bak0
+
+# External comparison baselines (cloned on demand by notebooks)
+examples/.baselines/
