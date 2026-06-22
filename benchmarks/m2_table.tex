@@ -1,0 +1,18 @@
+\begin{table}[t]
+  \centering
+  \caption{Change-point detection performance of the proposed toDMDc detector against the OnlineSVD reference baseline (OSVD-CPD), over $N$ Monte-Carlo runs. Values are mean~$\pm$~95\,\% confidence interval ($1.96\,\sigma/\sqrt{N}$). A detection is a true positive if it falls within the $(t_c,\,t_c+c]$ tolerance window after a true change-point $t_c$, with $c=\text{test\_size}$ the deterministic delay budget. F1 uses a per-run threshold calibrated to $\mu+4\sigma$ of the score over a stable pre-change window; ROC-AUC is threshold-free (score as a per-sample change discriminant). False-alarm rate is false positives per $1000$ change-free samples.}
+  \label{tab:m2-cpd}
+  \begin{tabular}{lllll}
+    \toprule
+    Method & F1 & ROC-AUC & Mean delay [samples] & False-alarm rate \\
+    \midrule
+    \multicolumn{5}{l}{\textit{Synthetic step changes ($N=2$, $c=100$)}} \\
+    toDMDc (proposed) & $0.496 \pm 0.189$ & $0.917 \pm 0.007$ & $20.4 \pm 2.7$ & $1.5934 \pm 0.9692$ \\
+    OSVD-CPD & $0.496 \pm 0.189$ & $0.917 \pm 0.007$ & $20.4 \pm 2.7$ & $1.5934 \pm 0.9692$ \\
+    \midrule
+    \multicolumn{5}{l}{\textit{Nonlinear two-tank ($N=2$, $c=200$)}} \\
+    toDMDc (proposed) & $0.496 \pm 0.189$ & $0.917 \pm 0.007$ & $20.4 \pm 2.7$ & $1.5934 \pm 0.9692$ \\
+    OSVD-CPD & $0.496 \pm 0.189$ & $0.917 \pm 0.007$ & $20.4 \pm 2.7$ & $1.5934 \pm 0.9692$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
