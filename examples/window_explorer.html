@@ -157,7 +157,7 @@ function metrics(sc, clean, ref, test, lag, thr){
 const $ = id => document.getElementById(id);
 const signalIds = ['source','type','width','noise'];   // change the residual(s)
 const windowIds = ['ref','test','lag','thr'];           // only re-window/score
-let tcur = 380, staticShapes = [], series = [];
+let tcur = 380, staticShapes = [], series = [], tcurManual = false;
 
 // Build the coloured method checklist (also serves as the legend). Set `checked`
 // as a property — the attribute via innerHTML does not reliably apply.
@@ -173,6 +173,7 @@ const selectedMethods = () => [...document.querySelectorAll('.mchk:checked')].ma
 
 // Acquire residual(s): synthetic profile (one series) or N plant+DMD series (server).
 async function refreshResidual(){
+  tcurManual = false;   // re-anchor windows on the new data's change point
   const type = $('type').value, width = +$('width').value, noise = +$('noise').value/100;
   if ($('source').value === 'synthetic'){
     const { clean, r } = profile(type, width, noise);
@@ -261,6 +262,11 @@ function draw(){
   }
   renderTable(tabData);
 
+  // Anchor the windows on the change point until the user hovers: ref (train)
+  // ends at the onset, test starts at onset+lag. tcur is the combined window's
+  // right edge, so right edge = onset + lag + test.
+  if (!tcurManual) tcur = Math.min(N-1, Math.max(ref+lag+test-1, onset + lag + test - 1));
+
   staticShapes = [
     {type:'line', xref:'x', yref:'paper', x0:onset, x1:onset, y0:0, y1:1, line:{color:PLANT,width:1,dash:'dash'}},
     ...delayShapes,
@@ -312,7 +318,7 @@ refreshResidual();
 // Hover the lower plot to slide the shaded ref/test windows (cheap relayout).
 $('plot').on('plotly_hover', e => {
   const t = Math.round(e.points[0].x);
-  if (t !== tcur){ tcur = t; Plotly.relayout('plot', {shapes: staticShapes.concat(bandShapes())}); }
+  if (t !== tcur){ tcurManual = true; tcur = t; Plotly.relayout('plot', {shapes: staticShapes.concat(bandShapes())}); }
 });
 
 // self-checks: flat residual scores 0; a step is detected with non-negative delay.
