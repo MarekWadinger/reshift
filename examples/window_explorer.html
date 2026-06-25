@@ -17,7 +17,9 @@
   body { font: 14px/1.5 system-ui, sans-serif; margin: 16px; color: #222; }
   h1 { font-size: 18px; margin: 0 0 4px; }
   .sub { color: #666; margin: 0 0 14px; }
-  .panels { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 10px; align-items: flex-start; }
+  .app { display: flex; gap: 16px; align-items: flex-start; }
+  .sidebar { display: flex; flex-direction: column; gap: 12px; width: 290px; flex: 0 0 290px; }
+  .main { flex: 1; min-width: 0; }
   .panel { border: 1px solid #ddd; border-radius: 8px; padding: 10px 14px; }
   .panel h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: #888; margin: 0 0 8px; }
   .ctl { display: flex; flex-direction: column; margin-bottom: 8px; }
@@ -32,8 +34,9 @@
   .metric .num { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .metric .lbl { font-size: 11px; color: #888; }
   .ok { color: #27ae60; } .bad { color: #c0392b; }
+  #mtable { overflow-x: auto; }
   table.mt { border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
-  table.mt th, table.mt td { padding: 3px 9px; text-align: right; border-bottom: 1px solid #eee; }
+  table.mt th, table.mt td { padding: 3px 6px; text-align: right; border-bottom: 1px solid #eee; }
   table.mt th { color: #888; font-weight: 600; }
   table.mt td.mname { text-align: left; font-weight: 600; white-space: nowrap; }
   table.mt td.best { font-weight: 700; background: #eafaf0; border-radius: 3px; }
@@ -46,7 +49,8 @@
   Gray dashed = known onset; per-model dotted line = that model's score peak (= detection delay).
 </p>
 
-<div class="panels">
+<div class="app">
+<div class="sidebar">
   <div class="panel">
     <h2>Residual source</h2>
     <div class="ctl"><label>source</label>
@@ -86,8 +90,10 @@
     <div id="mtable"></div>
   </div>
 </div>
-
-<div id="plot" style="width:100%;height:480px"></div>
+<div class="main">
+  <div id="plot" style="width:100%;height:480px"></div>
+</div>
+</div>
 
 <script>
 const N = 600, BASE = 1.0, CENTER = 300, HI = 4.0;
@@ -299,7 +305,7 @@ function renderTable(tabData){
     ${td(`<span class="${m.marEvent?'bad':'ok'}">${m.marEvent*100}%</span>`, m.marEvent === bestMarE)}
   </tr>`).join('');
   el.innerHTML = `<table class="mt">
-    <tr><th>model</th><th>delay→peak</th><th>det</th><th>FAR</th><th>MAR/smp</th><th>MAR/evt</th></tr>
+    <tr><th>model</th><th>delay</th><th>det</th><th>FAR</th><th>MAR/s</th><th>MAR/e</th></tr>
     ${rows}</table>`;
 }
 
