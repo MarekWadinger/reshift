@@ -217,6 +217,7 @@ def compute_residual(
 
 
 HTML = Path(__file__).with_name("window_explorer.html")
+PLOTLY = Path(__file__).with_name("plotly.min.js")
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -230,6 +231,8 @@ class Handler(BaseHTTPRequestHandler):
         u = urlparse(self.path)
         if u.path in ("/", "/window_explorer.html"):
             self._send(200, "text/html", HTML.read_bytes())
+        elif u.path == "/plotly.min.js" and PLOTLY.exists():
+            self._send(200, "application/javascript", PLOTLY.read_bytes())
         elif u.path == "/residual":
             q = parse_qs(u.query)
             try:

@@ -12,7 +12,9 @@
 
      Plant mode (needs plant_residual_server.py) can run several DMD identifiers at once;
      each model keeps one colour across every plot and the metric tabs. -->
-<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<!-- Vendored plotly (v2.35.2) so the page works fully offline. Served by
+     plant_residual_server.py, or sits next to the HTML for file:// use. -->
+<script src="plotly.min.js"></script>
 <style>
   body { font: 14px/1.5 system-ui, sans-serif; margin: 16px; color: #222; }
   h1 { font-size: 18px; margin: 0 0 4px; }
