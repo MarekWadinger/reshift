@@ -17,7 +17,7 @@
 <script src="plotly.min.js"></script>
 <style>
   :root{ --ink:#1f2430; --muted:#5b6573; --accent:#4f46e5; --accent-soft:#eef0fb;
-         --line:#e6e8ec; --card:#fff; --train:#2f86d6; --test:#27ae60; }
+         --line:#e6e8ec; --card:#fff; --ref:#2f86d6; --test:#27ae60; }
   *{ box-sizing:border-box } html{ scroll-behavior:smooth }
   body{ margin:0; background:#f6f7f9; color:var(--ink);
         font:18px/1.7 ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif }
@@ -102,7 +102,7 @@
 
 <div class="cols">
   <aside class="figpanel"><div class="figcard">
-    <div class="cta">👆 <b>Move your cursor along a trace</b> to slide the <b style="color:var(--train)">train</b> and <b style="color:var(--test)">test</b> windows. Your cursor is <b>“now”</b> — the right edge of the test window. Grey line = the true change; each dotted line = where that model fired.</div>
+    <div class="cta">👆 <b>Move your cursor along a trace</b> to slide the <b style="color:var(--test)">test</b> and <b style="color:var(--ref)">reference</b> windows. Your cursor is <b>“now”</b> — the right edge of the test window. Grey line = the true change; each coloured dotted line marks where that model's <b>score peaks</b> (its detection delay).</div>
     <div id="plot" style="width:100%;height:420px"></div>
     <div id="mtable"></div>
   </div></aside>
@@ -112,8 +112,8 @@
       <h2>The idea</h2>
       <h3>A detector watches its own surprise</h3>
       <p>Fit a model of the plant's normal behaviour, then let it predict the next measurement. The gap between prediction and reality is the <span class="def" title="model one-step prediction error">residual</span> — small noise while the plant behaves, a jump the moment it changes and the model is caught off guard.</p>
-      <p>To turn that into an alarm we compare a recent <b style="color:var(--test)">test</b> window against an older <b style="color:var(--train)">train</b> window:</p>
-      <code class="eq">score = max( D<sub>test</sub> / D<sub>train</sub> − 1 , 0 )</code>
+      <p>To turn that into an alarm we compare a recent <b style="color:var(--test)">test</b> window against an older <b style="color:var(--ref)">reference</b> window:</p>
+      <code class="eq">score = max( D<sub>test</sub> / D<sub>ref</sub> − 1 , 0 )</code>
       <p>where <i>D</i> is the mean residual over a window. The score sits near zero when the windows agree and spikes when the test window slides into the change. That spike is the detection.</p>
       <button class="try" data-preset="clean">▶ Show me a clean detection</button>
     </section>
@@ -121,13 +121,14 @@
     <section>
       <h2>Try it</h2>
       <h3>Slide the windows across the change</h3>
-      <p>The top trace is the residual (it steps up at the change); below it, the score. <b>Move your cursor across a trace</b> and the shaded <b style="color:var(--train)">train</b> / <b style="color:var(--test)">test</b> bands follow it — the cursor marks “now”, the right edge of the test window, with train just behind it.</p>
-      <p>On load the bands sit where the detector first reacts, and that spot is telling: the score peaks <b>not at the change, but one test-window after it</b>. The test window has to slide fully past the change and fill with post-change residual before its average lifts above the train window's. So the detection <span class="def" title="samples from the true change to the score's peak">delay</span> is essentially the <b>test window length</b> — the price of averaging.</p>
+      <p>It is a <b>rolling-window statistic</b>: two windows slide together over the residual, and the score is the ratio of the recent <b style="color:var(--test)">test</b> window to the local <b style="color:var(--ref)">reference</b> window. <b>Move your cursor across a trace</b> and both bands follow — the cursor is “now” (the test window's right edge); the reference sits just behind it.</p>
+      <p><b>Test window — the fast, recent view.</b> Short → the statistic peaks <b>sooner</b> but noisier; long → it peaks <b>later</b> but steadier. The peak lands <b>about one test-window after the change</b>: the window must slide fully past the change and fill with post-change residual before its average climbs — so the detection <span class="def" title="samples from the true change to the score's peak">delay</span> is essentially the test window length.</p>
+      <p><b>Reference window — a local baseline.</b> Sitting right behind the test window, any fast wiggle that <i>isn't</i> a real change appears in both windows and cancels in the ratio. So the reference absorbs the quick fluctuations the model's own adaptation is too slow to track, calming false alarms from a short, twitchy test window. A short reference adapts fast and hugs the recent normal; a long one is a steadier anchor. <b>Lag</b> pushes it further back, widening the gap.</p>
       <div class="row">
-        <div class="ctl"><label>train window <span class="val" id="v_ref"></span></label><input id="ref" type="range" min="5" max="200" value="60"></div>
         <div class="ctl"><label>test window <span class="val" id="v_test"></span></label><input id="test" type="range" min="5" max="200" value="60"></div>
+        <div class="ctl"><label>reference window <span class="val" id="v_ref"></span></label><input id="ref" type="range" min="5" max="200" value="60"></div>
+        <div class="ctl"><label>lag <span class="val" id="v_lag"></span></label><input id="lag" type="range" min="0" max="100" value="0"></div>
       </div>
-      <p>Shrink the test window for a faster alarm — the peak moves toward the change — but it gets twitchy and false-alarm-prone; widen it to smooth noise at the cost of a longer delay.</p>
     </section>
 
     <section>
@@ -170,9 +171,8 @@
     <section>
       <h2>Go deeper</h2>
       <h3>Reproduce &amp; explore</h3>
-      <p>Export the exact figure, or the underlying numbers, or fine-tune the window geometry.</p>
-      <details class="adv"><summary>Advanced controls &amp; export</summary>
-        <div class="ctl"><label>lag — gap between train and test <span class="val" id="v_lag"></span></label><input id="lag" type="range" min="0" max="100" value="0"></div>
+      <p>Export the exact figure or the underlying numbers.</p>
+      <details class="adv"><summary>Export figure &amp; data</summary>
         <div class="dl">
           <button id="dlpng">⬇ figure (PNG)</button>
           <button id="dlsvg">⬇ figure (SVG)</button>
@@ -466,7 +466,7 @@ function draw(){
 
   // Attach the hover handler once the plot exists (the async init means this
   // can't run at script-eval time). Hover the figure to slide the windows: the
-  // cursor is the right edge of the TEST window ("now"); lag pushes TRAIN earlier.
+  // cursor is the right edge of the TEST window ("now"); lag pushes the REFERENCE earlier.
   if (!hoverAttached){
     hoverAttached = true;
     $('plot').on('plotly_hover', e => {
