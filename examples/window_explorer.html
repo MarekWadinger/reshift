@@ -267,20 +267,37 @@ function loadState(){
   } catch (e) { /* ignore malformed state */ }
 }
 
-// Acquire residual(s): synthetic profile (one series) or N plant+DMD series (server).
+// STATIC holds the precomputed grid manifest when the page is the GitHub-Pages
+// companion (no backend); null means live-server mode (local dev).
+let STATIC = null;
+const snap = (v, grid) => grid.reduce((a, b) => Math.abs(b - v) < Math.abs(a - v) ? b : a);
+
+// Acquire residual(s): synthetic profile (one series) or N plant+DMD series,
+// from either the precomputed static grid or the live server.
 async function refreshResidual(){
   tcurManual = false;   // re-anchor windows on the new data's change point
-  const type = $('type').value, width = +$('width').value, noise = +$('noise').value/100;
+  const type = $('type').value;
+  let width = +$('width').value, noise = +$('noise').value/100;
   if ($('source').value === 'synthetic'){
     const { clean, r } = profile(type, width, noise);
     series = [{ key:'synthetic', color:COLOR.synthetic, clean, r }];
   } else {
     const methods = selectedMethods();
     if (!methods.length){ series = []; draw(); return; }
-    const got = await Promise.all(methods.map(m => {
-      const q = new URLSearchParams({method:m, change:type, width, noise});
-      return fetch('/residual?' + q).then(res => res.ok ? res.json() : Promise.reject()).then(d => ({...d, key:m})).catch(() => null);
-    }));
+    let got;
+    if (STATIC){
+      // snap the sliders to the precomputed grid and load the matching files
+      width = snap(width, STATIC.widths); noise = snap(noise, STATIC.noises);
+      $('width').value = width; $('noise').value = Math.round(noise * 100);
+      got = await Promise.all(methods.map(m =>
+        fetch(`data/${m}_${type}_w${width}_n${noise.toFixed(2)}.json`)
+          .then(res => res.ok ? res.json() : Promise.reject()).then(d => ({...d, key:m})).catch(() => null)));
+    } else {
+      got = await Promise.all(methods.map(m => {
+        const q = new URLSearchParams({method:m, change:type, width, noise});
+        return fetch('/residual?' + q).then(res => res.ok ? res.json() : Promise.reject()).then(d => ({...d, key:m})).catch(() => null);
+      }));
+    }
     series = got.filter(Boolean).map(d => ({ key:d.key, color:COLOR[d.key], clean:d.clean, r:d.r, warmup:d.warmup, states:d.states, pred:d.pred, inputs:d.inputs }));
     // Offline / server down: fall back to the synthetic profile so the page still works.
     if (!series.length){ $('source').value = 'synthetic'; return refreshResidual(); }
@@ -484,7 +501,10 @@ document.querySelectorAll('.mchk').forEach(c => c.addEventListener('input', debo
 document.querySelectorAll('.mstyle').forEach(s => s.addEventListener('input', draw));  // restyle, no refetch
 $('sweepview').addEventListener('input', draw);  // toggle sweep/ROC view, no refetch
 loadState();          // restore the last setup before the first render
-refreshResidual();
+// Detect the precomputed static grid (GitHub-Pages companion); else live server.
+fetch('data/manifest.json')
+  .then(res => res.ok ? res.json() : null).catch(() => null)
+  .then(m => { STATIC = m; refreshResidual(); });
 
 // Hover the lower plot to slide the shaded ref/test windows (cheap relayout).
 $('plot').on('plotly_hover', e => {
