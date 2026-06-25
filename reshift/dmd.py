@@ -41,7 +41,8 @@ class DMD:
         self.Lambda: np.ndarray
         self.Phi: np.ndarray
         self.A_bar: np.ndarray
-        self.A: np.ndarray
+        # None until fitted; the predict() guard relies on this.
+        self.A: np.ndarray | None = None
         self._Y: np.ndarray
 
     @property
@@ -63,7 +64,7 @@ class DMD:
         # Minimize the objective function
         xi = minimize(objective_function, np.ones(self.m)).x
         self._xi = xi
-        return self.xi
+        return self._xi
 
     def _fit(self, X: np.ndarray, Y: np.ndarray) -> None:
         # Perform singular value decomposition on X
@@ -196,12 +197,13 @@ class DMDwC(DMD):
             self._Y = Y
         else:
             # Subtract the effect of actuation
-            self._Y = Y - self.B * U_[:, :-1]
+            self._Y = Y - self.B @ U_
 
         self.l = U_.shape[0]
         self.m, self.n = X.shape
 
         super()._fit(X, self._Y)
+        assert self.A is not None  # set by _fit
         if not self.known_B:
             # split K into state transition matrix and control matrix
             self.B = self.A[: self.m - self.l, -self.l :]
@@ -238,7 +240,10 @@ class DMDwC(DMD):
                 msg,
             )
 
-        mat = np.zeros((forecast + 1, self.m - self.l))
+        # When B is identified from data the state is augmented with U, so the
+        # state dimension is m - l; with a known B the state is just m.
+        state_dim = self.m if self.known_B else self.m - self.l
+        mat = np.zeros((forecast + 1, state_dim))
         mat[0, :] = x
         for s in range(1, forecast + 1):
             action = (self.B @ U[s - 1, :]).real

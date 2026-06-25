@@ -262,7 +262,9 @@ def extract_cp_confusion_matrix(
 
     if len(my_dict["FPs"]) > 1:
         my_dict["FPs"] = np.concatenate(my_dict["FPs"])
-    elif len(my_dict["FPs"]) == 1:
+    else:
+        # The FPs list always holds at least one group (left/right padding or
+        # the no-boundaries fallback), so this branch only ever sees length 1.
         my_dict["FPs"] = my_dict["FPs"][0]
     if len(my_dict["FPs"]) == 0:  # not elif on purpose
         my_dict["FPs"] = []
@@ -645,7 +647,7 @@ def chp_score(
                     np.sort(np.concatenate(dataset))
                     == np.concatenate(dataset),
                 )
-            elif input_variant == _VARIANT_SERIES:
+            else:  # _VARIANT_SERIES (check_errors only yields variants 1-3)
                 assert all(
                     dataset.index.to_numpy()
                     == dataset.sort_index().index.to_numpy(),
@@ -694,15 +696,8 @@ def chp_score(
             for i in range(len(true))
         ]
 
-    elif input_variant == _VARIANT_BOUNDARIES:
+    else:  # _VARIANT_BOUNDARIES (check_errors only yields variants 1-3)
         detecting_boundaries = true.copy()
-        # Next anti fool system [[[t1,t2]],[]] -> [[[t1,t2]],[[]]]
-        for i in range(len(detecting_boundaries)):
-            if len(detecting_boundaries[i]) == 0:
-                detecting_boundaries[i] = [[]]
-    else:
-        msg = "Unknown format for true data"
-        raise ValueError(msg)
 
     if metric == "nab":
         matrix = np.zeros((3, 3))
@@ -797,14 +792,12 @@ def chp_score(
                 logger.info("F1 metric %s", f1)
             return f1, far, mar
 
-        if metric == "confusion_matrix":
-            if verbose:
-                logger.info("TP %s", TP)
-                logger.info("TN %s", TN)
-                logger.info("FP %s", FP)
-                logger.info("FN %s", FN)
-            return TP, TN, FP, FN
-    else:
-        msg = "Choose the performance metric"
-        raise ValueError(msg)
-    return None
+        # metric == "confusion_matrix" (the only other value in this branch)
+        if verbose:
+            logger.info("TP %s", TP)
+            logger.info("TN %s", TN)
+            logger.info("FP %s", FP)
+            logger.info("FN %s", FN)
+        return TP, TN, FP, FN
+    msg = "Choose the performance metric"
+    raise ValueError(msg)

@@ -327,10 +327,9 @@ def load_usp(
             gt = df_["class"].copy(deep=True)
             df_ = df_.select_dtypes(include="number")
             if "class" not in df_.columns:
-                if any(gt.apply(lambda x: isinstance(x, str))):
-                    df_["class"] = gt.astype("category").cat.codes
-                else:
-                    df_["class"] = gt
+                # A dropped class column is always non-numeric strings here
+                # (numeric labels survive select_dtypes), so encode as codes.
+                df_["class"] = gt.astype("category").cat.codes
             df_.index = pd.to_datetime(df_.index, unit="s")
             data_dict[k] = df_
             pbar.update(1)
