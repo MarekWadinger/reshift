@@ -8,13 +8,16 @@
 
      The clean (noise-free) residual gives the ground truth: where it is *changing* is the
      true change region, which lets us score the threshold with FAR / MAR and a detection
-     delay measured to the peak of the statistic. -->
+     delay measured to the peak of the statistic.
+
+     Plant mode (needs plant_residual_server.py) can run several DMD identifiers at once;
+     each model keeps one colour across every plot and the metric tabs. -->
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <style>
   body { font: 14px/1.5 system-ui, sans-serif; margin: 16px; color: #222; }
   h1 { font-size: 18px; margin: 0 0 4px; }
   .sub { color: #666; margin: 0 0 14px; }
-  .panels { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 10px; }
+  .panels { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 10px; align-items: flex-start; }
   .panel { border: 1px solid #ddd; border-radius: 8px; padding: 10px 14px; }
   .panel h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: #888; margin: 0 0 8px; }
   .ctl { display: flex; flex-direction: column; margin-bottom: 8px; }
@@ -22,18 +25,25 @@
   .ctl .val { color: #c0392b; font-variant-numeric: tabular-nums; }
   input[type=range] { width: 200px; }
   select { padding: 4px; font: inherit; }
-  .metrics { display: flex; gap: 18px; }
-  .metric { text-align: center; min-width: 70px; }
-  .metric .num { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .mlist label { display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 13px; }
+  .swatch { width: 11px; height: 11px; border-radius: 2px; display: inline-block; }
+  .metrics { display: flex; gap: 16px; }
+  .metric { text-align: center; min-width: 64px; }
+  .metric .num { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .metric .lbl { font-size: 11px; color: #888; }
   .ok { color: #27ae60; } .bad { color: #c0392b; }
+  .tabbar { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+  .tab { padding: 3px 9px; border: 1px solid #ccc; border-bottom: 3px solid; border-radius: 5px 5px 0 0;
+         background: #fafafa; font: inherit; font-size: 12px; cursor: pointer; }
+  .tab.active { background: #fff; font-weight: 700; }
+  .tabcontent { border: 2px solid #ccc; border-radius: 0 8px 8px 8px; padding: 10px 12px; min-height: 56px; }
   code { background: #f3f3f3; padding: 1px 4px; border-radius: 3px; }
 </style>
 
 <h1>Window influence on the change-detection score</h1>
 <p class="sub">
-  <code>score = max(D_test/D_train − 1, 0)</code>. Hover the plot to slide the ref/test windows.
-  Gray line = known onset, red dotted = score peak.
+  <code>score = max(D_test/D_train − 1, 0)</code>. Hover the lower plot to slide the ref/test windows.
+  Gray dashed = known onset; per-model dotted line = that model's score peak (= detection delay).
 </p>
 
 <div class="panels">
@@ -45,13 +55,10 @@
         <option value="plant">two-tank plant + DMD</option>
       </select>
     </div>
-    <div class="ctl"><label>DMD identifier</label>
-      <select id="method">
-        <option>DMD</option><option>tDMD</option><option>DMDc</option>
-        <option>onlineDMD</option><option value="onlineDMDc" selected>onlineDMDc</option><option>toDMDc</option>
-      </select>
+    <div class="ctl"><label>DMD identifiers (plant mode)</label>
+      <div class="mlist" id="mlist"></div>
     </div>
-    <div class="ctl"><span id="status" style="font-size:11px;color:#888">synthetic — start the server for plant mode</span></div>
+    <div class="ctl"><span id="status" style="font-size:11px;color:#888"></span></div>
   </div>
 
   <div class="panel">
@@ -76,35 +83,32 @@
   <div class="panel">
     <h2>Detection</h2>
     <div class="ctl"><label>threshold <span class="val" id="v_thr"></span></label><input id="thr" type="range" min="0" max="300" value="25"></div>
-    <div class="metrics">
-      <div class="metric"><div class="num" id="m_delay">–</div><div class="lbl">delay→peak</div></div>
-      <div class="metric"><div class="num" id="m_det">–</div><div class="lbl">detected</div></div>
-      <div class="metric"><div class="num" id="m_far">–</div><div class="lbl">FAR</div></div>
-      <div class="metric"><div class="num" id="m_mar">–</div><div class="lbl">MAR/sample</div></div>
-      <div class="metric"><div class="num" id="m_mare">–</div><div class="lbl">MAR/event</div></div>
-    </div>
+    <div class="tabbar" id="tabbar"></div>
+    <div class="tabcontent" id="tabcontent"></div>
   </div>
 </div>
 
-<div id="plot_top" style="width:100%;height:340px;display:none"></div>
-<div id="plot" style="width:100%;height:520px"></div>
+<div id="plot_top" style="width:100%;display:none"></div>
+<div id="plot" style="width:100%;height:480px"></div>
 
 <script>
-const N = 600, BASE = 1.0, CENTER = 300, HI = 4.0, EPS = 0.02*(HI-BASE);
+const N = 600, BASE = 1.0, CENTER = 300, HI = 4.0;
+const METHODS = ['DMD', 'tDMD', 'DMDc', 'onlineDMD', 'onlineDMDc', 'toDMDc'];
+const COLOR = {DMD:'#1f77b4', tDMD:'#ff7f0e', DMDc:'#2ca02c', onlineDMD:'#d62728', onlineDMDc:'#9467bd', toDMDc:'#8c564b', synthetic:'#1f77b4'};
+const THRESH = '#111';   // threshold colour, deliberately unlike any model colour
+const PLANT = '#999';    // plant (ground-truth) state colour
 
-// Deterministic LCG so the picture is stable across slider drags.
+// Deterministic LCG so the synthetic picture is stable across slider drags.
 function rng(seed){ let s = seed >>> 0; return () => (s = (1103515245*s + 12345) & 0x7fffffff) / 0x7fffffff; }
 
-// Parametrized residual. width = transition width (small = sharp/fast, large = smooth/slow).
-//   permanent: smoothstep BASE->HI starting at CENTER (width=1 => hard step).
-//   transient: Gaussian bump centred on CENTER with sigma = width.
+// Synthetic residual. width = transition width (small=sharp/fast, large=smooth/slow).
 function profile(type, width, noise){
   const clean = new Array(N), r = new Array(N), rand = rng(42);
   for (let t = 0; t < N; t++){
     let v = BASE;
     if (type === 'permanent'){
       if (width <= 1) v = t >= CENTER ? HI : BASE;
-      else { let u = Math.min(1, Math.max(0, (t-CENTER)/width)); v = BASE + (HI-BASE)*(u*u*(3-2*u)); }
+      else { const u = Math.min(1, Math.max(0, (t-CENTER)/width)); v = BASE + (HI-BASE)*(u*u*(3-2*u)); }
     } else {
       v = BASE + (HI-BASE)*Math.exp(-((t-CENTER)**2)/(2*width*width));
     }
@@ -116,8 +120,7 @@ function profile(type, width, noise){
 
 const mean = (a, lo, hi) => { let s = 0; for (let i = lo; i < hi; i++) s += a[i]; return s/(hi-lo); };
 
-// score[t] aligned so the combined window's right edge is at t (buffer layout in
-// chdsubid.py: [ref | lag | test], test ending at the newest sample).
+// score[t] aligned so the combined window's right edge is at t (buffer layout in chdsubid.py).
 function scores(r, ref, test, lag){
   const L = ref + lag + test, out = new Array(r.length).fill(null);
   for (let t = L-1; t < r.length; t++){
@@ -132,12 +135,11 @@ function bands(t, ref, test, lag){
   return { ok: start >= 0, ref: [start, start+ref], test: [t-test+1, t+1] };
 }
 
-// Ground truth from the clean signal: the change region is where it is *changing*.
-// Positive window = that region, extended by the buffer length L so the change has
-// time to traverse both windows. Everything else is "normal".
+// Ground truth from the clean signal: the change region is where it is *changing*,
+// extended by the buffer length L so the change can traverse both windows.
 function metrics(sc, clean, ref, test, lag, thr){
   const Nn = clean.length, L = ref + lag + test;
-  const dEPS = 0.005*(Math.max(...clean) - Math.min(...clean) || 1);  // relative to clean's range
+  const dEPS = 0.005*(Math.max(...clean) - Math.min(...clean) || 1);
   let cs = -1, ce = -1;
   for (let t = 1; t < Nn; t++) if (Math.abs(clean[t]-clean[t-1]) > dEPS){ if (cs < 0) cs = t; ce = t; }
   const posS = cs < 0 ? 0 : cs, posE = Math.min(Nn-1, (ce < 0 ? 0 : ce) + L);
@@ -147,65 +149,81 @@ function metrics(sc, clean, ref, test, lag, thr){
     if (t >= posS && t <= posE){ pos++; if (s <= thr) fn++; if (s > peak){ peak = s; peakIdx = t; } }
     else { nrm++; if (s > thr) fp++; }
   }
-  // Event-level: the single change is "caught" if the statistic crosses the
-  // threshold anywhere inside its reaction window. One event => 0% or 100%.
-  const marEvent = (peak > thr) ? 0 : 1;
   return {
-    far: nrm ? fp/nrm : 0,                 // false alarm rate over normal samples
-    mar: pos ? fn/pos : 0,                 // per-sample missed rate over the change window
-    marEvent,                              // per-event missed rate (one change point)
-    delay: peakIdx >= 0 ? peakIdx - posS : null,
-    detected: peak > thr,
-    onset: posS, peakIdx,
+    far: nrm ? fp/nrm : 0, mar: pos ? fn/pos : 0, marEvent: (peak > thr) ? 0 : 1,
+    delay: peakIdx >= 0 ? peakIdx - posS : null, detected: peak > thr, onset: posS, peakIdx,
   };
 }
 
 const $ = id => document.getElementById(id);
-const signalIds = ['source','method','type','width','noise'];  // change the residual itself
-const windowIds = ['ref','test','lag','thr'];                  // only re-window/score
-let tcur = 380, staticShapes = [], cur = profile('permanent', 6, 0.08);
+const signalIds = ['source','type','width','noise'];   // change the residual(s)
+const windowIds = ['ref','test','lag','thr'];           // only re-window/score
+let tcur = 380, staticShapes = [], series = [], activeTab = null;
 
-// Acquire the residual: synthetic profile (local) or the real plant+DMD (server).
+// Build the coloured method checklist (also serves as the legend).
+METHODS.forEach((m, i) => {
+  const lab = document.createElement('label');
+  lab.innerHTML = `<input type="checkbox" class="mchk" value="${m}" ${m==='onlineDMDc'?'checked':''}>
+                   <span class="swatch" style="background:${COLOR[m]}"></span>${m}`;
+  $('mlist').appendChild(lab);
+});
+const selectedMethods = () => [...document.querySelectorAll('.mchk:checked')].map(c => c.value);
+
+// Acquire residual(s): synthetic profile (one series) or N plant+DMD series (server).
 async function refreshResidual(){
   const type = $('type').value, width = +$('width').value, noise = +$('noise').value/100;
   if ($('source').value === 'synthetic'){
-    cur = profile(type, width, noise);
+    const { clean, r } = profile(type, width, noise);
+    series = [{ key:'synthetic', color:COLOR.synthetic, clean, r }];
     $('status').textContent = 'synthetic profile';
   } else {
-    const m = $('method').value;
-    $('status').textContent = `running ${m} on two-tank…`;
-    try {
+    const methods = selectedMethods();
+    if (!methods.length){ series = []; $('status').textContent = 'pick at least one identifier'; drawTop(); draw(); return; }
+    $('status').textContent = `running ${methods.join(', ')} on two-tank…`;
+    const got = await Promise.all(methods.map(m => {
       const q = new URLSearchParams({method:m, change:type, width, noise});
-      const res = await fetch('/residual?' + q);
-      if (!res.ok) throw new Error(await res.text());
-      cur = await res.json();
-      $('status').textContent = `${m} · two-tank (${cur.r.length} samples)`;
-    } catch (e) {
-      $('status').textContent = 'plant unavailable — run plant_residual_server.py';
-    }
+      return fetch('/residual?' + q).then(res => res.ok ? res.json() : Promise.reject()).then(d => ({...d, key:m})).catch(() => null);
+    }));
+    series = got.filter(Boolean).map(d => ({ key:d.key, color:COLOR[d.key], clean:d.clean, r:d.r, states:d.states, pred:d.pred, inputs:d.inputs }));
+    $('status').textContent = series.length ? `${series.map(s=>s.key).join(', ')} · two-tank` : 'plant unavailable — run plant_residual_server.py';
   }
   drawTop();
   draw();
 }
 
-// Upper screen: plant states (solid) vs model one-step prediction (dashed), and the
-// exogenous input. Only meaningful for the plant source (synthetic has no model).
+// Build evenly-stacked y-axes (top→bottom) for an n-row figure.
+function stacked(titles){
+  const n = titles.length, gap = 0.07, h = (1 - gap*(n-1))/n, ax = {};
+  titles.forEach((title, i) => {
+    const top = 1 - i*(h+gap);
+    ax[i ? 'yaxis'+(i+1) : 'yaxis'] = { domain:[Math.max(0, top-h), top], title:{text:title, font:{size:11}} };
+  });
+  ax.xaxis = { anchor: n>1 ? 'y'+n : 'y' };
+  return ax;
+}
+
+// Upper screen: one subplot per state (plant gray solid, each model dashed in its
+// colour), then the input. Plant mode only.
 function drawTop(){
   const div = $('plot_top');
-  if (!cur.states){ div.style.display = 'none'; return; }
+  const withStates = series.filter(s => s.states);
+  if (!withStates.length){ div.style.display = 'none'; return; }
+  const st = withStates[0].states, nst = st.length, len = st[0].length;
+  const x = [...Array(len).keys()];
   div.style.display = 'block';
-  const x = [...Array(cur.states[0].length).keys()];
-  const sc = ['#2980b9', '#c0392b'];
+  div.style.height = (150*nst + 130) + 'px';
   const traces = [];
-  cur.states.forEach((h, i) => {
-    traces.push({ x, y: h,        name:`h${i+1} plant`, yaxis:'y', line:{color:sc[i], width:1.5} });
-    traces.push({ x, y: cur.pred[i], name:`h${i+1} model`, yaxis:'y', line:{color:sc[i], width:1.5, dash:'dash'} });
-  });
-  traces.push({ x, y: cur.inputs, name:'input q', yaxis:'y2', line:{color:'#777'} });
-  const onset = {type:'line', xref:'x', yref:'paper', x0:cur.onset, x1:cur.onset, y0:0, y1:1, line:{color:'#999',width:1,dash:'dash'}};
+  for (let i = 0; i < nst; i++){
+    const ax = i ? 'y'+(i+1) : 'y';
+    traces.push({ x, y: st[i], name:'plant', legendgroup:'plant', showlegend:i===0, yaxis:ax, line:{color:PLANT, width:2} });
+    for (const s of withStates)
+      traces.push({ x, y: s.pred[i], name:s.key, legendgroup:s.key, showlegend:i===0, yaxis:ax, line:{color:s.color, width:1.2, dash:'dash'} });
+  }
+  traces.push({ x, y: withStates[0].inputs, name:'input q', legendgroup:'input', yaxis:'y'+(nst+1), line:{color:'#777'} });
+  const titles = [...Array(nst).keys()].map(i => `h${i+1}`); titles.push('input q');
+  const onset = {type:'line', xref:'x', yref:'paper', x0:CENTER, x1:CENTER, y0:0, y1:1, line:{color:PLANT,width:1,dash:'dash'}};
   Plotly.react('plot_top', traces, {
-    margin:{t:24,r:20,b:30,l:55}, shapes:[onset], legend:{orientation:'h', y:1.18},
-    xaxis:{anchor:'y2'}, yaxis:{domain:[0.42,1], title:'states'}, yaxis2:{domain:[0,0.3], title:'input q'},
+    margin:{t:24,r:20,b:34,l:55}, shapes:[onset], legend:{orientation:'h', y:1.08}, ...stacked(titles),
   }, {displayModeBar:false});
 }
 
@@ -213,62 +231,83 @@ function bandShapes(){
   const b = bands(tcur, +$('ref').value, +$('test').value, +$('lag').value);
   if (!b.ok) return [];
   return [
-    {type:'rect', xref:'x', yref:'paper', x0:b.ref[0],  x1:b.ref[1],  y0:0, y1:1, fillcolor:'#3498db', opacity:0.15, line:{width:0}},
-    {type:'rect', xref:'x', yref:'paper', x0:b.test[0], x1:b.test[1], y0:0, y1:1, fillcolor:'#2ecc71', opacity:0.18, line:{width:0}}];
+    {type:'rect', xref:'x', yref:'paper', x0:b.ref[0],  x1:b.ref[1],  y0:0, y1:1, fillcolor:'#3498db', opacity:0.13, line:{width:0}},
+    {type:'rect', xref:'x', yref:'paper', x0:b.test[0], x1:b.test[1], y0:0, y1:1, fillcolor:'#2ecc71', opacity:0.16, line:{width:0}}];
 }
 
+// Lower screen: residual + score per model (model colour), one threshold (THRESH),
+// per-model delay lines (model colour). Metrics go to the coloured tabs.
 function draw(){
   const width = +$('width').value, noise = +$('noise').value/100;
   const ref = +$('ref').value, test = +$('test').value, lag = +$('lag').value, thr = +$('thr').value/100;
   for (const [k,v] of [['width',width],['noise',noise.toFixed(2)],['ref',ref],['test',test],['lag',lag],['thr',thr.toFixed(2)]])
     $('v_'+k).textContent = v;
+  if (!series.length){ Plotly.react('plot', [], {}); renderTabs([]); return; }
 
-  const { clean, r } = cur;          // residual from the active source
-  const N = r.length;
-  const sc = scores(r, ref, test, lag);
-  const m = metrics(sc, clean, ref, test, lag, thr);
-
-  $('m_delay').textContent = m.delay === null ? '–' : m.delay;
-  $('m_det').innerHTML = `<span class="${m.detected?'ok':'bad'}">${m.detected?'✓':'✗'}</span>`;
-  $('m_far').textContent = (m.far*100).toFixed(1) + '%';
-  $('m_mar').textContent = (m.mar*100).toFixed(1) + '%';
-  $('m_mare').innerHTML = `<span class="${m.marEvent?'bad':'ok'}">${m.marEvent*100}%</span>`;
-
-  // Overlay the change profile rescaled to the residual's range (shape/location
-  // is the point, not units — plant 'clean' is the outflow coeff, range 1..5).
-  const rmin = Math.min(...r), rmax = Math.max(...r), cmin = Math.min(...clean), cmax = Math.max(...clean);
-  const cleanDisp = clean.map(v => rmin + (v-cmin)/((cmax-cmin)||1)*(rmax-rmin));
-
-  const x = [...Array(N).keys()];
-  const traces = [
-    { x, y: r, name: 'residual', yaxis:'y', line:{color:'#bbb'} },
-    { x, y: cleanDisp, name: 'change profile', yaxis:'y', line:{color:'#555', width:2, dash:'dot'} },
-    { x, y: sc, name: 'score', yaxis:'y2', line:{color:'#c0392b'} },
-    { x:[0,N-1], y:[thr,thr], name:'threshold', yaxis:'y2', line:{color:'#e67e22',dash:'dash'}, hoverinfo:'skip' },
-  ];
+  const N = series[0].r.length, x = [...Array(N).keys()];
+  const traces = [], delayShapes = [], tabData = [];
+  let onset = 0;
+  for (const s of series){
+    const sc = scores(s.r, ref, test, lag);
+    const m = metrics(sc, s.clean, ref, test, lag, thr);
+    onset = m.onset;
+    traces.push({ x, y: s.r, name:s.key, legendgroup:s.key, yaxis:'y', line:{color:s.color} });
+    traces.push({ x, y: sc, name:s.key, legendgroup:s.key, showlegend:false, yaxis:'y2', line:{color:s.color} });
+    if (m.peakIdx >= 0)
+      delayShapes.push({type:'line', xref:'x', yref:'paper', x0:m.peakIdx, x1:m.peakIdx, y0:0, y1:0.42, line:{color:s.color, width:1.5, dash:'dot'}});
+    tabData.push({ key:s.key, color:s.color, m });
+  }
+  renderTabs(tabData);
 
   staticShapes = [
-    {type:'line', xref:'x', yref:'paper', x0:m.onset, x1:m.onset, y0:0, y1:1, line:{color:'#999',width:1,dash:'dash'}},
+    {type:'line', xref:'x', yref:'paper', x0:onset, x1:onset, y0:0, y1:1, line:{color:PLANT,width:1,dash:'dash'}},
+    ...delayShapes,
   ];
-  if (m.peakIdx >= 0)
-    staticShapes.push({type:'line', xref:'x', yref:'paper', x0:m.peakIdx, x1:m.peakIdx, y0:0, y1:1, line:{color:'#c0392b',width:1,dash:'dot'}});
-
   const layout = {
-    margin:{t:30,r:20,b:40,l:55}, shapes: staticShapes.concat(bandShapes()), legend:{orientation:'h', y:1.12},
-    annotations: m.delay === null ? [] : [
-      {x:m.peakIdx, y:1, xref:'x', yref:'paper', yshift:6, text:`delay ${m.delay}`, showarrow:false, font:{size:11,color:'#c0392b'}}],
+    margin:{t:30,r:20,b:40,l:55}, legend:{orientation:'h', y:1.12},
+    shapes: staticShapes.concat(bandShapes()),
     xaxis:{title:'time', anchor:'y2'},
-    yaxis:{domain:[0.5,1], title:'residual'},
+    yaxis:{domain:[0.52,1], title:'residual'},
     yaxis2:{domain:[0,0.42], title:'score', rangemode:'tozero'},
   };
+  // one threshold line across the score axis, in a colour unlike any model
+  traces.push({ x:[0,N-1], y:[thr,thr], name:'threshold', yaxis:'y2', line:{color:THRESH, dash:'dash'}, hoverinfo:'skip' });
   Plotly.react('plot', traces, layout, {displayModeBar:false});
+}
+
+// Coloured metric sub-tabs; the content box is bordered in the active model's colour.
+function renderTabs(tabData){
+  const bar = $('tabbar'), content = $('tabcontent');
+  bar.innerHTML = '';
+  if (!tabData.length){ content.innerHTML = ''; content.style.borderColor = '#ccc'; return; }
+  if (!tabData.find(t => t.key === activeTab)) activeTab = tabData[0].key;
+  for (const t of tabData){
+    const b = document.createElement('button');
+    b.className = 'tab' + (t.key === activeTab ? ' active' : '');
+    b.style.borderBottomColor = t.color;
+    b.textContent = t.key;
+    if (t.key === activeTab) b.style.color = t.color;
+    b.onclick = () => { activeTab = t.key; renderTabs(tabData); };
+    bar.appendChild(b);
+  }
+  const t = tabData.find(x => x.key === activeTab), m = t.m;
+  content.style.borderColor = t.color;
+  const cell = (num, lbl) => `<div class="metric"><div class="num">${num}</div><div class="lbl">${lbl}</div></div>`;
+  content.innerHTML = `<div class="metrics">
+    ${cell(m.delay === null ? '–' : m.delay, 'delay→peak')}
+    ${cell(`<span class="${m.detected?'ok':'bad'}">${m.detected?'✓':'✗'}</span>`, 'detected')}
+    ${cell((m.far*100).toFixed(1)+'%', 'FAR')}
+    ${cell((m.mar*100).toFixed(1)+'%', 'MAR/sample')}
+    ${cell(`<span class="${m.marEvent?'bad':'ok'}">${m.marEvent*100}%</span>`, 'MAR/event')}
+  </div>`;
 }
 
 signalIds.forEach(id => $(id).addEventListener('input', refreshResidual));
 windowIds.forEach(id => $(id).addEventListener('input', draw));
-draw();
+document.querySelectorAll('.mchk').forEach(c => c.addEventListener('input', refreshResidual));
+refreshResidual();
 
-// Move the shaded windows to wherever the mouse hovers (cheap relayout, no full redraw).
+// Hover the lower plot to slide the shaded ref/test windows (cheap relayout).
 $('plot').on('plotly_hover', e => {
   const t = Math.round(e.points[0].x);
   if (t !== tcur){ tcur = t; Plotly.relayout('plot', {shapes: staticShapes.concat(bandShapes())}); }
