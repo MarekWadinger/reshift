@@ -94,6 +94,22 @@ lint.pycodestyle.max-line-length = 79
 "benchmarks/*" = ["T201", "T203"]
 # Comparison helper shells out to `git clone` and prints in its smoke check.
 "examples/cpdmd_compare.py" = ["S603", "S607", "T201"]
+# Test files: relax docstring/annotation/magic-value rules and allow access to
+# private members and minimal fake-object signatures.
+"tests/*" = [
+    "D",       # no docstrings required on test functions
+    "ANN",     # no type annotations required on tests / fakes
+    "PLR2004", # literal expected values are the point of a test
+    "SLF001",  # tests exercise private members (_X, _predict_many, ...)
+    "ARG",     # fake-object methods ignore their arguments
+    "RUF059",  # unpacked-but-unused names in tuple returns
+    "PT018",   # composite asserts are fine
+    "TRY003",  # inline messages in test-only raises
+    "EM101",
+    "ICN001",  # test-local import aliases
+    "FBT002",  # boolean defaults on fake helpers
+    "COM812",  # handled by the formatter
+]
 
 # Codebase uses Google-style docstrings (Args:/Returns:/Raises:).
 [tool.ruff.lint.pydocstyle]
@@ -117,6 +133,7 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "class .*\bProtocol\\):",
     "@(abc\\.)?abstractmethod",
+    "@(typing\\.)?overload",  # type-only stubs; bodies are never executed
 ]
 
 [tool.uv]

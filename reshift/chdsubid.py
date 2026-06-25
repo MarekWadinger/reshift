@@ -248,8 +248,39 @@ class SubIDChangeDetector(AnomalyDetector):
         *,
         learn_after_grace: bool = True,
         start_soon: bool = False,
+        control_aware: bool = False,
     ) -> None:
-        """Initialize SubIDChangeDetector with subspace model and detection parameters."""
+        r"""Initialize SubIDChangeDetector with subspace model and detection parameters.
+
+        When ``control_aware`` is True and the subspace model exposes the
+        learned control matrix (``_reconstruct_AB``, i.e. ``OnlineDMDwC``), the
+        reconstruction used for scoring is the one-step prediction
+        :math:`\\hat{x}_k = A x_{k-1} + B u_{k-1}` rather than the input-blind
+        mode-subspace projection :math:`\\Phi\\Phi^\\top x`. This makes the score
+        regress out the exogenous input, so a known forcing no longer leaks into
+        the change statistic. Falls back to the projection score whenever the
+        model has no control matrix or no inputs have been buffered.
+
+        Examples:
+            Control-aware scoring buffers the inputs and runs the prediction
+            path (``OnlineDMDwC``), yielding a finite, non-negative score:
+
+            >>> import numpy as np
+            >>> from river.decomposition import OnlineDMDwC
+            >>> from reshift.rolling import Rolling
+            >>> det = SubIDChangeDetector(
+            ...     Rolling(OnlineDMDwC(p=2, q=1, initialize=20, w=1.0), 40),
+            ...     ref_size=20, test_size=20, grace_period=0,
+            ...     start_soon=True, control_aware=True,
+            ... )
+            >>> for t in range(120):
+            ...     u = float(np.sin(0.3 * t))
+            ...     x = {"a": np.cos(0.1 * t) + 0.5 * u, "b": np.sin(0.1 * t)}
+            ...     _ = det.score_one(x)
+            ...     det.learn_one(x, u={"u": u})
+            >>> bool(det.score >= 0.0) and len(det._U) > 0
+            True
+        """
         self.subid = subid
         self.threshold = threshold
         if ref_size == 0 and isinstance(subid, _RollingTypes):
@@ -272,6 +303,7 @@ class SubIDChangeDetector(AnomalyDetector):
         self.grace_period = grace_period
         self.learn_after_grace = learn_after_grace
         self.start_soon = start_soon
+        self.control_aware = control_aware
         self.n_seen = 0
 
         self._score: float | None = None
@@ -279,6 +311,11 @@ class SubIDChangeDetector(AnomalyDetector):
         self._drift_detected: bool | None = None
 
         self._X: deque[dict] = deque(
+            maxlen=self.ref_size + self.lag + self.test_size,
+        )
+        # Buffer of control inputs, appended in lockstep with ``_X`` during
+        # ``update``; only populated/used when ``control_aware`` is set.
+        self._U: deque[dict | None] = deque(
             maxlen=self.ref_size + self.lag + self.test_size,
         )
 
@@ -303,7 +340,11 @@ class SubIDChangeDetector(AnomalyDetector):
 
             if self.n_seen >= self.grace_period and cond_soon:
                 X = pd.DataFrame(self._X)
-                X_p = self._transform_many(X)
+                X_p = (
+                    self._predict_many(X)
+                    if self.control_aware
+                    else self._transform_many(X)
+                )
                 D_train = (
                     self._compute_distance(
                         X.iloc[: self.ref_size, :],
@@ -419,6 +460,42 @@ class SubIDChangeDetector(AnomalyDetector):
             )
         return X_p
 
+    def _predict_many(self, X: pd.DataFrame) -> pd.DataFrame:
+        r"""Control-aware reconstruction: one-step prediction with the learned B.
+
+        Returns a frame the same shape as ``X`` whose row ``k`` is the model's
+        one-step prediction :math:`\hat{x}_k = A x_{k-1} + B u_{k-1}` (the first
+        row is copied from ``X``, having no predecessor). Falls back to the
+        input-blind projection reconstruction when the model exposes no control
+        matrix, no inputs are buffered, or the dimensions do not line up.
+        """
+        model = (
+            self.subid.obj if isinstance(self.subid, Rolling) else self.subid
+        )
+        # getattr (not direct access) keeps this tolerant of models without a
+        # control matrix and avoids reaching into a typed private attribute.
+        reconstruct_ab = getattr(model, "_reconstruct_AB", None)
+        us = [u for u in self._U if u is not None]
+        xs = X.to_numpy()
+        # Need a control matrix, buffered inputs, and at least one transition.
+        if reconstruct_ab is None or len(us) < len(xs) - 1 or len(xs) < 2:  # noqa: PLR2004
+            return self._transform_many(X)
+        try:
+            A, B = reconstruct_ab()  # original-space (n,n), (n,m)
+        except AttributeError, ValueError:
+            return self._transform_many(X)
+        u_arr = np.array([list(u.values()) for u in us], dtype=float)
+        # Right-align inputs with the predictor rows X[:-1]: the most recent
+        # buffered input drives the most recent transition, regardless of how
+        # the bounded buffers have been clipped or temporarily extended.
+        u_al = u_arr[-(len(xs) - 1) :]
+        if A.shape[0] != xs.shape[1] or B.shape[0] != xs.shape[1]:
+            return self._transform_many(X)
+        pred = (xs[:-1] @ A.T + u_al @ B.T).real
+        X_p = xs.copy().astype(float)
+        X_p[1:] = pred
+        return pd.DataFrame(X_p, index=X.index, columns=X.columns)
+
     def learn_one(self, x: dict, **params: Any) -> None:  # noqa: ANN401
         """Allias for update method for interoperability with Pipeline."""
         self.update(x, **params)
@@ -521,6 +598,8 @@ class SubIDChangeDetector(AnomalyDetector):
 
         """
         self._X.append(x)
+        if self.control_aware:
+            self._U.append(params.get("u"))
         # Learn the model if data past the time lag and test size is availabe
         # If learn_after_grace is False learn only when grace period is not yet over
         cond_grace = self.learn_after_grace or self.n_seen < self.grace_period
