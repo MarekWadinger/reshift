@@ -217,6 +217,7 @@ def compute_residual(
         "r": r.round(5).tolist(),
         "clean": clean.round(5).tolist(),
         "onset": CP,
+        "warmup": LEARN_W,  # samples before the model is identified; don't score these
         "states": X.round(5).T.tolist(),  # [h1, h2] plant (measured)
         "pred": xhat.round(5).T.tolist(),  # [h1, h2] model one-step prediction
         "inputs": U[:, 0].round(5).tolist(),  # exogenous inflow q

@@ -151,9 +151,9 @@ function profile(type, width, noise){
 const mean = (a, lo, hi) => { let s = 0; for (let i = lo; i < hi; i++) s += a[i]; return s/(hi-lo); };
 
 // score[t] aligned so the combined window's right edge is at t (buffer layout in chdsubid.py).
-function scores(r, ref, test, lag){
+function scores(r, ref, test, lag, warmup = 0){
   const L = ref + lag + test, out = new Array(r.length).fill(null);
-  for (let t = L-1; t < r.length; t++){
+  for (let t = Math.max(L-1, warmup); t < r.length; t++){   // skip the warmup window
     const start = t - L + 1;
     out[t] = Math.max(mean(r, t-test+1, t+1) / mean(r, start, start+ref) - 1, 0);
   }
@@ -281,7 +281,7 @@ async function refreshResidual(){
       const q = new URLSearchParams({method:m, change:type, width, noise});
       return fetch('/residual?' + q).then(res => res.ok ? res.json() : Promise.reject()).then(d => ({...d, key:m})).catch(() => null);
     }));
-    series = got.filter(Boolean).map(d => ({ key:d.key, color:COLOR[d.key], clean:d.clean, r:d.r, states:d.states, pred:d.pred, inputs:d.inputs }));
+    series = got.filter(Boolean).map(d => ({ key:d.key, color:COLOR[d.key], clean:d.clean, r:d.r, warmup:d.warmup, states:d.states, pred:d.pred, inputs:d.inputs }));
     // Offline / server down: fall back to the synthetic profile so the page still works.
     if (!series.length){ $('source').value = 'synthetic'; return refreshResidual(); }
   }
@@ -322,7 +322,7 @@ function draw(){
   const scs = [], tabData = [];
   let onset = 0;
   for (const s of series){
-    const sc = scores(s.r, ref, test, lag);
+    const sc = scores(s.r, ref, test, lag, s.warmup || 0);
     const m = metrics(sc, s.clean, ref, test, lag, thr);
     onset = m.onset;
     scs.push({ s, sc, m });
@@ -453,7 +453,7 @@ function exportData(){
                  n: series[0] ? series[0].r.length : 0 };
   const rows = [], data = [];
   for (const s of series){
-    const sc = scores(s.r, ref, test, lag);
+    const sc = scores(s.r, ref, test, lag, s.warmup || 0);
     const m = metrics(sc, s.clean, ref, test, lag, thr);
     meta.onset = m.onset;
     rows.push({ model:s.key, delay_to_peak:m.delay, detected:m.detected, FAR:m.far, MAR_sample:m.mar, MAR_event:m.marEvent });
