@@ -51,8 +51,8 @@
     <h2>Residual source</h2>
     <div class="ctl"><label>source</label>
       <select id="source">
+        <option value="plant" selected>two-tank plant + DMD</option>
         <option value="synthetic">synthetic profile</option>
-        <option value="plant">two-tank plant + DMD</option>
       </select>
     </div>
     <div class="ctl"><label>DMD identifiers (plant mode)</label>
@@ -160,11 +160,14 @@ const signalIds = ['source','type','width','noise'];   // change the residual(s)
 const windowIds = ['ref','test','lag','thr'];           // only re-window/score
 let tcur = 380, staticShapes = [], series = [], activeTab = null;
 
-// Build the coloured method checklist (also serves as the legend).
-METHODS.forEach((m, i) => {
+// Build the coloured method checklist (also serves as the legend). Set `checked`
+// as a property — the attribute via innerHTML does not reliably apply.
+METHODS.forEach(m => {
   const lab = document.createElement('label');
-  lab.innerHTML = `<input type="checkbox" class="mchk" value="${m}" ${m==='onlineDMDc'?'checked':''}>
-                   <span class="swatch" style="background:${COLOR[m]}"></span>${m}`;
+  const cb = document.createElement('input');
+  cb.type = 'checkbox'; cb.className = 'mchk'; cb.value = m; cb.checked = (m === 'onlineDMDc');
+  lab.append(cb);
+  lab.insertAdjacentHTML('beforeend', `<span class="swatch" style="background:${COLOR[m]}"></span>${m}`);
   $('mlist').appendChild(lab);
 });
 const selectedMethods = () => [...document.querySelectorAll('.mchk:checked')].map(c => c.value);
