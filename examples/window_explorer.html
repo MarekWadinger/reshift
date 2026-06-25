@@ -31,7 +31,7 @@
   select { padding: 4px; font: inherit; }
   .mlist label { display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 13px; margin-bottom: 2px; }
   .mlist .mname { flex: 1; }
-  .mlist .mstyle { font-size: 11px; padding: 1px 2px; }
+  .mlist .mstyle { font-size: 12px; padding: 1px 2px; min-width: 64px; letter-spacing: -1px; }
   .swatch { width: 11px; height: 11px; border-radius: 2px; display: inline-block; flex: 0 0 auto; }
   .metrics { display: flex; gap: 16px; }
   .metric { text-align: center; min-width: 64px; }
@@ -113,6 +113,7 @@ const N = 600, BASE = 1.0, CENTER = 300, HI = 4.0;
 const METHODS = ['DMD', 'tDMD', 'DMDc', 'onlineDMD', 'onlineDMDc', 'toDMDc'];
 const COLOR = {DMD:'#1f77b4', tDMD:'#ff7f0e', DMDc:'#2ca02c', onlineDMD:'#d62728', onlineDMDc:'#9467bd', toDMDc:'#8c564b', synthetic:'#1f77b4'};
 const DASHES = ['solid', 'dot', 'dash', 'longdash', 'dashdot', 'longdashdot'];
+const GLYPH = { solid:'━━━━', dot:'∙∙∙∙∙∙∙', dash:'┅┅┅┅', longdash:'━ ━ ━', dashdot:'━·━·━', longdashdot:'━━·━━·' };
 const DEFAULT_DASH = {DMD:'solid', tDMD:'dot', DMDc:'dash', onlineDMD:'longdash', onlineDMDc:'dashdot', toDMDc:'longdashdot', synthetic:'solid'};
 const THRESH = '#111';   // threshold colour, deliberately unlike any model colour
 const PLANT = '#999';    // plant (ground-truth) state colour
@@ -186,7 +187,7 @@ METHODS.forEach(m => {
   const cb = document.createElement('input');
   cb.type = 'checkbox'; cb.className = 'mchk'; cb.value = m; cb.checked = (m === 'toDMDc');
   lab.append(cb);
-  const opts = DASHES.map(d => `<option value="${d}"${d===DEFAULT_DASH[m]?' selected':''}>${d}</option>`).join('');
+  const opts = DASHES.map(d => `<option value="${d}"${d===DEFAULT_DASH[m]?' selected':''} title="${d}">${GLYPH[d]}</option>`).join('');
   lab.insertAdjacentHTML('beforeend',
     `<span class="swatch" style="background:${COLOR[m]}"></span><span class="mname">${m}</span>` +
     `<select class="mstyle" data-method="${m}">${opts}</select>`);
