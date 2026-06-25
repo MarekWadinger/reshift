@@ -1,0 +1,74 @@
+name: Deploy companion to Pages
+
+# Builds the static window-explorer companion (examples/build_companion.py) and
+# deploys it to GitHub Pages. One-time setup: repo Settings -> Pages -> Source:
+# "GitHub Actions". URL: https://marekwadinger.github.io/reshift/
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'examples/window_explorer.html'
+      - 'examples/build_companion.py'
+      - 'examples/plant_residual_server.py'
+      - 'examples/plotly.min.js'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      # Same cargo cache as ci.yml: river's Rust extension is built by `uv sync`.
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-${{ hashFiles('vendor/river/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python
+        run: uv python install 3.14
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Build companion into _site
+        run: uv run python examples/build_companion.py _site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
