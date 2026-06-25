@@ -32,11 +32,11 @@
   .metric .num { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .metric .lbl { font-size: 11px; color: #888; }
   .ok { color: #27ae60; } .bad { color: #c0392b; }
-  .tabbar { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
-  .tab { padding: 3px 9px; border: 1px solid #ccc; border-bottom: 3px solid; border-radius: 5px 5px 0 0;
-         background: #fafafa; font: inherit; font-size: 12px; cursor: pointer; }
-  .tab.active { background: #fff; font-weight: 700; }
-  .tabcontent { border: 2px solid #ccc; border-radius: 0 8px 8px 8px; padding: 10px 12px; min-height: 56px; }
+  table.mt { border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+  table.mt th, table.mt td { padding: 3px 9px; text-align: right; border-bottom: 1px solid #eee; }
+  table.mt th { color: #888; font-weight: 600; }
+  table.mt td.mname { text-align: left; font-weight: 600; white-space: nowrap; }
+  table.mt td.best { font-weight: 700; background: #eafaf0; border-radius: 3px; }
   code { background: #f3f3f3; padding: 1px 4px; border-radius: 3px; }
 </style>
 
@@ -83,8 +83,7 @@
   <div class="panel">
     <h2>Detection</h2>
     <div class="ctl"><label>threshold <span class="val" id="v_thr"></span></label><input id="thr" type="range" min="0" max="300" value="25"></div>
-    <div class="tabbar" id="tabbar"></div>
-    <div class="tabcontent" id="tabcontent"></div>
+    <div id="mtable"></div>
   </div>
 </div>
 
@@ -158,7 +157,7 @@ function metrics(sc, clean, ref, test, lag, thr){
 const $ = id => document.getElementById(id);
 const signalIds = ['source','type','width','noise'];   // change the residual(s)
 const windowIds = ['ref','test','lag','thr'];           // only re-window/score
-let tcur = 380, staticShapes = [], series = [], activeTab = null;
+let tcur = 380, staticShapes = [], series = [];
 
 // Build the coloured method checklist (also serves as the legend). Set `checked`
 // as a property — the attribute via innerHTML does not reliably apply.
@@ -245,7 +244,7 @@ function draw(){
   const ref = +$('ref').value, test = +$('test').value, lag = +$('lag').value, thr = +$('thr').value/100;
   for (const [k,v] of [['width',width],['noise',noise.toFixed(2)],['ref',ref],['test',test],['lag',lag],['thr',thr.toFixed(2)]])
     $('v_'+k).textContent = v;
-  if (!series.length){ Plotly.react('plot', [], {}); renderTabs([]); return; }
+  if (!series.length){ Plotly.react('plot', [], {}); renderTable([]); return; }
 
   const N = series[0].r.length, x = [...Array(N).keys()];
   const traces = [], delayShapes = [], tabData = [];
@@ -260,7 +259,7 @@ function draw(){
       delayShapes.push({type:'line', xref:'x', yref:'paper', x0:m.peakIdx, x1:m.peakIdx, y0:0, y1:0.42, line:{color:s.color, width:1.5, dash:'dot'}});
     tabData.push({ key:s.key, color:s.color, m });
   }
-  renderTabs(tabData);
+  renderTable(tabData);
 
   staticShapes = [
     {type:'line', xref:'x', yref:'paper', x0:onset, x1:onset, y0:0, y1:1, line:{color:PLANT,width:1,dash:'dash'}},
@@ -278,36 +277,36 @@ function draw(){
   Plotly.react('plot', traces, layout, {displayModeBar:false});
 }
 
-// Coloured metric sub-tabs; the content box is bordered in the active model's colour.
-function renderTabs(tabData){
-  const bar = $('tabbar'), content = $('tabcontent');
-  bar.innerHTML = '';
-  if (!tabData.length){ content.innerHTML = ''; content.style.borderColor = '#ccc'; return; }
-  if (!tabData.find(t => t.key === activeTab)) activeTab = tabData[0].key;
-  for (const t of tabData){
-    const b = document.createElement('button');
-    b.className = 'tab' + (t.key === activeTab ? ' active' : '');
-    b.style.borderBottomColor = t.color;
-    b.textContent = t.key;
-    if (t.key === activeTab) b.style.color = t.color;
-    b.onclick = () => { activeTab = t.key; renderTabs(tabData); };
-    bar.appendChild(b);
-  }
-  const t = tabData.find(x => x.key === activeTab), m = t.m;
-  content.style.borderColor = t.color;
-  const cell = (num, lbl) => `<div class="metric"><div class="num">${num}</div><div class="lbl">${lbl}</div></div>`;
-  content.innerHTML = `<div class="metrics">
-    ${cell(m.delay === null ? '–' : m.delay, 'delay→peak')}
-    ${cell(`<span class="${m.detected?'ok':'bad'}">${m.detected?'✓':'✗'}</span>`, 'detected')}
-    ${cell((m.far*100).toFixed(1)+'%', 'FAR')}
-    ${cell((m.mar*100).toFixed(1)+'%', 'MAR/sample')}
-    ${cell(`<span class="${m.marEvent?'bad':'ok'}">${m.marEvent*100}%</span>`, 'MAR/event')}
-  </div>`;
+// Metrics table: one row per model (coloured swatch), best value per column
+// highlighted. Lower is better for delay/FAR/MAR; detected best = ✓.
+function renderTable(tabData){
+  const el = $('mtable');
+  if (!tabData.length){ el.innerHTML = ''; return; }
+  const ms = tabData.map(t => t.m);
+  const bestDelay = Math.min(...ms.map(m => m.delay === null ? Infinity : m.delay));
+  const bestFar = Math.min(...ms.map(m => m.far));
+  const bestMar = Math.min(...ms.map(m => m.mar));
+  const bestMarE = Math.min(...ms.map(m => m.marEvent));
+  const td = (val, best) => `<td${best ? ' class="best"' : ''}>${val}</td>`;
+  const rows = tabData.map(({key, color, m}) => `<tr>
+    <td class="mname"><span class="swatch" style="background:${color}"></span>${key}</td>
+    ${td(m.delay === null ? '–' : m.delay, m.delay !== null && m.delay === bestDelay)}
+    ${td(`<span class="${m.detected?'ok':'bad'}">${m.detected?'✓':'✗'}</span>`, m.detected)}
+    ${td((m.far*100).toFixed(1)+'%', m.far === bestFar)}
+    ${td((m.mar*100).toFixed(1)+'%', m.mar === bestMar)}
+    ${td(`<span class="${m.marEvent?'bad':'ok'}">${m.marEvent*100}%</span>`, m.marEvent === bestMarE)}
+  </tr>`).join('');
+  el.innerHTML = `<table class="mt">
+    <tr><th>model</th><th>delay→peak</th><th>det</th><th>FAR</th><th>MAR/smp</th><th>MAR/evt</th></tr>
+    ${rows}</table>`;
 }
 
-signalIds.forEach(id => $(id).addEventListener('input', refreshResidual));
+// Debounce residual refresh so dragging a slider fires one fetch, not dozens.
+let debTimer;
+const debouncedRefresh = () => { clearTimeout(debTimer); debTimer = setTimeout(refreshResidual, 180); };
+signalIds.forEach(id => $(id).addEventListener('input', debouncedRefresh));
 windowIds.forEach(id => $(id).addEventListener('input', draw));
-document.querySelectorAll('.mchk').forEach(c => c.addEventListener('input', refreshResidual));
+document.querySelectorAll('.mchk').forEach(c => c.addEventListener('input', debouncedRefresh));
 refreshResidual();
 
 // Hover the lower plot to slide the shaded ref/test windows (cheap relayout).

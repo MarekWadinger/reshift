@@ -25,7 +25,7 @@ from __future__ import annotations
 import json
 import sys
 from functools import lru_cache
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import TYPE_CHECKING
 from urllib.parse import parse_qs, urlparse
@@ -272,4 +272,5 @@ if __name__ == "__main__":
     if "--selftest" in sys.argv:
         _selftest()
     else:
-        HTTPServer(("localhost", 8000), Handler).serve_forever()
+        # threaded so the browser's concurrent per-model requests run in parallel
+        ThreadingHTTPServer(("localhost", 8000), Handler).serve_forever()
