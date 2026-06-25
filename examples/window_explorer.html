@@ -180,7 +180,7 @@ let tcur = 380, staticShapes = [], series = [], tcurManual = false;
 METHODS.forEach(m => {
   const lab = document.createElement('label');
   const cb = document.createElement('input');
-  cb.type = 'checkbox'; cb.className = 'mchk'; cb.value = m; cb.checked = (m === 'onlineDMDc');
+  cb.type = 'checkbox'; cb.className = 'mchk'; cb.value = m; cb.checked = (m === 'toDMDc');
   lab.append(cb);
   lab.insertAdjacentHTML('beforeend', `<span class="swatch" style="background:${COLOR[m]}"></span>${m}`);
   $('mlist').appendChild(lab);
@@ -189,7 +189,7 @@ const selectedMethods = () => [...document.querySelectorAll('.mchk:checked')].ma
 
 // Persist the control setup so a reload keeps your chosen methods/params
 // instead of snapping back to the hardcoded defaults.
-const STORE = 'cpd_explorer';
+const STORE = 'cpd_explorer_v2';   // bump to reset stale state to new defaults
 const CTRLS = ['source','type','width','noise','ref','test','lag','thr'];
 function saveState(){
   try {

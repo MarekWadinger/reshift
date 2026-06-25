@@ -237,7 +237,7 @@ class Handler(BaseHTTPRequestHandler):
             q = parse_qs(u.query)
             try:
                 out = compute_residual(
-                    q.get("method", ["onlineDMDc"])[0],
+                    q.get("method", ["toDMDc"])[0],
                     q.get("change", ["permanent"])[0],
                     float(q.get("width", ["6"])[0]),
                     float(q.get("noise", ["0.08"])[0]),
