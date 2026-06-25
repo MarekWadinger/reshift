@@ -98,8 +98,12 @@
 
   <div class="panel">
     <h2>Detection sweep</h2>
-    <div style="font-size:11px;color:#888;margin-bottom:4px">FAR (solid) &amp; MAR/sample (dotted) vs threshold per model; dashed = current threshold</div>
-    <div id="sweep" style="width:100%;height:170px"></div>
+    <div class="ctl"><select id="sweepview">
+      <option value="threshold">FAR/MAR vs threshold</option>
+      <option value="roc">ROC (TPR vs FPR)</option>
+    </select></div>
+    <div id="sweepdesc" style="font-size:11px;color:#888;margin:4px 0"></div>
+    <div id="sweep" style="width:100%;height:180px"></div>
   </div>
 
   <div class="panel">
@@ -161,6 +165,23 @@ function bands(t, ref, test, lag){
   return { ok: start >= 0, ref: [start, start+ref], test: [t-test+1, t+1] };
 }
 
+// Threshold-free AUC (Mann-Whitney): P(score on a change sample > score on a
+// normal sample). 1 = perfect separation, 0.5 = chance. Average ranks for ties.
+function auc(pos, neg){
+  if (!pos.length || !neg.length) return NaN;
+  const all = pos.map(v => [v, 1]).concat(neg.map(v => [v, 0])).sort((a, b) => a[0] - b[0]);
+  let i = 0, rankSum = 0;
+  while (i < all.length){
+    let j = i;
+    while (j < all.length && all[j][0] === all[i][0]) j++;
+    const avg = (i + 1 + j) / 2;               // average rank over the tie block i..j-1
+    for (let k = i; k < j; k++) if (all[k][1] === 1) rankSum += avg;
+    i = j;
+  }
+  const np = pos.length, nn = neg.length;
+  return (rankSum - np*(np+1)/2) / (np*nn);
+}
+
 // Ground truth from the clean signal: the change region is where it is *changing*,
 // extended by the buffer length L so the change can traverse both windows.
 function metrics(sc, clean, ref, test, lag, thr){
@@ -170,13 +191,15 @@ function metrics(sc, clean, ref, test, lag, thr){
   for (let t = 1; t < Nn; t++) if (Math.abs(clean[t]-clean[t-1]) > dEPS){ if (cs < 0) cs = t; ce = t; }
   const posS = cs < 0 ? 0 : cs, posE = Math.min(Nn-1, (ce < 0 ? 0 : ce) + L);
   let fp = 0, nrm = 0, fn = 0, pos = 0, peak = -1, peakIdx = -1;
+  const posV = [], nrmV = [];
   for (let t = 0; t < Nn; t++){
     const s = sc[t]; if (s === null) continue;
-    if (t >= posS && t <= posE){ pos++; if (s <= thr) fn++; if (s > peak){ peak = s; peakIdx = t; } }
-    else { nrm++; if (s > thr) fp++; }
+    if (t >= posS && t <= posE){ pos++; posV.push(s); if (s <= thr) fn++; if (s > peak){ peak = s; peakIdx = t; } }
+    else { nrm++; nrmV.push(s); if (s > thr) fp++; }
   }
   return {
     far: nrm ? fp/nrm : 0, mar: pos ? fn/pos : 0, marEvent: (peak > thr) ? 0 : 1,
+    auc: auc(posV, nrmV),
     delay: peakIdx >= 0 ? peakIdx - posS : null, detected: peak > thr, onset: posS, peakIdx,
   };
 }
@@ -223,7 +246,7 @@ const dashOf = m => document.querySelector(`.mstyle[data-method="${m}"]`)?.value
 // Persist the control setup so a reload keeps your chosen methods/params
 // instead of snapping back to the hardcoded defaults.
 const STORE = 'cpd_explorer_v2';   // bump to reset stale state to new defaults
-const CTRLS = ['source','type','width','noise','ref','test','lag','thr'];
+const CTRLS = ['source','type','width','noise','ref','test','lag','thr','sweepview'];
 function saveState(){
   try {
     const st = { methods: selectedMethods(), styles: {} };
@@ -353,21 +376,36 @@ function draw(){
   $('plot').style.height = Math.max(360, 118*n) + 'px';
   Plotly.react('plot', traces, layout, {displayModeBar:false});
 
-  // Threshold sweep (sidebar): FAR (solid) and MAR/sample (dotted) per model.
+  // Detection sweep (sidebar): threshold view (FAR/MAR vs threshold) or ROC.
   const scoreMax = Math.max(0.01, ...scs.flatMap(({sc}) => sc.filter(v => v !== null)));
   const grid = Array.from({length: 61}, (_, i) => scoreMax * i / 60);
+  const roc = $('sweepview').value === 'roc';
   const sweep = [];
-  for (const {s, sc} of scs){
-    const sw = sweepFor(sc, s.clean, ref, test, lag, grid);
-    sweep.push({ x:grid, y:sw.far, name:s.key+' FAR', legendgroup:s.key, showlegend:false, line:{color:s.color, width:1.5} });
-    sweep.push({ x:grid, y:sw.mar, name:s.key+' MAR', legendgroup:s.key, showlegend:false, line:{color:s.color, width:1.5, dash:'dot'} });
+  let sweepLayout;
+  if (roc){
+    for (const {s, sc, m} of scs){
+      const sw = sweepFor(sc, s.clean, ref, test, lag, grid);
+      sweep.push({ x:sw.far, y:sw.mar.map(v => 1-v), name:s.key, legendgroup:s.key, showlegend:false, line:{color:s.color, width:1.5, dash:dashOf(s.key)} });
+      sweep.push({ x:[m.far], y:[1-m.mar], mode:'markers', marker:{color:s.color, size:8}, legendgroup:s.key, showlegend:false, hoverinfo:'skip' });
+    }
+    sweep.push({ x:[0,1], y:[0,1], mode:'lines', line:{color:'#ccc', dash:'dot'}, showlegend:false, hoverinfo:'skip' });
+    $('sweepdesc').textContent = 'ROC per model (line style = model); dot = current threshold; dotted = chance';
+    sweepLayout = { margin:{t:6,r:8,b:30,l:34}, showlegend:false, font:{size:10},
+      xaxis:{ title:{text:'FPR (FAR)', font:{size:10}}, range:[0,1] },
+      yaxis:{ title:{text:'TPR (1−MAR)', font:{size:10}}, range:[0,1] } };
+  } else {
+    for (const {s, sc} of scs){
+      const sw = sweepFor(sc, s.clean, ref, test, lag, grid);
+      sweep.push({ x:grid, y:sw.far, name:s.key+' FAR', legendgroup:s.key, showlegend:false, line:{color:s.color, width:1.5} });
+      sweep.push({ x:grid, y:sw.mar, name:s.key+' MAR', legendgroup:s.key, showlegend:false, line:{color:s.color, width:1.5, dash:'dot'} });
+    }
+    $('sweepdesc').textContent = 'FAR (solid) & MAR/sample (dotted) vs threshold; dashed = current threshold';
+    sweepLayout = { margin:{t:6,r:8,b:30,l:34}, showlegend:false, font:{size:10},
+      shapes:[{type:'line', xref:'x', yref:'paper', x0:thr, x1:thr, y0:0, y1:1, line:{color:THRESH, width:1, dash:'dash'}}],
+      xaxis:{ title:{text:'threshold', font:{size:10}} },
+      yaxis:{ title:{text:'rate', font:{size:10}}, range:[0,1] } };
   }
-  Plotly.react('sweep', sweep, {
-    margin:{t:6,r:8,b:30,l:34}, showlegend:false, font:{size:10},
-    shapes:[{type:'line', xref:'x', yref:'paper', x0:thr, x1:thr, y0:0, y1:1, line:{color:THRESH, width:1, dash:'dash'}}],
-    xaxis:{ title:{text:'threshold', font:{size:10}} },
-    yaxis:{ title:{text:'rate', font:{size:10}}, range:[0,1] },
-  }, {displayModeBar:false});
+  Plotly.react('sweep', sweep, sweepLayout, {displayModeBar:false});
 }
 
 // Metrics table: one row per model (coloured swatch), best value per column
@@ -380,9 +418,11 @@ function renderTable(tabData){
   const bestFar = Math.min(...ms.map(m => m.far));
   const bestMar = Math.min(...ms.map(m => m.mar));
   const bestMarE = Math.min(...ms.map(m => m.marEvent));
+  const bestAuc = Math.max(...ms.map(m => Number.isFinite(m.auc) ? m.auc : -Infinity));  // higher is better
   const td = (val, best) => `<td${best ? ' class="best"' : ''}>${val}</td>`;
   const rows = tabData.map(({key, color, m}) => `<tr>
     <td class="mname"><span class="swatch" style="background:${color}"></span>${key}</td>
+    ${td(Number.isFinite(m.auc) ? m.auc.toFixed(3) : '–', Number.isFinite(m.auc) && m.auc === bestAuc)}
     ${td(m.delay === null ? '–' : m.delay, m.delay !== null && m.delay === bestDelay)}
     ${td(`<span class="${m.detected?'ok':'bad'}">${m.detected?'✓':'✗'}</span>`, m.detected)}
     ${td((m.far*100).toFixed(1)+'%', m.far === bestFar)}
@@ -390,7 +430,7 @@ function renderTable(tabData){
     ${td(`<span class="${m.marEvent?'bad':'ok'}">${m.marEvent*100}%</span>`, m.marEvent === bestMarE)}
   </tr>`).join('');
   el.innerHTML = `<table class="mt">
-    <tr><th>model</th><th>delay</th><th>det</th><th>FAR</th><th>MAR/s</th><th>MAR/e</th></tr>
+    <tr><th>model</th><th>AUC</th><th>delay</th><th>det</th><th>FAR</th><th>MAR/s</th><th>MAR/e</th></tr>
     ${rows}</table>`;
 }
 
@@ -442,6 +482,7 @@ signalIds.forEach(id => $(id).addEventListener('input', debouncedRefresh));
 windowIds.forEach(id => $(id).addEventListener('input', draw));
 document.querySelectorAll('.mchk').forEach(c => c.addEventListener('input', debouncedRefresh));
 document.querySelectorAll('.mstyle').forEach(s => s.addEventListener('input', draw));  // restyle, no refetch
+$('sweepview').addEventListener('input', draw);  // toggle sweep/ROC view, no refetch
 loadState();          // restore the last setup before the first render
 refreshResidual();
 
