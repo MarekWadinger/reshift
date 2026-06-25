@@ -29,8 +29,10 @@
   .ctl .val { color: #c0392b; font-variant-numeric: tabular-nums; }
   input[type=range] { width: 200px; }
   select { padding: 4px; font: inherit; }
-  .mlist label { display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 13px; }
-  .swatch { width: 11px; height: 11px; border-radius: 2px; display: inline-block; }
+  .mlist label { display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 13px; margin-bottom: 2px; }
+  .mlist .mname { flex: 1; }
+  .mlist .mstyle { font-size: 11px; padding: 1px 2px; }
+  .swatch { width: 11px; height: 11px; border-radius: 2px; display: inline-block; flex: 0 0 auto; }
   .metrics { display: flex; gap: 16px; }
   .metric { text-align: center; min-width: 64px; }
   .metric .num { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -110,6 +112,8 @@
 const N = 600, BASE = 1.0, CENTER = 300, HI = 4.0;
 const METHODS = ['DMD', 'tDMD', 'DMDc', 'onlineDMD', 'onlineDMDc', 'toDMDc'];
 const COLOR = {DMD:'#1f77b4', tDMD:'#ff7f0e', DMDc:'#2ca02c', onlineDMD:'#d62728', onlineDMDc:'#9467bd', toDMDc:'#8c564b', synthetic:'#1f77b4'};
+const DASHES = ['solid', 'dot', 'dash', 'longdash', 'dashdot', 'longdashdot'];
+const DEFAULT_DASH = {DMD:'solid', tDMD:'dot', DMDc:'dash', onlineDMD:'longdash', onlineDMDc:'dashdot', toDMDc:'longdashdot', synthetic:'solid'};
 const THRESH = '#111';   // threshold colour, deliberately unlike any model colour
 const PLANT = '#999';    // plant (ground-truth) state colour
 
@@ -182,10 +186,15 @@ METHODS.forEach(m => {
   const cb = document.createElement('input');
   cb.type = 'checkbox'; cb.className = 'mchk'; cb.value = m; cb.checked = (m === 'toDMDc');
   lab.append(cb);
-  lab.insertAdjacentHTML('beforeend', `<span class="swatch" style="background:${COLOR[m]}"></span>${m}`);
+  const opts = DASHES.map(d => `<option value="${d}"${d===DEFAULT_DASH[m]?' selected':''}>${d}</option>`).join('');
+  lab.insertAdjacentHTML('beforeend',
+    `<span class="swatch" style="background:${COLOR[m]}"></span><span class="mname">${m}</span>` +
+    `<select class="mstyle" data-method="${m}">${opts}</select>`);
   $('mlist').appendChild(lab);
 });
 const selectedMethods = () => [...document.querySelectorAll('.mchk:checked')].map(c => c.value);
+// Line style (Plotly dash) chosen per method; used for every trace of that model.
+const dashOf = m => document.querySelector(`.mstyle[data-method="${m}"]`)?.value || 'solid';
 
 // Persist the control setup so a reload keeps your chosen methods/params
 // instead of snapping back to the hardcoded defaults.
@@ -193,8 +202,9 @@ const STORE = 'cpd_explorer_v2';   // bump to reset stale state to new defaults
 const CTRLS = ['source','type','width','noise','ref','test','lag','thr'];
 function saveState(){
   try {
-    const st = { methods: selectedMethods() };
+    const st = { methods: selectedMethods(), styles: {} };
     for (const id of CTRLS) st[id] = $(id).value;
+    document.querySelectorAll('.mstyle').forEach(s => { st.styles[s.dataset.method] = s.value; });
     localStorage.setItem(STORE, JSON.stringify(st));
   } catch (e) { /* storage unavailable */ }
 }
@@ -205,6 +215,8 @@ function loadState(){
     for (const id of CTRLS) if (st[id] != null) $(id).value = st[id];
     if (Array.isArray(st.methods))
       document.querySelectorAll('.mchk').forEach(c => c.checked = st.methods.includes(c.value));
+    if (st.styles)
+      document.querySelectorAll('.mstyle').forEach(s => { if (st.styles[s.dataset.method]) s.value = st.styles[s.dataset.method]; });
   } catch (e) { /* ignore malformed state */ }
 }
 
@@ -287,15 +299,16 @@ function draw(){
       const ax = axName(row);
       traces.push({ x, y: series[0].states[i], name:'plant', legendgroup:'plant', showlegend:i===0, yaxis:ax, line:{color:PLANT, width:2} });
       for (const {s} of scs)
-        traces.push({ x, y: s.pred[i], name:s.key, legendgroup:s.key, showlegend:false, yaxis:ax, line:{color:s.color, width:1.2, dash:'dash'} });
+        traces.push({ x, y: s.pred[i], name:s.key, legendgroup:s.key, showlegend:false, yaxis:ax, line:{color:s.color, width:1.2, dash:dashOf(s.key)} });
     }
-    traces.push({ x, y: series[0].inputs, name:'input q', legendgroup:'input', yaxis:axName(row++), line:{color:'#777'} });
+    // input shares the 'plant' legend entry (one ground-truth entry, not two)
+    traces.push({ x, y: series[0].inputs, name:'plant', legendgroup:'plant', showlegend:false, yaxis:axName(row++), line:{color:PLANT} });
   }
   const axR = axName(row++), axS = axName(row++);
   const delayShapes = [];
   for (const {s, sc, m} of scs){
-    traces.push({ x, y: s.r, name:s.key, legendgroup:s.key, yaxis:axR, line:{color:s.color} });
-    traces.push({ x, y: sc, name:s.key, legendgroup:s.key, showlegend:false, yaxis:axS, line:{color:s.color} });
+    traces.push({ x, y: s.r, name:s.key, legendgroup:s.key, yaxis:axR, line:{color:s.color, dash:dashOf(s.key)} });
+    traces.push({ x, y: sc, name:s.key, legendgroup:s.key, showlegend:false, yaxis:axS, line:{color:s.color, dash:dashOf(s.key)} });
     if (m.peakIdx >= 0)
       delayShapes.push({type:'line', xref:'x', yref:'paper', x0:m.peakIdx, x1:m.peakIdx, y0:doms[n-1][0], y1:doms[n-1][1], line:{color:s.color, width:1.5, dash:'dot'}});
   }
@@ -388,6 +401,7 @@ const debouncedRefresh = () => { clearTimeout(debTimer); debTimer = setTimeout(r
 signalIds.forEach(id => $(id).addEventListener('input', debouncedRefresh));
 windowIds.forEach(id => $(id).addEventListener('input', draw));
 document.querySelectorAll('.mchk').forEach(c => c.addEventListener('input', debouncedRefresh));
+document.querySelectorAll('.mstyle').forEach(s => s.addEventListener('input', draw));  // restyle, no refetch
 loadState();          // restore the last setup before the first render
 refreshResidual();
 
