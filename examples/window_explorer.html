@@ -56,6 +56,7 @@
   input[type=range]{ width:100%; accent-color:var(--accent); margin:0 }
   select{ padding:6px 8px; font:14px system-ui; border:1px solid var(--line); border-radius:8px; background:#fff }
   .row{ display:flex; gap:16px; flex-wrap:wrap } .row .ctl{ flex:1; min-width:130px }
+  .cap{ font:14px/1.55 system-ui; color:var(--muted); margin:6px 0 20px } .cap b{ color:var(--ink) }
 
   button.try{ font:600 13px/1 system-ui; color:#fff; background:var(--accent); border:0; border-radius:9px;
               padding:10px 14px; cursor:pointer; margin:10px 8px 0 0 }
@@ -121,14 +122,16 @@
     <section>
       <h2>Try it</h2>
       <h3>Slide the windows across the change</h3>
-      <p>It is a <b>rolling-window statistic</b>: two windows slide together over the residual, and the score is the ratio of the recent <b style="color:var(--test)">test</b> window to the local <b style="color:var(--ref)">reference</b> window. <b>Move your cursor across a trace</b> and both bands follow — the cursor is “now” (the test window's right edge); the reference sits just behind it.</p>
-      <p><b>Test window — the fast, recent view.</b> Short → the statistic peaks <b>sooner</b> but noisier; long → it peaks <b>later</b> but steadier. The peak lands <b>about one test-window after the change</b>: the window must slide fully past the change and fill with post-change residual before its average climbs — so the detection <span class="def" title="samples from the true change to the score's peak">delay</span> is essentially the test window length.</p>
-      <p><b>Reference window — a local baseline.</b> Sitting right behind the test window, any fast wiggle that <i>isn't</i> a real change appears in both windows and cancels in the ratio. So the reference absorbs the quick fluctuations the model's own adaptation is too slow to track, calming false alarms from a short, twitchy test window. A short reference adapts fast and hugs the recent normal; a long one is a steadier anchor. <b>Lag</b> pushes it further back, widening the gap.</p>
-      <div class="row">
-        <div class="ctl"><label>test window <span class="val" id="v_test"></span></label><input id="test" type="range" min="5" max="200" value="60"></div>
-        <div class="ctl"><label>reference window <span class="val" id="v_ref"></span></label><input id="ref" type="range" min="5" max="200" value="60"></div>
-        <div class="ctl"><label>lag <span class="val" id="v_lag"></span></label><input id="lag" type="range" min="0" max="100" value="0"></div>
-      </div>
+      <p>It is a <b>rolling-window statistic</b>: two windows slide over the residual, and the score is the ratio of a recent <b style="color:var(--test)">test</b> window to a local <b style="color:var(--ref)">reference</b> window.</p>
+
+      <div class="ctl"><label>test window <span class="val" id="v_test"></span></label><input id="test" type="range" min="5" max="200" value="60"></div>
+      <p class="cap">The fast, recent view. <b>Short</b> → the statistic peaks sooner but is noisier; <b>long</b> → it peaks later but steadier. The peak lands ~one test-window after the change, so the detection <span class="def" title="samples from the true change to the score's peak">delay</span> ≈ the test length.</p>
+
+      <div class="ctl"><label>reference window <span class="val" id="v_ref"></span></label><input id="ref" type="range" min="5" max="200" value="60"></div>
+      <p class="cap">The local baseline. A fast wiggle that isn't a real change sits in <i>both</i> windows and cancels in the ratio. <b>Short</b> → adapts fast, hugs the recent normal; <b>long</b> → a steadier anchor that calms a twitchy test window.</p>
+
+      <div class="ctl"><label>lag <span class="val" id="v_lag"></span></label><input id="lag" type="range" min="0" max="100" value="0"></div>
+      <p class="cap">The gap between them — slides the reference earlier while the test window stays put. <b>Short</b> → reference right behind test; <b>long</b> → baseline taken from further back, ignoring more of the recent past.</p>
     </section>
 
     <section>
