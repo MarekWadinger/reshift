@@ -5,6 +5,7 @@ either a pre-seeded local cache or a fake HTTP response.
 """
 
 import io
+from urllib.parse import urlparse
 
 import numpy as np
 import pandas as pd
@@ -133,7 +134,7 @@ def test_load_skab_downloads_then_reads(monkeypatch):
     csv_text = "datetime;value;anomaly\n2020-01-01;1.0;0\n2020-01-02;2.0;1\n"
 
     def fake_get(url, *a, **k):
-        if "api.github.com" in url:
+        if urlparse(url).netloc == "api.github.com":
             return _Resp(
                 json_data=[
                     {
@@ -185,7 +186,7 @@ def test_load_skab_nested_dir(monkeypatch):
     calls = {"n": 0}
 
     def fake_get(url, *a, **k):
-        if "api.github.com" in url and calls["n"] == 0:
+        if urlparse(url).netloc == "api.github.com" and calls["n"] == 0:
             calls["n"] += 1
             return _Resp(
                 json_data=[
