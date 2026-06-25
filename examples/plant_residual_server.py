@@ -104,8 +104,15 @@ def _residual_batch(
     control: bool,
     rank: int,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Frozen identification on the pre-change window, one-step residual over all t."""
-    win = slice(CP - LEARN_W, CP)
+    """Frozen identification on an early nominal window, one-step residual over all t.
+
+    The fit window is the first ``LEARN_W`` samples -- well before the change and
+    before any ref/test detection window -- so the residual over the whole record
+    (and in particular both detection windows) is out of sample. Fitting on the
+    pre-change window adjacent to the change would put the ref window in sample and
+    optimistically deflate D_train.
+    """
+    win = slice(0, LEARN_W)
     if control:
         mdl = DMDwC(r=rank)
         mdl.fit(X[win], U=U[win])
