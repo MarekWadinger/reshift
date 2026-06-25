@@ -87,7 +87,6 @@
   </div>
 </div>
 
-<div id="plot_top" style="width:100%;display:none"></div>
 <div id="plot" style="width:100%;height:480px"></div>
 
 <script>
@@ -181,7 +180,7 @@ async function refreshResidual(){
     $('status').textContent = 'synthetic profile';
   } else {
     const methods = selectedMethods();
-    if (!methods.length){ series = []; $('status').textContent = 'pick at least one identifier'; drawTop(); draw(); return; }
+    if (!methods.length){ series = []; $('status').textContent = 'pick at least one identifier'; draw(); return; }
     $('status').textContent = `running ${methods.join(', ')} on two-tank…`;
     const got = await Promise.all(methods.map(m => {
       const q = new URLSearchParams({method:m, change:type, width, noise});
@@ -190,45 +189,16 @@ async function refreshResidual(){
     series = got.filter(Boolean).map(d => ({ key:d.key, color:COLOR[d.key], clean:d.clean, r:d.r, states:d.states, pred:d.pred, inputs:d.inputs }));
     $('status').textContent = series.length ? `${series.map(s=>s.key).join(', ')} · two-tank` : 'plant unavailable — run plant_residual_server.py';
   }
-  drawTop();
   draw();
 }
 
-// Build evenly-stacked y-axes (top→bottom) for an n-row figure.
-function stacked(titles){
-  const n = titles.length, gap = 0.07, h = (1 - gap*(n-1))/n, ax = {};
-  titles.forEach((title, i) => {
-    const top = 1 - i*(h+gap);
-    ax[i ? 'yaxis'+(i+1) : 'yaxis'] = { domain:[Math.max(0, top-h), top], title:{text:title, font:{size:11}} };
-  });
-  ax.xaxis = { anchor: n>1 ? 'y'+n : 'y' };
-  return ax;
+// Evenly-stacked [bottom, top] domains for n rows, top→bottom.
+function domains(n){
+  const gap = 0.035, h = (1 - gap*(n-1))/n, ds = [];
+  for (let i = 0; i < n; i++){ const top = 1 - i*(h+gap); ds.push([Math.max(0, top-h), top]); }
+  return ds;
 }
-
-// Upper screen: one subplot per state (plant gray solid, each model dashed in its
-// colour), then the input. Plant mode only.
-function drawTop(){
-  const div = $('plot_top');
-  const withStates = series.filter(s => s.states);
-  if (!withStates.length){ div.style.display = 'none'; return; }
-  const st = withStates[0].states, nst = st.length, len = st[0].length;
-  const x = [...Array(len).keys()];
-  div.style.display = 'block';
-  div.style.height = (150*nst + 130) + 'px';
-  const traces = [];
-  for (let i = 0; i < nst; i++){
-    const ax = i ? 'y'+(i+1) : 'y';
-    traces.push({ x, y: st[i], name:'plant', legendgroup:'plant', showlegend:i===0, yaxis:ax, line:{color:PLANT, width:2} });
-    for (const s of withStates)
-      traces.push({ x, y: s.pred[i], name:s.key, legendgroup:s.key, showlegend:i===0, yaxis:ax, line:{color:s.color, width:1.2, dash:'dash'} });
-  }
-  traces.push({ x, y: withStates[0].inputs, name:'input q', legendgroup:'input', yaxis:'y'+(nst+1), line:{color:'#777'} });
-  const titles = [...Array(nst).keys()].map(i => `h${i+1}`); titles.push('input q');
-  const onset = {type:'line', xref:'x', yref:'paper', x0:CENTER, x1:CENTER, y0:0, y1:1, line:{color:PLANT,width:1,dash:'dash'}};
-  Plotly.react('plot_top', traces, {
-    margin:{t:24,r:20,b:34,l:55}, shapes:[onset], legend:{orientation:'h', y:1.08}, ...stacked(titles),
-  }, {displayModeBar:false});
-}
+const axName = i => i ? 'y'+(i+1) : 'y';
 
 function bandShapes(){
   const b = bands(tcur, +$('ref').value, +$('test').value, +$('lag').value);
@@ -238,8 +208,9 @@ function bandShapes(){
     {type:'rect', xref:'x', yref:'paper', x0:b.test[0], x1:b.test[1], y0:0, y1:1, fillcolor:'#2ecc71', opacity:0.16, line:{width:0}}];
 }
 
-// Lower screen: residual + score per model (model colour), one threshold (THRESH),
-// per-model delay lines (model colour). Metrics go to the coloured tabs.
+// Single stacked figure with ONE shared x-axis (so everything lines up and the
+// onset is one line across all rows): plant states + input (plant mode only),
+// then residual and score per model. Per-model colour throughout; one threshold.
 function draw(){
   const width = +$('width').value, noise = +$('noise').value/100;
   const ref = +$('ref').value, test = +$('test').value, lag = +$('lag').value, thr = +$('thr').value/100;
@@ -248,38 +219,63 @@ function draw(){
   if (!series.length){ Plotly.react('plot', [], {}); renderTable([]); return; }
 
   const N = series[0].r.length, x = [...Array(N).keys()];
-  const traces = [], delayShapes = [], tabData = [];
+  const plant = !!series[0].states;
+
+  // per-series score + metrics
+  const scs = [], tabData = [];
   let onset = 0;
   for (const s of series){
     const sc = scores(s.r, ref, test, lag);
     const m = metrics(sc, s.clean, ref, test, lag, thr);
     onset = m.onset;
-    traces.push({ x, y: s.r, name:s.key, legendgroup:s.key, yaxis:'y', line:{color:s.color} });
-    traces.push({ x, y: sc, name:s.key, legendgroup:s.key, showlegend:false, yaxis:'y2', line:{color:s.color} });
-    if (m.peakIdx >= 0)
-      delayShapes.push({type:'line', xref:'x', yref:'paper', x0:m.peakIdx, x1:m.peakIdx, y0:0, y1:0.42, line:{color:s.color, width:1.5, dash:'dot'}});
+    scs.push({ s, sc, m });
     tabData.push({ key:s.key, color:s.color, m });
   }
   renderTable(tabData);
-
-  // Anchor the windows on the change point until the user hovers: ref (train)
-  // ends at the onset, test starts at onset+lag. tcur is the combined window's
-  // right edge, so right edge = onset + lag + test.
   if (!tcurManual) tcur = Math.min(N-1, Math.max(ref+lag+test-1, onset + lag + test - 1));
+
+  // row layout: [h1..hk, input]? + residual + score
+  const nst = plant ? series[0].states.length : 0;
+  const titles = [];
+  for (let i = 0; i < nst; i++) titles.push(`h${i+1}`);
+  if (plant) titles.push('input q');
+  titles.push('residual', 'score');
+  const n = titles.length, doms = domains(n);
+
+  const traces = [];
+  let row = 0;
+  if (plant){
+    for (let i = 0; i < nst; i++, row++){
+      const ax = axName(row);
+      traces.push({ x, y: series[0].states[i], name:'plant', legendgroup:'plant', showlegend:i===0, yaxis:ax, line:{color:PLANT, width:2} });
+      for (const {s} of scs)
+        traces.push({ x, y: s.pred[i], name:s.key, legendgroup:s.key, showlegend:false, yaxis:ax, line:{color:s.color, width:1.2, dash:'dash'} });
+    }
+    traces.push({ x, y: series[0].inputs, name:'input q', legendgroup:'input', yaxis:axName(row++), line:{color:'#777'} });
+  }
+  const axR = axName(row++), axS = axName(row++);
+  const delayShapes = [];
+  for (const {s, sc, m} of scs){
+    traces.push({ x, y: s.r, name:s.key, legendgroup:s.key, yaxis:axR, line:{color:s.color} });
+    traces.push({ x, y: sc, name:s.key, legendgroup:s.key, showlegend:false, yaxis:axS, line:{color:s.color} });
+    if (m.peakIdx >= 0)
+      delayShapes.push({type:'line', xref:'x', yref:'paper', x0:m.peakIdx, x1:m.peakIdx, y0:doms[n-1][0], y1:doms[n-1][1], line:{color:s.color, width:1.5, dash:'dot'}});
+  }
+  traces.push({ x:[0,N-1], y:[thr,thr], name:'threshold', yaxis:axS, line:{color:THRESH, dash:'dash'}, hoverinfo:'skip' });
 
   staticShapes = [
     {type:'line', xref:'x', yref:'paper', x0:onset, x1:onset, y0:0, y1:1, line:{color:PLANT,width:1,dash:'dash'}},
     ...delayShapes,
   ];
   const layout = {
-    margin:{t:30,r:20,b:40,l:55}, legend:{orientation:'h', y:1.12},
+    margin:{t:24,r:20,b:40,l:55}, legend:{orientation:'h', y:1.05},
     shapes: staticShapes.concat(bandShapes()),
-    xaxis:{title:'time', anchor:'y2'},
-    yaxis:{domain:[0.52,1], title:'residual'},
-    yaxis2:{domain:[0,0.42], title:'score', rangemode:'tozero'},
+    xaxis:{ title:'time', anchor:axName(n-1) },
   };
-  // one threshold line across the score axis, in a colour unlike any model
-  traces.push({ x:[0,N-1], y:[thr,thr], name:'threshold', yaxis:'y2', line:{color:THRESH, dash:'dash'}, hoverinfo:'skip' });
+  titles.forEach((t, i) => {
+    layout[i ? 'yaxis'+(i+1) : 'yaxis'] = { domain:doms[i], title:{text:t, font:{size:11}}, ...(t==='score' ? {rangemode:'tozero'} : {}) };
+  });
+  $('plot').style.height = Math.max(360, 118*n) + 'px';
   Plotly.react('plot', traces, layout, {displayModeBar:false});
 }
 
