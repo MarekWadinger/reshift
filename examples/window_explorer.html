@@ -417,7 +417,9 @@ function draw(){
     tabData.push({ key:s.key, color:s.color, m });
   }
   renderTable(tabData);
-  if (!tcurManual) tcur = Math.min(N-1, Math.max(ref+lag+test-1, onset + lag + test - 1));
+  // Anchor "now" so the TEST window starts at the change; lag then pushes the
+  // REFERENCE window earlier (it does NOT slide test forward).
+  if (!tcurManual) tcur = Math.min(N-1, Math.max(ref+lag+test-1, onset + test - 1));
 
   // row layout: [h1..hk, input]? + residual + score
   const nst = plant ? series[0].states.length : 0;
