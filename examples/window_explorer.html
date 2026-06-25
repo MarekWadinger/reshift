@@ -294,7 +294,7 @@ function sweepFor(sc, clean, ref, test, lag, grid){
 const $ = id => document.getElementById(id);
 const signalIds = ['source','type','width','noise'];   // change the residual(s)
 const windowIds = ['ref','test','lag','thr'];           // only re-window/score
-let tcur = 380, staticShapes = [], series = [], tcurManual = false;
+let tcur = 380, staticShapes = [], series = [], tcurManual = false, hoverAttached = false;
 
 // Build the coloured method checklist (also serves as the legend). Set `checked`
 // as a property — the attribute via innerHTML does not reliably apply.
@@ -463,6 +463,17 @@ function draw(){
   $('plot').style.height = Math.max(360, 118*n) + 'px';
   Plotly.react('plot', traces, layout, {displayModeBar:false});
 
+  // Attach the hover handler once the plot exists (the async init means this
+  // can't run at script-eval time). Hover the figure to slide the windows: the
+  // cursor is the right edge of the TEST window ("now"); lag pushes TRAIN earlier.
+  if (!hoverAttached){
+    hoverAttached = true;
+    $('plot').on('plotly_hover', e => {
+      const t = Math.round(e.points[0].x);
+      if (t !== tcur){ tcurManual = true; tcur = t; Plotly.relayout('plot', {shapes: staticShapes.concat(bandShapes())}); }
+    });
+  }
+
   // Detection sweep (sidebar): threshold view (FAR/MAR vs threshold) or ROC.
   const scoreMax = Math.max(0.01, ...scs.flatMap(({sc}) => sc.filter(v => v !== null)));
   const grid = Array.from({length: 61}, (_, i) => scoreMax * i / 60);
@@ -591,12 +602,6 @@ loadState();          // restore the last setup before the first render
 fetch('data/manifest.json')
   .then(res => res.ok ? res.json() : null).catch(() => null)
   .then(m => { STATIC = m; refreshResidual(); });
-
-// Hover the lower plot to slide the shaded ref/test windows (cheap relayout).
-$('plot').on('plotly_hover', e => {
-  const t = Math.round(e.points[0].x);
-  if (t !== tcur){ tcurManual = true; tcur = t; Plotly.relayout('plot', {shapes: staticShapes.concat(bandShapes())}); }
-});
 
 // self-checks: flat residual scores 0; a step is detected with non-negative delay.
 (() => {
