@@ -97,6 +97,12 @@
   </div>
 
   <div class="panel">
+    <h2>Detection sweep</h2>
+    <div style="font-size:11px;color:#888;margin-bottom:4px">FAR (solid) &amp; MAR/sample (dotted) vs threshold per model; dashed = current threshold</div>
+    <div id="sweep" style="width:100%;height:170px"></div>
+  </div>
+
+  <div class="panel">
     <h2>Export</h2>
     <button id="dlpng">⬇ figure (PNG)</button>
     <button id="dlsvg">⬇ figure (SVG, vector)</button>
@@ -172,6 +178,23 @@ function metrics(sc, clean, ref, test, lag, thr){
   return {
     far: nrm ? fp/nrm : 0, mar: pos ? fn/pos : 0, marEvent: (peak > thr) ? 0 : 1,
     delay: peakIdx >= 0 ? peakIdx - posS : null, detected: peak > thr, onset: posS, peakIdx,
+  };
+}
+
+// Threshold-free view: FAR and MAR/sample as the threshold sweeps a grid. The
+// change region (positive/normal split) is threshold-independent, so partition
+// once and just re-count per threshold.
+function sweepFor(sc, clean, ref, test, lag, grid){
+  const Nn = clean.length, L = ref + lag + test;
+  const dEPS = 0.005*(Math.max(...clean) - Math.min(...clean) || 1);
+  let cs = -1, ce = -1;
+  for (let t = 1; t < Nn; t++) if (Math.abs(clean[t]-clean[t-1]) > dEPS){ if (cs < 0) cs = t; ce = t; }
+  const posS = cs < 0 ? 0 : cs, posE = Math.min(Nn-1, (ce < 0 ? 0 : ce) + L);
+  const pos = [], nrm = [];
+  for (let t = 0; t < Nn; t++){ const s = sc[t]; if (s === null) continue; (t >= posS && t <= posE ? pos : nrm).push(s); }
+  return {
+    far: grid.map(thr => nrm.length ? nrm.filter(v => v > thr).length / nrm.length : 0),
+    mar: grid.map(thr => pos.length ? pos.filter(v => v <= thr).length / pos.length : 0),
   };
 }
 
@@ -267,7 +290,7 @@ function draw(){
   for (const [k,v] of [['width',width],['noise',noise.toFixed(2)],['ref',ref],['test',test],['lag',lag],['thr',thr.toFixed(2)]])
     $('v_'+k).textContent = v;
   saveState();
-  if (!series.length){ Plotly.react('plot', [], {}); renderTable([]); return; }
+  if (!series.length){ Plotly.react('plot', [], {}); Plotly.react('sweep', [], {}); renderTable([]); return; }
 
   const N = series[0].r.length, x = [...Array(N).keys()];
   const plant = !!series[0].states;
@@ -329,6 +352,22 @@ function draw(){
   });
   $('plot').style.height = Math.max(360, 118*n) + 'px';
   Plotly.react('plot', traces, layout, {displayModeBar:false});
+
+  // Threshold sweep (sidebar): FAR (solid) and MAR/sample (dotted) per model.
+  const scoreMax = Math.max(0.01, ...scs.flatMap(({sc}) => sc.filter(v => v !== null)));
+  const grid = Array.from({length: 61}, (_, i) => scoreMax * i / 60);
+  const sweep = [];
+  for (const {s, sc} of scs){
+    const sw = sweepFor(sc, s.clean, ref, test, lag, grid);
+    sweep.push({ x:grid, y:sw.far, name:s.key+' FAR', legendgroup:s.key, showlegend:false, line:{color:s.color, width:1.5} });
+    sweep.push({ x:grid, y:sw.mar, name:s.key+' MAR', legendgroup:s.key, showlegend:false, line:{color:s.color, width:1.5, dash:'dot'} });
+  }
+  Plotly.react('sweep', sweep, {
+    margin:{t:6,r:8,b:30,l:34}, showlegend:false, font:{size:10},
+    shapes:[{type:'line', xref:'x', yref:'paper', x0:thr, x1:thr, y0:0, y1:1, line:{color:THRESH, width:1, dash:'dash'}}],
+    xaxis:{ title:{text:'threshold', font:{size:10}} },
+    yaxis:{ title:{text:'rate', font:{size:10}}, range:[0,1] },
+  }, {displayModeBar:false});
 }
 
 // Metrics table: one row per model (coloured swatch), best value per column
