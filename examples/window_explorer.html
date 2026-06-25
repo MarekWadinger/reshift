@@ -187,6 +187,27 @@ METHODS.forEach(m => {
 });
 const selectedMethods = () => [...document.querySelectorAll('.mchk:checked')].map(c => c.value);
 
+// Persist the control setup so a reload keeps your chosen methods/params
+// instead of snapping back to the hardcoded defaults.
+const STORE = 'cpd_explorer';
+const CTRLS = ['source','type','width','noise','ref','test','lag','thr'];
+function saveState(){
+  try {
+    const st = { methods: selectedMethods() };
+    for (const id of CTRLS) st[id] = $(id).value;
+    localStorage.setItem(STORE, JSON.stringify(st));
+  } catch (e) { /* storage unavailable */ }
+}
+function loadState(){
+  try {
+    const st = JSON.parse(localStorage.getItem(STORE));
+    if (!st) return;
+    for (const id of CTRLS) if (st[id] != null) $(id).value = st[id];
+    if (Array.isArray(st.methods))
+      document.querySelectorAll('.mchk').forEach(c => c.checked = st.methods.includes(c.value));
+  } catch (e) { /* ignore malformed state */ }
+}
+
 // Acquire residual(s): synthetic profile (one series) or N plant+DMD series (server).
 async function refreshResidual(){
   tcurManual = false;   // re-anchor windows on the new data's change point
@@ -232,6 +253,7 @@ function draw(){
   const ref = +$('ref').value, test = +$('test').value, lag = +$('lag').value, thr = +$('thr').value/100;
   for (const [k,v] of [['width',width],['noise',noise.toFixed(2)],['ref',ref],['test',test],['lag',lag],['thr',thr.toFixed(2)]])
     $('v_'+k).textContent = v;
+  saveState();
   if (!series.length){ Plotly.react('plot', [], {}); renderTable([]); return; }
 
   const N = series[0].r.length, x = [...Array(N).keys()];
@@ -366,6 +388,7 @@ const debouncedRefresh = () => { clearTimeout(debTimer); debTimer = setTimeout(r
 signalIds.forEach(id => $(id).addEventListener('input', debouncedRefresh));
 windowIds.forEach(id => $(id).addEventListener('input', draw));
 document.querySelectorAll('.mchk').forEach(c => c.addEventListener('input', debouncedRefresh));
+loadState();          // restore the last setup before the first render
 refreshResidual();
 
 // Hover the lower plot to slide the shaded ref/test windows (cheap relayout).
