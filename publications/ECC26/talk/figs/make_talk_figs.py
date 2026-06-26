@@ -47,9 +47,12 @@ plt.rcParams.update(
 BLUE, RED, GREY, GREEN = "#1f6fb2", "#d1495b", "#9aa0a6", "#2a9d8f"
 
 
-def _save(fig: plt.Figure, name: str) -> None:
+def _save(fig: plt.Figure, name: str, *, tight: bool = True) -> None:
+    # tight=False keeps the full fixed canvas (so two figures of equal figsize
+    # render at the same scale on a slide — identical font sizes).
+    kw = {"bbox_inches": "tight"} if tight else {}
     for ext in ("png", "pdf"):
-        fig.savefig(HERE / f"{name}.{ext}", bbox_inches="tight")
+        fig.savefig(HERE / f"{name}.{ext}", **kw)
     plt.close(fig)
     print(f"  wrote {name}.png / .pdf")
 
@@ -144,8 +147,6 @@ def fig_bess(variant: str = "hx10", *, crop: bool = True) -> None:
     peak = ONSET + int(
         np.argmax(q[ONSET : ONSET + 600]),
     )  # detection peak after onset
-    # pre-onset noise floor (for an honest "bumps near floor" band, not a cherry-picked arrow)
-    floor_p95 = float(np.percentile(q[3219:ONSET], 95))
     thr = 0.8
 
     fig, (ax0, ax1) = plt.subplots(
@@ -156,26 +157,17 @@ def fig_bess(variant: str = "hx10", *, crop: bool = True) -> None:
         gridspec_kw={"height_ratios": [1.1, 1.0]},
     )
     ax0.plot(h, temp, lw=0.8, alpha=0.85)
-    ax0.axvspan(h[ONSET], h[-1], color=RED, alpha=0.06)
-    ax0.set_ylabel("module temp\n(normalised)")
-    ax0.set_title(
-        "Real BESS cooling-fan fault — detected on data the model never saw",
-    )
+    ax0.set_ylabel("temperature\n(normalised)")
 
     ax1.plot(h, q, color=BLUE, lw=1.7)
     ax1.axhline(thr, color=GREY, ls=":", lw=1.4)
-    ax1.text(h[3300], thr + 0.05, "threshold", color=GREY, fontsize=13)
-    ax1.axvline(h[ONSET], color=RED, lw=2.0)
-    ax1.text(
-        h[ONSET] - 0.3,
-        q.max() * 0.96,
-        "fault onset",
-        color=RED,
-        fontsize=14,
-        ha="right",
-        va="top",
-        fontweight="bold",
-    )
+    # reference (blue) / test (green) windows + gray dashed onset, matching the
+    # companion plots; onset coloured like the companion's change marker.
+    lo, hi = max(0, ONSET - test_c), min(n - 1, ONSET + test_c)
+    for ax in (ax0, ax1):
+        ax.axvspan(h[lo], h[ONSET], color=APP_REF, alpha=0.13)
+        ax.axvspan(h[ONSET], h[hi], color=APP_TEST, alpha=0.16)
+        ax.axvline(h[ONSET], color=APP_PLANT, ls="--", lw=1.6)
     ax1.annotate(
         f"detected {peak - ONSET} samples\nafter onset  ≈  c = {test_c}",
         xy=(h[peak], q[peak]),
@@ -185,17 +177,7 @@ def fig_bess(variant: str = "hx10", *, crop: bool = True) -> None:
         fontweight="bold",
         arrowprops={"arrowstyle": "->", "color": BLUE, "lw": 1.8},
     )
-    # honest pre-onset context: shade the noise-floor band instead of an arrow
-    ax1.axhspan(0, floor_p95, color=GREY, alpha=0.12)
-    ax1.text(
-        h[3400],
-        floor_p95 * 0.5,
-        "pre-onset noise floor\n(bumps here are not reliable)",
-        color=GREY,
-        fontsize=11,
-        va="center",
-    )
-    ax1.set_ylabel("change score $Q_k$")
+    ax1.set_ylabel("score")
     ax1.set_xlabel("time since start (hours)")
     ax1.set_ylim(0, q.max() * 1.1)
     if crop:
@@ -203,20 +185,12 @@ def fig_bess(variant: str = "hx10", *, crop: bool = True) -> None:
         name = f"fig_bess_{variant}_crop"
     else:
         ax1.set_xlim(h[3219], h[-1])
-        # label the late peaks honestly as return-to-normal (bidirectional)
-        for li in [i for i in (18122, 20881) if i < n and q[i] > 1.0]:
-            ax1.annotate(
-                "late peak\n(after fault window;\nuncertain origin)",
-                xy=(h[li], q[li]),
-                xytext=(h[li] - 7, q[li]),
-                color=GREY,
-                fontsize=11,
-                arrowprops={"arrowstyle": "->", "color": GREY, "lw": 1.2},
-            )
         name = f"fig_bess_{variant}_full"
     fig.align_ylabels((ax0, ax1))
-    fig.tight_layout()
-    _save(fig, name)
+    # full canvas + shared left/right (tight=False): 12-inch width and identical
+    # plot extent as the companion figs → same on-slide font size AND width.
+    fig.subplots_adjust(left=AX_LEFT, right=AX_RIGHT, top=0.985, bottom=0.10, hspace=0.13)
+    _save(fig, name, tight=False)
 
 
 # --- Robustness / slide 7 --------------------------------------------------
@@ -363,6 +337,300 @@ def fig_twotank() -> None:
     _save(fig, "fig_twotank_proof")
 
 
+# --- Companion two-tank (slide 9) ------------------------------------------
+# window_explorer.html constants, mirrored so the talk figures match the app.
+APP_PLANT, APP_THRESH = "#999999", "#111111"  # plant gray, threshold black
+APP_REF, APP_TEST = "#2f86d6", "#27ae60"  # reference blue, test green bands
+APP_METHODS = ["DMD", "DMDc", "onlineDMD", "onlineDMDc", "toDMDc"]
+APP_COLOR = {
+    "DMD": "#1f77b4",
+    "DMDc": "#2ca02c",
+    "onlineDMD": "#d62728",
+    "onlineDMDc": "#9467bd",
+    "toDMDc": "#8c564b",
+}
+APP_LABEL = {"onlineDMD": "oDMD", "onlineDMDc": "oDMDc"}
+APP_REF_N = APP_TEST_N = 60  # default ref/test window size
+APP_THR = 0.25  # default threshold (slider 25 / 100)
+COMPANION_FIGSIZE = (12, 7.0)  # shared by both companion figs → equal slide scale
+# shared plot-area left/right (figure fraction) so every data plot spans the SAME
+# horizontal extent on its slide — only thing that makes the x-axes line up.
+AX_LEFT, AX_RIGHT = 0.11, 0.965
+
+
+def _app_lbl(m: str) -> str:
+    """Display label for a method (window_explorer.html lbl())."""
+    return APP_LABEL.get(m, m)
+
+
+def _web_score(
+    r: np.ndarray,
+    ref: int,
+    test: int,
+    lag: int = 0,
+    warmup: int = 0,
+) -> np.ndarray:
+    """The window_explorer.html score, verbatim: max(D_test/D_ref − 1, 0) over
+    sliding ref/test windows (see scores() in examples/window_explorer.html).
+    Samples before the windows fill are NaN (the app's null), excluded downstream.
+    """
+    L = ref + lag + test
+    out = np.full(len(r), np.nan)
+    for t in range(max(L - 1, warmup), len(r)):
+        start = t - L + 1
+        out[t] = max(
+            r[t - test + 1 : t + 1].mean() / r[start : start + ref].mean() - 1,
+            0.0,
+        )
+    return out
+
+
+def _web_auc(pos: list[float], neg: list[float]) -> float:
+    """Mann-Whitney AUC with tie-averaged ranks (window_explorer.html auc())."""
+    if not pos or not neg:
+        return float("nan")
+    allv = sorted(
+        [(v, 1) for v in pos] + [(v, 0) for v in neg],
+        key=lambda a: a[0],
+    )
+    i, rank_sum, m = 0, 0.0, len(allv)
+    while i < m:
+        j = i
+        while j < m and allv[j][0] == allv[i][0]:
+            j += 1
+        avg = (i + 1 + j) / 2
+        rank_sum += sum(avg for k in range(i, j) if allv[k][1] == 1)
+        i = j
+    np_, nn = len(pos), len(neg)
+    return (rank_sum - np_ * (np_ + 1) / 2) / (np_ * nn)
+
+
+def _web_region_bounds(
+    clean: np.ndarray,
+    ref: int,
+    test: int,
+    lag: int,
+    onset: int | None,
+) -> tuple[int, int, int]:
+    """(N, posS, posE) detection region (window_explorer.html regionBounds())."""
+    clean = np.asarray(clean)
+    nn = len(clean)
+    d_eps = 0.005 * ((clean.max() - clean.min()) or 1.0)
+    cs = ce = -1
+    for t in range(1, nn):
+        if abs(clean[t] - clean[t - 1]) > d_eps:
+            cs = t if cs < 0 else cs
+            ce = t
+    pos_s = onset if onset is not None else (0 if cs < 0 else cs)
+    true_e = 0 if ce < 0 else max(ce, pos_s)
+    return nn, pos_s, min(nn - 1, true_e + ref + test + lag)
+
+
+def _web_metrics(
+    sc: np.ndarray,
+    clean: np.ndarray,
+    ref: int,
+    test: int,
+    lag: int,
+    thr: float,
+    onset: int | None,
+) -> dict:
+    """Per-model detection metrics (window_explorer.html metrics())."""
+    nn, pos_s, pos_e = _web_region_bounds(clean, ref, test, lag, onset)
+    peak, peak_idx, cross_idx = -1.0, -1, -1
+    for t in range(pos_s, pos_e + 1):
+        s = sc[t]
+        if np.isnan(s):
+            continue
+        if s > peak:
+            peak, peak_idx = s, t
+        if cross_idx < 0 and s > thr:
+            cross_idx = t
+    fp = nrm = 0
+    pos_v: list[float] = []
+    nrm_v: list[float] = []
+    for t in range(nn):
+        s = sc[t]
+        if np.isnan(s):
+            continue
+        if pos_s <= t <= pos_e:
+            pos_v.append(s)
+        else:
+            nrm += 1
+            nrm_v.append(s)
+            fp += s > thr
+    return {
+        "far": fp / nrm if nrm else 0.0,
+        "auc": _web_auc(pos_v, nrm_v),
+        "detected": peak > thr,
+        "delayPeak": peak_idx - pos_s if peak_idx >= 0 else None,
+        "delayCross": cross_idx - pos_s if cross_idx >= 0 else None,
+    }
+
+
+def _companion_series(method: str, width: float = 60.0) -> dict:
+    """Run one app identifier on the fouling plant; return its score + metrics
+    alongside the raw residual backend payload. The single reusable block both
+    companion figures build on."""
+    from examples.plant_residual_server import LEARN_W, compute_residual
+
+    d = compute_residual(method, "permanent", width, 0.08)
+    sc = _web_score(
+        np.array(d["r"]),
+        APP_REF_N,
+        APP_TEST_N,
+        0,
+        LEARN_W,
+    )
+    met = _web_metrics(
+        sc,
+        np.array(d["clean"]),
+        APP_REF_N,
+        APP_TEST_N,
+        0,
+        APP_THR,
+        d["onset"],
+    )
+    return {"key": method, "raw": d, "score": sc, "metrics": met}
+
+
+def fig_twotank_companion() -> None:
+    """The exact plant + identifier the live companion runs (window_explorer.html):
+    a controlled two-tank whose outflow coefficient slowly fouls. Mirrors the app's
+    look: split gray plant levels (h1, h2) with the toDMDc one-step prediction
+    overlaid, gray inflow q, the toDMDc change score, and the reference/test window
+    undercolors. The inflow never changes (same input) yet the response departs as
+    the outflow fouls — the spine claim, on the plant the audience plays with."""
+    from examples.plant_residual_server import CP, LEARN_W
+
+    ser = _companion_series("toDMDc")
+    d = ser["raw"]
+    states, pred = np.array(d["states"]), np.array(d["pred"])
+    q, s = np.array(d["inputs"]), ser["score"]
+    n = len(s)
+    x = np.arange(n)
+    # app band positions (bandShapes in window_explorer.html), tcur=onset+test-1
+    ref_band, test_band = (CP - APP_REF_N, CP), (CP, CP + APP_TEST_N)
+
+    fig, axs = plt.subplots(
+        4,
+        1,
+        figsize=COMPANION_FIGSIZE,  # shared canvas → same on-slide scale as the scores fig
+        sharex=True,
+        gridspec_kw={"height_ratios": [1.0, 1.0, 0.6, 1.0]},
+    )
+    # split levels: one panel per tank, gray plant + brown toDMDc prediction
+    for i in range(states.shape[0]):
+        axs[i].plot(x, states[i], color=APP_PLANT, lw=1.6)
+        axs[i].plot(x, pred[i], color=APP_COLOR["toDMDc"], lw=1.3, ls="--")
+        axs[i].set_ylabel(f"$h_{i + 1}$ (m)")
+    axs[0].plot([], [], color=APP_PLANT, lw=1.6, label="plant")
+    axs[0].plot([], [], color=APP_COLOR["toDMDc"], lw=1.3, ls="--", label="toDMDc")
+    axs[0].legend(loc="upper right", ncol=2, frameon=False)
+
+    axs[2].plot(x, q, color=APP_PLANT, lw=1.4)
+    axs[2].set_ylabel("input $q$ (m³/s)")
+
+    axs[3].plot(x, s, color=APP_COLOR["toDMDc"], lw=1.7)
+    axs[3].axhline(APP_THR, color=APP_THRESH, ls="--", lw=1.2)
+    axs[3].set_ylabel("score")
+    axs[3].set_xlabel("sample")
+
+    # reference (blue) and test (green) window undercolors, app colours/opacities
+    for ax in axs:
+        ax.axvspan(*ref_band, color=APP_REF, alpha=0.13)
+        ax.axvspan(*test_band, color=APP_TEST, alpha=0.16)
+        ax.axvline(CP, color=APP_PLANT, ls="--", lw=1.2)
+        ax.set_xlim(LEARN_W, n)
+    fig.align_ylabels(axs)
+    fig.subplots_adjust(left=AX_LEFT, right=AX_RIGHT, top=0.985, bottom=0.075, hspace=0.30)
+    _save(fig, "fig_twotank_companion", tight=False)
+
+
+def fig_twotank_companion_scores() -> None:
+    """All app identifiers on the fouling plant: the change score per method (in
+    window_explorer.html colours) over the app's metrics table. Reuses the same
+    _companion_series block as the single-method figure."""
+    from examples.plant_residual_server import CP, LEARN_W
+
+    sers = [_companion_series(m) for m in APP_METHODS]
+    n = len(sers[0]["score"])
+    x = np.arange(n)
+    ref_band, test_band = (CP - APP_REF_N, CP), (CP, CP + APP_TEST_N)
+
+    fig, (ax, axt) = plt.subplots(
+        2,
+        1,
+        figsize=COMPANION_FIGSIZE,
+        gridspec_kw={"height_ratios": [1.7, 1.0]},
+    )
+    for ser in sers:
+        ax.plot(
+            x,
+            ser["score"],
+            color=APP_COLOR[ser["key"]],
+            lw=1.6,
+            label=_app_lbl(ser["key"]),
+        )
+    ax.axvspan(*ref_band, color=APP_REF, alpha=0.13)
+    ax.axvspan(*test_band, color=APP_TEST, alpha=0.16)
+    ax.axvline(CP, color=APP_PLANT, ls="--", lw=1.2)
+    ax.axhline(APP_THR, color=APP_THRESH, ls="--", lw=1.2)
+    ax.set_xlim(LEARN_W, n)
+    ax.set_ylabel("score")
+    ax.set_xlabel("sample")
+    ax.xaxis.set_label_coords(0.5, -0.13)  # keep the label clear of the table
+    ax.legend(ncol=len(APP_METHODS), frameon=False, loc="upper right")
+
+    # app metrics table: model | MAR/e | delay | peak | FAR | AUC (renderTable())
+    axt.axis("off")
+    cols = ["model", "MAR/e", "delay", "peak", "FAR", "AUC"]
+
+    def _cell(v: int | None) -> str:
+        return "–" if v is None else str(v)
+
+    cells = []
+    for ser in sers:
+        m = ser["metrics"]
+        cells.append(
+            [
+                _app_lbl(ser["key"]),
+                "✓" if m["detected"] else "✗",
+                _cell(m["delayCross"]),
+                _cell(m["delayPeak"]),
+                f"{m['far'] * 100:.1f}%",
+                "–" if not np.isfinite(m["auc"]) else f"{m['auc']:.3f}",
+            ],
+        )
+    tab = axt.table(
+        cellText=cells,
+        colLabels=cols,
+        loc="center",
+        cellLoc="center",
+    )
+    tab.auto_set_font_size(False)
+    tab.set_fontsize(13)
+    tab.scale(1.0, 1.6)
+    # best per column (app highlights best): min delay/peak/FAR, max AUC
+    metrics = [s["metrics"] for s in sers]
+    best = {
+        2: min((m["delayCross"] for m in metrics if m["delayCross"] is not None), default=None),
+        3: min((m["delayPeak"] for m in metrics if m["delayPeak"] is not None), default=None),
+        4: min(m["far"] for m in metrics),
+        5: max((m["auc"] for m in metrics if np.isfinite(m["auc"])), default=None),
+    }
+    for i, ser in enumerate(sers):
+        tab[(i + 1, 0)].get_text().set_color(APP_COLOR[ser["key"]])
+        tab[(i + 1, 0)].get_text().set_fontweight("bold")
+        m = ser["metrics"]
+        vals = {2: m["delayCross"], 3: m["delayPeak"], 4: m["far"], 5: m["auc"]}
+        for c, b in best.items():
+            if b is not None and vals[c] == b:
+                tab[(i + 1, c)].get_text().set_fontweight("bold")
+    fig.subplots_adjust(left=AX_LEFT, right=AX_RIGHT, top=0.965, bottom=0.04, hspace=0.42)
+    _save(fig, "fig_twotank_companion_scores", tight=False)
+
+
 # --- The trap (slide 4) ----------------------------------------------------
 def fig_trap() -> None:
     """Concept: a control step (NORMAL big swing) vs the same input producing a
@@ -466,4 +734,6 @@ if __name__ == "__main__":
     fig_bess("hx10", crop=False)
     fig_bess("hx20", crop=True)
     fig_twotank()
+    fig_twotank_companion()
+    fig_twotank_companion_scores()
     print("Done.")
