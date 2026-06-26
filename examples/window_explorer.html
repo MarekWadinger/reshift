@@ -1102,7 +1102,12 @@
       noise = +$("noise").value / 100;
     if ($("source").value === "synthetic") {
       const { clean, r } = profile(type, width, noise);
-      series = [{ key: "synthetic", color: COLOR.synthetic, clean, r }];
+      // The change always STARTS at CENTER (profile() builds it that way), so pin
+      // the marker there. Deriving it from clean's slope drifts later as `width`
+      // grows — a gradual ramp's initial slope sits under the detection epsilon.
+      series = [
+        { key: "synthetic", color: COLOR.synthetic, clean, r, onset: CENTER },
+      ];
     } else {
       const methods = selectedMethods();
       if (!methods.length) {
