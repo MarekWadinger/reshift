@@ -301,6 +301,62 @@
     border: 1px solid var(--accent);
   }
 
+  /* floating table of contents: only useful in the stacked narrow layout,
+     where the figure and the prose no longer sit side by side. Native
+     <details> handles open/close; native anchors handle the smooth scroll. */
+  .toc {
+    display: none;
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 50;
+  }
+  @media (max-width: 900px) {
+    .toc {
+      display: block;
+    }
+  }
+  .toc > summary {
+    list-style: none;
+    cursor: pointer;
+    font: 600 13px/1.2 system-ui;
+    color: #fff;
+    background: var(--accent);
+    border-radius: 999px;
+    padding: 11px 16px;
+    box-shadow: 0 4px 14px rgba(20, 20, 50, 0.28);
+  }
+  .toc > summary::-webkit-details-marker {
+    display: none;
+  }
+  .toc nav {
+    position: absolute;
+    right: 0;
+    bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    min-width: 190px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: 0 8px 28px rgba(20, 20, 50, 0.18);
+  }
+  .toc nav a {
+    font: 500 14px/1.1 system-ui;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 9px 11px;
+    border-radius: 8px;
+  }
+  .toc nav a:hover {
+    background: var(--accent-soft);
+  }
+  .toc nav a.fig {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
   .mlist {
     margin-top: 14px;
   }
@@ -326,6 +382,10 @@
     height: 12px;
     border-radius: 3px;
     flex: 0 0 auto;
+    /* inline-block so the swatch keeps its size in the table td (plain inline
+       spans ignore width/height); in the flex .mlist it still works fine */
+    display: inline-block;
+    vertical-align: middle;
   }
 
   #mtable {
@@ -353,6 +413,9 @@
     text-align: left;
     font-weight: 600;
     white-space: nowrap;
+  }
+  table.mt td.mname .swatch {
+    margin-right: 6px;
   }
   table.mt td.best {
     font-weight: 800;
@@ -472,7 +535,7 @@
 </header>
 
 <div class="cols">
-  <aside class="figpanel">
+  <aside class="figpanel" id="figure">
     <div class="figcard">
       <div class="cta">
         👆 <b>Move your cursor along a trace</b> to slide the
@@ -488,11 +551,11 @@
   </aside>
 
   <div class="prose">
-    <section>
+    <section id="the-idea">
       <h2>The idea</h2>
       <h3>A good model turns change into a number</h3>
       <p>
-        A solid model of the plant's nominal behaviour renders its prediction
+        A solid model of the plant's nominal behavior renders its prediction
         error — the
         <span class="def" title="model one-step prediction error"
           >residual</span
@@ -512,7 +575,7 @@
       >
       <p>
         where <i>D</i> is the mean residual over a window. It sits near zero
-        while both windows see the same nominal behaviour, and rises as the test
+        while both windows see the same nominal behavior, and rises as the test
         window slides into a change the reference hasn't reached yet — that rise
         is the detection.
       </p>
@@ -521,7 +584,7 @@
       </button>
     </section>
 
-    <section>
+    <section id="try-it">
       <h2>Try it</h2>
       <h3>Easy to set, easy to read</h3>
       <p>
@@ -573,7 +636,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="the-trade-off">
       <h2>The trade-off</h2>
       <h3>Bound to real value</h3>
       <p>
@@ -595,8 +658,10 @@
         ><input id="thr" type="range" min="0" max="300" value="25" />
       </div>
       <p>
-        Don't like setting magic constants? Us neither! That is why our
-        threshold preserves units of original signals (check THE REAL THING ↓).
+        Don't like setting magic constants? Us neither! The score is a
+        <b>relative</b> increase — the test error as a fraction of the reference
+        (0.25 = 25% above baseline) — so it is dimensionless and the same
+        threshold transfers across signals of any scale.
         <br />
         Not convinced? Check the sweep view over all reasonable thresholds.
       </p>
@@ -624,7 +689,7 @@
       </button>
     </section>
 
-    <section>
+    <section id="make-it-harder">
       <h2>Make it harder</h2>
       <h3>Real changes aren't clean steps</h3>
       <p>
@@ -655,40 +720,44 @@
       <button class="try alt" data-preset="abrupt">▶ An abrupt spike</button>
     </section>
 
-    <section>
+    <section id="the-real-thing">
       <h2>The real thing</h2>
       <h3>A two-tank plant, six ways to identify it</h3>
       <p>
-        Now the residual comes from a real nonlinear <b>two-tank</b> simulation
-        whose outflow slowly fouls. The model is one of six
+        So far so good? Now comes the difficult part! The whole idea holds only
+        if we can identify a model that tracks the system well. Here the
+        residual come from a real nonlinear <b>two-tank</b> simulation whose
+        outflow slowly fouls.
+      </p>
+      <button class="try" data-preset="plant">▶ Bring the real plant</button>
+      <button class="try alt" data-preset="synthetic">
+        ▶ Woah, take me back
+      </button>
+      <!-- the two buttons drive this; JS still reads/writes #source everywhere -->
+      <input type="hidden" id="source" value="synthetic" />
+      <p>
+        The model is one of six
         <span
           class="def"
           title="Dynamic Mode Decomposition family of system identifiers"
           >DMD</span
         >
+
         identifiers — batch vs online, input-blind vs control-aware, full vs
         rank-truncated. Switch them on and compare: which fires first, with
-        fewest false alarms? Ours — online and control-aware — is <b>toDMDc</b>.
+        fewest false alarms?
       </p>
-      <div class="ctl">
-        <label class="ui">residual source</label>
-        <select id="source">
-          <option value="synthetic" selected>
-            synthetic profile (teaching)
-          </option>
-          <option value="plant">two-tank plant + DMD</option>
-        </select>
-      </div>
       <div class="mlist" id="mlist"></div>
       <p>
-        The upper panels then show each tank's level (grey = plant, coloured
-        dashed = each model's prediction) and the input flow. Where a model's
-        prediction peels off the plant, its residual climbs.
+        The upper panels then show each tank's level in metres (grey = plant,
+        coloured dashed = each model's prediction) and the input flow. The
+        <b>residual is the plant–model mismatch</b> — the gap between the grey
+        and dashed lines — so it is in metres too; where a model's prediction
+        peels off the plant, its residual climbs.
       </p>
-      <button class="try" data-preset="plant">▶ Run the two-tank plant</button>
     </section>
 
-    <section>
+    <section id="go-deeper">
       <h2>Go deeper</h2>
       <h3>Reproduce &amp; explore</h3>
       <p>Export the exact figure or the underlying numbers.</p>
@@ -704,12 +773,17 @@
         <b>Glossary.</b> FAR = false-alarm rate · MAR/s = missed per sample ·
         MAR/e = missed per event · AUC = ranking quality · delay = samples to
         detection. DMD variants: <code>c</code> = control-aware,
-        <code>t/to</code> = rank-truncated, <code>online</code> =
+        <code>t</code> = rank-truncated, <code>o/online</code> =
         streaming/adaptive.
       </p>
     </section>
   </div>
 </div>
+
+<details class="toc" id="toc">
+  <summary>☰ Jump to…</summary>
+  <nav><!-- links injected from the sections + figure --></nav>
+</details>
 
 <footer>
   <div class="wrap">
@@ -727,6 +801,10 @@
     CENTER = 300,
     HI = 4.0;
   const METHODS = ["DMD", "DMDc", "onlineDMD", "onlineDMDc", "toDMDc"];
+  // Display-only short labels; the keys above stay as-is for the server query
+  // and the precomputed data/<method>_*.json filenames.
+  const LABEL = { onlineDMD: "oDMD", onlineDMDc: "oDMDc" };
+  const lbl = (m) => LABEL[m] || m;
   const COLOR = {
     DMD: "#1f77b4",
     DMDc: "#2ca02c",
@@ -844,7 +922,7 @@
   // spans to posE = trueE + the window buffer (ref+test+lag), where the score stays
   // legitimately elevated. Grading uses the response region, so a real (late)
   // detection counts as a hit instead of being mislabeled as a false alarm.
-  function regionBounds(clean, ref, test, lag) {
+  function regionBounds(clean, ref, test, lag, onset) {
     const Nn = clean.length;
     const dEPS = 0.005 * (Math.max(...clean) - Math.min(...clean) || 1);
     let cs = -1,
@@ -854,8 +932,12 @@
         if (cs < 0) cs = t;
         ce = t;
       }
-    const posS = cs < 0 ? 0 : cs,
-      trueE = ce < 0 ? 0 : ce;
+    // Plant mode passes the TRUE physical change point (server's CP); the
+    // residual only rises once the model starts diverging, which is later, so
+    // deriving posS from `clean` would place the onset (and the dashed marker)
+    // too late. Fall back to the derived edge for synthetic data.
+    const posS = onset != null ? onset : cs < 0 ? 0 : cs,
+      trueE = ce < 0 ? 0 : Math.max(ce, posS);
     return {
       Nn,
       posS,
@@ -864,8 +946,8 @@
     };
   }
 
-  function metrics(sc, clean, ref, test, lag, thr) {
-    const { Nn, posS, posE } = regionBounds(clean, ref, test, lag);
+  function metrics(sc, clean, ref, test, lag, thr, onset) {
+    const { Nn, posS, posE } = regionBounds(clean, ref, test, lag, onset);
     let peak = -1,
       peakIdx = -1,
       crossIdx = -1;
@@ -905,8 +987,8 @@
 
   // Threshold-free view: FAR/MAR-per-sample vs threshold, and the ROC. Same
   // response-region partition as the table.
-  function sweepFor(sc, clean, ref, test, lag, grid) {
-    const { posS, posE } = regionBounds(clean, ref, test, lag);
+  function sweepFor(sc, clean, ref, test, lag, grid, onset) {
+    const { posS, posE } = regionBounds(clean, ref, test, lag, onset);
     const pos = [],
       nrm = [];
     for (let t = 0; t < sc.length; t++) {
@@ -949,7 +1031,7 @@
     ).join("");
     lab.insertAdjacentHTML(
       "beforeend",
-      `<span class="swatch" style="background:${COLOR[m]}"></span><span class="mname">${m}</span>` +
+      `<span class="swatch" style="background:${COLOR[m]}"></span><span class="mname">${lbl(m)}</span>` +
         `<select class="mstyle" data-method="${m}">${opts}</select>`,
     );
     $("mlist").appendChild(lab);
@@ -1064,6 +1146,7 @@
         color: COLOR[d.key],
         clean: d.clean,
         r: d.r,
+        onset: d.onset, // server's true change point (CP); residual-derived otherwise
         warmup: d.warmup,
         states: d.states,
         pred: d.pred,
@@ -1150,23 +1233,27 @@
     let onset = 0;
     for (const s of series) {
       const sc = scores(s.r, ref, test, lag, s.warmup || 0);
-      const m = metrics(sc, s.clean, ref, test, lag, thr);
+      const m = metrics(sc, s.clean, ref, test, lag, thr, s.onset);
       onset = m.onset;
       scs.push({ s, sc, m });
       tabData.push({ key: s.key, color: s.color, m });
     }
     renderTable(tabData);
-    // Anchor "now" so the TEST window starts at the change; lag then pushes the
-    // REFERENCE window earlier (it does NOT slide test forward).
+    // Place the TEST window's start at the onset (the dashed line); the
+    // reference (and the lag gap) then sit immediately before it. tcur is the
+    // test window's right edge: onset + test - 1. Clamp so it fits on the left.
     if (!tcurManual)
       tcur = Math.min(N - 1, Math.max(ref + lag + test - 1, onset + test - 1));
 
     // row layout: [h1..hk, input]? + residual + score
     const nst = plant ? series[0].states.length : 0;
     const titles = [];
-    for (let i = 0; i < nst; i++) titles.push(`h${i + 1}`);
-    if (plant) titles.push("input q");
-    titles.push("residual", "score");
+    // plant levels and the residual (plant−model mismatch) are in metres;
+    // the score is a dimensionless ratio, so it carries no unit. Synthetic
+    // mode is a unitless teaching profile.
+    for (let i = 0; i < nst; i++) titles.push(`h${i + 1} (m)`);
+    if (plant) titles.push("input q (m³/s)");
+    titles.push(plant ? "residual (m)" : "residual", "score");
     const n = titles.length,
       doms = domains(n);
 
@@ -1188,7 +1275,7 @@
           traces.push({
             x,
             y: s.pred[i],
-            name: s.key,
+            name: lbl(s.key),
             legendgroup: s.key,
             showlegend: false,
             yaxis: ax,
@@ -1213,7 +1300,7 @@
       traces.push({
         x,
         y: s.r,
-        name: s.key,
+        name: lbl(s.key),
         legendgroup: s.key,
         yaxis: axR,
         line: { color: s.color, dash: dashOf(s.key) },
@@ -1221,7 +1308,7 @@
       traces.push({
         x,
         y: sc,
-        name: s.key,
+        name: lbl(s.key),
         legendgroup: s.key,
         showlegend: false,
         yaxis: axS,
@@ -1288,7 +1375,10 @@
       };
     });
     $("plot").style.height = figH + "px";
-    Plotly.react("plot", traces, layout, { displayModeBar: false });
+    Plotly.react("plot", traces, layout, {
+      displayModeBar: false,
+      responsive: true,
+    });
 
     // Attach the hover handler once the plot exists (the async init means this
     // can't run at script-eval time). Hover the figure to slide the windows: the
@@ -1322,11 +1412,11 @@
         Math.min(grid.length - 1, Math.round((thr * 60) / scoreMax)),
       ); // grid point at the current threshold
       for (const { s, sc } of scs) {
-        const sw = sweepFor(sc, s.clean, ref, test, lag, grid);
+        const sw = sweepFor(sc, s.clean, ref, test, lag, grid, s.onset);
         sweep.push({
           x: sw.far,
           y: sw.mar.map((v) => 1 - v),
-          name: s.key,
+          name: lbl(s.key),
           legendgroup: s.key,
           showlegend: false,
           line: { color: s.color, width: 1.5, dash: dashOf(s.key) },
@@ -1350,8 +1440,9 @@
         hoverinfo: "skip",
       });
       $("sweepdesc").textContent =
-        "ROC per model (line style = model); dot = current threshold; dotted = chance";
+        "ROC per model (line style = model); dot = current threshold; dotted = chance. Up and to the left is better — more catches, fewer false alarms.";
       sweepLayout = {
+        height: 190, // pin to the #sweep div so autosize can't render stale-sized
         margin: { t: 6, r: 8, b: 30, l: 34 },
         showlegend: false,
         font: { size: 10 },
@@ -1366,11 +1457,11 @@
       };
     } else {
       for (const { s, sc } of scs) {
-        const sw = sweepFor(sc, s.clean, ref, test, lag, grid);
+        const sw = sweepFor(sc, s.clean, ref, test, lag, grid, s.onset);
         sweep.push({
           x: grid,
           y: sw.far,
-          name: s.key + " FAR",
+          name: lbl(s.key) + " FAR",
           legendgroup: s.key,
           showlegend: false,
           line: { color: s.color, width: 1.5 },
@@ -1378,15 +1469,16 @@
         sweep.push({
           x: grid,
           y: sw.mar,
-          name: s.key + " MAR",
+          name: lbl(s.key) + " MAR",
           legendgroup: s.key,
           showlegend: false,
           line: { color: s.color, width: 1.5, dash: "dot" },
         });
       }
       $("sweepdesc").textContent =
-        "FAR (solid) & MAR/sample (dotted) vs threshold; dashed = current threshold";
+        "FAR (solid) & MAR/sample (dotted) vs threshold; dashed = current threshold. Both lower is better — pick a threshold where the two curves are jointly low.";
       sweepLayout = {
+        height: 190, // pin to the #sweep div so autosize can't render stale-sized
         margin: { t: 6, r: 8, b: 30, l: 34 },
         showlegend: false,
         font: { size: 10 },
@@ -1406,7 +1498,10 @@
         yaxis: { title: { text: "rate", font: { size: 10 } }, range: [0, 1] },
       };
     }
-    Plotly.react("sweep", sweep, sweepLayout, { displayModeBar: false });
+    Plotly.react("sweep", sweep, sweepLayout, {
+      displayModeBar: false,
+      responsive: true,
+    });
   }
 
   // Metrics table: one row per model (coloured swatch), best value per column
@@ -1436,7 +1531,7 @@
     const rows = tabData
       .map(
         ({ key, color, m }) => `<tr>
-    <td class="mname"><span class="swatch" style="background:${color}"></span>${key}</td>
+    <td class="mname"><span class="swatch" style="background:${color}"></span>${lbl(key)}</td>
     ${td(`<span class="${m.detected ? "ok" : "bad"}">${m.detected ? "✓" : "✗"}</span>`, m.detected)}
     ${num(m.delayCross, bestCross)}
     ${num(m.delayPeak, bestPeak)}
@@ -1491,7 +1586,7 @@
       data = [];
     for (const s of series) {
       const sc = scores(s.r, ref, test, lag, s.warmup || 0);
-      const m = metrics(sc, s.clean, ref, test, lag, thr);
+      const m = metrics(sc, s.clean, ref, test, lag, thr, s.onset);
       meta.onset = m.onset;
       rows.push({
         model: s.key,
@@ -1586,14 +1681,16 @@
     plant: {
       source: "plant",
       type: "permanent",
-      width: 6,
+      width: 300,
       noise: 8,
       ref: 60,
       test: 60,
       lag: 0,
       thr: 25,
-      methods: ["DMD", "onlineDMDc", "toDMDc"],
+      methods: ["toDMDc"],
     },
+    // "take me back": flip the source only, keep the current window settings
+    synthetic: { source: "synthetic" },
   };
   function applyPreset(name) {
     const p = PRESETS[name];
@@ -1633,6 +1730,33 @@
     .forEach((s) => s.addEventListener("input", draw)); // restyle, no refetch
   $("sweepview").addEventListener("input", draw); // toggle sweep/ROC view, no refetch
   loadState(); // restore the last setup before the first render
+
+  // Narrow-view TOC: native <details> handles open/close, native #anchors do
+  // the smooth scroll. JS only builds the link list (Figure + every section,
+  // named from its h2) and closes the menu after a pick.
+  (() => {
+    const toc = $("toc"),
+      nav = toc.querySelector("nav");
+    const sections = [...document.querySelectorAll(".prose section")];
+    sections.forEach((s, i) => {
+      if (!s.id) s.id = "sec" + i;
+    });
+    const link = (href, text, cls) => {
+      const a = document.createElement("a");
+      a.href = href;
+      a.textContent = text;
+      if (cls) a.className = cls;
+      nav.appendChild(a);
+    };
+    link("#figure", "▲ Figure", "fig");
+    sections.forEach((s) =>
+      link("#" + s.id, s.querySelector("h2")?.textContent.trim() || s.id),
+    );
+    nav.addEventListener("click", (e) => {
+      if (e.target.tagName === "A") toc.open = false; // close after navigating
+    });
+  })();
+
   // Detect the precomputed static grid (GitHub-Pages companion); else live server.
   fetch("data/manifest.json")
     .then((res) => (res.ok ? res.json() : null))
