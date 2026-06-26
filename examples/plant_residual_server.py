@@ -52,11 +52,12 @@ LEARN_W = 180  # identification / warmup window
 def _kmult(t: np.ndarray, change: str, width: float) -> np.ndarray:
     """Outflow-coefficient multiplier over time: 1 -> STEP (permanent) or a bump."""
     tcp = CP * DT
+    # both changes START at tcp and last exactly `width`
+    u = np.clip((t - tcp) / max(width, 1e-9), 0.0, 1.0)
     if change == "permanent":
-        u = np.clip((t - tcp) / max(width, 1e-9), 0.0, 1.0)
-        s = u * u * (3 - 2 * u)  # smoothstep; width=1 ~ step
-    else:  # transient
-        s = np.exp(-((t - tcp) ** 2) / (2 * width**2))
+        s = u * u * (3 - 2 * u)  # smoothstep up to the new level
+    else:  # transient: raised-cosine pulse back to baseline over [tcp, tcp+width]
+        s = np.sin(np.pi * u) ** 2
     return 1.0 + (STEP - 1.0) * s
 
 
@@ -226,6 +227,11 @@ def compute_residual(
 
 HTML = Path(__file__).with_name("window_explorer.html")
 PLOTLY = Path(__file__).with_name("plotly.min.js")
+# Served live for the "Read the paper" link during local preview. On GitHub Pages
+# the CI compiles this LaTeX source into paper.pdf instead (see pages.yml).
+PAPER = (
+    Path(__file__).resolve().parents[1] / "publications" / "ECC26" / "root.pdf"
+)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -241,6 +247,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send(200, "text/html", HTML.read_bytes())
         elif u.path == "/plotly.min.js" and PLOTLY.exists():
             self._send(200, "application/javascript", PLOTLY.read_bytes())
+        elif u.path == "/paper.pdf" and PAPER.exists():
+            self._send(200, "application/pdf", PAPER.read_bytes())
         elif u.path == "/residual":
             q = parse_qs(u.query)
             try:

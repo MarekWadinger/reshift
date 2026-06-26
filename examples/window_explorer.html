@@ -1,5 +1,5 @@
 <!doctype html>
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <title>Window influence on CPD score</title>
 <!-- Explore how ref/test/lag windows turn a reconstruction-residual profile into the
      SubIDChangeDetector score:  score = max(D_test/D_train - 1, 0)
@@ -16,158 +16,675 @@
      plant_residual_server.py, or sits next to the HTML for file:// use. -->
 <script src="plotly.min.js"></script>
 <style>
-  :root{ --ink:#1f2430; --muted:#5b6573; --accent:#4f46e5; --accent-soft:#eef0fb;
-         --line:#e6e8ec; --card:#fff; --ref:#2f86d6; --test:#27ae60; }
-  *{ box-sizing:border-box } html{ scroll-behavior:smooth }
-  body{ margin:0; background:#f6f7f9; color:var(--ink);
-        font:18px/1.7 ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif }
-  h1,h2,h3,button,select,label,table,.ui,.cta,.metric,.kicker{ font-family:system-ui,-apple-system,"Segoe UI",sans-serif }
-  a{ color:var(--accent) }
-  .wrap{ max-width:1180px; margin:0 auto; padding:0 22px }
+  :root {
+    --ink: #1f2430;
+    --muted: #5b6573;
+    --accent: #4f46e5;
+    --accent-soft: #eef0fb;
+    --line: #e6e8ec;
+    --card: #fff;
+    --ref: #2f86d6;
+    --test: #27ae60;
+    --lag: #94a3b8;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    margin: 0;
+    background: #f6f7f9;
+    color: var(--ink);
+    font:
+      18px/1.7 ui-serif,
+      Georgia,
+      "Iowan Old Style",
+      "Times New Roman",
+      serif;
+  }
+  h1,
+  h2,
+  h3,
+  button,
+  select,
+  label,
+  table,
+  .ui,
+  .cta,
+  .metric,
+  .kicker {
+    font-family:
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      sans-serif;
+  }
+  a {
+    color: var(--accent);
+  }
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 22px;
+  }
 
-  header.hero{ background:linear-gradient(160deg,#0f1226,#1d2348); color:#fff; padding:62px 0 50px }
-  header.hero .wrap{ max-width:780px }
-  .kicker{ font:600 12px/1 system-ui; letter-spacing:.18em; text-transform:uppercase; color:#aab2d8 }
-  h1{ font:700 40px/1.1 system-ui; margin:14px 0 16px; letter-spacing:-.02em }
-  .lede{ font-size:21px; line-height:1.5; color:#d9ddf0; margin:0 }
-  .hero .meta{ margin-top:20px; font:15px/1.55 system-ui; color:#aeb6dc } .hero .meta b{ color:#fff }
+  header.hero {
+    background: linear-gradient(160deg, #0f1226, #1d2348);
+    color: #fff;
+    padding: 62px 0 50px;
+  }
+  header.hero .wrap {
+    max-width: 780px;
+  }
+  .kicker {
+    font: 600 12px/1 system-ui;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #aab2d8;
+  }
+  h1 {
+    font: 700 40px/1.1 system-ui;
+    margin: 14px 0 16px;
+    letter-spacing: -0.02em;
+  }
+  .lede {
+    font-size: 21px;
+    line-height: 1.5;
+    color: #d9ddf0;
+    margin: 0;
+  }
+  .hero .meta {
+    margin-top: 20px;
+    font: 15px/1.55 system-ui;
+    color: #aeb6dc;
+  }
+  .hero .meta b {
+    color: #fff;
+  }
+  .paperlink {
+    display: inline-block;
+    margin-top: 18px;
+    font: 600 14px/1 system-ui;
+    color: #0f1226;
+    background: #fff;
+    padding: 11px 16px;
+    border-radius: 9px;
+    text-decoration: none;
+  }
+  .paperlink:hover {
+    background: #e9ecff;
+  }
 
-  .cols{ max-width:1180px; margin:42px auto; padding:0 22px; display:grid;
-         grid-template-columns:minmax(0,1fr) 520px; grid-template-areas:"prose fig"; gap:56px; align-items:start }
-  .prose{ grid-area:prose; max-width:62ch }
-  .prose section{ margin:0 0 46px; scroll-margin-top:18px }
-  .prose h2{ font:700 13px/1 system-ui; letter-spacing:.13em; text-transform:uppercase; color:var(--accent); margin:0 0 8px }
-  .prose h3{ font:600 26px/1.2 system-ui; margin:.1em 0 .5em; letter-spacing:-.01em }
-  .prose p{ margin:0 0 1em } .prose b{ font-weight:600 }
-  .def{ border-bottom:1px dotted #9aa2b1; font-weight:600; cursor:help }
-  .eq{ display:block; text-align:center; background:#0f1226; color:#e9ecff; border-radius:10px;
-       padding:13px; margin:14px 0; font:15px ui-monospace, Menlo, monospace }
-  .eq sub{ font-size:.8em }
+  .cols {
+    max-width: 1180px;
+    margin: 42px auto;
+    padding: 0 22px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 520px;
+    grid-template-areas: "prose fig";
+    gap: 56px;
+    align-items: start;
+  }
+  .prose {
+    grid-area: prose;
+    max-width: 62ch;
+  }
+  .prose section {
+    margin: 0 0 46px;
+    scroll-margin-top: 18px;
+  }
+  .prose h2 {
+    font: 700 13px/1 system-ui;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 8px;
+  }
+  .prose h3 {
+    font: 600 26px/1.2 system-ui;
+    margin: 0.1em 0 0.5em;
+    letter-spacing: -0.01em;
+  }
+  .prose p {
+    margin: 0 0 1em;
+  }
+  .prose b {
+    font-weight: 600;
+  }
+  .def {
+    border-bottom: 1px dotted #9aa2b1;
+    font-weight: 600;
+    cursor: help;
+  }
+  .eq {
+    display: block;
+    text-align: center;
+    background: #0f1226;
+    color: #e9ecff;
+    border-radius: 10px;
+    padding: 13px;
+    margin: 14px 0;
+    font:
+      15px ui-monospace,
+      Menlo,
+      monospace;
+  }
+  .eq sub {
+    font-size: 0.8em;
+  }
 
-  aside.figpanel{ grid-area:fig; position:sticky; top:14px }
-  .figcard{ background:var(--card); border:1px solid var(--line); border-radius:14px;
-            box-shadow:0 1px 3px rgba(20,20,50,.06), 0 10px 28px rgba(20,20,50,.05); padding:12px 14px 14px }
-  .cta{ font-size:13px; line-height:1.5; color:#3a4252; background:var(--accent-soft);
-        border-radius:9px; padding:9px 11px; margin-bottom:10px }
+  aside.figpanel {
+    grid-area: fig;
+    position: sticky;
+    top: 14px;
+  }
+  .figcard {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow:
+      0 1px 3px rgba(20, 20, 50, 0.06),
+      0 10px 28px rgba(20, 20, 50, 0.05);
+    padding: 12px 14px 14px;
+  }
+  .cta {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #3a4252;
+    background: var(--accent-soft);
+    border-radius: 9px;
+    padding: 9px 11px;
+    margin-bottom: 10px;
+  }
 
-  .ctl{ display:flex; flex-direction:column; gap:5px; margin:14px 0 0 }
-  .ctl>label{ font:600 13px/1.2 system-ui; color:var(--ink) }
-  .ctl .val{ color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums }
-  input[type=range]{ width:100%; accent-color:var(--accent); margin:0 }
-  select{ padding:6px 8px; font:14px system-ui; border:1px solid var(--line); border-radius:8px; background:#fff }
-  .row{ display:flex; gap:16px; flex-wrap:wrap } .row .ctl{ flex:1; min-width:130px }
-  .cap{ font:14px/1.55 system-ui; color:var(--muted); margin:6px 0 20px } .cap b{ color:var(--ink) }
+  .ctl {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 14px 0 0;
+  }
+  .ctl > label {
+    font: 600 13px/1.2 system-ui;
+    color: var(--ink);
+  }
+  .ctl .val {
+    color: var(--accent);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+    margin: 0;
+  }
+  select {
+    padding: 6px 8px;
+    font: 14px system-ui;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+  }
+  .row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .row .ctl {
+    flex: 1;
+    min-width: 130px;
+  }
+  .cap {
+    font: 14px/1.55 system-ui;
+    color: var(--muted);
+    margin: 6px 0 20px;
+  }
+  .cap b {
+    color: var(--ink);
+  }
+  .ctl .desc {
+    font: 13px/1.4 system-ui;
+    color: var(--muted);
+    margin: -1px 0 1px;
+  }
+  .ends {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font: 11.5px/1.35 system-ui;
+    color: #8a93a3;
+    margin: 4px 0 18px;
+  }
+  .ends span + span {
+    text-align: right;
+  }
+  /* anchor each window control to its colour in the figure (test=green, reference=blue) */
+  .w-test input[type="range"] {
+    accent-color: var(--test);
+  }
+  .w-test .val,
+  .w-test .ends {
+    color: var(--test);
+  }
+  .w-ref input[type="range"] {
+    accent-color: var(--ref);
+  }
+  .w-ref .val,
+  .w-ref .ends {
+    color: var(--ref);
+  }
+  .w-lag input[type="range"] {
+    accent-color: var(--lag);
+  }
+  .w-lag .val,
+  .w-lag .ends {
+    color: var(--lag);
+  }
 
-  button.try{ font:600 13px/1 system-ui; color:#fff; background:var(--accent); border:0; border-radius:9px;
-              padding:10px 14px; cursor:pointer; margin:10px 8px 0 0 }
-  button.try:hover{ filter:brightness(1.08) }
-  button.try.alt{ background:#fff; color:var(--accent); border:1px solid var(--accent) }
+  button.try {
+    font: 600 13px/1 system-ui;
+    color: #fff;
+    background: var(--accent);
+    border: 0;
+    border-radius: 9px;
+    padding: 10px 14px;
+    cursor: pointer;
+    margin: 10px 8px 0 0;
+  }
+  button.try:hover {
+    filter: brightness(1.08);
+  }
+  button.try.alt {
+    background: #fff;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
 
-  .mlist{ margin-top:14px }
-  .mlist label{ display:flex; align-items:center; gap:9px; font:500 14px/1 system-ui; padding:5px 0; cursor:pointer }
-  .mlist .mname{ flex:1 } .mlist .mstyle{ font-size:13px; min-width:62px; letter-spacing:-1px; padding:1px 2px }
-  .swatch{ width:12px; height:12px; border-radius:3px; flex:0 0 auto }
+  .mlist {
+    margin-top: 14px;
+  }
+  .mlist label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font: 500 14px/1 system-ui;
+    padding: 5px 0;
+    cursor: pointer;
+  }
+  .mlist .mname {
+    flex: 1;
+  }
+  .mlist .mstyle {
+    font-size: 13px;
+    min-width: 62px;
+    letter-spacing: -1px;
+    padding: 1px 2px;
+  }
+  .swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex: 0 0 auto;
+  }
 
-  #mtable{ overflow-x:auto; margin-top:10px }
-  table.mt{ border-collapse:collapse; width:100%; font:13px/1.3 system-ui; font-variant-numeric:tabular-nums }
-  table.mt th,table.mt td{ padding:5px 7px; text-align:right; border-bottom:1px solid var(--line) }
-  table.mt th{ font-weight:600; color:var(--muted); cursor:help }
-  table.mt td.mname{ text-align:left; font-weight:600; white-space:nowrap }
-  table.mt td.best{ font-weight:800; background:#e9f9ef; border-radius:4px }
-  .ok{ color:#1a9d54 } .bad{ color:#c0392b }
-  #sweep{ width:100%; height:190px } #sweepdesc{ font:12px/1.4 system-ui; color:var(--muted); margin:6px 0 0 }
+  #mtable {
+    overflow-x: auto;
+    margin-top: 10px;
+  }
+  table.mt {
+    border-collapse: collapse;
+    width: 100%;
+    font: 13px/1.3 system-ui;
+    font-variant-numeric: tabular-nums;
+  }
+  table.mt th,
+  table.mt td {
+    padding: 5px 7px;
+    text-align: right;
+    border-bottom: 1px solid var(--line);
+  }
+  table.mt th {
+    font-weight: 600;
+    color: var(--muted);
+    cursor: help;
+  }
+  table.mt td.mname {
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  table.mt td.best {
+    font-weight: 800;
+    background: #e9f9ef;
+    border-radius: 4px;
+  }
+  .ok {
+    color: #1a9d54;
+  }
+  .bad {
+    color: #c0392b;
+  }
+  #sweep {
+    width: 100%;
+    height: 190px;
+  }
+  #sweepdesc {
+    font: 12px/1.4 system-ui;
+    color: var(--muted);
+    margin: 6px 0 0;
+  }
 
-  details.adv{ margin-top:6px; border-top:1px solid var(--line); padding-top:12px }
-  details.adv>summary{ font:600 13px system-ui; color:var(--accent); cursor:pointer }
-  .dl{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px }
-  .dl button{ font:600 12px system-ui; padding:8px 11px; border:1px solid var(--line); border-radius:8px; background:#fff; cursor:pointer }
-  .dl button:hover{ background:var(--accent-soft) }
+  details.adv {
+    margin-top: 6px;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+  details.adv > summary {
+    font: 600 13px system-ui;
+    color: var(--accent);
+    cursor: pointer;
+  }
+  .dl {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .dl button {
+    font: 600 12px system-ui;
+    padding: 8px 11px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+  }
+  .dl button:hover {
+    background: var(--accent-soft);
+  }
 
-  code{ font-family:ui-monospace, Menlo, monospace; font-size:.85em; background:#eef0f4; padding:1px 5px; border-radius:5px }
-  footer{ border-top:1px solid var(--line); margin-top:36px; padding:26px 0 64px; color:var(--muted); font:14px/1.6 system-ui }
-  footer .wrap{ max-width:780px }
+  code {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 0.85em;
+    background: #eef0f4;
+    padding: 1px 5px;
+    border-radius: 5px;
+  }
+  footer {
+    border-top: 1px solid var(--line);
+    margin-top: 36px;
+    padding: 26px 0 64px;
+    color: var(--muted);
+    font: 14px/1.6 system-ui;
+  }
+  footer .wrap {
+    max-width: 780px;
+  }
 
-  @media (max-width:900px){
-    .cols{ grid-template-columns:1fr; grid-template-areas:"fig" "prose"; gap:26px; margin-top:16px }
-    aside.figpanel{ position:static } h1{ font-size:30px } .lede{ font-size:19px }
-    .prose{ max-width:none } body{ font-size:17px }
+  @media (max-width: 900px) {
+    .cols {
+      grid-template-columns: 1fr;
+      grid-template-areas: "fig" "prose";
+      gap: 26px;
+      margin-top: 16px;
+    }
+    aside.figpanel {
+      position: static;
+    }
+    h1 {
+      font-size: 30px;
+    }
+    .lede {
+      font-size: 19px;
+    }
+    .prose {
+      max-width: none;
+    }
+    body {
+      font-size: 17px;
+    }
+    .ends {
+      flex-direction: column;
+      gap: 1px;
+    }
+    .ends span + span {
+      text-align: left;
+    } /* avoid mid-line collision on phones */
   }
 </style>
 
-<header class="hero"><div class="wrap">
-  <div class="kicker">ECC 2026 · interactive companion</div>
-  <h1>Catching a change before it catches you</h1>
-  <p class="lede">A pump's seals are slowly wearing. The level sensors read normal — until, one day, they don't. <b>How early can an algorithm call it?</b></p>
-  <p class="meta">A live companion to <b>ODMD-CPD</b> — online Dynamic Mode Decomposition for change-point detection. Everything below the fold is real and reactive: drag a control, watch the detector respond. Nothing is faked.</p>
-</div></header>
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">ECC 2026 · interactive companion</div>
+    <h1>reshift</h1>
+    <p class="meta">
+      Truncated Online Dynamic Mode Decomposition with Control for Industrial
+      Change Detection.
+    </p>
+    <p class="lede">
+      A pump's seals are slowly wearing. The level sensors read normal — until,
+      one day, they don't. <b>How early can an algorithm call it?</b>
+    </p>
+    <a class="paperlink" href="paper.pdf" target="_blank" rel="noopener"
+      >📄 Read the paper →</a
+    >
+  </div>
+</header>
 
 <div class="cols">
-  <aside class="figpanel"><div class="figcard">
-    <div class="cta">👆 <b>Move your cursor along a trace</b> to slide the <b style="color:var(--test)">test</b> and <b style="color:var(--ref)">reference</b> windows. Your cursor is <b>“now”</b> — the right edge of the test window. Grey line = the true change; each coloured dotted line marks where that model's <b>score peaks</b> (its detection delay).</div>
-    <div id="plot" style="width:100%;height:420px"></div>
-    <div id="mtable"></div>
-  </div></aside>
+  <aside class="figpanel">
+    <div class="figcard">
+      <div class="cta">
+        👆 <b>Move your cursor along a trace</b> to slide the
+        <b style="color: var(--test)">test</b> and
+        <b style="color: var(--ref)">reference</b> windows. Your cursor is
+        <b>“now”</b> — the right edge of the test window. Grey line = the true
+        change; each coloured dotted line marks where that model's
+        <b>score peaks</b> (its detection delay).
+      </div>
+      <div id="plot" style="width: 100%; height: 420px"></div>
+      <div id="mtable"></div>
+    </div>
+  </aside>
 
   <div class="prose">
     <section>
       <h2>The idea</h2>
-      <h3>A detector watches its own surprise</h3>
-      <p>Fit a model of the plant's normal behaviour, then let it predict the next measurement. The gap between prediction and reality is the <span class="def" title="model one-step prediction error">residual</span> — small noise while the plant behaves, a jump the moment it changes and the model is caught off guard.</p>
-      <p>To turn that into an alarm we compare a recent <b style="color:var(--test)">test</b> window against an older <b style="color:var(--ref)">reference</b> window:</p>
-      <code class="eq">score = max( D<sub>test</sub> / D<sub>ref</sub> − 1 , 0 )</code>
-      <p>where <i>D</i> is the mean residual over a window. The score sits near zero when the windows agree and spikes when the test window slides into the change. That spike is the detection.</p>
-      <button class="try" data-preset="clean">▶ Show me a clean detection</button>
+      <h3>A good model turns change into a number</h3>
+      <p>
+        A solid model of the plant's nominal behaviour renders its prediction
+        error — the
+        <span class="def" title="model one-step prediction error"
+          >residual</span
+        >
+        — into an interpretable metric of system change: small and noise-like
+        while the plant behaves, and rising once it departs from what the model
+        knows.
+      </p>
+      <p>
+        Conventionally the residual is read through two sliding windows: a
+        recent <b style="color: var(--test)">test</b> window to watch for the
+        change, and an older <b style="color: var(--ref)">reference</b> window
+        to compensate for measurement noise. The score is their ratio:
+      </p>
+      <code class="eq"
+        >score = max( D<sub>test</sub> / D<sub>ref</sub> − 1 , 0 )</code
+      >
+      <p>
+        where <i>D</i> is the mean residual over a window. It sits near zero
+        while both windows see the same nominal behaviour, and rises as the test
+        window slides into a change the reference hasn't reached yet — that rise
+        is the detection.
+      </p>
+      <button class="try" data-preset="clean">
+        ▶ Show me a clean detection
+      </button>
     </section>
 
     <section>
       <h2>Try it</h2>
-      <h3>Slide the windows across the change</h3>
-      <p>It is a <b>rolling-window statistic</b>: two windows slide over the residual, and the score is the ratio of a recent <b style="color:var(--test)">test</b> window to a local <b style="color:var(--ref)">reference</b> window.</p>
+      <h3>Easy to set, easy to read</h3>
+      <p>
+        The score's whole character comes from how the two windows are sized and
+        spaced. Here's what each of the three knobs does — drag them and watch
+        the figure:
+      </p>
 
-      <div class="ctl"><label>test window <span class="val" id="v_test"></span></label><input id="test" type="range" min="5" max="200" value="60"></div>
-      <p class="cap">The fast, recent view. <b>Short</b> → the statistic peaks sooner but is noisier; <b>long</b> → it peaks later but steadier. The peak lands ~one test-window after the change, so the detection <span class="def" title="samples from the true change to the score's peak">delay</span> ≈ the test length.</p>
+      <div class="ctl w-test">
+        <label>test window <span class="val" id="v_test"></span></label>
+        <div class="desc">
+          The fast, recent view — the detection
+          <span class="def" title="samples from the change to the score's peak"
+            >delay</span
+          >
+          ≈ this length.
+        </div>
+        <input id="test" type="range" min="5" max="200" value="60" />
+        <div class="ends">
+          <span>shorter · peaks sooner, noisier</span
+          ><span>longer · peaks later, steadier</span>
+        </div>
+      </div>
 
-      <div class="ctl"><label>reference window <span class="val" id="v_ref"></span></label><input id="ref" type="range" min="5" max="200" value="60"></div>
-      <p class="cap">The local baseline. A fast wiggle that isn't a real change sits in <i>both</i> windows and cancels in the ratio. <b>Short</b> → adapts fast, hugs the recent normal; <b>long</b> → a steadier anchor that calms a twitchy test window.</p>
+      <div class="ctl w-ref">
+        <label>reference window <span class="val" id="v_ref"></span></label>
+        <div class="desc">
+          The local baseline — fast wiggles that aren't a real change sit in
+          both windows and cancel.
+        </div>
+        <input id="ref" type="range" min="5" max="200" value="60" />
+        <div class="ends">
+          <span>shorter · fast-adapting, hugs recent normal</span
+          ><span>longer · a steady anchor</span>
+        </div>
+      </div>
 
-      <div class="ctl"><label>lag <span class="val" id="v_lag"></span></label><input id="lag" type="range" min="0" max="100" value="0"></div>
-      <p class="cap">The gap between them — slides the reference earlier while the test window stays put. <b>Short</b> → reference right behind test; <b>long</b> → baseline taken from further back, ignoring more of the recent past.</p>
+      <div class="ctl w-lag">
+        <label>lag <span class="val" id="v_lag"></span></label>
+        <div class="desc">
+          The gap between test and reference — it sets how long the alarm stays
+          raised once a change hits.
+        </div>
+        <input id="lag" type="range" min="0" max="100" value="0" />
+        <div class="ends">
+          <span>shorter · fires, then quickly goes silent</span
+          ><span>longer · the alarm is held up longer</span>
+        </div>
+      </div>
     </section>
 
     <section>
       <h2>The trade-off</h2>
-      <h3>Where do you set the alarm?</h3>
-      <p>A threshold turns the score into a yes/no alarm. Set it too low and you cry wolf — a high <span class="def" title="false-alarm rate: fraction of normal samples flagged">FAR</span>; too high and you miss the event — a high <span class="def" title="missed-alarm rate: fraction of the change window left unflagged">MAR</span>. Drag the threshold; the curve sweeps every threshold at once.</p>
-      <div class="ctl"><label>threshold <span class="val" id="v_thr"></span></label><input id="thr" type="range" min="0" max="300" value="25"></div>
-      <div class="ctl"><label class="ui">sweep view</label>
-        <select id="sweepview"><option value="threshold">FAR / MAR vs threshold</option><option value="roc">ROC (TPR vs FPR)</option></select></div>
+      <h3>Bound to real value</h3>
+      <p>
+        A threshold turns the score into a yes/no alarm. Set it too low and you
+        cry wolf — a high
+        <span
+          class="def"
+          title="false-alarm rate: fraction of normal samples flagged"
+          >FAR</span
+        >; too high and you miss the event — a high
+        <span
+          class="def"
+          title="missed-alarm rate: fraction of the change window left unflagged"
+          >MAR</span
+        >.
+      </p>
+      <div class="ctl">
+        <label>threshold <span class="val" id="v_thr"></span></label
+        ><input id="thr" type="range" min="0" max="300" value="25" />
+      </div>
+      <p>
+        Don't like setting magic constants? Us neither! That is why our
+        threshold preserves units of original signals (check THE REAL THING ↓).
+        <br />
+        Not convinced? Check the sweep view over all reasonable thresholds.
+      </p>
+      <div class="ctl">
+        <label class="ui">sweep view</label>
+        <select id="sweepview">
+          <option value="threshold">FAR / MAR vs threshold</option>
+          <option value="roc">ROC (TPR vs FPR)</option>
+        </select>
+      </div>
       <div id="sweepdesc"></div>
       <div id="sweep"></div>
-      <p>The threshold-free summary is the <span class="def" title="area under the ROC curve — 1 perfect, 0.5 chance">AUC</span> in the table: higher is better, and it doesn't depend on where you set the bar.</p>
-      <button class="try" data-preset="tradeoff">▶ Push it into a hard case</button>
+      <p>
+        The threshold-free summary is the
+        <span
+          class="def"
+          title="area under the ROC curve — 1 perfect, 0.5 chance"
+          >AUC</span
+        >
+        in the table: higher is better, and it doesn't depend on where you set
+        the bar.
+      </p>
+      <button class="try" data-preset="tradeoff">
+        ▶ Push it into a hard case
+      </button>
     </section>
 
     <section>
       <h2>Make it harder</h2>
       <h3>Real changes aren't clean steps</h3>
-      <p>Slow drifts and noisy sensors are what actually break detectors. Make the transition gradual and turn the noise up — the delay grows and the AUC falls.</p>
-      <div class="ctl"><label class="ui">change type</label>
-        <select id="type"><option value="permanent">permanent — stays changed</option><option value="transient">transient — returns to normal</option></select></div>
+      <p>
+        Slow drifts and noisy sensors are what actually break detectors. Make
+        the transition gradual and turn the noise up — the delay grows and the
+        AUC falls. But the detection
+      </p>
+      <div class="ctl">
+        <label class="ui">change type</label>
+        <select id="type">
+          <option value="permanent">permanent — stays changed</option>
+          <option value="transient">transient — returns to normal</option>
+        </select>
+      </div>
       <div class="row">
-        <div class="ctl"><label>transition — sharp ↔ slow <span class="val" id="v_width"></span></label><input id="width" type="range" min="1" max="120" value="6"></div>
-        <div class="ctl"><label>noise <span class="val" id="v_noise"></span></label><input id="noise" type="range" min="0" max="60" value="8"></div>
+        <div class="ctl">
+          <label
+            >transition — sharp ↔ slow
+            <span class="val" id="v_width"></span></label
+          ><input id="width" type="range" min="1" max="300" value="6" />
+        </div>
+        <div class="ctl">
+          <label>noise <span class="val" id="v_noise"></span></label
+          ><input id="noise" type="range" min="0" max="100" value="8" />
+        </div>
       </div>
       <button class="try alt" data-preset="noisy">▶ A slow, noisy drift</button>
+      <button class="try alt" data-preset="abrupt">▶ An abrupt spike</button>
     </section>
 
     <section>
       <h2>The real thing</h2>
       <h3>A two-tank plant, six ways to identify it</h3>
-      <p>Now the residual comes from a real nonlinear <b>two-tank</b> simulation whose outflow slowly fouls. The model is one of six <span class="def" title="Dynamic Mode Decomposition family of system identifiers">DMD</span> identifiers — batch vs online, input-blind vs control-aware, full vs rank-truncated. Switch them on and compare: which fires first, with fewest false alarms? Ours — online and control-aware — is <b>toDMDc</b>.</p>
-      <div class="ctl"><label class="ui">residual source</label>
-        <select id="source"><option value="synthetic" selected>synthetic profile (teaching)</option><option value="plant">two-tank plant + DMD</option></select></div>
+      <p>
+        Now the residual comes from a real nonlinear <b>two-tank</b> simulation
+        whose outflow slowly fouls. The model is one of six
+        <span
+          class="def"
+          title="Dynamic Mode Decomposition family of system identifiers"
+          >DMD</span
+        >
+        identifiers — batch vs online, input-blind vs control-aware, full vs
+        rank-truncated. Switch them on and compare: which fires first, with
+        fewest false alarms? Ours — online and control-aware — is <b>toDMDc</b>.
+      </p>
+      <div class="ctl">
+        <label class="ui">residual source</label>
+        <select id="source">
+          <option value="synthetic" selected>
+            synthetic profile (teaching)
+          </option>
+          <option value="plant">two-tank plant + DMD</option>
+        </select>
+      </div>
       <div class="mlist" id="mlist"></div>
-      <p>The upper panels then show each tank's level (grey = plant, coloured dashed = each model's prediction) and the input flow. Where a model's prediction peels off the plant, its residual climbs.</p>
+      <p>
+        The upper panels then show each tank's level (grey = plant, coloured
+        dashed = each model's prediction) and the input flow. Where a model's
+        prediction peels off the plant, its residual climbs.
+      </p>
       <button class="try" data-preset="plant">▶ Run the two-tank plant</button>
     </section>
 
@@ -175,446 +692,970 @@
       <h2>Go deeper</h2>
       <h3>Reproduce &amp; explore</h3>
       <p>Export the exact figure or the underlying numbers.</p>
-      <details class="adv"><summary>Export figure &amp; data</summary>
+      <details class="adv">
+        <summary>Export figure &amp; data</summary>
         <div class="dl">
           <button id="dlpng">⬇ figure (PNG)</button>
           <button id="dlsvg">⬇ figure (SVG)</button>
           <button id="dljson">⬇ data + metrics (JSON)</button>
         </div>
       </details>
-      <p style="margin-top:1.3em"><b>Glossary.</b> FAR = false-alarm rate · MAR/s = missed per sample · MAR/e = missed per event · AUC = ranking quality · delay = samples to detection. DMD variants: <code>c</code> = control-aware, <code>t/to</code> = rank-truncated, <code>online</code> = streaming/adaptive.</p>
+      <p style="margin-top: 1.3em">
+        <b>Glossary.</b> FAR = false-alarm rate · MAR/s = missed per sample ·
+        MAR/e = missed per event · AUC = ranking quality · delay = samples to
+        detection. DMD variants: <code>c</code> = control-aware,
+        <code>t/to</code> = rank-truncated, <code>online</code> =
+        streaming/adaptive.
+      </p>
     </section>
   </div>
 </div>
 
-<footer><div class="wrap">
-  ODMD-CPD · ECC 2026 — built from <code>reshift</code>. Source &amp; paper: <a href="https://github.com/MarekWadinger/reshift">github.com/MarekWadinger/reshift</a>.
-  In offline companion mode the width/noise sliders snap to a precomputed grid; with the local server they are continuous.
-</div></footer>
+<footer>
+  <div class="wrap">
+    reshift · ECC 2026. Source &amp; paper:
+    <a href="https://github.com/MarekWadinger/reshift"
+      >github.com/MarekWadinger/reshift</a
+    >. In offline companion mode the width/noise sliders snap to a precomputed
+    grid; with the local server they are continuous.
+  </div>
+</footer>
 
 <script>
-const N = 600, BASE = 1.0, CENTER = 300, HI = 4.0;
-const METHODS = ['DMD', 'tDMD', 'DMDc', 'onlineDMD', 'onlineDMDc', 'toDMDc'];
-const COLOR = {DMD:'#1f77b4', tDMD:'#ff7f0e', DMDc:'#2ca02c', onlineDMD:'#d62728', onlineDMDc:'#9467bd', toDMDc:'#8c564b', synthetic:'#1f77b4'};
-const DASHES = ['solid', 'dot', 'dash', 'longdash', 'dashdot', 'longdashdot'];
-const GLYPH = { solid:'━━━━', dot:'∙∙∙∙∙∙∙', dash:'┅┅┅┅', longdash:'━ ━ ━', dashdot:'━·━·━', longdashdot:'━━·━━·' };
-const DEFAULT_DASH = {DMD:'solid', tDMD:'dot', DMDc:'dash', onlineDMD:'longdash', onlineDMDc:'dashdot', toDMDc:'longdashdot', synthetic:'solid'};
-const THRESH = '#111';   // threshold colour, deliberately unlike any model colour
-const PLANT = '#999';    // plant (ground-truth) state colour
-
-// Deterministic LCG so the synthetic picture is stable across slider drags.
-function rng(seed){ let s = seed >>> 0; return () => (s = (1103515245*s + 12345) & 0x7fffffff) / 0x7fffffff; }
-
-// Synthetic residual. width = transition width (small=sharp/fast, large=smooth/slow).
-function profile(type, width, noise){
-  const clean = new Array(N), r = new Array(N), rand = rng(42);
-  for (let t = 0; t < N; t++){
-    let v = BASE;
-    if (type === 'permanent'){
-      if (width <= 1) v = t >= CENTER ? HI : BASE;
-      else { const u = Math.min(1, Math.max(0, (t-CENTER)/width)); v = BASE + (HI-BASE)*(u*u*(3-2*u)); }
-    } else {
-      v = BASE + (HI-BASE)*Math.exp(-((t-CENTER)**2)/(2*width*width));
-    }
-    clean[t] = v;
-    r[t] = Math.max(0, v + (rand()-0.5)*2*noise);
-  }
-  return { clean, r };
-}
-
-const mean = (a, lo, hi) => { let s = 0; for (let i = lo; i < hi; i++) s += a[i]; return s/(hi-lo); };
-
-// score[t] aligned so the combined window's right edge is at t (buffer layout in chdsubid.py).
-function scores(r, ref, test, lag, warmup = 0){
-  const L = ref + lag + test, out = new Array(r.length).fill(null);
-  for (let t = Math.max(L-1, warmup); t < r.length; t++){   // skip the warmup window
-    const start = t - L + 1;
-    out[t] = Math.max(mean(r, t-test+1, t+1) / mean(r, start, start+ref) - 1, 0);
-  }
-  return out;
-}
-
-function bands(t, ref, test, lag){
-  const L = ref + lag + test, start = t - L + 1;
-  return { ok: start >= 0, ref: [start, start+ref], test: [t-test+1, t+1] };
-}
-
-// Threshold-free AUC (Mann-Whitney): P(score on a change sample > score on a
-// normal sample). 1 = perfect separation, 0.5 = chance. Average ranks for ties.
-function auc(pos, neg){
-  if (!pos.length || !neg.length) return NaN;
-  const all = pos.map(v => [v, 1]).concat(neg.map(v => [v, 0])).sort((a, b) => a[0] - b[0]);
-  let i = 0, rankSum = 0;
-  while (i < all.length){
-    let j = i;
-    while (j < all.length && all[j][0] === all[i][0]) j++;
-    const avg = (i + 1 + j) / 2;               // average rank over the tie block i..j-1
-    for (let k = i; k < j; k++) if (all[k][1] === 1) rankSum += avg;
-    i = j;
-  }
-  const np = pos.length, nn = neg.length;
-  return (rankSum - np*(np+1)/2) / (np*nn);
-}
-
-// Ground truth from the clean signal: the change region is where it is *changing*,
-// extended by the buffer length L so the change can traverse both windows.
-function metrics(sc, clean, ref, test, lag, thr){
-  const Nn = clean.length, L = ref + lag + test;
-  const dEPS = 0.005*(Math.max(...clean) - Math.min(...clean) || 1);
-  let cs = -1, ce = -1;
-  for (let t = 1; t < Nn; t++) if (Math.abs(clean[t]-clean[t-1]) > dEPS){ if (cs < 0) cs = t; ce = t; }
-  const posS = cs < 0 ? 0 : cs, posE = Math.min(Nn-1, (ce < 0 ? 0 : ce) + L);
-  let fp = 0, nrm = 0, fn = 0, pos = 0, peak = -1, peakIdx = -1;
-  const posV = [], nrmV = [];
-  for (let t = 0; t < Nn; t++){
-    const s = sc[t]; if (s === null) continue;
-    if (t >= posS && t <= posE){ pos++; posV.push(s); if (s <= thr) fn++; if (s > peak){ peak = s; peakIdx = t; } }
-    else { nrm++; nrmV.push(s); if (s > thr) fp++; }
-  }
-  return {
-    far: nrm ? fp/nrm : 0, mar: pos ? fn/pos : 0, marEvent: (peak > thr) ? 0 : 1,
-    auc: auc(posV, nrmV),
-    delay: peakIdx >= 0 ? peakIdx - posS : null, detected: peak > thr, onset: posS, peakIdx,
+  const N = 600,
+    BASE = 1.0,
+    CENTER = 300,
+    HI = 4.0;
+  const METHODS = ["DMD", "DMDc", "onlineDMD", "onlineDMDc", "toDMDc"];
+  const COLOR = {
+    DMD: "#1f77b4",
+    DMDc: "#2ca02c",
+    onlineDMD: "#d62728",
+    onlineDMDc: "#9467bd",
+    toDMDc: "#8c564b",
+    synthetic: "#1f77b4",
   };
-}
-
-// Threshold-free view: FAR and MAR/sample as the threshold sweeps a grid. The
-// change region (positive/normal split) is threshold-independent, so partition
-// once and just re-count per threshold.
-function sweepFor(sc, clean, ref, test, lag, grid){
-  const Nn = clean.length, L = ref + lag + test;
-  const dEPS = 0.005*(Math.max(...clean) - Math.min(...clean) || 1);
-  let cs = -1, ce = -1;
-  for (let t = 1; t < Nn; t++) if (Math.abs(clean[t]-clean[t-1]) > dEPS){ if (cs < 0) cs = t; ce = t; }
-  const posS = cs < 0 ? 0 : cs, posE = Math.min(Nn-1, (ce < 0 ? 0 : ce) + L);
-  const pos = [], nrm = [];
-  for (let t = 0; t < Nn; t++){ const s = sc[t]; if (s === null) continue; (t >= posS && t <= posE ? pos : nrm).push(s); }
-  return {
-    far: grid.map(thr => nrm.length ? nrm.filter(v => v > thr).length / nrm.length : 0),
-    mar: grid.map(thr => pos.length ? pos.filter(v => v <= thr).length / pos.length : 0),
+  const DASHES = ["solid", "dot", "dash", "longdash", "dashdot", "longdashdot"];
+  const GLYPH = {
+    solid: "━━━━",
+    dot: "∙∙∙∙∙∙∙",
+    dash: "┅┅┅┅",
+    longdash: "━ ━ ━",
+    dashdot: "━·━·━",
+    longdashdot: "━━·━━·",
   };
-}
-
-const $ = id => document.getElementById(id);
-const signalIds = ['source','type','width','noise'];   // change the residual(s)
-const windowIds = ['ref','test','lag','thr'];           // only re-window/score
-let tcur = 380, staticShapes = [], series = [], tcurManual = false, hoverAttached = false;
-
-// Build the coloured method checklist (also serves as the legend). Set `checked`
-// as a property — the attribute via innerHTML does not reliably apply.
-METHODS.forEach(m => {
-  const lab = document.createElement('label');
-  const cb = document.createElement('input');
-  cb.type = 'checkbox'; cb.className = 'mchk'; cb.value = m; cb.checked = ['toDMDc','onlineDMDc','DMD'].includes(m);
-  lab.append(cb);
-  const opts = DASHES.map(d => `<option value="${d}"${d===DEFAULT_DASH[m]?' selected':''} title="${d}">${GLYPH[d]}</option>`).join('');
-  lab.insertAdjacentHTML('beforeend',
-    `<span class="swatch" style="background:${COLOR[m]}"></span><span class="mname">${m}</span>` +
-    `<select class="mstyle" data-method="${m}">${opts}</select>`);
-  $('mlist').appendChild(lab);
-});
-const selectedMethods = () => [...document.querySelectorAll('.mchk:checked')].map(c => c.value);
-// Line style (Plotly dash) chosen per method; used for every trace of that model.
-const dashOf = m => document.querySelector(`.mstyle[data-method="${m}"]`)?.value || 'solid';
-
-// Persist the control setup so a reload keeps your chosen methods/params
-// instead of snapping back to the hardcoded defaults.
-const STORE = 'cpd_explorer_v3';   // bump to reset stale state to new defaults
-const CTRLS = ['source','type','width','noise','ref','test','lag','thr','sweepview'];
-function saveState(){
-  try {
-    const st = { methods: selectedMethods(), styles: {} };
-    for (const id of CTRLS) st[id] = $(id).value;
-    document.querySelectorAll('.mstyle').forEach(s => { st.styles[s.dataset.method] = s.value; });
-    localStorage.setItem(STORE, JSON.stringify(st));
-  } catch (e) { /* storage unavailable */ }
-}
-function loadState(){
-  try {
-    const st = JSON.parse(localStorage.getItem(STORE));
-    if (!st) return;
-    for (const id of CTRLS) if (st[id] != null) $(id).value = st[id];
-    if (Array.isArray(st.methods))
-      document.querySelectorAll('.mchk').forEach(c => c.checked = st.methods.includes(c.value));
-    if (st.styles)
-      document.querySelectorAll('.mstyle').forEach(s => { if (st.styles[s.dataset.method]) s.value = st.styles[s.dataset.method]; });
-  } catch (e) { /* ignore malformed state */ }
-}
-
-// STATIC holds the precomputed grid manifest when the page is the GitHub-Pages
-// companion (no backend); null means live-server mode (local dev).
-let STATIC = null;
-const snap = (v, grid) => grid.reduce((a, b) => Math.abs(b - v) < Math.abs(a - v) ? b : a);
-
-// Acquire residual(s): synthetic profile (one series) or N plant+DMD series,
-// from either the precomputed static grid or the live server.
-async function refreshResidual(){
-  tcurManual = false;   // re-anchor windows on the new data's change point
-  const type = $('type').value;
-  let width = +$('width').value, noise = +$('noise').value/100;
-  if ($('source').value === 'synthetic'){
-    const { clean, r } = profile(type, width, noise);
-    series = [{ key:'synthetic', color:COLOR.synthetic, clean, r }];
-  } else {
-    const methods = selectedMethods();
-    if (!methods.length){ series = []; draw(); return; }
-    let got;
-    if (STATIC){
-      // snap the sliders to the precomputed grid and load the matching files
-      width = snap(width, STATIC.widths); noise = snap(noise, STATIC.noises);
-      $('width').value = width; $('noise').value = Math.round(noise * 100);
-      got = await Promise.all(methods.map(m =>
-        fetch(`data/${m}_${type}_w${width}_n${noise.toFixed(2)}.json`)
-          .then(res => res.ok ? res.json() : Promise.reject()).then(d => ({...d, key:m})).catch(() => null)));
-    } else {
-      got = await Promise.all(methods.map(m => {
-        const q = new URLSearchParams({method:m, change:type, width, noise});
-        return fetch('/residual?' + q).then(res => res.ok ? res.json() : Promise.reject()).then(d => ({...d, key:m})).catch(() => null);
-      }));
-    }
-    series = got.filter(Boolean).map(d => ({ key:d.key, color:COLOR[d.key], clean:d.clean, r:d.r, warmup:d.warmup, states:d.states, pred:d.pred, inputs:d.inputs }));
-    // Offline / server down: fall back to the synthetic profile so the page still works.
-    if (!series.length){ $('source').value = 'synthetic'; return refreshResidual(); }
-  }
-  draw();
-}
-
-// Evenly-stacked [bottom, top] domains for n rows, top→bottom.
-function domains(n){
-  const gap = 0.035, h = (1 - gap*(n-1))/n, ds = [];
-  for (let i = 0; i < n; i++){ const top = 1 - i*(h+gap); ds.push([Math.max(0, top-h), top]); }
-  return ds;
-}
-const axName = i => i ? 'y'+(i+1) : 'y';
-
-function bandShapes(){
-  const b = bands(tcur, +$('ref').value, +$('test').value, +$('lag').value);
-  if (!b.ok) return [];
-  return [
-    {type:'rect', xref:'x', yref:'paper', x0:b.ref[0],  x1:b.ref[1],  y0:0, y1:1, fillcolor:'#3498db', opacity:0.13, line:{width:0}},
-    {type:'rect', xref:'x', yref:'paper', x0:b.test[0], x1:b.test[1], y0:0, y1:1, fillcolor:'#2ecc71', opacity:0.16, line:{width:0}}];
-}
-
-// Single stacked figure with ONE shared x-axis (so everything lines up and the
-// onset is one line across all rows): plant states + input (plant mode only),
-// then residual and score per model. Per-model colour throughout; one threshold.
-function draw(){
-  const width = +$('width').value, noise = +$('noise').value/100;
-  const ref = +$('ref').value, test = +$('test').value, lag = +$('lag').value, thr = +$('thr').value/100;
-  for (const [k,v] of [['width',width],['noise',noise.toFixed(2)],['ref',ref],['test',test],['lag',lag],['thr',thr.toFixed(2)]])
-    $('v_'+k).textContent = v;
-  saveState();
-  if (!series.length){ Plotly.react('plot', [], {}); Plotly.react('sweep', [], {}); renderTable([]); return; }
-
-  const N = series[0].r.length, x = [...Array(N).keys()];
-  const plant = !!series[0].states;
-
-  // per-series score + metrics
-  const scs = [], tabData = [];
-  let onset = 0;
-  for (const s of series){
-    const sc = scores(s.r, ref, test, lag, s.warmup || 0);
-    const m = metrics(sc, s.clean, ref, test, lag, thr);
-    onset = m.onset;
-    scs.push({ s, sc, m });
-    tabData.push({ key:s.key, color:s.color, m });
-  }
-  renderTable(tabData);
-  // Anchor "now" so the TEST window starts at the change; lag then pushes the
-  // REFERENCE window earlier (it does NOT slide test forward).
-  if (!tcurManual) tcur = Math.min(N-1, Math.max(ref+lag+test-1, onset + test - 1));
-
-  // row layout: [h1..hk, input]? + residual + score
-  const nst = plant ? series[0].states.length : 0;
-  const titles = [];
-  for (let i = 0; i < nst; i++) titles.push(`h${i+1}`);
-  if (plant) titles.push('input q');
-  titles.push('residual', 'score');
-  const n = titles.length, doms = domains(n);
-
-  const traces = [];
-  let row = 0;
-  if (plant){
-    for (let i = 0; i < nst; i++, row++){
-      const ax = axName(row);
-      traces.push({ x, y: series[0].states[i], name:'plant', legendgroup:'plant', showlegend:i===0, yaxis:ax, line:{color:PLANT, width:2} });
-      for (const {s} of scs)
-        traces.push({ x, y: s.pred[i], name:s.key, legendgroup:s.key, showlegend:false, yaxis:ax, line:{color:s.color, width:1.2, dash:dashOf(s.key)} });
-    }
-    // input shares the 'plant' legend entry (one ground-truth entry, not two)
-    traces.push({ x, y: series[0].inputs, name:'plant', legendgroup:'plant', showlegend:false, yaxis:axName(row++), line:{color:PLANT} });
-  }
-  const axR = axName(row++), axS = axName(row++);
-  const delayShapes = [];
-  for (const {s, sc, m} of scs){
-    traces.push({ x, y: s.r, name:s.key, legendgroup:s.key, yaxis:axR, line:{color:s.color, dash:dashOf(s.key)} });
-    traces.push({ x, y: sc, name:s.key, legendgroup:s.key, showlegend:false, yaxis:axS, line:{color:s.color, dash:dashOf(s.key)} });
-    if (m.peakIdx >= 0)
-      delayShapes.push({type:'line', xref:'x', yref:'paper', x0:m.peakIdx, x1:m.peakIdx, y0:doms[n-1][0], y1:doms[n-1][1], line:{color:s.color, width:1.5, dash:'dot'}});
-  }
-  traces.push({ x:[0,N-1], y:[thr,thr], name:'threshold', yaxis:axS, line:{color:THRESH, dash:'dash'}, hoverinfo:'skip' });
-
-  staticShapes = [
-    {type:'line', xref:'x', yref:'paper', x0:onset, x1:onset, y0:0, y1:1, line:{color:PLANT,width:1,dash:'dash'}},
-    ...delayShapes,
-  ];
-  const layout = {
-    margin:{t:24,r:20,b:40,l:55}, legend:{orientation:'h', y:1.05},
-    shapes: staticShapes.concat(bandShapes()),
-    xaxis:{ title:'time', anchor:axName(n-1) },
+  const DEFAULT_DASH = {
+    DMD: "solid",
+    DMDc: "dash",
+    onlineDMD: "longdash",
+    onlineDMDc: "dashdot",
+    toDMDc: "longdashdot",
+    synthetic: "solid",
   };
-  titles.forEach((t, i) => {
-    layout[i ? 'yaxis'+(i+1) : 'yaxis'] = { domain:doms[i], title:{text:t, font:{size:11}}, ...(t==='score' ? {rangemode:'tozero'} : {}) };
+  const THRESH = "#111"; // threshold colour, deliberately unlike any model colour
+  const PLANT = "#999"; // plant (ground-truth) state colour
+
+  // Deterministic LCG so the synthetic picture is stable across slider drags.
+  function rng(seed) {
+    let s = seed >>> 0;
+    return () => (s = (1103515245 * s + 12345) & 0x7fffffff) / 0x7fffffff;
+  }
+
+  // Synthetic residual. width = transition width (small=sharp/fast, large=smooth/slow).
+  function profile(type, width, noise) {
+    const clean = new Array(N),
+      r = new Array(N),
+      rand = rng(42);
+    for (let t = 0; t < N; t++) {
+      let v = BASE;
+      // both changes START at CENTER and last exactly `width`:
+      //   permanent = smoothstep up to a new level; transient = a raised-cosine pulse back to baseline.
+      const u = Math.min(1, Math.max(0, (t - CENTER) / Math.max(width, 1e-9)));
+      if (type === "permanent") {
+        v =
+          BASE +
+          (HI - BASE) *
+            (width <= 1 ? (t >= CENTER ? 1 : 0) : u * u * (3 - 2 * u));
+      } else {
+        const s = Math.sin(Math.PI * u); // 0 -> 1 -> 0 across [CENTER, CENTER+width]
+        v = BASE + (HI - BASE) * s * s;
+      }
+      clean[t] = v;
+      r[t] = Math.max(0, v + (rand() - 0.5) * 2 * noise);
+    }
+    return { clean, r };
+  }
+
+  const mean = (a, lo, hi) => {
+    let s = 0;
+    for (let i = lo; i < hi; i++) s += a[i];
+    return s / (hi - lo);
+  };
+
+  // score[t] aligned so the combined window's right edge is at t (buffer layout in chdsubid.py).
+  function scores(r, ref, test, lag, warmup = 0) {
+    const L = ref + lag + test,
+      out = new Array(r.length).fill(null);
+    for (let t = Math.max(L - 1, warmup); t < r.length; t++) {
+      // skip the warmup window
+      const start = t - L + 1;
+      out[t] = Math.max(
+        mean(r, t - test + 1, t + 1) / mean(r, start, start + ref) - 1,
+        0,
+      );
+    }
+    return out;
+  }
+
+  function bands(t, ref, test, lag) {
+    const L = ref + lag + test,
+      start = t - L + 1;
+    return {
+      ok: start >= 0,
+      ref: [start, start + ref],
+      test: [t - test + 1, t + 1],
+    };
+  }
+
+  // Threshold-free AUC (Mann-Whitney): P(score on a change sample > score on a
+  // normal sample). 1 = perfect separation, 0.5 = chance. Average ranks for ties.
+  function auc(pos, neg) {
+    if (!pos.length || !neg.length) return NaN;
+    const all = pos
+      .map((v) => [v, 1])
+      .concat(neg.map((v) => [v, 0]))
+      .sort((a, b) => a[0] - b[0]);
+    let i = 0,
+      rankSum = 0;
+    while (i < all.length) {
+      let j = i;
+      while (j < all.length && all[j][0] === all[i][0]) j++;
+      const avg = (i + 1 + j) / 2; // average rank over the tie block i..j-1
+      for (let k = i; k < j; k++) if (all[k][1] === 1) rankSum += avg;
+      i = j;
+    }
+    const np = pos.length,
+      nn = neg.length;
+    return (rankSum - (np * (np + 1)) / 2) / (np * nn);
+  }
+
+  // Ground-truth bounds from the clean signal. [posS, trueE] is the true change
+  // (onset .. onset+width) -- the marker on the plot. The detector's RESPONSE to it
+  // spans to posE = trueE + the window buffer (ref+test+lag), where the score stays
+  // legitimately elevated. Grading uses the response region, so a real (late)
+  // detection counts as a hit instead of being mislabeled as a false alarm.
+  function regionBounds(clean, ref, test, lag) {
+    const Nn = clean.length;
+    const dEPS = 0.005 * (Math.max(...clean) - Math.min(...clean) || 1);
+    let cs = -1,
+      ce = -1;
+    for (let t = 1; t < Nn; t++)
+      if (Math.abs(clean[t] - clean[t - 1]) > dEPS) {
+        if (cs < 0) cs = t;
+        ce = t;
+      }
+    const posS = cs < 0 ? 0 : cs,
+      trueE = ce < 0 ? 0 : ce;
+    return {
+      Nn,
+      posS,
+      trueE,
+      posE: Math.min(Nn - 1, trueE + ref + test + lag),
+    };
+  }
+
+  function metrics(sc, clean, ref, test, lag, thr) {
+    const { Nn, posS, posE } = regionBounds(clean, ref, test, lag);
+    let peak = -1,
+      peakIdx = -1,
+      crossIdx = -1;
+    for (let t = posS; t <= posE; t++) {
+      const s = sc[t];
+      if (s === null) continue;
+      if (s > peak) {
+        peak = s;
+        peakIdx = t;
+      }
+      if (crossIdx < 0 && s > thr) crossIdx = t; // first threshold crossing after the change
+    }
+    let fp = 0,
+      nrm = 0;
+    const posV = [],
+      nrmV = [];
+    for (let t = 0; t < Nn; t++) {
+      const s = sc[t];
+      if (s === null) continue;
+      if (t >= posS && t <= posE) posV.push(s);
+      else {
+        nrm++;
+        nrmV.push(s);
+        if (s > thr) fp++;
+      } // alarm in genuinely nominal data = false alarm
+    }
+    return {
+      far: nrm ? fp / nrm : 0,
+      auc: auc(posV, nrmV),
+      detected: peak > thr, // did it fire anywhere after the change?
+      delayPeak: peakIdx >= 0 ? peakIdx - posS : null, // onset -> score peak
+      delayCross: crossIdx >= 0 ? crossIdx - posS : null, // onset -> first threshold crossing
+      onset: posS,
+      peakIdx,
+    };
+  }
+
+  // Threshold-free view: FAR/MAR-per-sample vs threshold, and the ROC. Same
+  // response-region partition as the table.
+  function sweepFor(sc, clean, ref, test, lag, grid) {
+    const { posS, posE } = regionBounds(clean, ref, test, lag);
+    const pos = [],
+      nrm = [];
+    for (let t = 0; t < sc.length; t++) {
+      const s = sc[t];
+      if (s === null) continue;
+      (t >= posS && t <= posE ? pos : nrm).push(s);
+    }
+    return {
+      far: grid.map((thr) =>
+        nrm.length ? nrm.filter((v) => v > thr).length / nrm.length : 0,
+      ),
+      mar: grid.map((thr) =>
+        pos.length ? pos.filter((v) => v <= thr).length / pos.length : 0,
+      ),
+    };
+  }
+
+  const $ = (id) => document.getElementById(id);
+  const signalIds = ["source", "type", "width", "noise"]; // change the residual(s)
+  const windowIds = ["ref", "test", "lag", "thr"]; // only re-window/score
+  let tcur = 380,
+    staticShapes = [],
+    series = [],
+    tcurManual = false,
+    hoverAttached = false;
+
+  // Build the coloured method checklist (also serves as the legend). Set `checked`
+  // as a property — the attribute via innerHTML does not reliably apply.
+  METHODS.forEach((m) => {
+    const lab = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.className = "mchk";
+    cb.value = m;
+    cb.checked = ["toDMDc", "onlineDMDc", "DMD"].includes(m);
+    lab.append(cb);
+    const opts = DASHES.map(
+      (d) =>
+        `<option value="${d}"${d === DEFAULT_DASH[m] ? " selected" : ""} title="${d}">${GLYPH[d]}</option>`,
+    ).join("");
+    lab.insertAdjacentHTML(
+      "beforeend",
+      `<span class="swatch" style="background:${COLOR[m]}"></span><span class="mname">${m}</span>` +
+        `<select class="mstyle" data-method="${m}">${opts}</select>`,
+    );
+    $("mlist").appendChild(lab);
   });
-  $('plot').style.height = Math.max(360, 118*n) + 'px';
-  Plotly.react('plot', traces, layout, {displayModeBar:false});
+  const selectedMethods = () =>
+    [...document.querySelectorAll(".mchk:checked")].map((c) => c.value);
+  // Line style (Plotly dash) chosen per method; used for every trace of that model.
+  const dashOf = (m) =>
+    document.querySelector(`.mstyle[data-method="${m}"]`)?.value || "solid";
 
-  // Attach the hover handler once the plot exists (the async init means this
-  // can't run at script-eval time). Hover the figure to slide the windows: the
-  // cursor is the right edge of the TEST window ("now"); lag pushes the REFERENCE earlier.
-  if (!hoverAttached){
-    hoverAttached = true;
-    $('plot').on('plotly_hover', e => {
-      const t = Math.round(e.points[0].x);
-      if (t !== tcur){ tcurManual = true; tcur = t; Plotly.relayout('plot', {shapes: staticShapes.concat(bandShapes())}); }
+  // Persist the control setup so a reload keeps your chosen methods/params
+  // instead of snapping back to the hardcoded defaults.
+  const STORE = "cpd_explorer_v3"; // bump to reset stale state to new defaults
+  const CTRLS = [
+    "source",
+    "type",
+    "width",
+    "noise",
+    "ref",
+    "test",
+    "lag",
+    "thr",
+    "sweepview",
+  ];
+  function saveState() {
+    try {
+      const st = { methods: selectedMethods(), styles: {} };
+      for (const id of CTRLS) st[id] = $(id).value;
+      document.querySelectorAll(".mstyle").forEach((s) => {
+        st.styles[s.dataset.method] = s.value;
+      });
+      localStorage.setItem(STORE, JSON.stringify(st));
+    } catch (e) {
+      /* storage unavailable */
+    }
+  }
+  function loadState() {
+    try {
+      const st = JSON.parse(localStorage.getItem(STORE));
+      if (!st) return;
+      for (const id of CTRLS) if (st[id] != null) $(id).value = st[id];
+      if (Array.isArray(st.methods))
+        document
+          .querySelectorAll(".mchk")
+          .forEach((c) => (c.checked = st.methods.includes(c.value)));
+      if (st.styles)
+        document.querySelectorAll(".mstyle").forEach((s) => {
+          if (st.styles[s.dataset.method])
+            s.value = st.styles[s.dataset.method];
+        });
+    } catch (e) {
+      /* ignore malformed state */
+    }
+  }
+
+  // STATIC holds the precomputed grid manifest when the page is the GitHub-Pages
+  // companion (no backend); null means live-server mode (local dev).
+  let STATIC = null;
+  const snap = (v, grid) =>
+    grid.reduce((a, b) => (Math.abs(b - v) < Math.abs(a - v) ? b : a));
+
+  // Acquire residual(s): synthetic profile (one series) or N plant+DMD series,
+  // from either the precomputed static grid or the live server.
+  async function refreshResidual() {
+    tcurManual = false; // re-anchor windows on the new data's change point
+    const type = $("type").value;
+    let width = +$("width").value,
+      noise = +$("noise").value / 100;
+    if ($("source").value === "synthetic") {
+      const { clean, r } = profile(type, width, noise);
+      series = [{ key: "synthetic", color: COLOR.synthetic, clean, r }];
+    } else {
+      const methods = selectedMethods();
+      if (!methods.length) {
+        series = [];
+        draw();
+        return;
+      }
+      let got;
+      if (STATIC) {
+        // snap the sliders to the precomputed grid and load the matching files
+        width = snap(width, STATIC.widths);
+        noise = snap(noise, STATIC.noises);
+        $("width").value = width;
+        $("noise").value = Math.round(noise * 100);
+        got = await Promise.all(
+          methods.map((m) =>
+            fetch(`data/${m}_${type}_w${width}_n${noise.toFixed(2)}.json`)
+              .then((res) => (res.ok ? res.json() : Promise.reject()))
+              .then((d) => ({ ...d, key: m }))
+              .catch(() => null),
+          ),
+        );
+      } else {
+        got = await Promise.all(
+          methods.map((m) => {
+            const q = new URLSearchParams({
+              method: m,
+              change: type,
+              width,
+              noise,
+            });
+            return fetch("/residual?" + q)
+              .then((res) => (res.ok ? res.json() : Promise.reject()))
+              .then((d) => ({ ...d, key: m }))
+              .catch(() => null);
+          }),
+        );
+      }
+      series = got.filter(Boolean).map((d) => ({
+        key: d.key,
+        color: COLOR[d.key],
+        clean: d.clean,
+        r: d.r,
+        warmup: d.warmup,
+        states: d.states,
+        pred: d.pred,
+        inputs: d.inputs,
+      }));
+      // Offline / server down: fall back to the synthetic profile so the page still works.
+      if (!series.length) {
+        $("source").value = "synthetic";
+        return refreshResidual();
+      }
+    }
+    draw();
+  }
+
+  // Evenly-stacked [bottom, top] domains for n rows, top→bottom.
+  function domains(n) {
+    const gap = 0.035,
+      h = (1 - gap * (n - 1)) / n,
+      ds = [];
+    for (let i = 0; i < n; i++) {
+      const top = 1 - i * (h + gap);
+      ds.push([Math.max(0, top - h), top]);
+    }
+    return ds;
+  }
+  const axName = (i) => (i ? "y" + (i + 1) : "y");
+
+  function bandShapes() {
+    const b = bands(tcur, +$("ref").value, +$("test").value, +$("lag").value);
+    if (!b.ok) return [];
+    const rect = (x0, x1, c, o) => ({
+      type: "rect",
+      xref: "x",
+      yref: "paper",
+      x0,
+      x1,
+      y0: 0,
+      y1: 1,
+      fillcolor: c,
+      opacity: o,
+      line: { width: 0 },
     });
+    const shapes = [rect(b.ref[0], b.ref[1], "#2f86d6", 0.13)]; // reference (blue)
+    if (b.test[0] > b.ref[1])
+      shapes.push(rect(b.ref[1], b.test[0], "#94a3b8", 0.22)); // lag gap (gray)
+    shapes.push(rect(b.test[0], b.test[1], "#27ae60", 0.16)); // test (green)
+    return shapes;
   }
 
-  // Detection sweep (sidebar): threshold view (FAR/MAR vs threshold) or ROC.
-  const scoreMax = Math.max(0.01, ...scs.flatMap(({sc}) => sc.filter(v => v !== null)));
-  const grid = Array.from({length: 61}, (_, i) => scoreMax * i / 60);
-  const roc = $('sweepview').value === 'roc';
-  const sweep = [];
-  let sweepLayout;
-  if (roc){
-    for (const {s, sc, m} of scs){
-      const sw = sweepFor(sc, s.clean, ref, test, lag, grid);
-      sweep.push({ x:sw.far, y:sw.mar.map(v => 1-v), name:s.key, legendgroup:s.key, showlegend:false, line:{color:s.color, width:1.5, dash:dashOf(s.key)} });
-      sweep.push({ x:[m.far], y:[1-m.mar], mode:'markers', marker:{color:s.color, size:8}, legendgroup:s.key, showlegend:false, hoverinfo:'skip' });
+  // Single stacked figure with ONE shared x-axis (so everything lines up and the
+  // onset is one line across all rows): plant states + input (plant mode only),
+  // then residual and score per model. Per-model colour throughout; one threshold.
+  function draw() {
+    const width = +$("width").value,
+      noise = +$("noise").value / 100;
+    const ref = +$("ref").value,
+      test = +$("test").value,
+      lag = +$("lag").value,
+      thr = +$("thr").value / 100;
+    for (const [k, v] of [
+      ["width", width],
+      ["noise", noise.toFixed(2)],
+      ["ref", ref],
+      ["test", test],
+      ["lag", lag],
+      ["thr", thr.toFixed(2)],
+    ])
+      $("v_" + k).textContent = v;
+    saveState();
+    if (!series.length) {
+      Plotly.react("plot", [], {});
+      Plotly.react("sweep", [], {});
+      renderTable([]);
+      return;
     }
-    sweep.push({ x:[0,1], y:[0,1], mode:'lines', line:{color:'#ccc', dash:'dot'}, showlegend:false, hoverinfo:'skip' });
-    $('sweepdesc').textContent = 'ROC per model (line style = model); dot = current threshold; dotted = chance';
-    sweepLayout = { margin:{t:6,r:8,b:30,l:34}, showlegend:false, font:{size:10},
-      xaxis:{ title:{text:'FPR (FAR)', font:{size:10}}, range:[0,1] },
-      yaxis:{ title:{text:'TPR (1−MAR)', font:{size:10}}, range:[0,1] } };
-  } else {
-    for (const {s, sc} of scs){
-      const sw = sweepFor(sc, s.clean, ref, test, lag, grid);
-      sweep.push({ x:grid, y:sw.far, name:s.key+' FAR', legendgroup:s.key, showlegend:false, line:{color:s.color, width:1.5} });
-      sweep.push({ x:grid, y:sw.mar, name:s.key+' MAR', legendgroup:s.key, showlegend:false, line:{color:s.color, width:1.5, dash:'dot'} });
-    }
-    $('sweepdesc').textContent = 'FAR (solid) & MAR/sample (dotted) vs threshold; dashed = current threshold';
-    sweepLayout = { margin:{t:6,r:8,b:30,l:34}, showlegend:false, font:{size:10},
-      shapes:[{type:'line', xref:'x', yref:'paper', x0:thr, x1:thr, y0:0, y1:1, line:{color:THRESH, width:1, dash:'dash'}}],
-      xaxis:{ title:{text:'threshold', font:{size:10}} },
-      yaxis:{ title:{text:'rate', font:{size:10}}, range:[0,1] } };
-  }
-  Plotly.react('sweep', sweep, sweepLayout, {displayModeBar:false});
-}
 
-// Metrics table: one row per model (coloured swatch), best value per column
-// highlighted. Lower is better for delay/FAR/MAR; detected best = ✓.
-function renderTable(tabData){
-  const el = $('mtable');
-  if (!tabData.length){ el.innerHTML = ''; return; }
-  const ms = tabData.map(t => t.m);
-  const bestDelay = Math.min(...ms.map(m => m.delay === null ? Infinity : m.delay));
-  const bestFar = Math.min(...ms.map(m => m.far));
-  const bestMar = Math.min(...ms.map(m => m.mar));
-  const bestMarE = Math.min(...ms.map(m => m.marEvent));
-  const bestAuc = Math.max(...ms.map(m => Number.isFinite(m.auc) ? m.auc : -Infinity));  // higher is better
-  const td = (val, best) => `<td${best ? ' class="best"' : ''}>${val}</td>`;
-  const rows = tabData.map(({key, color, m}) => `<tr>
+    const N = series[0].r.length,
+      x = [...Array(N).keys()];
+    const plant = !!series[0].states;
+
+    // per-series score + metrics
+    const scs = [],
+      tabData = [];
+    let onset = 0;
+    for (const s of series) {
+      const sc = scores(s.r, ref, test, lag, s.warmup || 0);
+      const m = metrics(sc, s.clean, ref, test, lag, thr);
+      onset = m.onset;
+      scs.push({ s, sc, m });
+      tabData.push({ key: s.key, color: s.color, m });
+    }
+    renderTable(tabData);
+    // Anchor "now" so the TEST window starts at the change; lag then pushes the
+    // REFERENCE window earlier (it does NOT slide test forward).
+    if (!tcurManual)
+      tcur = Math.min(N - 1, Math.max(ref + lag + test - 1, onset + test - 1));
+
+    // row layout: [h1..hk, input]? + residual + score
+    const nst = plant ? series[0].states.length : 0;
+    const titles = [];
+    for (let i = 0; i < nst; i++) titles.push(`h${i + 1}`);
+    if (plant) titles.push("input q");
+    titles.push("residual", "score");
+    const n = titles.length,
+      doms = domains(n);
+
+    const traces = [];
+    let row = 0;
+    if (plant) {
+      for (let i = 0; i < nst; i++, row++) {
+        const ax = axName(row);
+        traces.push({
+          x,
+          y: series[0].states[i],
+          name: "plant",
+          legendgroup: "plant",
+          showlegend: i === 0,
+          yaxis: ax,
+          line: { color: PLANT, width: 2 },
+        });
+        for (const { s } of scs)
+          traces.push({
+            x,
+            y: s.pred[i],
+            name: s.key,
+            legendgroup: s.key,
+            showlegend: false,
+            yaxis: ax,
+            line: { color: s.color, width: 1.2, dash: dashOf(s.key) },
+          });
+      }
+      // input shares the 'plant' legend entry (one ground-truth entry, not two)
+      traces.push({
+        x,
+        y: series[0].inputs,
+        name: "plant",
+        legendgroup: "plant",
+        showlegend: false,
+        yaxis: axName(row++),
+        line: { color: PLANT },
+      });
+    }
+    const axR = axName(row++),
+      axS = axName(row++);
+    const delayShapes = [];
+    for (const { s, sc, m } of scs) {
+      traces.push({
+        x,
+        y: s.r,
+        name: s.key,
+        legendgroup: s.key,
+        yaxis: axR,
+        line: { color: s.color, dash: dashOf(s.key) },
+      });
+      traces.push({
+        x,
+        y: sc,
+        name: s.key,
+        legendgroup: s.key,
+        showlegend: false,
+        yaxis: axS,
+        line: { color: s.color, dash: dashOf(s.key) },
+      });
+      if (m.peakIdx >= 0)
+        delayShapes.push({
+          type: "line",
+          xref: "x",
+          yref: "paper",
+          x0: m.peakIdx,
+          x1: m.peakIdx,
+          y0: doms[n - 1][0],
+          y1: doms[n - 1][1],
+          line: { color: s.color, width: 1.5, dash: "dot" },
+        });
+    }
+    traces.push({
+      x: [0, N - 1],
+      y: [thr, thr],
+      name: "threshold",
+      yaxis: axS,
+      line: { color: THRESH, dash: "dash" },
+      hoverinfo: "skip",
+    });
+
+    staticShapes = [
+      {
+        type: "line",
+        xref: "x",
+        yref: "paper",
+        x0: onset,
+        x1: onset,
+        y0: 0,
+        y1: 1,
+        line: { color: PLANT, width: 1, dash: "dash" },
+      },
+      ...delayShapes,
+    ];
+    // Explicit height (not just the div style): Plotly.react keeps the prior
+    // autosize height across a row-count change, squashing the panels into the
+    // top with blank space below. Setting it makes the figure fill the box.
+    const figH = Math.max(360, 118 * n);
+    const layout = {
+      height: figH,
+      margin: { t: 54, r: 20, b: 40, l: 55 },
+      // legend sits in the reserved top margin, above the first panel
+      legend: {
+        orientation: "h",
+        x: 0,
+        xanchor: "left",
+        y: 1,
+        yref: "paper",
+        yanchor: "bottom",
+      },
+      shapes: staticShapes.concat(bandShapes()),
+      xaxis: { title: "time", anchor: axName(n - 1) },
+    };
+    titles.forEach((t, i) => {
+      layout[i ? "yaxis" + (i + 1) : "yaxis"] = {
+        domain: doms[i],
+        title: { text: t, font: { size: 11 } },
+        ...(t === "score" ? { rangemode: "tozero" } : {}),
+      };
+    });
+    $("plot").style.height = figH + "px";
+    Plotly.react("plot", traces, layout, { displayModeBar: false });
+
+    // Attach the hover handler once the plot exists (the async init means this
+    // can't run at script-eval time). Hover the figure to slide the windows: the
+    // cursor is the right edge of the TEST window ("now"); lag pushes the REFERENCE earlier.
+    if (!hoverAttached) {
+      hoverAttached = true;
+      $("plot").on("plotly_hover", (e) => {
+        const t = Math.round(e.points[0].x);
+        if (t !== tcur) {
+          tcurManual = true;
+          tcur = t;
+          Plotly.relayout("plot", {
+            shapes: staticShapes.concat(bandShapes()),
+          });
+        }
+      });
+    }
+
+    // Detection sweep (sidebar): threshold view (FAR/MAR vs threshold) or ROC.
+    const scoreMax = Math.max(
+      0.01,
+      ...scs.flatMap(({ sc }) => sc.filter((v) => v !== null)),
+    );
+    const grid = Array.from({ length: 61 }, (_, i) => (scoreMax * i) / 60);
+    const roc = $("sweepview").value === "roc";
+    const sweep = [];
+    let sweepLayout;
+    if (roc) {
+      const gi = Math.max(
+        0,
+        Math.min(grid.length - 1, Math.round((thr * 60) / scoreMax)),
+      ); // grid point at the current threshold
+      for (const { s, sc } of scs) {
+        const sw = sweepFor(sc, s.clean, ref, test, lag, grid);
+        sweep.push({
+          x: sw.far,
+          y: sw.mar.map((v) => 1 - v),
+          name: s.key,
+          legendgroup: s.key,
+          showlegend: false,
+          line: { color: s.color, width: 1.5, dash: dashOf(s.key) },
+        });
+        sweep.push({
+          x: [sw.far[gi]],
+          y: [1 - sw.mar[gi]],
+          mode: "markers",
+          marker: { color: s.color, size: 8 },
+          legendgroup: s.key,
+          showlegend: false,
+          hoverinfo: "skip",
+        });
+      }
+      sweep.push({
+        x: [0, 1],
+        y: [0, 1],
+        mode: "lines",
+        line: { color: "#ccc", dash: "dot" },
+        showlegend: false,
+        hoverinfo: "skip",
+      });
+      $("sweepdesc").textContent =
+        "ROC per model (line style = model); dot = current threshold; dotted = chance";
+      sweepLayout = {
+        margin: { t: 6, r: 8, b: 30, l: 34 },
+        showlegend: false,
+        font: { size: 10 },
+        xaxis: {
+          title: { text: "FPR (FAR)", font: { size: 10 } },
+          range: [0, 1],
+        },
+        yaxis: {
+          title: { text: "TPR (1−MAR)", font: { size: 10 } },
+          range: [0, 1],
+        },
+      };
+    } else {
+      for (const { s, sc } of scs) {
+        const sw = sweepFor(sc, s.clean, ref, test, lag, grid);
+        sweep.push({
+          x: grid,
+          y: sw.far,
+          name: s.key + " FAR",
+          legendgroup: s.key,
+          showlegend: false,
+          line: { color: s.color, width: 1.5 },
+        });
+        sweep.push({
+          x: grid,
+          y: sw.mar,
+          name: s.key + " MAR",
+          legendgroup: s.key,
+          showlegend: false,
+          line: { color: s.color, width: 1.5, dash: "dot" },
+        });
+      }
+      $("sweepdesc").textContent =
+        "FAR (solid) & MAR/sample (dotted) vs threshold; dashed = current threshold";
+      sweepLayout = {
+        margin: { t: 6, r: 8, b: 30, l: 34 },
+        showlegend: false,
+        font: { size: 10 },
+        shapes: [
+          {
+            type: "line",
+            xref: "x",
+            yref: "paper",
+            x0: thr,
+            x1: thr,
+            y0: 0,
+            y1: 1,
+            line: { color: THRESH, width: 1, dash: "dash" },
+          },
+        ],
+        xaxis: { title: { text: "threshold", font: { size: 10 } } },
+        yaxis: { title: { text: "rate", font: { size: 10 } }, range: [0, 1] },
+      };
+    }
+    Plotly.react("sweep", sweep, sweepLayout, { displayModeBar: false });
+  }
+
+  // Metrics table: one row per model (coloured swatch), best value per column
+  // highlighted. Lower is better for the delays and FAR; AUC higher; detected ✓.
+  function renderTable(tabData) {
+    const el = $("mtable");
+    if (!tabData.length) {
+      el.innerHTML = "";
+      return;
+    }
+    const ms = tabData.map((t) => t.m);
+    const minOf = (sel) =>
+      Math.min(
+        ...ms.map((m) => {
+          const v = sel(m);
+          return v == null ? Infinity : v;
+        }),
+      );
+    const bestPeak = minOf((m) => m.delayPeak),
+      bestCross = minOf((m) => m.delayCross),
+      bestFar = minOf((m) => m.far);
+    const bestAuc = Math.max(
+      ...ms.map((m) => (Number.isFinite(m.auc) ? m.auc : -Infinity)),
+    );
+    const td = (val, best) => `<td${best ? ' class="best"' : ""}>${val}</td>`;
+    const num = (v, best) => td(v == null ? "–" : v, v != null && v === best);
+    const rows = tabData
+      .map(
+        ({ key, color, m }) => `<tr>
     <td class="mname"><span class="swatch" style="background:${color}"></span>${key}</td>
-    ${td(Number.isFinite(m.auc) ? m.auc.toFixed(3) : '–', Number.isFinite(m.auc) && m.auc === bestAuc)}
-    ${td(m.delay === null ? '–' : m.delay, m.delay !== null && m.delay === bestDelay)}
-    ${td(`<span class="${m.detected?'ok':'bad'}">${m.detected?'✓':'✗'}</span>`, m.detected)}
-    ${td((m.far*100).toFixed(1)+'%', m.far === bestFar)}
-    ${td((m.mar*100).toFixed(1)+'%', m.mar === bestMar)}
-    ${td(`<span class="${m.marEvent?'bad':'ok'}">${m.marEvent*100}%</span>`, m.marEvent === bestMarE)}
-  </tr>`).join('');
-  el.innerHTML = `<table class="mt">
-    <tr><th>model</th><th title="area under ROC; threshold-free, higher is better">AUC</th><th title="samples from the change to the score peak">delay</th><th title="detected at the current threshold?">det</th><th title="false-alarm rate (normal samples flagged)">FAR</th><th title="missed-alarm rate, per sample">MAR/s</th><th title="missed-alarm rate, per event">MAR/e</th></tr>
+    ${td(`<span class="${m.detected ? "ok" : "bad"}">${m.detected ? "✓" : "✗"}</span>`, m.detected)}
+    ${num(m.delayCross, bestCross)}
+    ${num(m.delayPeak, bestPeak)}
+    ${td((m.far * 100).toFixed(1) + "%", m.far === bestFar)}
+    ${td(Number.isFinite(m.auc) ? m.auc.toFixed(3) : "–", Number.isFinite(m.auc) && m.auc === bestAuc)}
+  </tr>`,
+      )
+      .join("");
+    el.innerHTML = `<table class="mt">
+    <tr><th>model</th>
+      <th title="event caught — the score crossed the threshold after the change (= MAR/event)">MAR/e</th>
+      <th title="samples from the change to the first threshold crossing (the alarm)">delay</th>
+      <th title="samples from the change to the score peak">peak</th>
+      <th title="false-alarm rate: alarms in genuinely nominal data">FAR</th>
+      <th title="area under ROC; threshold-free, higher is better">AUC</th></tr>
     ${rows}</table>`;
-}
-
-// --- export -----------------------------------------------------------------
-// Meaningful filename encoding all the metadata that produced the figure/data.
-function fname(){
-  const src = $('source').value;
-  const who = src === 'synthetic' ? 'synthetic' : (selectedMethods().join('-') || 'none');
-  const p = id => $(id).value;
-  const noise = (+p('noise')/100).toFixed(2), thr = (+p('thr')/100).toFixed(2);
-  return `cpd_${src}_${$('type').value}_w${p('width')}_n${noise}`
-       + `_ref${p('ref')}_test${p('test')}_lag${p('lag')}_thr${thr}_${who}`;
-}
-
-// Full reproducible export: metadata + per-model metrics + the raw series.
-function exportData(){
-  const ref = +$('ref').value, test = +$('test').value, lag = +$('lag').value, thr = +$('thr').value/100;
-  const meta = { source:$('source').value, change:$('type').value, width:+$('width').value,
-                 noise:+$('noise').value/100, ref_size:ref, test_size:test, lag, threshold:thr,
-                 n: series[0] ? series[0].r.length : 0 };
-  const rows = [], data = [];
-  for (const s of series){
-    const sc = scores(s.r, ref, test, lag, s.warmup || 0);
-    const m = metrics(sc, s.clean, ref, test, lag, thr);
-    meta.onset = m.onset;
-    rows.push({ model:s.key, delay_to_peak:m.delay, detected:m.detected, FAR:m.far, MAR_sample:m.mar, MAR_event:m.marEvent });
-    const d = { model:s.key, residual:s.r, score:sc };
-    if (s.states){ d.states = s.states; d.prediction = s.pred; d.input = s.inputs; }
-    data.push(d);
   }
-  return { metadata: meta, metrics: rows, series: data };
-}
 
-function download(blob, ext){
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = fname() + ext;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-$('dlpng').onclick = () => { if (series.length) Plotly.downloadImage('plot', {format:'png', scale:2, filename:fname()}); };
-$('dlsvg').onclick = () => { if (series.length) Plotly.downloadImage('plot', {format:'svg', filename:fname()}); };
-$('dljson').onclick = () => { if (series.length) download(new Blob([JSON.stringify(exportData(), null, 2)], {type:'application/json'}), '.json'); };
+  // --- export -----------------------------------------------------------------
+  // Meaningful filename encoding all the metadata that produced the figure/data.
+  function fname() {
+    const src = $("source").value;
+    const who =
+      src === "synthetic" ? "synthetic" : selectedMethods().join("-") || "none";
+    const p = (id) => $(id).value;
+    const noise = (+p("noise") / 100).toFixed(2),
+      thr = (+p("thr") / 100).toFixed(2);
+    return (
+      `cpd_${src}_${$("type").value}_w${p("width")}_n${noise}` +
+      `_ref${p("ref")}_test${p("test")}_lag${p("lag")}_thr${thr}_${who}`
+    );
+  }
 
-// Guided "try this" presets: configure the controls to stage one experiment.
-const PRESETS = {
-  clean:    { source:'synthetic', type:'permanent', width:6,  noise:8,  ref:60, test:60, lag:0, thr:25 },
-  tradeoff: { source:'synthetic', type:'permanent', width:6,  noise:28, ref:60, test:60, lag:0, thr:22 },
-  noisy:    { source:'synthetic', type:'transient',  width:45, noise:38, ref:90, test:90, lag:0, thr:18 },
-  plant:    { source:'plant',     type:'permanent', width:6,  noise:8,  ref:60, test:60, lag:0, thr:25, methods:['DMD','onlineDMDc','toDMDc'] },
-};
-function applyPreset(name){
-  const p = PRESETS[name]; if (!p) return;
-  for (const [k, v] of Object.entries(p)){ const el = $(k); if (el) el.value = v; }
-  if (p.methods) document.querySelectorAll('.mchk').forEach(c => c.checked = p.methods.includes(c.value));
-  document.querySelector('aside.figpanel')?.scrollIntoView({ behavior:'smooth', block:'nearest' });
-  refreshResidual();
-}
-document.querySelectorAll('[data-preset]').forEach(b => b.addEventListener('click', () => applyPreset(b.dataset.preset)));
+  // Full reproducible export: metadata + per-model metrics + the raw series.
+  function exportData() {
+    const ref = +$("ref").value,
+      test = +$("test").value,
+      lag = +$("lag").value,
+      thr = +$("thr").value / 100;
+    const meta = {
+      source: $("source").value,
+      change: $("type").value,
+      width: +$("width").value,
+      noise: +$("noise").value / 100,
+      ref_size: ref,
+      test_size: test,
+      lag,
+      threshold: thr,
+      n: series[0] ? series[0].r.length : 0,
+    };
+    const rows = [],
+      data = [];
+    for (const s of series) {
+      const sc = scores(s.r, ref, test, lag, s.warmup || 0);
+      const m = metrics(sc, s.clean, ref, test, lag, thr);
+      meta.onset = m.onset;
+      rows.push({
+        model: s.key,
+        delay_to_peak: m.delayPeak,
+        delay_to_threshold: m.delayCross,
+        detected: m.detected,
+        FAR: m.far,
+        AUC: m.auc,
+      });
+      const d = { model: s.key, residual: s.r, score: sc };
+      if (s.states) {
+        d.states = s.states;
+        d.prediction = s.pred;
+        d.input = s.inputs;
+      }
+      data.push(d);
+    }
+    return { metadata: meta, metrics: rows, series: data };
+  }
 
-// Debounce residual refresh so dragging a slider fires one fetch, not dozens.
-let debTimer;
-const debouncedRefresh = () => { clearTimeout(debTimer); debTimer = setTimeout(refreshResidual, 180); };
-signalIds.forEach(id => $(id).addEventListener('input', debouncedRefresh));
-windowIds.forEach(id => $(id).addEventListener('input', draw));
-document.querySelectorAll('.mchk').forEach(c => c.addEventListener('input', debouncedRefresh));
-document.querySelectorAll('.mstyle').forEach(s => s.addEventListener('input', draw));  // restyle, no refetch
-$('sweepview').addEventListener('input', draw);  // toggle sweep/ROC view, no refetch
-loadState();          // restore the last setup before the first render
-// Detect the precomputed static grid (GitHub-Pages companion); else live server.
-fetch('data/manifest.json')
-  .then(res => res.ok ? res.json() : null).catch(() => null)
-  .then(m => { STATIC = m; refreshResidual(); });
+  function download(blob, ext) {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = fname() + ext;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+  $("dlpng").onclick = () => {
+    if (series.length)
+      Plotly.downloadImage("plot", {
+        format: "png",
+        scale: 2,
+        filename: fname(),
+      });
+  };
+  $("dlsvg").onclick = () => {
+    if (series.length)
+      Plotly.downloadImage("plot", { format: "svg", filename: fname() });
+  };
+  $("dljson").onclick = () => {
+    if (series.length)
+      download(
+        new Blob([JSON.stringify(exportData(), null, 2)], {
+          type: "application/json",
+        }),
+        ".json",
+      );
+  };
 
-// self-checks: flat residual scores 0; a step is detected with non-negative delay.
-(() => {
-  const flat = new Array(N).fill(2.0);
-  console.assert(scores(flat, 30, 30, 0).filter(v => v!==null).every(v => v === 0), 'flat residual should score 0');
-  const { clean, r } = profile('permanent', 1, 0);
-  const m = metrics(scores(r, 60, 60, 0), clean, 60, 60, 0, 0.25);
-  console.assert(m.detected && m.delay >= 0, 'step should be detected with delay >= 0');
-})();
+  // Guided "try this" presets: configure the controls to stage one experiment.
+  const PRESETS = {
+    clean: {
+      source: "synthetic",
+      type: "permanent",
+      width: 6,
+      noise: 8,
+      ref: 60,
+      test: 60,
+      lag: 0,
+      thr: 25,
+    },
+    tradeoff: {
+      source: "synthetic",
+      type: "permanent",
+      width: 6,
+      noise: 100,
+      ref: 60,
+      test: 60,
+      lag: 0,
+      thr: 22,
+    },
+    noisy: {
+      source: "synthetic",
+      type: "permanent",
+      width: 120,
+      noise: 100,
+      ref: 90,
+      test: 90,
+      lag: 0,
+      thr: 18,
+    },
+    abrupt: {
+      source: "synthetic",
+      type: "transient",
+      width: 25,
+      noise: 100,
+      ref: 90,
+      test: 90,
+      lag: 0,
+      thr: 18,
+    },
+    plant: {
+      source: "plant",
+      type: "permanent",
+      width: 6,
+      noise: 8,
+      ref: 60,
+      test: 60,
+      lag: 0,
+      thr: 25,
+      methods: ["DMD", "onlineDMDc", "toDMDc"],
+    },
+  };
+  function applyPreset(name) {
+    const p = PRESETS[name];
+    if (!p) return;
+    for (const [k, v] of Object.entries(p)) {
+      const el = $(k);
+      if (el) el.value = v;
+    }
+    if (p.methods)
+      document
+        .querySelectorAll(".mchk")
+        .forEach((c) => (c.checked = p.methods.includes(c.value)));
+    document
+      .querySelector("aside.figpanel")
+      ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    refreshResidual();
+  }
+  document
+    .querySelectorAll("[data-preset]")
+    .forEach((b) =>
+      b.addEventListener("click", () => applyPreset(b.dataset.preset)),
+    );
+
+  // Debounce residual refresh so dragging a slider fires one fetch, not dozens.
+  let debTimer;
+  const debouncedRefresh = () => {
+    clearTimeout(debTimer);
+    debTimer = setTimeout(refreshResidual, 180);
+  };
+  signalIds.forEach((id) => $(id).addEventListener("input", debouncedRefresh));
+  windowIds.forEach((id) => $(id).addEventListener("input", draw));
+  document
+    .querySelectorAll(".mchk")
+    .forEach((c) => c.addEventListener("input", debouncedRefresh));
+  document
+    .querySelectorAll(".mstyle")
+    .forEach((s) => s.addEventListener("input", draw)); // restyle, no refetch
+  $("sweepview").addEventListener("input", draw); // toggle sweep/ROC view, no refetch
+  loadState(); // restore the last setup before the first render
+  // Detect the precomputed static grid (GitHub-Pages companion); else live server.
+  fetch("data/manifest.json")
+    .then((res) => (res.ok ? res.json() : null))
+    .catch(() => null)
+    .then((m) => {
+      STATIC = m;
+      refreshResidual();
+    });
+
+  // self-checks: flat residual scores 0; a step is detected with non-negative delay.
+  (() => {
+    const flat = new Array(N).fill(2.0);
+    console.assert(
+      scores(flat, 30, 30, 0)
+        .filter((v) => v !== null)
+        .every((v) => v === 0),
+      "flat residual should score 0",
+    );
+    const { clean, r } = profile("permanent", 1, 0);
+    const m = metrics(scores(r, 60, 60, 0), clean, 60, 60, 0, 0.25);
+    console.assert(
+      m.detected && m.delayPeak >= 0,
+      "step should be detected with delay >= 0",
+    );
+  })();
 </script>

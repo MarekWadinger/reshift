@@ -65,6 +65,11 @@ def build(out: Path) -> None:
     )
     shutil.copy(HERE / "plotly.min.js", out / "plotly.min.js")
     shutil.copy(HERE / "window_explorer.html", out / "index.html")
+    # Include the paper if it's already built locally; in CI it's compiled from
+    # LaTeX and staged separately (see .github/workflows/pages.yml).
+    paper = HERE.parent / "publications" / "ECC26" / "root.pdf"
+    if paper.exists():
+        shutil.copy(paper, out / "paper.pdf")
     total = sum(f.stat().st_size for f in out.rglob("*"))
     print(f"built {out}: {count} residual files, {total / 1e6:.1f} MB total")  # noqa: T201
 

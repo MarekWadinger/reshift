@@ -57,6 +57,17 @@ jobs:
       - name: Build companion into _site
         run: uv run python examples/build_companion.py _site
 
+      # The paper PDF is a LaTeX build artifact (gitignored), so compile it here
+      # from source and stage it next to the companion as paper.pdf.
+      - name: Compile the paper
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: root.tex
+          working_directory: publications/ECC26
+
+      - name: Stage paper into _site
+        run: cp publications/ECC26/root.pdf _site/paper.pdf
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
