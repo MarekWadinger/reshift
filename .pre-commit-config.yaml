@@ -108,6 +108,17 @@ repos:
         stages: [pre-commit]
       - id: doc-check-mermaid
         stages: [pre-commit]
+  - repo: local
+    hooks:
+      - id: html5validator
+        name: html5validator
+        # Nu/vnu engine (W3C). Needs a JRE. pre-commit appends staged files as
+        # positional args; don't add nargs+ flags (e.g. --ignore) here — they'd
+        # swallow the filenames and make it rescan the whole tree.
+        entry: uvx html5validator
+        language: system
+        files: \.html$
+        stages: [pre-commit]
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.11.22
     hooks:
