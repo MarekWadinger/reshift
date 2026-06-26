@@ -1,3 +1,41 @@
+## v5.2.0 (2026-06-26)
+
+### Features
+
+- **examples**: units, short labels, onset fix, narrow-view TOC
+- **examples**: wire paper.pdf + fix companion figure
+- **examples**: redesign explorer as a guided explorable blog
+- **examples**: static companion build for GitHub Pages
+- **examples**: AUC column + ROC view
+- **examples**: threshold sweep (FAR/MAR vs threshold) in sidebar
+- **examples**: visualize line styles in the picker
+- **examples**: per-method line styles + tidier legend
+- **examples**: make toDMDc the factory default identifier
+- **examples**: remember control setup across reloads
+- **examples**: vendor plotly.min.js for fully offline use
+- **examples**: offline fallback, export buttons, drop status line
+- **examples**: move controls and metrics into a left sidebar
+- **examples**: anchor ref/test windows on the change point
+- **examples**: metrics comparison table + faster multi-model
+- **examples**: compare multiple DMD identifiers at once
+- **examples**: interactive window-explorer for CPD window tuning
+
+### Fixes
+
+- **examples**: lag pushes the reference window back, not the test forward
+- **examples**: re-attach hover-to-slide after async init
+- **examples**: skip the warmup instead of patching scores with magic constants
+- **examples**: fit batch models out of sample
+- **examples**: merge plots into one shared-x figure
+- **examples**: default to plant mode with a DMD selected
+
+### Docs
+
+- **examples**: per-slider captions in Try it; drop duplicated cursor hint
+- **examples**: fix dotted-line caption, move lag into Try it, rewrite window roles
+- **examples**: reword export 'grab' to avoid figure-interaction confusion
+- **examples**: fix interaction wording + explain default window placement
+
 ## v5.1.0 (2026-06-22)
 
 ### Features
