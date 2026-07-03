@@ -96,7 +96,6 @@
 
 % ===================== 2. MONITORS DECAY =================================
 \begin{frame}{We commission a detector once. The plant runs for years.}
-  % \begin{columns}[T]/newidth}
       \begin{itemize}
         \item Once commissioned  $\rightarrow$ the plant \textbf{ages, re-seasons, gets re-tuned}, gets new setpoints.
         \item The model is \textbf{frozen at day one}.
@@ -104,16 +103,8 @@
       \end{itemize}
       \vspace{0.6em}
       \begin{block}{The real requirement}
-        Not a \emph{better} detector — one that \textbf{stays current} without a human re-tuning it.
+        Not a better detector — one that \textbf{stays current} without a human re-tuning it.
       \end{block}
-    % \end{column}
-    % \begin{column}{0.44\linewidth}
-    %   \centering
-    %   \vspace{2em}
-    %   {\itshape\color{tgrey}
-    %   model fixed at $t_0$\\[0.4em]$\bullet$\\[0.4em] plant drifts away\\[0.4em]$\bullet$\\[0.4em] gap $=$ false alarms}
-    % \end{column}
-  % \end{columns}
 \end{frame}
 
 % ===================== 3. FOUR THINGS MOVE THE SIGNAL ====================
@@ -136,10 +127,10 @@
     % --- cells -----------------------------------------------------------
     % Known x Cause  (normal)
     \node[cell, fill=tblue!12, draw=tblue!65!black] at (0.0,0.0)
-      {setpoint / reference change\\[3pt]{\footnotesize an operator command\\ — known driver}};
+      {setpoint / reference change\\[3pt]{\footnotesize an operator command\\ — acknowledge}};
     % Known x Consequence (normal -- the controller acting)
     \node[cell, fill=tgreen!12, draw=tgreen!65!black] at (5.8,0.0)
-      {\textbf{control input}\\[3pt]{\footnotesize the controller acts to track it\\ — predicted, keep running}};
+      {\textbf{control input}\\[3pt]{\footnotesize the controller acts to track it\\ — predict}};
     % Unknown x Cause (normal-ish, adapt)
     \node[cell, fill=tyellow!22, draw=tyellow!75!black] at (0.0,-3.0)
       {aging $\cdot$ environmental disturbance\\[3pt]{\footnotesize slow, exogenous push\\ — adapt}};
@@ -149,8 +140,7 @@
   \end{tikzpicture}}
 
   \vspace{0.3em}
-  {\footnotesize The controller acting (\textbf{known consequence}) is not a fault. An \textbf{unknown consequence} — the system changing — is.
-  Most detectors can't tell them apart: \textcolor{tred}{that is the gap.}}
+  {Most detectors can't tell them apart --- detection models can't either}
 \end{frame}
 
 % ===================== 4. THE TRAP =======================================
@@ -161,8 +151,8 @@
   \centering
   % \animategraphics[autoplay,loop,controls,width=0.9\linewidth]{10}{frames/score_}{0}{214}\\
   \vspace{0.2em}
-  {\footnotesize Noise swamps the score with tiny windows; a longer
-  \textcolor{tblue}{reference} cancels it, a longer test window steadies the peak.}
+  {\footnotesize \textcolor{gray}{Noise} polutes the score with tiny bursts; a longer
+  \textcolor{tblue}{reference} stabilizes it, a longer \textcolor{tgreen}{test} detects slower changes.}
 \end{frame}
 
 % ===================== 5. ONE MISSING BOX ================================
@@ -197,21 +187,10 @@
 
 % ===================== 7. THE FIX (CONTRIBUTION) =========================
 \begin{frame}{The fix: online truncation}
-  \begin{columns}[T]
-    \begin{column}{0.56\linewidth}
-      \begin{itemize}
-        \item Online DMDc fails on \textbf{small singular values} — inverting the noise floor makes the update blow up (literally divides by zero on rank-deficient data).
-        \item We truncate to rank $r$ \textbf{online} — keep the directions that carry the dynamics, drop the noise floor — basis stays orthonormal.
-        \item Cost drops to \textbf{$\mathcal{O}(mr^2)$ per step} — independent of history length.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.42\linewidth}
-      \footnotesize\itshape
-      \textcolor{tred}{no truncation}: update undefined\\
-      $\downarrow$\\
-      \textcolor{tblue}{rank-$r$ truncation}: bounded, real-time
-    \end{column}
-  \end{columns}
+  \begin{itemize}
+    \item Online DMDc fails on \textbf{small singular values} — inverting the noise floor makes the update blow up (literally divides by zero on rank-deficient data).
+    \item We truncate to rank $r$ \textbf{online} — keep the directions that carry the dynamics, drop the noise floor — basis stays orthonormal.
+  \end{itemize}
 \end{frame}
 
 
@@ -286,21 +265,20 @@
 \begin{frame}{Two guarantees you can stand behind}
   \begin{columns}[T]
     \begin{column}{0.5\linewidth}
-      \begin{block}{Detection delay $\ge c$}
-        The peak \emph{cannot} appear before the test window fills.\\
-        \textcolor{tblue}{Window size = your reaction budget.}
-      \end{block}
-    \end{column}
-    \begin{column}{0.5\linewidth}
       \begin{block}{Cost $\mathcal{O}(mr^2)$ / update}
         A handful of operations per sample, \textbf{independent of history length}.\\
         Runs inside the sample interval.
       \end{block}
     \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{block}{Detection delay $\ge c$}
+        \textbf{Peaks with test window} size if the change last.\\
+        \textcolor{tblue}{Window size = your reaction budget.}
+      \end{block}
+    \end{column}
   \end{columns}
   \vspace{0.8em}
-  \centering\footnotesize\itshape
-  (Stationary-convergence and probabilistic bounds are in the paper — not claimed here as guarantees.)
+  \centering
 \end{frame}
 
 % ===================== 9. SPINE PROOF (two-tank) =========================
@@ -440,6 +418,15 @@
 \end{frame}
 
 
+% ===================== 7g. REALIGNMENT ON DATA ==========================
+\begin{frame}{Backup — Realignment on the two-tank (1\,\% valve clog)}
+  \centering
+  \includegraphics[height=0.80\textheight]{fig_rotation_ellipse.pdf}\\[-0.2em]
+  {\footnotesize $K_{pp}$ carries $\bar A_{k-1}$ into the rotated basis
+   ($\theta\approx0.7^\circ$): the realigned operator tracks the refit;
+   the leftover gap is the physical change.}
+\end{frame}
+
 % ===================== 7a. MECHANISM (flowchart version) ================
 \begin{frame}{Backup — How one update stays $\mathcal{O}(mr^2)$}
   \centering
@@ -483,10 +470,10 @@
   \end{tikzpicture}}
 \end{frame}
 
-\begin{frame}{Backup — BESS, full run (bidirectional)}
+\begin{frame}{Backup — BESS, full run}
   \centering
   \includegraphics[width=0.86\linewidth]{fig_bess_hx10_full.pdf}\\
-  Largest late peaks are return-to-normal transitions (bidirectional score).
+  Largest late peaks are return-to-normal transitions.
 \end{frame}
 
 \end{document}
