@@ -39,6 +39,21 @@ As the energy sector races toward radical climate action, scaling new solutions 
 
 This repository implements change-point detection (CPD) based on **Online Dynamic Mode Decomposition with Control (ODMDwC)**. Designed for complex industrial systems where timely detection of behavioural shifts is critical, it captures both spatial and temporal system patterns and adapts dynamically to non-linear changes from factors like aging and seasonality. It addresses non-uniform data streams in safety-critical systems without depending on exhaustive physical models, leveraging control input to yield robust, intuitive results even under high noise.
 
+## Method naming
+
+The papers, the talk, and the [interactive companion](https://marekwadinger.github.io/reshift) compare a family of DMD variants — we call them **identifiers**. The distinction matters: the *model* is the artifact (the matrices $A$, $B$), the *identifier* is the procedure that acquires and maintains it. The variants below all produce the same kind of model; they differ only in how they fit and update it. The names compose from prefixes: `o` = online (rolling window), `t` = truncated, trailing `c` = with control. Each variant is one *(fit, control, rank)* configuration dispatched through `METHODS` in [`examples/plant_residual_server.py`](examples/plant_residual_server.py) — with $m$ states and $l$ control inputs:
+
+| Name     | Fit     | Control | Rank                        | Class                            |
+|----------|---------|---------|-----------------------------|----------------------------------|
+| `DMD`    | batch   | --      | full, $r = m$               | `reshift.dmd.DMD`                |
+| `tDMD`   | batch   | --      | truncated, $r < m$          | `reshift.dmd.DMD`                |
+| `DMDc`   | batch   | ✓       | full, $p = m$ $q = l$       | `reshift.dmd.DMDwC`              |
+| `oDMD`   | rolling | --      | full, $r = m$               | `river.decomposition.OnlineDMD`  |
+| `oDMDc`  | rolling | ✓       | full, $p = m$, $q = l$      | `river.decomposition.OnlineDMDwC`|
+| `toDMDc` | rolling | ✓       | truncated, $p < m$, $q = l$ | `river.decomposition.OnlineDMDwC`|
+
+`toDMDc` (a.k.a. truncated online dynamic mode decomposition with control) is the proposed identifier used for change detection, also referred to as CPD-DMD.
+
 ## Benchmark Evaluation
 
 We validated our approach on both synthetic and real-world datasets, including:
