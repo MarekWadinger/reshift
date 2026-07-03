@@ -342,12 +342,14 @@ def fig_twotank() -> None:
 APP_PLANT, APP_THRESH = "#999999", "#111111"  # plant gray, threshold black
 APP_REF, APP_TEST = "#2f86d6", "#27ae60"  # reference blue, test green bands
 APP_METHODS = ["DMD", "DMDc", "onlineDMD", "onlineDMDc", "toDMDc"]
+# diverges from the app's default palette on purpose: projector-legible,
+# high-contrast, and toDMDc carries the deck's emphasis blue.
 APP_COLOR = {
-    "DMD": "#1f77b4",
-    "DMDc": "#2ca02c",
-    "onlineDMD": "#d62728",
+    "DMD": "#999999",
+    "DMDc": "#e0a800",
+    "onlineDMD": "#d1495b",
     "onlineDMDc": "#9467bd",
-    "toDMDc": "#8c564b",
+    "toDMDc": "#1f6fb2",
 }
 APP_LABEL = {"onlineDMD": "oDMD", "onlineDMDc": "oDMDc"}
 APP_REF_N = APP_TEST_N = 60  # default ref/test window size
@@ -524,9 +526,21 @@ def fig_twotank_companion() -> None:
         axs[i].plot(x, states[i], color=APP_PLANT, lw=1.6)
         axs[i].plot(x, pred[i], color=APP_COLOR["toDMDc"], lw=1.3, ls="--")
         axs[i].set_ylabel(f"$h_{i + 1}$ (m)")
+    from matplotlib.patches import Patch
+
     axs[0].plot([], [], color=APP_PLANT, lw=1.6, label="plant")
     axs[0].plot([], [], color=APP_COLOR["toDMDc"], lw=1.3, ls="--", label="toDMDc")
-    axs[0].legend(loc="upper right", ncol=2, frameon=False)
+    axs[0].legend(
+        handles=[
+            *axs[0].get_legend_handles_labels()[0],
+            Patch(facecolor=APP_REF, alpha=0.35, label="reference window"),
+            Patch(facecolor=APP_TEST, alpha=0.40, label="test window"),
+        ],
+        loc="upper right",
+        ncol=4,
+        frameon=False,
+        fontsize=13,
+    )
 
     axs[2].plot(x, q, color=APP_PLANT, lw=1.4)
     axs[2].set_ylabel("input $q$ (m³/s)")
@@ -542,8 +556,18 @@ def fig_twotank_companion() -> None:
         ax.axvspan(*test_band, color=APP_TEST, alpha=0.16)
         ax.axvline(CP, color=APP_PLANT, ls="--", lw=1.2)
         ax.set_xlim(LEARN_W, n)
+    axs[0].text(
+        CP,
+        1.04,
+        "fouling starts",
+        color="#555555",
+        ha="center",
+        fontsize=13,
+        transform=axs[0].get_xaxis_transform(),
+    )
     fig.align_ylabels(axs)
-    fig.subplots_adjust(left=AX_LEFT, right=AX_RIGHT, top=0.985, bottom=0.075, hspace=0.30)
+    # bottom=0.11 keeps the "sample" xlabel inside the fixed canvas (tight=False)
+    fig.subplots_adjust(left=AX_LEFT, right=AX_RIGHT, top=0.96, bottom=0.11, hspace=0.30)
     _save(fig, "fig_twotank_companion", tight=False)
 
 
@@ -565,22 +589,39 @@ def fig_twotank_companion_scores() -> None:
         gridspec_kw={"height_ratios": [1.7, 1.0]},
     )
     for ser in sers:
+        emph = ser["key"] == "toDMDc"
         ax.plot(
             x,
             ser["score"],
             color=APP_COLOR[ser["key"]],
-            lw=1.6,
+            lw=2.6 if emph else 1.6,
             label=_app_lbl(ser["key"]),
+            zorder=3 if emph else 2,
         )
     ax.axvspan(*ref_band, color=APP_REF, alpha=0.13)
     ax.axvspan(*test_band, color=APP_TEST, alpha=0.16)
     ax.axvline(CP, color=APP_PLANT, ls="--", lw=1.2)
+    ax.text(
+        CP,
+        1.10,
+        "fouling starts",
+        color="#555555",
+        ha="center",
+        fontsize=13,
+        transform=ax.get_xaxis_transform(),
+    )
     ax.axhline(APP_THR, color=APP_THRESH, ls="--", lw=1.2)
     ax.set_xlim(LEARN_W, n)
-    ax.set_ylabel("score")
+    ax.set_ylabel("change score")
     ax.set_xlabel("sample")
     ax.xaxis.set_label_coords(0.5, -0.13)  # keep the label clear of the table
-    ax.legend(ncol=len(APP_METHODS), frameon=False, loc="upper right")
+    # legend in a strip above the axes so no trace ever crosses it
+    ax.legend(
+        ncol=len(APP_METHODS),
+        frameon=False,
+        loc="lower left",
+        bbox_to_anchor=(0.0, 1.06),
+    )
 
     # app metrics table: model | MAR/e | delay | peak | FAR | AUC (renderTable())
     axt.axis("off")
@@ -627,85 +668,9 @@ def fig_twotank_companion_scores() -> None:
         for c, b in best.items():
             if b is not None and vals[c] == b:
                 tab[(i + 1, c)].get_text().set_fontweight("bold")
-    fig.subplots_adjust(left=AX_LEFT, right=AX_RIGHT, top=0.965, bottom=0.04, hspace=0.42)
+    # top=0.90 leaves room for the legend strip above the axes
+    fig.subplots_adjust(left=AX_LEFT, right=AX_RIGHT, top=0.90, bottom=0.04, hspace=0.42)
     _save(fig, "fig_twotank_companion_scores", tight=False)
-
-
-# --- The trap (slide 4) ----------------------------------------------------
-def fig_trap() -> None:
-    """Concept: a control step (NORMAL big swing) vs the same input producing a
-    different response (FAULT). A flat threshold on the signal fires on both.
-    """
-    rng = np.random.default_rng(3)
-    t = np.arange(600)
-    y = np.full(600, 1.0)
-    u = np.zeros(600)
-    u[150:300] = 1.0  # control step -> normal swing
-    y[150:300] = 3.0
-    u[420:570] = 1.0  # SAME control step ...
-    y[420:570] = 5.0  # ... different (faulty) response
-    y += rng.normal(0, 0.18, 600)
-
-    fig, (ax0, ax1) = plt.subplots(
-        2,
-        1,
-        figsize=(11, 4.6),
-        sharex=True,
-        gridspec_kw={"height_ratios": [1, 0.5]},
-    )
-    ax0.plot(t, y, color=BLUE, lw=1.8)
-    ax0.axhline(2.0, color=GREY, ls=":", lw=1.4)
-    ax0.text(5, 2.1, "signal threshold", color=GREY, fontsize=12)
-    ax0.annotate(
-        "control acts\nNORMAL",
-        xy=(225, 3),
-        xytext=(150, 5.6),
-        color=GREEN,
-        fontsize=13,
-        ha="center",
-        fontweight="bold",
-        arrowprops={"arrowstyle": "->", "color": GREEN, "lw": 1.6},
-    )
-    ax0.annotate(
-        "same input,\ndifferent response → FAULT",
-        xy=(495, 5),
-        xytext=(360, 6.2),
-        color=RED,
-        fontsize=13,
-        ha="center",
-        fontweight="bold",
-        arrowprops={"arrowstyle": "->", "color": RED, "lw": 1.6},
-    )
-    ax0.set_ylabel("output $x$")
-    ax0.set_ylim(0, 8)
-    ax0.set_title(
-        "A signal-watcher can't tell the two apart — both cross the line",
-    )
-    ax1.plot(t, u, color=GREY, lw=1.8)
-    ax1.fill_between(t, 0, u, color=GREY, alpha=0.2)
-    ax1.set_ylabel("input $u$")
-    ax1.set_xlabel("time")
-    ax1.set_yticks([0, 1])
-    # make the key point unmissable: the two input pulses are IDENTICAL
-    for c in (225, 495):
-        ax1.annotate(
-            "",
-            xy=(c - 75, 1.15),
-            xytext=(c + 75, 1.15),
-            arrowprops={"arrowstyle": "<->", "color": "black", "lw": 1.0},
-        )
-    ax1.text(
-        360,
-        1.45,
-        "identical input",
-        ha="center",
-        fontsize=12,
-        fontweight="bold",
-    )
-    ax1.set_ylim(0, 1.8)
-    fig.align_ylabels((ax0, ax1))
-    fig.tight_layout()
-    _save(fig, "fig_trap")
 
 
 def fig_cold_open() -> None:
@@ -718,8 +683,7 @@ def fig_cold_open() -> None:
     ax.set_xlabel("time (hours)")
     ax.set_yticks([])
     ax.set_title(
-        "Its cooling is failing — and a standard monitor can't tell that\n"
-        "from the controller doing its job",
+        "A battery module heats up.\nFailing cooling — or the controller doing its job?",
         fontsize=16,
     )
     fig.tight_layout()
@@ -729,7 +693,6 @@ def fig_cold_open() -> None:
 if __name__ == "__main__":
     print("Rendering talk figures...")
     fig_cold_open()
-    fig_trap()
     fig_bess("hx10", crop=True)
     fig_bess("hx10", crop=False)
     fig_bess("hx20", crop=True)
