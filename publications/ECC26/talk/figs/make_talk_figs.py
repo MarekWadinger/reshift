@@ -25,36 +25,21 @@ if str(REPO) not in sys.path:
 RESULTS = REPO / "examples" / "results" / ".bess"
 DATA = REPO / "examples" / "data"
 
-# --- talk style: big, clean, projector-legible -----------------------------
-plt.rcParams.update(
-    {
-        "text.usetex": False,
-        "font.family": "sans-serif",
-        "font.size": 17,
-        "axes.labelsize": 18,
-        "axes.titlesize": 19,
-        "xtick.labelsize": 15,
-        "ytick.labelsize": 15,
-        "legend.fontsize": 15,
-        "axes.spines.top": False,
-        "axes.spines.right": False,
-        "axes.grid": True,
-        "grid.alpha": 0.25,
-        "lines.linewidth": 1.6,
-        "figure.dpi": 130,
-    },
+if str(HERE) not in sys.path:
+    sys.path.insert(0, str(HERE))
+from talkplot import (  # noqa: E402
+    AX_LEFT,
+    AX_RIGHT,
+    BLUE,
+    RED,
+    save_fig as _save,
+    sliding_score as _web_score,
+    talk_style,
 )
-BLUE, RED, GREY, GREEN = "#1f6fb2", "#d1495b", "#9aa0a6", "#2a9d8f"
+from talkplot import GREY_L as GREY  # noqa: E402  (this family's grey is the light one)
 
-
-def _save(fig: plt.Figure, name: str, *, tight: bool = True) -> None:
-    # tight=False keeps the full fixed canvas (so two figures of equal figsize
-    # render at the same scale on a slide — identical font sizes).
-    kw = {"bbox_inches": "tight"} if tight else {}
-    for ext in ("png", "pdf"):
-        fig.savefig(HERE / f"{name}.{ext}", **kw)
-    plt.close(fig)
-    print(f"  wrote {name}.png / .pdf")
+# --- talk style: big, clean, projector-legible -----------------------------
+talk_style()
 
 
 # --- shared runners (reproduce the paper detectors) ------------------------
@@ -355,36 +340,11 @@ APP_LABEL = {"onlineDMD": "oDMD", "onlineDMDc": "oDMDc"}
 APP_REF_N = APP_TEST_N = 60  # default ref/test window size
 APP_THR = 0.25  # default threshold (slider 25 / 100)
 COMPANION_FIGSIZE = (12, 7.0)  # shared by both companion figs → equal slide scale
-# shared plot-area left/right (figure fraction) so every data plot spans the SAME
-# horizontal extent on its slide — only thing that makes the x-axes line up.
-AX_LEFT, AX_RIGHT = 0.11, 0.965
 
 
 def _app_lbl(m: str) -> str:
     """Display label for a method (window_explorer.html lbl())."""
     return APP_LABEL.get(m, m)
-
-
-def _web_score(
-    r: np.ndarray,
-    ref: int,
-    test: int,
-    lag: int = 0,
-    warmup: int = 0,
-) -> np.ndarray:
-    """The window_explorer.html score, verbatim: max(D_test/D_ref − 1, 0) over
-    sliding ref/test windows (see scores() in examples/window_explorer.html).
-    Samples before the windows fill are NaN (the app's null), excluded downstream.
-    """
-    L = ref + lag + test
-    out = np.full(len(r), np.nan)
-    for t in range(max(L - 1, warmup), len(r)):
-        start = t - L + 1
-        out[t] = max(
-            r[t - test + 1 : t + 1].mean() / r[start : start + ref].mean() - 1,
-            0.0,
-        )
-    return out
 
 
 def _web_auc(pos: list[float], neg: list[float]) -> float:
@@ -481,8 +441,7 @@ def _companion_series(method: str, width: float = 60.0) -> dict:
         np.array(d["r"]),
         APP_REF_N,
         APP_TEST_N,
-        0,
-        LEARN_W,
+        warmup=LEARN_W,
     )
     met = _web_metrics(
         sc,

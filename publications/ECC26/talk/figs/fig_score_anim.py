@@ -28,7 +28,9 @@ import numpy as np
 # Reuse the talk's shared rcParams (font sizes) and plot margins so every frame
 # matches the static figures' width and fonts on the slide.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from make_talk_figs import AX_LEFT, AX_RIGHT  # noqa: E402
+from talkplot import AX_LEFT, AX_RIGHT, sliding_score, talk_style  # noqa: E402
+
+talk_style()
 
 N, BASE, CENTER, HI = 600, 1.0, 300, 4.0
 THR, LAG = 0.25, 0
@@ -50,15 +52,7 @@ def residual(noise: float) -> np.ndarray:
 
 def scores(r: np.ndarray, ref: int, test: int) -> np.ndarray:
     """score[t] = max(mean(test)/mean(ref) - 1, 0), windows right-aligned at t."""
-    L = ref + LAG + test
-    out = np.full(N, np.nan)
-    for t in range(L - 1, N):
-        start = t - L + 1
-        out[t] = max(
-            r[t - test + 1 : t + 1].mean() / r[start : start + ref].mean() - 1,
-            0.0,
-        )
-    return out
+    return sliding_score(r, ref, test, lag=LAG)
 
 
 def frames() -> list[tuple[float, int, int]]:

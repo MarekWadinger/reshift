@@ -32,7 +32,8 @@ if str(REPO) not in sys.path:
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-from fig_rotation_ellipse import BLUE, GREY, K0, RED, inflow  # noqa: E402
+from fig_rotation_ellipse import K0, inflow  # noqa: E402
+from talkplot import BLUE, GREY, RED, save_fig  # noqa: E402
 
 plt.rcParams.update(
     {
@@ -186,10 +187,7 @@ def fig_terms() -> None:
     axh.set_ylabel(r"$\sigma_i$")
     axh.set_xlabel("term $i$")
     fig.tight_layout()
-    for ext in ("png", "pdf"):
-        fig.savefig(HERE / f"fig_truncation_terms.{ext}", bbox_inches="tight")
-    plt.close(fig)
-    print("wrote fig_truncation_terms.png / .pdf")
+    save_fig(fig, "fig_truncation_terms")
 
 
 def main() -> None:
@@ -233,9 +231,7 @@ def main() -> None:
     ax.legend(loc="center right", frameon=False)
     ax.grid(True, which="both", alpha=0.2)
 
-    for ext in ("png", "pdf"):
-        fig.savefig(HERE / f"fig_truncation_blowup.{ext}", bbox_inches="tight")
-    print("wrote fig_truncation_blowup.png / .pdf")
+    save_fig(fig, "fig_truncation_blowup")
 
 
 if __name__ == "__main__":

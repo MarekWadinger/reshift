@@ -41,17 +41,10 @@ if str(REPO) not in sys.path:
 
 from reshift.preprocessing import hankel  # noqa: E402
 
-plt.rcParams.update(
-    {
-        "font.size": 13,
-        "axes.grid": True,
-        "grid.alpha": 0.25,
-        "axes.spines.top": False,
-        "axes.spines.right": False,
-        "figure.dpi": 130,
-    },
-)
-BLUE, RED, GREY = "#1f6fb2", "#d1495b", "#6b7280"
+if str(HERE) not in sys.path:
+    sys.path.insert(0, str(HERE))
+# talkplot's import applies the shared size-13 rcParams this figure uses
+from talkplot import BLUE, GREY, RED, save_fig, zoom_inset  # noqa: E402
 
 T, DT = 4000.0, 1.0
 K0 = 0.05  # healthy outflow coefficient
@@ -71,9 +64,11 @@ def inflow(t: np.ndarray | float) -> np.ndarray:
     )
 
 
-def simulate(seed: int = 42) -> tuple[np.ndarray, np.ndarray, int]:
+def simulate(
+    seed: int = 42, total: float = T
+) -> tuple[np.ndarray, np.ndarray, int]:
     """Integrate the two-tank; k1 clogs to CLOG*K0 at cp. Returns (X, q, cp)."""
-    t = np.arange(0.0, T, DT)
+    t = np.arange(0.0, total, DT)
     cp = len(t) // 2
 
     def rhs(k1: float, k2: float):  # noqa: ANN202
@@ -114,21 +109,6 @@ def circle(A: np.ndarray, n: int = 400) -> np.ndarray:
     """Image of the unit circle under A."""
     t = np.linspace(0, 2 * np.pi, n)
     return A @ np.vstack([np.cos(t), np.sin(t)])
-
-
-def zoom_inset(
-    ax: plt.Axes, rect: tuple[float, float, float, float]
-) -> plt.Axes:
-    """White framed inset for zooming on sub-percent differences."""
-    axz = ax.inset_axes(rect)
-    axz.set_xticks([])
-    axz.set_yticks([])
-    axz.grid(False)
-    axz.set_facecolor("white")
-    for sp in axz.spines.values():
-        sp.set_visible(True)
-        sp.set_color(GREY)
-    return axz
 
 
 def main() -> None:
@@ -311,8 +291,7 @@ def main() -> None:
     ax2.indicate_inset_zoom(ax2z, edgecolor=GREY)
 
     fig.tight_layout()
-    for ext in ("png", "pdf"):
-        fig.savefig(HERE / f"fig_rotation_ellipse.{ext}", bbox_inches="tight")
+    save_fig(fig, "fig_rotation_ellipse")
 
     def ang(u: np.ndarray, v: np.ndarray) -> float:
         return float(
@@ -324,7 +303,7 @@ def main() -> None:
     g_before = np.linalg.norm(M_old - M_new)
     g_re = np.linalg.norm(M_re - M_new)
     print(
-        f"wrote fig_rotation_ellipse.png/.pdf  theta={theta:.2f} deg  "
+        f"theta={theta:.2f} deg  "
         f"Abar gap: before={g_before:.3f}, realigned={g_re:.3f}  "
         f"B angle to B_k: before={ang(B_old, B_new):.2f} deg, "
         f"realigned={ang(B_re, B_new):.2f} deg"
