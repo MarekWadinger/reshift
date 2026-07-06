@@ -16,7 +16,7 @@
 \usepackage{colortbl}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc}
-\graphicspath{{figs/}}
+\graphicspath{{figs/}{../../IEEECSS/biography/}}
 
 % --- palette matches the figures -----------------------------------------
 \definecolor{tblue}{HTML}{1F6FB2}
@@ -27,6 +27,17 @@
 \setbeamercolor{structure}{fg=tblue}
 \setbeamercolor{frametitle}{fg=tblue}
 \setbeamerfont{frametitle}{series=\bfseries}
+
+% circle-cropped headshot: \face[y-shift][photo width]{file}{Name}
+% y-shift: more negative = show higher part of the photo; width > 1.2cm zooms in
+\NewDocumentCommand{\face}{O{-0.42} O{1.8cm} m m}{%
+  \begin{tabular}{@{}c@{}}
+    \begin{tikzpicture}
+      \clip (0,0) circle (0.82cm);
+      \node at (0,#1) {\includegraphics[width=#2]{#3}};
+    \end{tikzpicture}\\[-0.1em]
+    #4
+  \end{tabular}}
 
 \newcommand{\yes}{\textcolor{tgreen}{\ding{51}}}
 \newcommand{\no}{\textcolor{tred}{\ding{55}}}
@@ -84,27 +95,46 @@
 \begin{document}
 
 % ===================== 1. COLD OPEN ======================================
-\begin{frame}[plain]
-  \titlepage
-  \vspace{-1.2em}
-  \begin{center}
-    \includegraphics[width=0.78\linewidth]{fig_cold_open.pdf}
-  \end{center}
+% title slide styled like the rest of the deck: frametitle bar + heads as authors
+\begingroup
+\setbeamertemplate{frametitle}[default][center]
+\begin{frame}[plain]{Truncated Online DMD with Control\\for Industrial Change Detection}
+  \centering
+  \vfill
+  \face{wadinger.jpg}{\small Marek Wadinger\textsuperscript{1}}\hspace{1.6em}%
+  \face[-0.78][2.5cm]{kvasnica.png}{\small Michal Kvasnica\textsuperscript{1}}\hspace{1.6em}%
+  \face{kawahara.jpg}{\small Yoshinobu Kawahara\textsuperscript{2}}
+
+  \vspace{1.0em}
+  {\footnotesize \textsuperscript{1}\,Slovak University of Technology in Bratislava
+   \quad \textsuperscript{2}\,Osaka University \& RIKEN AIP}
+
+  \vspace{1.2em}
+  ECC 2026 \;\textbar\; WeB9 — Fault Detection and Tolerance II
+  \vfill
 \end{frame}
+\endgroup
 
 % Slide 1 speaker note lives in outline.md; cold open: stakes + spine, pause.
 
 % ===================== 2. MONITORS DECAY =================================
+% Same two-tank as the live companion; a valve slowly clogs (aging), then one
+% real fault. Identical model + identical day-one threshold, frozen vs rolling.
+% PRESENTER: We commission a detector once — the plant runs for years. It
+% ages, re-seasons, gets re-tuned, gets new setpoints; the model stays frozen
+% at day one. Watch the gap widen: a valve slowly clogs, then one real fault.
+% The frozen model's false alarms climb and the real fault hides. The real
+% requirement is not a better detector — it's one that stays current without
+% a human re-tuning it.
 \begin{frame}{We commission a detector once. The plant runs for years.}
-      \begin{itemize}
-        \item Once commissioned  $\rightarrow$ the plant \textbf{ages, re-seasons, gets re-tuned}, gets new setpoints.
-        \item The model is \textbf{frozen at day one}.
-        \item The gap widens   $\rightarrow$  \textcolor{tred}{false alarms climb, real faults hide}.
-      \end{itemize}
-      \vspace{0.6em}
-      \begin{block}{The real requirement}
-        Not a better detector — one that \textbf{stays current} without a human re-tuning it.
-      \end{block}
+  \centering
+  \only<1>{The detector is \textcolor{tred}{frozen} — the plant keeps aging:
+  \textcolor{tred}{false alarms climb, the real fault hides}.\\[0.2em]}
+  \only<2>{The detector is \textcolor{tblue}{adapting} — the plant keeps aging:
+  \textcolor{tblue}{no false alarms, the real fault raises}.\\[0.2em]}
+  % same figure object saved twice (adaptive panel blanked) -> no pixel jump
+  \only<1>{\includegraphics[height=0.78\textheight]{fig_drift_frozen_static.pdf}}%
+  \only<2>{\includegraphics[height=0.78\textheight]{fig_drift_frozen.pdf}}
 \end{frame}
 
 % ===================== 3. FOUR THINGS MOVE THE SIGNAL ====================
@@ -124,23 +154,23 @@
     \node[rowhdr, tgreen!60!black] at (-3.45, 0.0)  {KNOWN};
     \node[rowhdr, tred!85!black]   at (-3.45,-3.0)  {UNKNOWN};
 
-    % --- cells -----------------------------------------------------------
+    % --- cells (staged reveal: one cell per step, FAULT last) --------------
     % Known x Cause  (normal)
-    \node[cell, fill=tblue!12, draw=tblue!65!black] at (0.0,0.0)
+    \node<1->[cell, fill=tblue!12, draw=tblue!65!black] at (0.0,0.0)
       {setpoint / reference change\\[3pt]{\footnotesize an operator command\\ — acknowledge}};
     % Known x Consequence (normal -- the controller acting)
-    \node[cell, fill=tgreen!12, draw=tgreen!65!black] at (5.8,0.0)
+    \node<2->[cell, fill=tgreen!12, draw=tgreen!65!black] at (5.8,0.0)
       {\textbf{control input}\\[3pt]{\footnotesize the controller acts to track it\\ — predict}};
     % Unknown x Cause (normal-ish, adapt)
-    \node[cell, fill=tyellow!22, draw=tyellow!75!black] at (0.0,-3.0)
-      {aging $\cdot$ environmental disturbance\\[3pt]{\footnotesize slow, exogenous push\\ — adapt}};
+    \node<3->[cell, fill=tyellow!22, draw=tyellow!75!black] at (0.0,-3.0)
+      {aging / environmental disturbance\\[3pt]{\footnotesize slow, exogenous push\\ — adapt}};
     % Unknown x Consequence (FAULT)
-    \node[cell, fill=tred!14, draw=tred, line width=1.6pt] at (5.8,-3.0)
+    \node<4->[cell, fill=tred!14, draw=tred, line width=1.6pt] at (5.8,-3.0)
       {\textbf{\textcolor{tred!85!black}{fault / transient}}\\[3pt]{\footnotesize the system's response changed\\ — \textbf{act}}};
   \end{tikzpicture}}
 
   \vspace{0.3em}
-  {Most detectors can't tell them apart --- detection models can't either}
+  \onslide<4->{Most detectors can't tell them apart}
 \end{frame}
 
 % ===================== 4. THE TRAP =======================================
@@ -149,10 +179,10 @@
   % noise 0->1, ref 5->200, test 5->100, ref 200->5, noise 1->0 (each holds
   % where the last stopped). Inline playback needs Adobe Reader or Okular.
   \centering
-  % \animategraphics[autoplay,loop,controls,width=0.9\linewidth]{10}{frames/score_}{0}{214}\\
+  % \animategraphics[autoplay,loop,controls,width=0.82\linewidth]{10}{frames/score_}{0}{214}\\
   \vspace{0.2em}
-  {\footnotesize \textcolor{gray}{Noise} polutes the score with tiny bursts; a longer
-  \textcolor{tblue}{reference} stabilizes it, a longer \textcolor{tgreen}{test} detects slower changes.}
+  {\footnotesize \textbf{Watch the score:} \textcolor{gray}{noise} pollutes it with tiny bursts; a longer
+  \textcolor{tblue}{reference} window calms it down, a longer \textcolor{tgreen}{test} window catches slower changes.}
 \end{frame}
 
 % ===================== 5. ONE MISSING BOX ================================
@@ -161,10 +191,12 @@
   \centering
   \resizebox{!}{0.82\textheight}{%
   \begin{tikzpicture}[font=\sffamily]
-    \caps{-1.25}{-0.05}{-53}{3.7}{tblue}    % A  Interpretable
-    \caps{-0.05}{1.45}{-53}{3.1}{tyellow}   % B  Adaptive
-    \caps{0.05}{1.45}{53}{3.1}{tgreen}      % C  Control-aware
-    \caps{1.25}{-0.05}{53}{3.7}{tred}       % D  Num. stable
+    % staged reveal: 1) the four requirements, 2) where existing methods sit,
+    % 3) the empty middle — toDMDc
+    \caps{-1.1}{-0}{-45}{3}{tblue}    % A  Interpretable
+    \caps{0}{1.}{-45}{3}{tyellow}   % B  Adaptive
+    \caps{0}{1.}{45}{3}{tgreen}      % C  Control-aware
+    \caps{1.1}{-0}{45}{3}{tred}       % D  Num. stable
 
     % --- axis (set) names ------------------------------------------------
     \node[tblue,           font=\bfseries\large] at (-5.6, 1.7) {Interpretable};
@@ -173,31 +205,57 @@
     \node[tred,            font=\bfseries\large] at ( 5.5, 1.7) {Num.\ stable};
 
     % --- methods placed by what they offer (representative per region) ---
-    \node[meth] at (-0.80, 0.90) {online DMDc\\{\tiny[Zhang'19]}};   % ABC  no stability
-    \node[meth] at (-0.78,-0.92) {DMDc\\{\tiny(batch)}};             % ACD  no adaptivity
-    \node[meth] at ( 0.78,-0.92) {online\\subspace};                % ABD  no control
-    \node[meth] at ( 0.00,-2.30) {SPC $\cdot$ T$^2$ $\cdot$ CUSUM $\cdot$ GLR\\SSA $\cdot$ Bayesian $\cdot$ DMD-CPD}; % AD
-    \node[meth] at ( 2.95, 1.15) {TIRE\\autoencoders\\kernel CPD}; % D-only black-box
-    \node[core] at ( 0.00,-0.14) {toDMDc\\[-1pt]{\fontsize{6}{6}\selectfont(ours)}}; % ABCD
+    \node<2->[meth] at (-0.80, 0.90) {online DMDc\\{\tiny[Zhang'19]}};   % ABC  no stability
+    \node<2->[meth] at (-0.78,-0.92) {DMDc\\{\tiny(batch)}};             % ACD  no adaptivity
+    \node<2->[meth] at ( 0.78,-0.92) {online\\subspace};                % ABD  no control
+    \node<2->[meth] at ( 0.00,-2.30) {SPC $\cdot$ T$^2$ $\cdot$ CUSUM $\cdot$ GLR\\SSA $\cdot$ Bayesian $\cdot$ DMD-CPD}; % AD
+    \node<2->[meth] at ( 2.95, 1.15) {TIRE\\autoencoders\\kernel CPD}; % D-only black-box
+    \node<3->[core] at ( 0.00,-0.14) {toDMDc\\[-1pt]{\fontsize{6}{6}\selectfont(ours)}}; % ABCD
   \end{tikzpicture}}
 
   \vspace{-0.2em}
-  {\footnotesize Representative methods per region — \textbf{\textcolor{tblue}{toDMDc}} alone fits them all.}
+  \onslide<3->{{\footnotesize Representative methods per region — \textbf{\textcolor{tblue}{toDMDc}} alone fits them all.}}
 \end{frame}
 
-% ===================== 7. THE FIX (CONTRIBUTION) =========================
-\begin{frame}{The fix: online truncation}
-  \begin{itemize}
-    \item Online DMDc fails on \textbf{small singular values} — inverting the noise floor makes the update blow up (literally divides by zero on rank-deficient data).
-    \item We truncate to rank $r$ \textbf{online} — keep the directions that carry the dynamics, drop the noise floor — basis stays orthonormal.
-  \end{itemize}
-\end{frame}
-
-
-
-% ===================== 7f. REALIGN A TO THE ROTATED BASIS =============
-\begin{frame}{Realigning $\tilde{\bar A}_k$ to the rotated basis}
+% ===================== 6a. WHAT IS TRUNCATION ============================
+\begin{frame}{What is truncation?}
+  % PRESENTER: the data splits into terms, strongest first (sigma bars,
+  % bottom right). Terms 1-2 (blue, green) are visibly the tank dynamics;
+  % term 3 (red) is the duplicated sensor's noise floor, a million times
+  % smaller. The model A is built from the same terms, column i from term i
+  % — truncation keeps the dashed r-by-r block, drops the noise column.
+  % That's the whole idea. Same data as the next slide's blow-up.
   \centering
+  \includegraphics[height=0.72\textheight]{fig_truncation_terms.pdf}\\[0.15em]
+  {\footnotesize Each part of the model carries the colour of the term it is built from —
+  \textbf{\textcolor{tblue}{truncation keeps the $r \times r$ dynamics block}},
+  \textcolor{tred}{drops the noise part}.}
+\end{frame}
+
+% ===================== 6b. CURRENT ONLINE SOLUTION FAILS =================
+\begin{frame}{Today's online DMDc inverts the noise floor}
+  % PRESENTER: two-tank with a DUPLICATED tank-2 sensor — the extra channel
+  % adds no information, so the data is nearly rank-deficient. The exact
+  % online update inverts the tiny noise (sigma = 1e-7): coefficients grow
+  % like 1/sigma — a million times too big. With sigma = 0 it crashes
+  % outright (singular X'X). Same streaming code; only truncation differs.
+  \centering
+  \includegraphics[height=0.68\textheight]{fig_truncation_blowup.pdf}\\[0.15em]
+  {\footnotesize One redundant sensor is enough — the exact update
+  \textcolor{tred}{divides by the noise}; \textbf{\textcolor{tblue}{truncating to rank $r$}} keeps it sane.}
+\end{frame}
+
+
+
+% ===================== 6c. OUR FIX: TRUNCATE ONLINE ======================
+\begin{frame}{Our fix: truncate online — and keep the model aligned}
+  % PRESENTER: truncation keeps only r directions, and those directions
+  % drift as new data streams in. So each update we measure how much the
+  % kept directions turned (K_k), and apply that turn to yesterday's model —
+  % three cheap rotations and A-bar is valid in today's directions. That is
+  % the entire contribution: truncation that survives streaming.
+  \centering
+  \resizebox{!}{0.72\textheight}{%
   \begin{tikzpicture}[scale=0.8, font=\sffamily,
     op/.style={font=\large, text=tgrey!80!black},
     cp/.style={font=\small, text=tgrey, align=left}]
@@ -211,12 +269,10 @@
     \mblk{2.55}{-1.0}{\Q}{\Q}{tgreen}{$K_{qq}$}
     \lbr{1.45}{0.14}{-1.74} \rbr{3.25}{0.14}{-1.74}
     \node[op,anchor=west] at (3.5,-0.8) {$=\tilde U_k^\top\,\tilde U_{k-1}$\textsuperscript{\textdagger}};
+    % PRESENTER: split by state (p) & control (q) subspaces, r = p + q;
+    % only the diagonal blocks K_pp, K_qq are used.
     \node[cp,anchor=west,text width=5.0cm] at (7.0,-0.8)
-      {split by \textcolor{tblue!60!black}{state} \& \textcolor{tgreen!50!black}{control} subspaces
-       ($r{=}p{+}q$);\ only the diagonal\\ blocks
-       \textcolor{tblue!60!black}{$K_{pp}$}, \textcolor{tgreen!50!black}{$K_{qq}$} are used.\\[2pt]
-       \textcolor{tblue!60!black}{$p$}: rank of the state subspace;\
-       \textcolor{tgreen!50!black}{$q$}: rank of the control subspace.};
+      {how much the kept\\directions turned this step};
 
     % Row 2: rotate the state operator (both sides by K_pp)
     \begin{scope}[yshift=-3.0cm]
@@ -229,7 +285,7 @@
       \node[op] at (5.15,-0.5) {$=$};
       \mblk{5.55}{0}{\P}{\P}{tblue}{$\tilde A_k$}
       \node[cp,anchor=west,text width=4.4cm] at (7.0,-0.5)
-        {\textbf{state} operator ($p\times p$):\\rotate on both sides by $K_{pp}$};
+        {turn the \textbf{state} operator};
     \end{scope}
 
     % Row 3: rotate the control operator (left K_pp, right K_qq)
@@ -243,7 +299,7 @@
       \node[op] at (4.45,-0.5) {$=$};
       \mblk{4.85}{0}{\Q}{\P}{tgreen}{$\tilde B_k$}
       \node[cp,anchor=west,text width=4.6cm] at (7.0,-0.5)
-        {\textbf{control} operator ($p\times q$):\\$K_{pp}$ on the left, $K_{qq}$ on the right};
+        {turn the \textbf{control} operator};
     \end{scope}
 
     % Row 4: assemble the augmented operator  A-bar = [ A | B ]
@@ -253,44 +309,57 @@
       \mblk{1.5}{0}{\P}{\P}{tblue}{$\tilde A_k$}
       \mblk{2.5}{0}{\Q}{\P}{tgreen}{$\tilde B_k$}
       \rbr{3.18}{0.15}{-1.15}
-      \node[cp,anchor=west,text width=4.6cm] at (7.0,-0.5) {$p\times r$ --- the augmented operator};
+      \node[cp,anchor=west,text width=4.6cm] at (7.0,-0.5) {the model, valid again today};
     \end{scope}
 
-  \end{tikzpicture}%
+  \end{tikzpicture}}%
   \renewcommand{\thefootnote}{\textdagger}%
-  \footnotetext{Update of $\tilde U_k$: Zhang,  ``An answer to an open question in the incremental SVD'', \emph{arXiv}:2204.05398 (2022).}
+  \footnotetext{Update of $\tilde U_k$: Zhang, ``An improved incremental singular value decomposition and new error bounds'', \emph{arXiv}:2204.05398v3 (2026).}
 \end{frame}
 
 % ===================== 8. GUARANTEES =====================================
 \begin{frame}{Two guarantees you can stand behind}
+  % Figures from figs/fig_guarantees.py: left = measured update wall time under
+  % the O(mr^2) envelope + flat over the stream; right = the frames/score_
+  % synthetic — a sharp change peaks exactly c samples after onset (any c);
+  % slower transitions (sharp <-> over 90) only push the peak later: delay >= c.
   \begin{columns}[T]
     \begin{column}{0.5\linewidth}
-      \begin{block}{Cost $\mathcal{O}(mr^2)$ / update}
-        A handful of operations per sample, \textbf{independent of history length}.\\
+      \begin{block}{Cheap: cost $\mathcal{O}(mr^2)$ per update}
+        With $m$ sensors and a model of rank $r$ (a few dominant directions, $r \ll m$):
+        a handful of operations per sample, \textbf{independent of history length}.\\
         Runs inside the sample interval.
       \end{block}
+      \centering
+      \includegraphics[width=0.92\linewidth,height=0.52\textheight,keepaspectratio]{fig_cost_mr2.pdf}
     \end{column}
     \begin{column}{0.5\linewidth}
-      \begin{block}{Detection delay $\ge c$}
-        \textbf{Peaks with test window} size if the change last.\\
-        \textcolor{tblue}{Window size = your reaction budget.}
+      \begin{block}{Predictable: detection delay $\ge c$}
+        The score \textbf{peaks about one \textcolor{tgreen}{test window} ($c$ samples)} after a persistent change.\\
+        You choose $c$ — the test window is \textbf{your reaction budget}.
       \end{block}
+      \centering
+      \includegraphics[width=0.92\linewidth,height=0.52\textheight,keepaspectratio]{fig_delay_c.pdf}
     \end{column}
   \end{columns}
-  \vspace{0.8em}
-  \centering
 \end{frame}
 
 % ===================== 9. SPINE PROOF (two-tank) =========================
 \begin{frame}{On a controlled nonlinear two-tank plant}
   \centering
-  \includegraphics[width=0.9\linewidth]{fig_twotank_companion.pdf}\\
+  \includegraphics[height=0.72\textheight]{fig_twotank_companion.pdf}\\[0.1em]
+  {\footnotesize The \textcolor{tblue}{blue band} is the \textcolor{tblue}{reference window} (``before''),
+  the \textcolor{tgreen}{green band} the \textcolor{tgreen}{test window} (``after'') around the fouling onset
+  (gray dashed) — the other identifiers follow on the next slide.}
 \end{frame}
 
 % ===================== 9b. METHOD COMPARISON (companion) =================
 \begin{frame}{Every identifier, same plant — only toDMDc separates it cleanly}
   \centering
-  \includegraphics[width=0.9\linewidth]{fig_twotank_companion_scores.pdf}\\
+  \includegraphics[height=0.72\textheight]{fig_twotank_companion_scores.pdf}\\[0.1em]
+  {\footnotesize\color{tgrey} Table: detected (\ding{51}/\ding{55}) $\cdot$ delay / peak = samples from onset
+  to threshold-cross / score-peak $\cdot$ FAR = false-alarm rate outside the change $\cdot$
+  AUC = score separability (1.0 = perfect).}
 \end{frame}
 
 % ===================== 10. BESS HERO ====================================
@@ -299,8 +368,7 @@
   \includegraphics[width=0.9\linewidth]{fig_bess_hx10_crop.pdf}\\
   \vspace{0.2em}
   Real cooling-fan fault flagged with high confidence ($S_{\max}\!\approx\!2.0$) — and precursor
-  peaks ($S\!\approx\!1.0$) lift \textbf{$\sim$2000 samples before the confirmed fault}, on data never seen.\\
-  {\footnotesize (Suggestive of an unmodeled slow dynamic, not a confirmed mechanism — aligns with anomalies in earlier work.)}
+  peaks ($S\!\approx\!1.0$) lift \textbf{1 day before the confirmed fault}, on data never seen.\\
 \end{frame}
 
 % ===================== 11. CLOSE ========================================
@@ -309,11 +377,13 @@
   \begin{columns}[T]
     \begin{column}{0.74\linewidth}
       \begin{itemize}
-        \item Stays current on its own, tells the controller's actions apart from a real fault, delay you can size, cost you can afford.
+        \item \textbf{Stays current} on its own — no human re-tuning.
+        \item Tells the \textbf{controller's actions} apart from a \textbf{real fault}.
+        \item Delay you \textbf{shape} (test window $c$), cost you \textbf{afford} ($\mathcal{O}(mr^2)$).
         \item \textbf{Exactly the trigger a fault-tolerant scheme consumes} — detection ready to hand off to tolerance.
-        \item \textbf{Key finding:} interpretable statistics with a \emph{bounded} detection delay across all three case studies.
-        \item Open source, one-line install — \texttt{pip install reshift}.
+        \item \textbf{Open source}, one-line install — \texttt{pip install reshift}.
       \end{itemize}
+
     \end{column}
     \begin{column}{0.26\linewidth}
       \centering
@@ -321,10 +391,21 @@
       {\scriptsize\color{tgrey} Interactive companion \\marekwadinger.github.io/reshift}
     \end{column}
   \end{columns}
+  \vspace{0.8em}
+  \centering
+  % spread to match the title-page author block width (~0.6 slide width)
+  \begin{minipage}{0.62\linewidth}
+    \face{wadinger.jpg}{Marek Wadinger}\hfill
+    \face[-0.78][2.5cm]{kvasnica.png}{Michal Kvasnica}\hfill
+    \face{kawahara.jpg}{Yoshinobu Kawahara}
+  \end{minipage}
 \end{frame}
 
 % ===================== BACKUP ===========================================
 \appendix
+% freeze page count at the last main slide; backups are unnumbered
+\newcounter{finalframe}\setcounter{finalframe}{\value{framenumber}}
+\setbeamertemplate{footline}{}
 
 % ===================== 7d. SVD UPDATE AS BLOCK ALGEBRA ==================
 \begin{frame}{Backup — Adding a sample (Alg.~1): updating the basis $\tilde U$}
@@ -476,4 +557,5 @@
   Largest late peaks are return-to-normal transitions.
 \end{frame}
 
+\setcounter{framenumber}{\value{finalframe}}
 \end{document}

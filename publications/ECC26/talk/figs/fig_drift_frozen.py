@@ -142,8 +142,8 @@ def main() -> None:
     ax_h.legend(loc="upper left", ncol=2, frameon=False)
 
     for ax, s, col, lab in (
-        (ax_f, s_f, RED, "static model"),
-        (ax_a, s_a, BLUE, "adaptive model"),
+        (ax_f, s_f, RED, "static detector"),
+        (ax_a, s_a, BLUE, "adaptive detector"),
     ):
         ax.plot(x, s, color=col, lw=1.5)
         ax.axhline(1.0, color="black", ls=":", lw=1.3)
@@ -157,12 +157,15 @@ def main() -> None:
     fmax, amax = np.nanmax(s_f[vis]), np.nanmax(s_a[vis])
     ax_f.set_ylim(0, fmax * 1.08)
     ax_a.set_ylim(0, max(amax * 1.35, 2.2))
+    ax_f.text(lw + MEAN_W + 10, 1.0 + 0.11 * ax_f.get_ylim()[1],
+              "alarm threshold (set at commissioning)",
+              fontsize=11, color="black", ha="left")
     ax_a.text(lw + MEAN_W + 10, 1.24, "alarm threshold (set at commissioning)",
               fontsize=11, color="black", ha="left")
 
     first_fa = int(np.nanargmax(s_f[vis] > 1.0)) + lw + MEAN_W
     ax_f.annotate(
-        "false alarms climb\n(no fault yet)",
+        "false alarms appear\n(no fault yet)",
         xy=(first_fa + 30, 1.25),
         xytext=(first_fa - 90, fmax * 0.48),
         color=RED,
@@ -172,7 +175,7 @@ def main() -> None:
         arrowprops={"arrowstyle": "->", "color": RED, "lw": 1.6},
     )
     ax_f.annotate(
-        "real fault hides in\nthe alarms it built",
+        "real fault in\nthe alarm flood",
         xy=(FAULT_T + FAULT_W // 2 + 25, np.nanmax(s_f[FAULT_T : FAULT_T + FAULT_W + 40])),
         xytext=(FAULT_T - 130, fmax * 0.86),
         color=RED,
@@ -183,7 +186,7 @@ def main() -> None:
     )
     pk = FAULT_T + int(np.nanargmax(s_a[FAULT_T : FAULT_T + FAULT_W + 40]))
     ax_a.annotate(
-        "only alarm:\nthe real fault",
+        "real fault\nraises alarm",
         xy=(pk, s_a[pk]),
         xytext=(pk - 60, amax * 1.42),
         color=BLUE,
@@ -193,7 +196,7 @@ def main() -> None:
         arrowprops={"arrowstyle": "->", "color": BLUE, "lw": 1.6},
     )
     ax_a.text(
-        450, 0.28, "stays current — no false alarms",
+        450, 0.28, "adapts — no false alarms",
         color=BLUE, fontsize=13, ha="center",
     )
 
@@ -212,6 +215,18 @@ def main() -> None:
         left=AX_LEFT, right=AX_RIGHT, top=0.985, bottom=0.135, hspace=0.30,
     )
     save_fig(fig, "fig_drift_frozen", tight=False)
+
+    # step-1 slide: same layout, adaptive panel dropped entirely; the shared
+    # x-axis (ticks, xlabel, commissioning label) moves up to the static panel
+    ax_a.set_visible(False)
+    ax_f.tick_params(labelbottom=True)
+    ax_f.set_xlabel("sample")
+    ax_f.text(
+        DRIFT_ON, -0.42, "commissioning day",
+        transform=ax_f.get_xaxis_transform(), ha="center", va="top",
+        color=GREY, fontsize=13,
+    )
+    save_fig(fig, "fig_drift_frozen_static", tight=False)
 
     # self-check: the story must hold numerically
     drift = slice(450, FAULT_T - 10)
