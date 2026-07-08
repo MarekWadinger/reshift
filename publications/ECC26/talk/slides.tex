@@ -147,6 +147,57 @@
 
 % Slide 1 speaker note lives in outline.md; cold open: stakes + spine, pause.
 
+% ===================== 2. THE MONITORING LOOP ============================
+% PRESENTER: the setting — model-based monitoring, and the vocabulary for
+% the whole talk. An identifier builds a model of the plant from inputs and
+% measurements. The detector compares the plant against that model: the
+% mismatch is the residual, windows of residuals form the detection
+% statistic, the statistic crossing a threshold raises an alarm to the
+% operator. Ideally the controller consumes the same model (MPC) — one model
+% serving both. Hold this picture; the next slide is about what happens to
+% that model over the years.
+\begin{frame}{Model-based monitoring: plant vs.\ model, in one loop}
+  \centering
+  \resizebox{0.9\linewidth}{!}{%
+  \begin{tikzpicture}[font=\sffamily,>={Stealth[round]},
+    box/.style={rounded corners=4pt, align=center, inner sep=7pt,
+                line width=1pt, minimum height=1.05cm, minimum width=2.4cm},
+    sig/.style={->, line width=1.1pt, tgrey!80},
+    lbl/.style={font=\small, text=tgrey!40!black}]
+    % control loop (top row)
+    \node[box, fill=tgrey!12,  draw=tgrey!70]                       (op)    at (0,0)  {operator};
+    \node[box, fill=tblue!12,  draw=tblue]                          (ctrl)  at (4.4,0)  {controller};
+    \node[box, fill=tgrey!12,  draw=tgrey!70]                       (plant) at (8.8,0)  {plant};
+    \draw[sig] (op)   -- node[lbl,above]{setpoint} (ctrl);
+    \draw[sig] (ctrl) -- node[lbl,above]{input $u$} (plant);
+    \draw[sig] (plant.north) -- ++(0,0.75) -| node[lbl,above,pos=0.25]{measurements $y$} (ctrl.north);
+    % identification (bottom row, revealed second)
+    \visible<2->{
+    \node[box, fill=tyellow!18, draw=tyellow!80!black] (ident) at (8.8,-2.6) {identifier};
+    \node[box, fill=tblue!12,  draw=tblue]             (model) at (4.4,-2.6) {model};
+    \draw[sig] (plant) -- node[lbl,right]{$u,\,y$} (ident);
+    \draw[sig] (ident) -- node[lbl,above]{identifies} (model);
+    \draw[sig, dashed, tblue!70] (model) -- (ctrl);
+    }
+    % detection (revealed third)
+    \visible<3->{
+    \path (model) -- node[lbl,right,text=tblue!70!black]
+      {\shortstack{ideally the\\same model}} (ctrl);
+    \node[box, fill=tred!12,   draw=tred]              (det)   at (0,-2.6) {detector};
+    % residual = plant minus model: difference junction feeding the detector
+    \node[circle, draw=tgrey!80, line width=1pt, inner sep=1.2pt, font=\small]
+      (diff) at (2.15,-2.6) {$-$};
+    \fill[tgrey!80] (8.8,-1.35) circle (1.6pt);
+    \draw[sig] (8.8,-1.35) -| node[lbl,above,pos=0.1]{measurement $y$} (diff);
+    \draw[sig] (model) -- node[lbl,above=1pt]{$\hat y$} (diff);
+    \draw[sig] (diff) -- (det);
+    \node[lbl, below=4pt of diff] {\shortstack{plant-model\\mismatch}};
+    \draw[sig, tred!70] (det) -- node[lbl,left,text=tred!70!black]
+      {\shortstack{detection\\statistic}} (op);
+    }
+  \end{tikzpicture}}
+\end{frame}
+
 % ===================== 2. MONITORS DECAY =================================
 % Same two-tank as the live companion; a valve slowly clogs (aging), then one
 % real fault. Identical model + identical day-one threshold, frozen vs rolling.
