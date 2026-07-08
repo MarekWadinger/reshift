@@ -205,16 +205,19 @@
     \node[tred,            font=\bfseries\large] at ( 5.5, 1.7) {Num.\ stable};
 
     % --- methods placed by what they offer (representative per region) ---
-    \node<2->[meth] at (-0.80, 0.90) {online DMDc\\{\tiny[Zhang'19]}};   % ABC  no stability
-    \node<2->[meth] at (-0.78,-0.92) {DMDc\\{\tiny(batch)}};             % ACD  no adaptivity
-    \node<2->[meth] at ( 0.78,-0.92) {online\\subspace};                % ABD  no control
-    \node<2->[meth] at ( 0.00,-2.30) {SPC $\cdot$ T$^2$ $\cdot$ CUSUM $\cdot$ GLR\\SSA $\cdot$ Bayesian $\cdot$ DMD-CPD}; % AD
+    \node<2->[meth] at (-0.80, 0.90) {oDMDc\\{\tiny[Zhang'19]}};   % ABC  no stability
+    \node<2->[meth] at (-1.96, 1.93) {oDMD};    % AB   no control, no stability
+    \node<2->[meth] at (-1.92,-0.25) {ARX};     % AC   batch, no truncation
+    \node<2->[meth] at (-0.78,-0.92) {DMDc\\N4SID $\cdot$ MOESP};             % ACD  no adaptivity
+    \node<2->[meth] at ( 1.96, 1.93) {neural NARX};                      % CD   black-box, batch
+    \node<2->[meth] at ( 0.00,-2.05) {tDMD $\cdot$ T$^2$ $\cdot$ GLR\\SSA $\cdot$ Bayesian}; % AD
     \node<2->[meth] at ( 2.95, 1.15) {TIRE\\autoencoders\\kernel CPD}; % D-only black-box
     \node<3->[core] at ( 0.00,-0.14) {toDMDc\\[-1pt]{\fontsize{6}{6}\selectfont(ours)}}; % ABCD
   \end{tikzpicture}}
 
   \vspace{-0.2em}
-  \onslide<3->{{\footnotesize Representative methods per region — \textbf{\textcolor{tblue}{toDMDc}} alone fits them all.}}
+  \onslide<2->{{\footnotesize Each identifier satisfies only some of the requirements}}
+  \onslide<3>{{\footnotesize — \textbf{\textcolor{tblue}{toDMDc}} alone fits them all.}}
 \end{frame}
 
 % ===================== 6a. WHAT IS TRUNCATION ============================
