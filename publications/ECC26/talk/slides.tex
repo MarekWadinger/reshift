@@ -202,17 +202,17 @@
 % Same two-tank as the live companion; a valve slowly clogs (aging), then one
 % real fault. Identical model + identical day-one threshold, frozen vs rolling.
 % PRESENTER: We commission a detector once — the plant runs for years. It
-% ages, re-seasons, gets re-tuned, gets new setpoints; the model stays frozen
-% at day one. Watch the gap widen: a valve slowly clogs, then one real fault.
-% The frozen model's false alarms climb and the real fault hides. The real
-% requirement is not a better detector — it's one that stays current without
-% a human re-tuning it.
+% ages, re-seasons, gets re-tuned, gets new setpoints; the model stays static,
+% exactly as commissioned. Watch the gap widen: a valve slowly fouls, then one
+% real fault. The static model's false alarms climb and the real fault hides.
+% The real requirement is not a better detector — it's one that stays current
+% without a human re-tuning it.
 \begin{frame}{We commission a detector once. The plant runs for years.}
   \centering
-  \only<1>{The detector is \textcolor{tred}{frozen} — the plant keeps aging:
+  \only<1>{The detector is \textcolor{tred}{static} — the plant keeps aging:
   \textcolor{tred}{false alarms climb, the real fault hides}.\\[0.2em]}
-  \only<2>{The detector is \textcolor{tblue}{adapting} — the plant keeps aging:
-  \textcolor{tblue}{no false alarms, the real fault raises}.\\[0.2em]}
+  \only<2>{The detector is \textcolor{tblue}{adaptive} — the plant keeps aging:
+  \textcolor{tblue}{no false alarms, the fault raises an alarm}.\\[0.2em]}
   % same figure object saved twice (adaptive panel blanked) -> no pixel jump
   \only<1>{\includegraphics[height=0.78\textheight]{fig_drift_frozen_static.pdf}}%
   \only<2>{\includegraphics[height=0.78\textheight]{fig_drift_frozen.pdf}}
@@ -229,8 +229,8 @@
     rowhdr/.style={font=\bfseries\large, rotate=90, align=center}]
 
     % column headers
-    \node[colhdr] at (0.0, 1.85) {CAUSE\\[1pt]{\normalsize\mdseries\itshape a driver moves the signal}};
-    \node[colhdr] at (5.8, 1.85) {CONSEQUENCE\\[1pt]{\normalsize\mdseries\itshape the system's response changed}};
+    \node[colhdr] at (0.0, 1.85) {CAUSE\\[1pt]{\normalsize\mdseries\itshape external driver}};
+    \node[colhdr] at (5.8, 1.85) {CONSEQUENCE\\[1pt]{\normalsize\mdseries\itshape plant's response}};
     % row headers
     \node[rowhdr, tgreen!60!black] at (-3.45, 0.0)  {KNOWN};
     \node[rowhdr, tred!85!black]   at (-3.45,-3.0)  {UNKNOWN};
@@ -241,13 +241,13 @@
       {setpoint / reference change\\[3pt]{\footnotesize an operator command\\ — acknowledge}};
     % Known x Consequence (normal -- the controller acting)
     \node<2->[cell, fill=tgreen!12, draw=tgreen!65!black] at (5.8,0.0)
-      {\textbf{control input}\\[3pt]{\footnotesize the controller acts to track it\\ — predict}};
+      {\textbf{control input}\\[3pt]{\footnotesize the controller acts to track it\\ — model}};
     % Unknown x Cause (normal-ish, adapt)
     \node<3->[cell, fill=tyellow!22, draw=tyellow!75!black] at (0.0,-3.0)
-      {aging / environmental disturbance\\[3pt]{\footnotesize slow, exogenous push\\ — adapt}};
+      {aging / environmental disturbance\\[3pt]{\footnotesize exogenous push\\ — adapt}};
     % Unknown x Consequence (FAULT)
     \node<4->[cell, fill=tred!14, draw=tred, line width=1.6pt] at (5.8,-3.0)
-      {\textbf{\textcolor{tred!85!black}{fault / transient}}\\[3pt]{\footnotesize the system's response changed\\ — \textbf{act}}};
+      {\textbf{\textcolor{tred!85!black}{fouling}} \textcolor{tred!85!black}\\{\footnotesize permanent or transient change\\ — act}};
   \end{tikzpicture}}
 
   \vspace{0.3em}
@@ -262,8 +262,8 @@
   \centering
   % \animategraphics[autoplay,loop,controls,width=0.82\linewidth]{10}{frames/score_}{0}{214}\\
   \vspace{0.2em}
-  {\footnotesize \textbf{Watch the score:} \textcolor{gray}{noise} pollutes it with tiny bursts; a longer
-  \textcolor{tblue}{reference} window calms it down, a longer \textcolor{tgreen}{test} window catches slower changes.}
+  {\footnotesize \textbf{Watch the detection statistic:} \textcolor{gray}{noise} pollutes it with tiny bursts; a longer
+  \textcolor{tblue}{base} window calms it down, a longer \textcolor{tgreen}{test} window catches slower changes.}
 \end{frame}
 
 % ===================== 5. ONE MISSING BOX ================================
@@ -303,21 +303,21 @@
 
 % ===================== 6a. WHAT IS TRUNCATION ============================
 \begin{frame}{What is truncation?}
-  % PRESENTER: the data splits into terms, strongest first (sigma bars,
-  % bottom right). Terms 1-2 (blue, green) are visibly the tank dynamics;
-  % term 3 (red) is the duplicated sensor's noise floor, a million times
-  % smaller. The model A is built from the same terms, column i from term i
-  % — truncation keeps the dashed r-by-r block, drops the noise column.
-  % That's the whole idea. Same data as the next slide's blow-up.
+  % PRESENTER: the data splits into directions, strongest first (sigma bars,
+  % bottom right). Directions 1-2 (blue, green) are visibly the tank dynamics;
+  % direction 3 (red) is the duplicated sensor's noise floor, a million times
+  % smaller. The model A is built from the same directions, column i from
+  % direction i — truncation keeps the dashed r-by-r block, drops the noise
+  % column. That's the whole idea. Same data as the next slide's blow-up.
   \centering
   \includegraphics[height=0.72\textheight]{fig_truncation_terms.pdf}\\[0.15em]
-  {\footnotesize Each part of the model carries the colour of the term it is built from —
+  {\footnotesize Each part of the model carries the colour of the direction it is built from —
   \textbf{\textcolor{tblue}{truncation keeps the $r \times r$ dynamics block}},
   \textcolor{tred}{drops the noise part}.}
 \end{frame}
 
 % ===================== 6b. CURRENT ONLINE SOLUTION FAILS =================
-\begin{frame}{Today's online DMDc inverts the noise floor}
+\begin{frame}{Today's oDMDc inverts the noise floor}
   % PRESENTER: two-tank with a DUPLICATED tank-2 sensor — the extra channel
   % adds no information, so the data is nearly rank-deficient. The exact
   % online update inverts the tiny noise (sigma = 1e-7): coefficients grow
@@ -335,7 +335,7 @@
 \begin{frame}{Our fix: truncate online — and keep the model aligned}
   % PRESENTER: truncation keeps only r directions, and those directions
   % drift as new data streams in. So each update we measure how much the
-  % kept directions turned (K_k), and apply that turn to yesterday's model —
+  % kept directions rotated (K_k), and apply that rotation to yesterday's model —
   % three cheap rotations and A-bar is valid in today's directions. That is
   % the entire contribution: truncation that survives streaming.
   \centering
@@ -356,7 +356,7 @@
     % PRESENTER: split by state (p) & control (q) subspaces, r = p + q;
     % only the diagonal blocks K_pp, K_qq are used.
     \node[cp,anchor=west,text width=5.0cm] at (7.0,-0.8)
-      {how much the kept\\directions turned this step};
+      {how much the kept\\directions rotated this step};
 
     % Row 2: rotate the state operator (both sides by K_pp)
     \begin{scope}[yshift=-3.0cm]
@@ -369,7 +369,7 @@
       \node[op] at (5.15,-0.5) {$=$};
       \mblk{5.55}{0}{\P}{\P}{tblue}{$\tilde A_k$}
       \node[cp,anchor=west,text width=4.4cm] at (7.0,-0.5)
-        {turn the \textbf{state} operator};
+        {rotate the \textbf{state} operator};
     \end{scope}
 
     % Row 3: rotate the control operator (left K_pp, right K_qq)
@@ -383,7 +383,7 @@
       \node[op] at (4.45,-0.5) {$=$};
       \mblk{4.85}{0}{\Q}{\P}{tgreen}{$\tilde B_k$}
       \node[cp,anchor=west,text width=4.6cm] at (7.0,-0.5)
-        {turn the \textbf{control} operator};
+        {rotate the \textbf{control} operator};
     \end{scope}
 
     % Row 4: assemble the augmented operator  A-bar = [ A | B ]
@@ -419,7 +419,7 @@
     \end{column}
     \begin{column}{0.5\linewidth}
       \begin{block}{Predictable: detection delay $\ge c$}
-        The score \textbf{peaks about one \textcolor{tgreen}{test window} ($c$ samples)} after a persistent change.\\
+        The detection statistic \textbf{peaks about one \textcolor{tgreen}{test window} ($c$ samples)} after a persistent change.\\
         You choose $c$ — the test window is \textbf{your reaction budget}.
       \end{block}
       \centering
@@ -432,7 +432,7 @@
 \begin{frame}{On a controlled nonlinear two-tank plant}
   \centering
   \includegraphics[height=0.72\textheight]{fig_twotank_companion.pdf}\\[0.1em]
-  {\footnotesize The \textcolor{tblue}{blue band} is the \textcolor{tblue}{reference window} (``before''),
+  {\footnotesize The \textcolor{tblue}{blue band} is the \textcolor{tblue}{base window} (``before''),
   the \textcolor{tgreen}{green band} the \textcolor{tgreen}{test window} (``after'') around the fouling onset
   (gray dashed) — the other identifiers follow on the next slide.}
 \end{frame}
@@ -442,8 +442,8 @@
   \centering
   \includegraphics[height=0.72\textheight]{fig_twotank_companion_scores.pdf}\\[0.1em]
   {\footnotesize\color{tgrey} Table: detected (\ding{51}/\ding{55}) $\cdot$ delay / peak = samples from onset
-  to threshold-cross / score-peak $\cdot$ FAR = false-alarm rate outside the change $\cdot$
-  AUC = score separability (1.0 = perfect).}
+  to threshold-cross / statistic-peak $\cdot$ FAR = false-alarm rate outside the change $\cdot$
+  AUC = statistic separability (1.0 = perfect).}
 \end{frame}
 
 % ===================== 10. BESS HERO ====================================
