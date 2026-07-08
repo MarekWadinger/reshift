@@ -6,7 +6,6 @@
 \usetheme{default}
 \usecolortheme{seahorse}
 \setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{footline}[frame number]
 
 \usepackage{pifont}
 \usepackage{graphicx}
@@ -15,18 +14,27 @@
 \usepackage{xcolor}
 \usepackage{colortbl}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc,fadings}
 \graphicspath{{figs/}{../../IEEECSS/biography/}}
 
 % --- palette matches the figures -----------------------------------------
-\definecolor{tblue}{HTML}{1F6FB2}
+\definecolor{tblue}{HTML}{06357A} % ECC26 conference blue (from ecc26-blue.svg)
 \definecolor{tred}{HTML}{D1495B}
 \definecolor{tgreen}{HTML}{2A9D8F}
 \definecolor{tgrey}{HTML}{6B7280}
 \definecolor{tyellow}{HTML}{E0A800}
 \setbeamercolor{structure}{fg=tblue}
-\setbeamercolor{frametitle}{fg=tblue}
+% frametitle: plain white, ECC-blue bold title
+\setbeamercolor{frametitle}{fg=tblue,bg=white}
 \setbeamerfont{frametitle}{series=\bfseries}
+% footline: quiet, matches the white header -- short author | short title | number
+\setbeamercolor{footbar}{fg=tgrey,bg=white}
+\setbeamertemplate{footline}{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.4ex,dp=1.1ex,
+      leftskip=0.45cm,rightskip=0.45cm]{footbar}%
+    \scriptsize\insertshortauthor\hfill\insertshorttitle\hfill
+    \insertframenumber\,/\,\inserttotalframenumber
+  \end{beamercolorbox}}
 
 % circle-cropped headshot: \face[y-shift][photo width]{file}{Name}
 % y-shift: more negative = show higher part of the photo; width > 1.2cm zooms in
@@ -38,6 +46,9 @@
     \end{tikzpicture}\\[-0.1em]
     #4
   \end{tabular}}
+
+% affiliation logo, baseline-aligned: \affl[height]{logos/file}
+\newcommand{\affl}[2][0.34cm]{\raisebox{-0.08cm}{\includegraphics[height=#1]{logos/#2}}}
 
 \newcommand{\yes}{\textcolor{tgreen}{\ding{51}}}
 \newcommand{\no}{\textcolor{tred}{\ding{55}}}
@@ -86,32 +97,51 @@
 \newcommand{\dimbr}[5]{\node[font=\tiny,text=tgrey!80!black,anchor=north east,inner sep=1.2pt]
   at (#1+#3,#2-#4) {$#5$};}
 
-% --- title ----------------------------------------------------------------
-\title[\bfseries toDMDc change detection]{Truncated Online DMD with Control\\for Industrial Change Detection}
-\author[M. Wadinger]{\textbf{Marek Wadinger}\inst{1} \and Michal Kvasnica\inst{1} \and Yoshinobu Kawahara\inst{2}}
-\institute[]{\inst{1} Slovak University of Technology in Bratislava \quad \inst{2} Osaka University \& RIKEN AIP}
-\date{ECC 2026 \;\textbar\; WeB9 — Fault Detection and Tolerance II}
+% --- PDF metadata (title slide is hand-built below; \maketitle is not used) ---
+\title[toDMDc change detection]{Truncated Online DMD with Control for Industrial Change Detection}
+\author[M.~Wadinger]{Marek Wadinger, Michal Kvasnica, Yoshinobu Kawahara}
+\date{ECC 2026}
 
 \begin{document}
 
 % ===================== 1. COLD OPEN ======================================
 % title slide styled like the rest of the deck: frametitle bar + heads as authors
 \begingroup
-\setbeamertemplate{frametitle}[default][center]
-\begin{frame}[plain]{Truncated Online DMD with Control\\for Industrial Change Detection}
-  \centering
-  \vfill
-  \face{wadinger.jpg}{\small Marek Wadinger\textsuperscript{1}}\hspace{1.6em}%
-  \face[-0.78][2.5cm]{kvasnica.png}{\small Michal Kvasnica\textsuperscript{1}}\hspace{1.6em}%
-  \face{kawahara.jpg}{\small Yoshinobu Kawahara\textsuperscript{2}}
-
-  \vspace{1.0em}
-  {\footnotesize \textsuperscript{1}\,Slovak University of Technology in Bratislava
-   \quad \textsuperscript{2}\,Osaka University \& RIKEN AIP}
-
-  \vspace{1.2em}
-  ECC 2026 \;\textbar\; WeB9 — Fault Detection and Tolerance II
-  \vfill
+\setbeamertemplate{background canvas}{%
+  \includegraphics[width=\paperwidth,height=\paperheight]{logos/ecc26-banner.png}}
+\begin{frame}[plain,b]
+  % soft dark scrim behind the title for contrast + white author/logo band
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[black, opacity=0.20]
+      (current page.north west) rectangle ([yshift=3.3cm]current page.south east);
+    \fill[black, opacity=0.45, path fading=south]
+      (current page.north west) rectangle ([yshift=-3.2cm]current page.north east);
+    \fill[white] (current page.south west) rectangle
+      ([yshift=3.3cm]current page.south east);
+    % ECC26 logo, top left
+    \node[anchor=north west, inner sep=0pt]
+      at ([xshift=0.9cm,yshift=-0.6cm]current page.north west)
+      {\includegraphics[height=0.75cm]{logos/ecc26-white.pdf}};
+    % session info + title, left-aligned
+    \node[anchor=north west, align=left, text=white, inner sep=0pt]
+      at ([xshift=0.9cm,yshift=-2.4cm]current page.north west)
+      {\small WeB9 — Fault Detection and Tolerance II\\[8pt]
+       \LARGE\bfseries Truncated Online DMD with Control\\[2pt]
+       \LARGE\bfseries for Industrial Change Detection};
+    % affiliation logos in the white band, spread full width
+    \node[inner sep=0pt] at ([yshift=0.5cm]current page.south)
+      {\begin{minipage}{\dimexpr\paperwidth-1.8cm\relax}
+         \affl[0.5cm]{STU-anfh.pdf}\hfill\affl[0.55cm]{osaka.pdf}\hfill
+         \affl[0.5cm]{tesla-group.png}\hfill\affl[0.4cm]{aip.png}%
+       \end{minipage}};
+  \end{tikzpicture}\par
+  % authors in the white band, left (body flow; \face can't live inside a tikz node)
+  {\centering
+    \vspace*{1.15cm}
+   \face{wadinger.jpg}{\small\textbf{Marek Wadinger}}\hspace{1.3em}%
+   \face[-0.78][2.5cm]{kvasnica.png}{\small Michal Kvasnica}\hspace{1.3em}%
+   \face{kawahara.jpg}{\small Yoshinobu Kawahara}\par}
+  \vspace*{1.15cm}
 \end{frame}
 \endgroup
 
