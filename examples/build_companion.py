@@ -18,10 +18,21 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent))
 import plant_residual_server as srv
 
-# Grid the static page snaps the width/noise sliders to. Keep it small -- every
-# combo is one JSON file (~45 kB). methods x changes x widths x noises files.
-WIDTHS = [6, 30, 90]  # transition width: sharp / medium / slow
-NOISES = [0.0, 0.08, 0.2]  # measurement noise
+# Grid the static page snaps the width/noise sliders to. Must span the page's
+# slider ranges (width 1..300, noise 0..1.0) so companion mode isn't clamped
+# below the slider max. Every combo is one JSON file (~45 kB).
+WIDTHS = [
+    1,
+    6,
+    15,
+    30,
+    60,
+    90,
+    150,
+    200,
+    300,
+]  # transition width slider: 1..300
+NOISES = [0.0, 0.05, 0.08, 0.2, 0.35, 0.5, 0.75, 1.0]  # noise slider: 0..1.0
 CHANGES = ["permanent", "transient"]
 
 HERE = Path(__file__).resolve().parent
