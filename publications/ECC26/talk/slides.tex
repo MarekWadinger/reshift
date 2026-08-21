@@ -149,14 +149,16 @@
 
 % ===================== 2. THE MONITORING LOOP ============================
 % PRESENTER: the setting — model-based monitoring, and the vocabulary for
-% the whole talk. An identifier builds a model of the plant from inputs and
-% measurements. The detector compares the plant against that model: the
-% mismatch is the residual, windows of residuals form the detection
+% the whole talk. Step 1: the plain control loop, and the traditional way of
+% detection — the operator watches the raw measurements and judges by eye.
+% Step 2: an identifier builds a model of the plant from inputs and
+% measurements. Step 3: the detector compares the plant against that model:
+% the mismatch is the residual, windows of residuals form the detection
 % statistic, the statistic crossing a threshold raises an alarm to the
-% operator. Ideally the controller consumes the same model (MPC) — one model
-% serving both. Hold this picture; the next slide is about what happens to
-% that model over the years.
-\begin{frame}{Model-based monitoring: plant vs.\ model, in one loop}
+% operator — the eyeballing arrow is replaced. Ideally the controller
+% consumes the same model (MPC) — one model serving both. Hold this picture;
+% the next slide is about what happens to that model over the years.
+\begin{frame}{Change detection in the control loop}
   \centering
   \resizebox{0.9\linewidth}{!}{%
   \begin{tikzpicture}[font=\sffamily,>={Stealth[round]},
@@ -171,27 +173,38 @@
     \draw[sig] (op)   -- node[lbl,above]{setpoint} (ctrl);
     \draw[sig] (ctrl) -- node[lbl,above]{input $u$} (plant);
     \draw[sig] (plant.north) -- ++(0,0.75) -| node[lbl,above,pos=0.25]{measurements $y$} (ctrl.north);
-    % identification (bottom row, revealed second)
+    % traditional detection: the operator watches the raw measurements —
+    % replaced by the mismatch on step 2, the detector's statistic on step 3
+    \visible<1>{
+    \fill[tgrey!80] ($(ctrl.north)+(0,0.75)$) circle (1.6pt);
+    \draw[sig] ($(ctrl.north)+(0,0.75)$) -|
+      (op.north);
+    }
+    % identification + mismatch (bottom row, revealed second)
     \visible<2->{
     \node[box, fill=tyellow!18, draw=tyellow!80!black] (ident) at (8.8,-2.6) {identifier};
     \node[box, fill=tblue!12,  draw=tblue]             (model) at (4.4,-2.6) {model};
     \draw[sig] (plant) -- node[lbl,right]{$u,\,y$} (ident);
     \draw[sig] (ident) -- node[lbl,above]{identifies} (model);
     \draw[sig, dashed, tblue!70] (model) -- (ctrl);
+    % residual = plant minus model: difference junction
+    \node[circle, draw=tgrey!80, line width=1pt, inner sep=1.2pt, font=\small]
+      (diff) at (2.15,-2.6) {$-$};
+    \fill[tgrey!80] (8.8,-1.35) circle (1.6pt);
+    \draw[sig] (8.8,-1.35) -| node[lbl,above,pos=0.1]{measurement $y$} (diff);
+    \draw[sig] (model) -- node[lbl,above=1pt]{$\hat y$} (diff);
+    \node[lbl, below=4pt of diff] {\shortstack{plant-model\\mismatch}};
+    }
+    % step 2: raw mismatch goes straight to the operator
+    \visible<2>{
+    \draw[sig] (diff) -| (op);
     }
     % detection (revealed third)
     \visible<3->{
     \path (model) -- node[lbl,right,text=tblue!70!black]
       {\shortstack{ideally the\\same model}} (ctrl);
     \node[box, fill=tred!12,   draw=tred]              (det)   at (0,-2.6) {detector};
-    % residual = plant minus model: difference junction feeding the detector
-    \node[circle, draw=tgrey!80, line width=1pt, inner sep=1.2pt, font=\small]
-      (diff) at (2.15,-2.6) {$-$};
-    \fill[tgrey!80] (8.8,-1.35) circle (1.6pt);
-    \draw[sig] (8.8,-1.35) -| node[lbl,above,pos=0.1]{measurement $y$} (diff);
-    \draw[sig] (model) -- node[lbl,above=1pt]{$\hat y$} (diff);
     \draw[sig] (diff) -- (det);
-    \node[lbl, below=4pt of diff] {\shortstack{plant-model\\mismatch}};
     \draw[sig, tred!70] (det) -- node[lbl,left,text=tred!70!black]
       {\shortstack{detection\\statistic}} (op);
     }
@@ -228,6 +241,9 @@
     colhdr/.style={font=\bfseries\large, align=center},
     rowhdr/.style={font=\bfseries\large, rotate=90, align=center}]
 
+    % ponytail: fixed bbox so staged cells don't rescale the resizebox between overlays
+    \useasboundingbox (-3.8,-4.35) rectangle (8.6,2.6);
+
     % column headers
     \node[colhdr] at (0.0, 1.85) {CAUSE\\[1pt]{\normalsize\mdseries\itshape external driver}};
     \node[colhdr] at (5.8, 1.85) {CONSEQUENCE\\[1pt]{\normalsize\mdseries\itshape plant's response}};
@@ -256,18 +272,20 @@
 
 % ===================== 4. THE TRAP =======================================
 \begin{frame}{A good model turns change into a number}
-  % Frames from figs/fig_score_anim.py: permanent abrupt change, five sweeps —
-  % noise 0->1, ref 5->200, test 5->100, ref 200->5, noise 1->0 (each holds
-  % where the last stopped). Inline playback needs Adobe Reader or Okular.
+  % Frames from figs/fig_score_anim.py: permanent change, six sweeps —
+  % noise 0->1, ref 5->200, test 5->100, ref 200->5, noise 1->0, then
+  % transition 0->100 on the clean case (slower change only delays the peak);
+  % each holds where the last stopped. Inline playback needs Adobe Reader
+  % or Okular.
   \centering
-  % \animategraphics[autoplay,loop,controls,width=0.82\linewidth]{10}{frames/score_}{0}{214}\\
+  \animategraphics[autoplay,loop,controls,width=0.82\linewidth]{10}{frames/score_}{0}{259}\\
   \vspace{0.2em}
   {\footnotesize \textbf{Watch the detection statistic:} \textcolor{gray}{noise} pollutes it with tiny bursts; a longer
-  \textcolor{tblue}{base} window calms it down, a longer \textcolor{tgreen}{test} window catches slower changes.}
+  \textcolor{tblue}{base window} stabilizes it, a longer \textcolor{tgreen}{test window} catches slower changes.}
 \end{frame}
 
 % ===================== 5. ONE MISSING BOX ================================
-\begin{frame}{Getting a solid model}
+\begin{frame}{Getting a good model}
   % Position toDMDc and tell which problem it solves
   \centering
   \resizebox{!}{0.82\textheight}{%
@@ -288,6 +306,7 @@
     % --- methods placed by what they offer (representative per region) ---
     \node<2->[meth] at (-0.80, 0.90) {oDMDc\\{\tiny[Zhang'19]}};   % ABC  no stability
     \node<2->[meth] at (-1.96, 1.93) {oDMD};    % AB   no control, no stability
+    \node<2->[meth] at (-3.0, 1.0) {eDMD};    % A    batch, no control, no truncation
     \node<2->[meth] at (-1.92,-0.25) {ARX};     % AC   batch, no truncation
     \node<2->[meth] at (-0.78,-0.92) {DMDc\\N4SID $\cdot$ MOESP};             % ACD  no adaptivity
     \node<2->[meth] at ( 1.96, 1.93) {neural NARX};                      % CD   black-box, batch
@@ -301,23 +320,41 @@
   \onslide<3>{{\footnotesize — \textbf{\textcolor{tblue}{toDMDc}} alone fits them all.}}
 \end{frame}
 
-% ===================== 6a. WHAT IS TRUNCATION ============================
-\begin{frame}{What is truncation?}
-  % PRESENTER: the data splits into directions, strongest first (sigma bars,
-  % bottom right). Directions 1-2 (blue, green) are visibly the tank dynamics;
-  % direction 3 (red) is the duplicated sensor's noise floor, a million times
-  % smaller. The model A is built from the same directions, column i from
-  % direction i — truncation keeps the dashed r-by-r block, drops the noise
-  % column. That's the whole idea. Same data as the next slide's blow-up.
+% ===================== 6a0. WHAT IS DMD ==================================
+% PRESENTER (30 s): one sentence per side, no notation. As an identification
+% method, DMD is a least-squares fit of a linear one-step model on the
+% dominant directions of the data — the same family as the ARX and subspace
+% methods on the previous slide. In operator-theoretic terms, the same fit
+% is a finite-dimensional, data-driven approximation of the Koopman
+% operator, which justifies applying a linear model to a nonlinear plant.
+% Mechanics live in the backup slide. Next: what breaks when this fit runs
+% online on noisy, redundant sensors.
+\begin{frame}{What is Dynamic Mode Decomposition (DMD)?}
   \centering
-  \includegraphics[height=0.72\textheight]{fig_truncation_terms.pdf}\\[0.15em]
-  {\footnotesize Each part of the model carries the colour of the direction it is built from —
-  \textbf{\textcolor{tblue}{truncation keeps the $r \times r$ dynamics block}},
-  \textcolor{tred}{drops the noise part}.}
+  \begin{tikzpicture}[font=\sffamily,>={Stealth[round]},
+    view/.style={rounded corners=4pt, align=center, inner sep=9pt,
+                 line width=1pt, text width=4.9cm},
+    sig/.style={->, line width=1.1pt, tgrey!80},
+    lbl/.style={font=\small, text=tgrey!40!black}]
+    \node[core, font=\Large\bfseries, inner sep=8pt] (dmd) at (0,1.7)
+      {{\normalsize\color{tgrey}t\,o\,e\,}DMD{\normalsize\color{tgrey}\,c}};
+    \node[view, fill=tblue!12, draw=tblue] (id) at (-3.6,-0.9)
+      {\textbf{system identification}\\[3pt]
+       least-squares data-driven identifier\\ (ARX, N4SID family)};
+    \node[view, fill=tgreen!12, draw=tgreen!65!black] (koop) at (3.6,-0.9)
+      {\textbf{Koopman operator theory}\\[3pt]
+       linear approximation\\ for nonlinear plants};
+    \draw[sig] (dmd) -- node[lbl, above left=1pt]{algorithm} (id);
+    \draw[sig] (dmd) -- node[lbl, above right=1pt]{justification} (koop);
+  \end{tikzpicture}
+
+  \vspace{0.6em}
+  {\footnotesize\color{tgrey} t = truncated \,$\cdot$\, o = online \,$\cdot$\,
+  e = extended \,$\cdot$\, c = with control}
 \end{frame}
 
 % ===================== 6b. CURRENT ONLINE SOLUTION FAILS =================
-\begin{frame}{Today's oDMDc inverts the noise floor}
+\begin{frame}{Today's oDMDc is susceptible to noise}
   % PRESENTER: two-tank with a DUPLICATED tank-2 sensor — the extra channel
   % adds no information, so the data is nearly rank-deficient. The exact
   % online update inverts the tiny noise (sigma = 1e-7): coefficients grow
@@ -329,10 +366,23 @@
   \textcolor{tred}{divides by the noise}; \textbf{\textcolor{tblue}{truncating to rank $r$}} keeps it sane.}
 \end{frame}
 
-
+% ===================== 6a. WHAT IS TRUNCATION ============================
+\begin{frame}{What is truncation?}
+  % PRESENTER: the data splits into directions, strongest first (sigma bars,
+  % bottom right). Directions 1-2 (blue, green) are visibly the tank dynamics;
+  % direction 3 (red) is the duplicated sensor's noise floor, a million times
+  % smaller. The model A is built from the same directions, column i from
+  % direction i — truncation keeps the dashed r-by-r block, drops the noise
+  % column. That's the whole idea. Same data as the next slide's blow-up.
+  \centering
+  \includegraphics[height=0.72\textheight]{fig_truncation_terms.pdf}\\[0.15em]
+  % {\footnotesize Each part of the model carries the colour of the direction it is built from —
+  % \textbf{\textcolor{tblue}{truncation keeps the $r \times r$ dynamics block}},
+  % \textcolor{tred}{drops the noise part}.}
+\end{frame}
 
 % ===================== 6c. OUR FIX: TRUNCATE ONLINE ======================
-\begin{frame}{Our fix: truncate online — and keep the model aligned}
+\begin{frame}{Contribution: online truncation (simplified)}
   % PRESENTER: truncation keeps only r directions, and those directions
   % drift as new data streams in. So each update we measure how much the
   % kept directions rotated (K_k), and apply that rotation to yesterday's model —
@@ -352,22 +402,22 @@
     \mblk{1.55}{-1.0}{\P}{\Q}{tgrey}{$K_{qp}$}
     \mblk{2.55}{-1.0}{\Q}{\Q}{tgreen}{$K_{qq}$}
     \lbr{1.45}{0.14}{-1.74} \rbr{3.25}{0.14}{-1.74}
-    \node[op,anchor=west] at (3.5,-0.8) {$=\tilde U_k^\top\,\tilde U_{k-1}$\textsuperscript{\textdagger}};
+    \node[op,anchor=west] at (3.5,-0.8) {$=\tilde U_k^\top\,\tilde U_{k-1}$};
     % PRESENTER: split by state (p) & control (q) subspaces, r = p + q;
     % only the diagonal blocks K_pp, K_qq are used.
     \node[cp,anchor=west,text width=5.0cm] at (7.0,-0.8)
-      {how much the kept\\directions rotated this step};
+      {how much the orthonormal basis rotated, governed by update of $\tilde U_k$ [Zhang et al. 2019]};
 
     % Row 2: rotate the state operator (both sides by K_pp)
     \begin{scope}[yshift=-3.0cm]
       \node[op] at (0.0,-0.5) {$\tilde A_k\leftarrow$};
       \mblk{1.2}{0}{\P}{\P}{tblue}{$K_{pp}$}
-      \node[op] at (2.35,-0.5) {$\cdot$};
+      \node[op] at (2.4,-0.5) {$\cdot$};
       \mblk{2.6}{0}{\P}{\P}{tblue}{$\tilde A_k$}
-      \node[op] at (3.75,-0.5) {$\cdot$};
+      \node[op] at (3.8,-0.5) {$\cdot$};
       \mblk{4.0}{0}{\P}{\P}{tblue}{$K_{pp}^\top$}
-      \node[op] at (5.15,-0.5) {$=$};
-      \mblk{5.55}{0}{\P}{\P}{tblue}{$\tilde A_k$}
+      \node[op] at (5.38,-0.5) {$=$};
+      \mblk{5.75}{0}{\P}{\P}{tblue}{$\tilde A_k$}
       \node[cp,anchor=west,text width=4.4cm] at (7.0,-0.5)
         {rotate the \textbf{state} operator};
     \end{scope}
@@ -376,12 +426,12 @@
     \begin{scope}[yshift=-5.0cm]
       \node[op] at (0.0,-0.5) {$\tilde B_k\leftarrow$};
       \mblk{1.2}{0}{\P}{\P}{tblue}{$K_{pp}$}
-      \node[op] at (2.35,-0.5) {$\cdot$};
+      \node[op] at (2.4,-0.5) {$\cdot$};
       \mblk{2.6}{0}{\Q}{\P}{tgreen}{$\tilde B_k$}
-      \node[op] at (3.35,-0.5) {$\cdot$};
-      \mblk{3.6}{0}{\Q}{\Q}{tgreen}{$K_{qq}$}
-      \node[op] at (4.45,-0.5) {$=$};
-      \mblk{4.85}{0}{\Q}{\P}{tgreen}{$\tilde B_k$}
+      \node[op] at (3.4,-0.5) {$\cdot$};
+      \mblk{3.6}{-0.2}{\Q}{\Q}{tgreen}{$K_{qq}$}
+      \node[op] at (4.63,-0.5) {$=$};
+      \mblk{5.05}{0}{\Q}{\P}{tgreen}{$\tilde B_k$}
       \node[cp,anchor=west,text width=4.6cm] at (7.0,-0.5)
         {rotate the \textbf{control} operator};
     \end{scope}
@@ -397,33 +447,30 @@
     \end{scope}
 
   \end{tikzpicture}}%
-  \renewcommand{\thefootnote}{\textdagger}%
-  \footnotetext{Update of $\tilde U_k$: Zhang, ``An improved incremental singular value decomposition and new error bounds'', \emph{arXiv}:2204.05398v3 (2026).}
 \end{frame}
 
 % ===================== 8. GUARANTEES =====================================
-\begin{frame}{Two guarantees you can stand behind}
+\begin{frame}{Two guarantees of toDMDc}
   % Figures from figs/fig_guarantees.py: left = measured update wall time under
   % the O(mr^2) envelope + flat over the stream; right = the frames/score_
   % synthetic — a sharp change peaks exactly c samples after onset (any c);
   % slower transitions (sharp <-> over 90) only push the peak later: delay >= c.
   \begin{columns}[T]
     \begin{column}{0.5\linewidth}
-      \begin{block}{Cheap: cost $\mathcal{O}(mr^2)$ per update}
-        With $m$ sensors and a model of rank $r$ (a few dominant directions, $r \ll m$):
-        a handful of operations per sample, \textbf{independent of history length}.\\
-        Runs inside the sample interval.
+      \begin{block}{Cheap: cost $\mathcal{O}((m+d)r^2)$ per update}
+        $m$ dimensions, model rank $r$ ($r \ll m$), learning window $d$ — \textbf{independent of history length}.\\
+        Fits into the sample interval.
       \end{block}
       \centering
-      \includegraphics[width=0.92\linewidth,height=0.52\textheight,keepaspectratio]{fig_cost_mr2.pdf}
+      % \includegraphics[width=0.92\linewidth,height=0.52\textheight,keepaspectratio]{fig_cost_mr2.pdf}
     \end{column}
     \begin{column}{0.5\linewidth}
       \begin{block}{Predictable: detection delay $\ge c$}
-        The detection statistic \textbf{peaks about one \textcolor{tgreen}{test window} ($c$ samples)} after a persistent change.\\
-        You choose $c$ — the test window is \textbf{your reaction budget}.
+        The detection statistic \textbf{peaks one \textcolor{tgreen}{test window}} after a persistent change.\\
+        The test window is \textbf{your reaction budget}.
       \end{block}
       \centering
-      \includegraphics[width=0.92\linewidth,height=0.52\textheight,keepaspectratio]{fig_delay_c.pdf}
+      % \includegraphics[width=0.92\linewidth,height=0.52\textheight,keepaspectratio]{fig_delay_c.pdf}
     \end{column}
   \end{columns}
 \end{frame}
@@ -432,13 +479,10 @@
 \begin{frame}{On a controlled nonlinear two-tank plant}
   \centering
   \includegraphics[height=0.72\textheight]{fig_twotank_companion.pdf}\\[0.1em]
-  {\footnotesize The \textcolor{tblue}{blue band} is the \textcolor{tblue}{base window} (``before''),
-  the \textcolor{tgreen}{green band} the \textcolor{tgreen}{test window} (``after'') around the fouling onset
-  (gray dashed) — the other identifiers follow on the next slide.}
 \end{frame}
 
 % ===================== 9b. METHOD COMPARISON (companion) =================
-\begin{frame}{Every identifier, same plant — only toDMDc separates it cleanly}
+\begin{frame}{toDMDc provides best separation}
   \centering
   \includegraphics[height=0.72\textheight]{fig_twotank_companion_scores.pdf}\\[0.1em]
   {\footnotesize\color{tgrey} Table: detected (\ding{51}/\ding{55}) $\cdot$ delay / peak = samples from onset
@@ -447,12 +491,12 @@
 \end{frame}
 
 % ===================== 10. BESS HERO ====================================
-\begin{frame}{Real-data win: catching it early}
+\begin{frame}{Case study: Fauling HVAC of industrial battery storage}
   \centering
   \includegraphics[width=0.9\linewidth]{fig_bess_hx10_crop.pdf}\\
   \vspace{0.2em}
-  Real cooling-fan fault flagged with high confidence ($S_{\max}\!\approx\!2.0$) — and precursor
-  peaks ($S\!\approx\!1.0$) lift \textbf{1 day before the confirmed fault}, on data never seen.\\
+  Real cooling-fan fault flagged with high confidence and precursor
+  peak \textbf{1 day before the confirmed fault}, on data never seen.\\
 \end{frame}
 
 % ===================== 11. CLOSE ========================================
@@ -461,10 +505,10 @@
   \begin{columns}[T]
     \begin{column}{0.74\linewidth}
       \begin{itemize}
-        \item \textbf{Stays current} on its own — no human re-tuning.
-        \item Tells the \textbf{controller's actions} apart from a \textbf{real fault}.
-        \item Delay you \textbf{shape} (test window $c$), cost you \textbf{afford} ($\mathcal{O}(mr^2)$).
-        \item \textbf{Exactly the trigger a fault-tolerant scheme consumes} — detection ready to hand off to tolerance.
+        \item \textbf{Stays up to date} without human re-tuning.
+        \item Tells the \textbf{controller's actions} apart from a \textbf{fauling}.
+        \item Delay you \textbf{permit} (test window $c$), cost you \textbf{afford} ($\mathcal{O}((m+d)r^2)$).
+        \item Compatible with \textbf{SCADA} infrastructure.
         \item \textbf{Open source}, one-line install — \texttt{pip install reshift}.
       \end{itemize}
 
@@ -477,12 +521,11 @@
   \end{columns}
   \vspace{0.8em}
   \centering
-  % spread to match the title-page author block width (~0.6 slide width)
-  \begin{minipage}{0.62\linewidth}
-    \face{wadinger.jpg}{Marek Wadinger}\hfill
-    \face[-0.78][2.5cm]{kvasnica.png}{Michal Kvasnica}\hfill
-    \face{kawahara.jpg}{Yoshinobu Kawahara}
-  \end{minipage}
+  \setbeamertemplate{footnote}{\parindent 0em\noindent\raggedright\insertfootnotetext\par}%
+  \footnotetext{Supported by the internal STU grant OptiVision, the Scientific
+  Grant Agency of the Slovak Republic (VEGA 1/0490/23), and the EU
+  NextGenerationEU through the Recovery and Resilience Plan for Slovakia,
+  project No.\ 09I01--03--V04--00024.}
 \end{frame}
 
 % ===================== BACKUP ===========================================
@@ -583,6 +626,26 @@
 \end{frame}
 
 
+
+% ===================== 6a0. WHAT IS DMD ==================================
+\begin{frame}{Backup — What is DMD?}
+  % PRESENTER (30 s): DMD in one breath. SVD gives the directions the data
+  % actually moves in (blue, green). Project the data onto them — one
+  % coordinate per direction — and fit the one-step model z_k = A~ z_{k-1}
+  % by least squares on those coordinates (the grey step arrows). That's all
+  % of DMD: a linear model living ON the directions, one row/column of A~
+  % per direction — the interpretable linear identifier we asked for. But
+  % look at the data: every sample is fuzzed by sensor noise, and once the
+  % dynamics decay the coordinates are pure noise (tail, right). A direction
+  % that carries mostly noise still gets its own piece of the model — what
+  % the least squares does to it is the next slide.
+  \centering
+  \includegraphics[width=\linewidth,height=0.72\textheight,keepaspectratio]{fig_what_is_dmd.pdf}\\[0.15em]
+  {\footnotesize Project the data on its \textbf{\textcolor{tblue}{SVD directions}} and fit the
+  linear step there: $z_k = \tilde A\,z_{k-1}$.}
+\end{frame}
+
+
 % ===================== 7g. REALIGNMENT ON DATA ==========================
 \begin{frame}{Backup — Realignment on the two-tank (1\,\% valve clog)}
   \centering
@@ -593,7 +656,7 @@
 \end{frame}
 
 % ===================== 7a. MECHANISM (flowchart version) ================
-\begin{frame}{Backup — How one update stays $\mathcal{O}(mr^2)$}
+\begin{frame}{Backup — How one update stays $\mathcal{O}((m+d)r^2)$}
   \centering
   \resizebox{\linewidth}{!}{%
   \begin{tikzpicture}[font=\sffamily,>={Stealth[round]},
@@ -625,7 +688,7 @@
     % cost badge
     \node[box, draw=tred, fill=tred!8, text=tred!85!black, below=14mm of out,
           font=\footnotesize] (cost)
-      {$\mathcal{O}(mr^2)$ / step\\\textcolor{tgrey}{vs}\; $\mathcal{O}(m^3)$ naive};
+      {$\mathcal{O}((m+d)r^2)$ / step\\\textcolor{tgrey}{vs}\; $\mathcal{O}(m^3)$ naive};
 
     \begin{scope}[on background layer]
       \node[fit=(snap)(proj)(updt)(out), rounded corners, draw=tgrey!25,

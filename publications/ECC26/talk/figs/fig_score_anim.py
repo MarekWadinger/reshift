@@ -7,6 +7,7 @@ examples/window_explorer.html:
   1. noise   0 -> 1      (windows tiny: score is swamped by noise)
   2. ref     5 -> 200    (a longer baseline cancels the noise)
   3. test    5 -> 200    (a longer test window steadies the peak)
+  4. trans   0 -> 100 at the end (a slower change transition only delays the peak)
 
 Each frame: residual (with the true change marked) over the score, plus a readout
 of the current knob values. Embed with \\animategraphics (see slides.tex).
@@ -28,7 +29,7 @@ import numpy as np
 # Reuse the talk's shared rcParams (font sizes) and plot margins so every frame
 # matches the static figures' width and fonts on the slide.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from talkplot import AX_LEFT, AX_RIGHT, sliding_score, talk_style  # noqa: E402
+from talkplot import AX_LEFT, AX_RIGHT, RED, sliding_score, talk_style  # noqa: E402
 
 talk_style()
 
@@ -43,11 +44,17 @@ REFBAND, LAGBAND, TESTBAND = "#2f86d6", "#94a3b8", "#27ae60"
 # One fixed noise pattern, scaled by amplitude per frame so the picture animates
 # smoothly instead of flickering with a fresh draw each step.
 _NOISE = (np.random.default_rng(42).random(N) - 0.5) * 2
-_CLEAN = np.where(np.arange(N) >= CENTER, HI, BASE).astype(float)
+_T = np.arange(N)
 
 
-def residual(noise: float) -> np.ndarray:
-    return np.maximum(0.0, _CLEAN + _NOISE * noise)
+def residual(noise: float, trans: int = 0) -> np.ndarray:
+    """trans = transition duration: 0 is the abrupt step, else a linear ramp."""
+    if trans > 0:
+        ramp = np.clip((_T - CENTER) / trans, 0.0, 1.0)
+    else:
+        ramp = (_T >= CENTER).astype(float)  # abrupt step, as before
+    clean = BASE + (HI - BASE) * ramp
+    return np.maximum(0.0, clean + _NOISE * noise)
 
 
 def scores(r: np.ndarray, ref: int, test: int) -> np.ndarray:
@@ -55,20 +62,22 @@ def scores(r: np.ndarray, ref: int, test: int) -> np.ndarray:
     return sliding_score(r, ref, test, lag=LAG)
 
 
-def frames() -> list[tuple[float, int, int]]:
-    """(noise, ref, test) per frame across the sweeps; each holds where the last
-    stopped, then the windows and noise wind back down toward the clean case."""
-    seq: list[tuple[float, int, int]] = []
+def frames() -> list[tuple[float, int, int, int]]:
+    """(noise, ref, test, trans) per frame across the sweeps; each holds where
+    the last stopped, then the knobs wind back down toward the clean case."""
+    seq: list[tuple[float, int, int, int]] = []
     for noise in np.linspace(0, 1, 40):  # 1: noise up      (ref=test=5)
-        seq.append((float(noise), 5, 5))
+        seq.append((float(noise), 5, 5, 0))
     for ref in np.linspace(5, 200, 45):  # 2: ref up         (noise=1, test=5)
-        seq.append((1.0, int(round(ref)), 5))
+        seq.append((1.0, int(round(ref)), 5, 0))
     for test in np.linspace(5, 100, 45):  # 3: test up        (noise=1, ref=200)
-        seq.append((1.0, 200, int(round(test))))
+        seq.append((1.0, 200, int(round(test)), 0))
     for ref in np.linspace(200, 5, 45):  # 4: ref back down  (noise=1, test=100)
-        seq.append((1.0, int(round(ref)), 100))
+        seq.append((1.0, int(round(ref)), 100, 0))
     for noise in np.linspace(1, 0, 40):  # 5: noise back down(ref=5, test=100)
-        seq.append((float(noise), 5, 100))
+        seq.append((float(noise), 5, 100, 0))
+    for trans in np.linspace(0, 100, 45):  # 6: transition up on the clean case
+        seq.append((0.0, 5, 100, int(round(trans))))  # slower change -> later peak
     return seq
 
 
@@ -76,8 +85,8 @@ def main() -> None:
     out = Path(__file__).parent / "frames"
     out.mkdir(exist_ok=True)
     seq = frames()
-    for i, (noise, ref, test) in enumerate(seq):
-        r = residual(noise)
+    for i, (noise, ref, test, trans) in enumerate(seq):
+        r = residual(noise, trans)
         sc = scores(r, ref, test)
         fig, (ax_r, ax_s) = plt.subplots(
             2, 1, figsize=(12, 5.5), sharex=True, height_ratios=[2, 1],
@@ -92,7 +101,7 @@ def main() -> None:
             ax.axvline(CENTER, color=GREY, ls="--", lw=1.2)  # true change
         # residual and score share the series colour (synthetic = blue)
         ax_r.plot(r, lw=1.0, color=SYN)
-        ax_r.set_ylabel("residual")
+        ax_r.set_ylabel("plant–model\nmismatch")
         ax_r.set_ylim(-0.2, HI + 1.3)
         # Readout doubles as the legend: ref label in the blue band colour, test
         # in the green, so the shaded windows are unambiguous.
@@ -101,15 +110,17 @@ def main() -> None:
                "bbox": {"boxstyle": "round,pad=0.2", "fc": "white",
                         "ec": "none", "alpha": 0.7}}
         ax_r.text(0.015, 0.94, f"noise {noise:.2f}", color=GREY, **tkw)
-        ax_r.text(0.27, 0.94, f"reference {ref}", color=REFBAND, **tkw)
+        ax_r.text(0.27, 0.94, f"base {ref}", color=REFBAND, **tkw)
         ax_r.text(0.55, 0.94, f"test {test}", color=TESTBAND, **tkw)
+        # transition is a plant property, not a detector knob -> change colour
+        ax_r.text(0.73, 0.94, f"transition {trans}", color=RED, **tkw)
         # Clip the displayed score to a ceiling just above the real step peak
         # (~3.24): tiny-window noise spikes (D_ref near zero) would otherwise shoot
         # to ~18 and ram the top edge. Flat-topping them keeps the line on screen.
         ax_s.plot(np.minimum(sc, SCORE_CEIL), lw=1.4, color=SYN)
         ax_s.axhline(THR, color=THRESH, ls="--", lw=1.0)  # threshold
         ax_s.set_ylim(0, SCORE_CEIL + 0.2)
-        ax_s.set_ylabel("score")
+        ax_s.set_ylabel("detection\nstatistic")
         ax_s.set_xlabel("sample")
         for ax in (ax_r, ax_s):
             ax.grid(alpha=0.25)
@@ -128,6 +139,10 @@ def main() -> None:
     noisy = np.nanstd(scores(residual(1.0), 5, 5)[seg])
     calm = np.nanstd(scores(residual(1.0), 120, 120)[seg])
     assert calm < noisy, "growing the windows should reduce pre-change score jitter"
+    # a slower transition must only delay the score peak, never remove it
+    pk_abrupt = int(np.nanargmax(scores(residual(1.0, 0), 200, 100)))
+    pk_slow = int(np.nanargmax(scores(residual(1.0, 90), 200, 100)))
+    assert pk_slow > pk_abrupt >= CENTER, "slower transition should push the peak later"
 
 
 if __name__ == "__main__":
