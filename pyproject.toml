@@ -58,7 +58,7 @@ exclude = ["vendor"]
 
 [tool.ruff]
 line-length = 79
-extend-exclude = ["vendor"]
+extend-exclude = ["vendor", "publications/*/talk/figs"]
 lint.select = ["ALL"]
 lint.ignore = [
     # === Permanent: inappropriate for numerical/research code ===
@@ -94,6 +94,11 @@ lint.pycodestyle.max-line-length = 79
 "benchmarks/*" = ["T201", "T203"]
 # Comparison helper shells out to `git clone` and prints in its smoke check.
 "examples/cpdmd_compare.py" = ["S603", "S607", "T201"]
+# Numbered example scripts are jupytext (percent-format) pairs of the talk
+# notebooks: numeric module names (N999) and no module docstring (D100) come
+# from the notebook pairing, and prints are the output medium (T201/T203) --
+# same rationale as the "*.ipynb" entry above.
+"examples/[0-9][0-9]_*.py" = ["N999", "D100", "T201", "T203"]
 # Test files: relax docstring/annotation/magic-value rules and allow access to
 # private members and minimal fake-object signatures.
 "tests/*" = [

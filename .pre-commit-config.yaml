@@ -49,13 +49,14 @@ repos:
         name: ruff
         entry: uv run ruff check
         language: system
-        args: [--fix, --exit-non-zero-on-fix]
+        args: [--fix, --exit-non-zero-on-fix, --force-exclude]
         types_or: [python, pyi, jupyter]
         stages: [pre-commit]
       - id: ruff-format
         name: ruff-format
         entry: uv run ruff format
         language: system
+        args: [--force-exclude]
         types_or: [python, pyi, jupyter]
         stages: [pre-commit]
       - id: ty

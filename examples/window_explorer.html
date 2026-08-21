@@ -542,7 +542,7 @@
         <b style="color: var(--test)">test</b> and
         <b style="color: var(--ref)">reference</b> windows. Your cursor is
         <b>“now”</b> — the right edge of the test window. Grey line = the true
-        change; each coloured dotted line marks where that model's
+        change; each coloured dotted line marks where that identifier's
         <b>score peaks</b> (its detection delay).
       </div>
       <div id="plot" style="width: 100%; height: 420px"></div>
@@ -736,7 +736,8 @@
       <!-- the two buttons drive this; JS still reads/writes #source everywhere -->
       <input type="hidden" id="source" value="synthetic" />
       <p>
-        The model is one of six
+        The model — the matrices behind the prediction — is fitted by one of
+        six
         <span
           class="def"
           title="Dynamic Mode Decomposition family of system identifiers"
@@ -750,9 +751,9 @@
       <div class="mlist" id="mlist"></div>
       <p>
         The upper panels then show each tank's level in metres (grey = plant,
-        coloured dashed = each model's prediction) and the input flow. The
+        coloured dashed = each identifier's prediction) and the input flow. The
         <b>residual is the plant–model mismatch</b> — the gap between the grey
-        and dashed lines — so it is in metres too; where a model's prediction
+        and dashed lines — so it is in metres too; where an identifier's prediction
         peels off the plant, its residual climbs.
       </p>
     </section>
@@ -1102,7 +1103,12 @@
       noise = +$("noise").value / 100;
     if ($("source").value === "synthetic") {
       const { clean, r } = profile(type, width, noise);
-      series = [{ key: "synthetic", color: COLOR.synthetic, clean, r }];
+      // The change always STARTS at CENTER (profile() builds it that way), so pin
+      // the marker there. Deriving it from clean's slope drifts later as `width`
+      // grows — a gradual ramp's initial slope sits under the detection epsilon.
+      series = [
+        { key: "synthetic", color: COLOR.synthetic, clean, r, onset: CENTER },
+      ];
     } else {
       const methods = selectedMethods();
       if (!methods.length) {
@@ -1440,7 +1446,7 @@
         hoverinfo: "skip",
       });
       $("sweepdesc").textContent =
-        "ROC per model (line style = model); dot = current threshold; dotted = chance. Up and to the left is better — more catches, fewer false alarms.";
+        "ROC per identifier (line style = identifier); dot = current threshold; dotted = chance. Up and to the left is better — more catches, fewer false alarms.";
       sweepLayout = {
         height: 190, // pin to the #sweep div so autosize can't render stale-sized
         margin: { t: 6, r: 8, b: 30, l: 34 },
@@ -1541,7 +1547,7 @@
       )
       .join("");
     el.innerHTML = `<table class="mt">
-    <tr><th>model</th>
+    <tr><th>identifier</th>
       <th title="event caught — the score crossed the threshold after the change (= MAR/event)">MAR/e</th>
       <th title="samples from the change to the first threshold crossing (the alarm)">delay</th>
       <th title="samples from the change to the score peak">peak</th>

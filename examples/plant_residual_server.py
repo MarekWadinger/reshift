@@ -38,7 +38,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 from reshift.dmd import DMD, DMDwC
 
 if TYPE_CHECKING:
-    from collections.abc import Hashable
+    from collections.abc import Callable, Hashable
 
 # --- plant (two-tank, cf. example 13), shrunk for interactive response --------
 T, DT = 900.0, 1.0  # 900 snapshots
@@ -49,7 +49,7 @@ U0, UA, OMEGA_U = 0.11, 0.025, 0.10
 LEARN_W = 180  # identification / warmup window
 
 
-def _kmult(t: np.ndarray, change: str, width: float) -> np.ndarray:
+def _kmult_default(t: np.ndarray, change: str, width: float) -> np.ndarray:
     """Outflow-coefficient multiplier over time: 1 -> STEP (permanent) or a bump."""
     tcp = CP * DT
     # both changes START at tcp and last exactly `width`
@@ -59,6 +59,10 @@ def _kmult(t: np.ndarray, change: str, width: float) -> np.ndarray:
     else:  # transient: raised-cosine pulse back to baseline over [tcp, tcp+width]
         s = np.sin(np.pi * u) ** 2
     return 1.0 + (STEP - 1.0) * s
+
+
+# patchable profile hook (e.g. fig_drift_frozen.py swaps in an aging profile)
+_kmult: Callable[[np.ndarray, str, float], np.ndarray] = _kmult_default
 
 
 def _simulate(

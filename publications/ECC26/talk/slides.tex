@@ -1,0 +1,708 @@
+% ECC26 talk -- toDMDc for Industrial Change Detection
+% Session WeB9 "Fault Detection and Tolerance II", 15 min + 5 Q&A
+% Build: latexmk -pdf slides.tex   (or: pdflatex slides.tex)
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme{default}
+\usecolortheme{seahorse}
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{pifont}
+\usepackage{graphicx}
+\usepackage{animate} % inline frame-sequence playback (Adobe Reader / Okular)
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc,fadings}
+\graphicspath{{figs/}{../../IEEECSS/biography/}}
+
+% --- palette matches the figures -----------------------------------------
+\definecolor{tblue}{HTML}{06357A} % ECC26 conference blue (from ecc26-blue.svg)
+\definecolor{tred}{HTML}{D1495B}
+\definecolor{tgreen}{HTML}{2A9D8F}
+\definecolor{tgrey}{HTML}{6B7280}
+\definecolor{tyellow}{HTML}{E0A800}
+\setbeamercolor{structure}{fg=tblue}
+% frametitle: plain white, ECC-blue bold title
+\setbeamercolor{frametitle}{fg=tblue,bg=white}
+\setbeamerfont{frametitle}{series=\bfseries}
+% footline: quiet, matches the white header -- short author | short title | number
+\setbeamercolor{footbar}{fg=tgrey,bg=white}
+\setbeamertemplate{footline}{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.4ex,dp=1.1ex,
+      leftskip=0.45cm,rightskip=0.45cm]{footbar}%
+    \scriptsize\insertshortauthor\hfill\insertshorttitle\hfill
+    \insertframenumber\,/\,\inserttotalframenumber
+  \end{beamercolorbox}}
+
+% circle-cropped headshot: \face[y-shift][photo width]{file}{Name}
+% y-shift: more negative = show higher part of the photo; width > 1.2cm zooms in
+\NewDocumentCommand{\face}{O{-0.42} O{1.8cm} m m}{%
+  \begin{tabular}{@{}c@{}}
+    \begin{tikzpicture}
+      \clip (0,0) circle (0.82cm);
+      \node at (0,#1) {\includegraphics[width=#2]{#3}};
+    \end{tikzpicture}\\[-0.1em]
+    #4
+  \end{tabular}}
+
+% affiliation logo, baseline-aligned: \affl[height]{logos/file}
+\newcommand{\affl}[2][0.35cm]{\raisebox{-0.08cm}{\includegraphics[height=#1]{logos/#2}}}
+
+\newcommand{\yes}{\textcolor{tgreen}{\ding{51}}}
+\newcommand{\no}{\textcolor{tred}{\ding{55}}}
+\newcommand{\spine}[1]{%
+  {\centering\Large\bfseries\color{tblue} #1\par}}
+
+% --- capsule (stadium) for the 4-set Venn --------------------------------
+\def\hh{1.55}% half-height = cap radius
+\newcommand{\caps}[5]{% cx, cy, angle, halflen, color
+  \begin{scope}[rotate around={#3:(#1,#2)}]
+    \draw[fill=#5, fill opacity=0.30, draw=#5!75!black, line width=1pt, rounded corners=\hh cm]
+      (#1-#4,#2-\hh) rectangle (#1+#4,#2+\hh);
+  \end{scope}}
+\tikzset{
+  meth/.style={align=center, font=\scriptsize, fill=white, fill opacity=0.72,
+               text opacity=1, rounded corners=2pt, inner sep=2.2pt},
+  core/.style={align=center, font=\small\bfseries, fill=tblue!12, draw=tblue,
+               line width=0.8pt, rounded corners=3pt, inner sep=3pt, text=tblue!85!black},
+}
+
+% grid of matrix cells: \grid{x}{y}{cols}{rows}{keptColor}{keptRows}
+\newcommand{\cs}{0.30}
+\newcommand{\grid}[6]{%
+  \colorlet{keepf}{#5!22}\colorlet{keepd}{#5!70}%
+  \foreach \r in {1,...,#4}{\foreach \c in {1,...,#3}{%
+    \ifnum\r>#6\relax
+      \fill[fill=tgrey!15, draw=tgrey!45, line width=0.4pt]
+        ($(#1,#2)+(\cs*\c-\cs, -\cs*\r+\cs)$) rectangle ++(\cs,-\cs);
+    \else
+      \fill[fill=keepf, draw=keepd, line width=0.4pt]
+        ($(#1,#2)+(\cs*\c-\cs, -\cs*\r+\cs)$) rectangle ++(\cs,-\cs);
+    \fi}}}
+
+% matrix block (anchored top-left, grows right/down): \blk{x}{y}{w}{h}{color}
+\newcommand{\blk}[5]{\fill[fill=#5!20, draw=#5!75, line width=0.8pt]
+  (#1,#2) rectangle ++(#3,-#4);}
+
+% labeled matrix block: \mblk{x}{y}{w}{h}{color}{label}
+\newcommand{\mblk}[6]{%
+  \fill[fill=#5!22, draw=#5!80, line width=0.9pt] (#1,#2) rectangle ++(#3,-#4);
+  \node[font=\scriptsize, text=#5!40!black] at ($(#1,#2)+(#3/2,-#4/2)$) {#6};}
+% matrix brackets: \lbr{x}{ytop}{ybot}  \rbr{x}{ytop}{ybot}
+\newcommand{\lbr}[3]{\draw[line width=0.9pt] (#1+0.1,#2)--(#1,#2)--(#1,#3)--(#1+0.1,#3);}
+\newcommand{\rbr}[3]{\draw[line width=0.9pt] (#1-0.1,#2)--(#1,#2)--(#1,#3)--(#1-0.1,#3);}
+% dimension tag at a block's bottom-right corner: \dimbr{x}{y}{w}{h}{rows×cols}
+\newcommand{\dimbr}[5]{\node[font=\tiny,text=tgrey!80!black,anchor=north east,inner sep=1.2pt]
+  at (#1+#3,#2-#4) {$#5$};}
+
+% --- PDF metadata (title slide is hand-built below; \maketitle is not used) ---
+\title[toDMDc change detection]{Truncated Online DMD with Control for Industrial Change Detection}
+\author[M.~Wadinger]{Marek Wadinger, Michal Kvasnica, Yoshinobu Kawahara}
+\date{ECC 2026}
+
+\begin{document}
+
+% ===================== 1. COLD OPEN ======================================
+% title slide styled like the rest of the deck: frametitle bar + heads as authors
+\begingroup
+\setbeamertemplate{background canvas}{%
+  \includegraphics[width=\paperwidth,height=\paperheight]{logos/ecc26-banner.png}}
+\begin{frame}[plain,b]
+  % soft dark scrim behind the title for contrast + white author/logo band
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[black, opacity=0.20]
+      (current page.north west) rectangle ([yshift=3.3cm]current page.south east);
+    \fill[black, opacity=0.45, path fading=south]
+      (current page.north west) rectangle ([yshift=-3.2cm]current page.north east);
+    \fill[white] (current page.south west) rectangle
+      ([yshift=3.3cm]current page.south east);
+    % ECC26 logo, top left
+    \node[anchor=north west, inner sep=0pt]
+      at ([xshift=0.9cm,yshift=-0.6cm]current page.north west)
+      {\includegraphics[height=0.75cm]{logos/ecc26-white.pdf}};
+    % session info + title, left-aligned
+    \node[anchor=north west, align=left, text=white, inner sep=0pt]
+      at ([xshift=0.9cm,yshift=-2.4cm]current page.north west)
+      {\small WeB9 — Fault Detection and Tolerance II\\[8pt]
+       \LARGE\bfseries Truncated Online DMD with Control\\[2pt]
+       \LARGE\bfseries for Industrial Change Detection};
+    % affiliation logos in the white band, spread full width
+    \node[inner sep=0pt] at ([yshift=0.5cm]current page.south)
+      {\begin{minipage}{\dimexpr\paperwidth-1.8cm\relax}
+         \affl{STU-anfh.pdf}\hfill\affl{osaka.pdf}\hfill
+         \affl{tesla-group.png}\hfill\affl{aip.png}%
+       \end{minipage}};
+  \end{tikzpicture}\par
+  % authors in the white band, left (body flow; \face can't live inside a tikz node)
+  {\centering
+    \vspace*{1.15cm}
+   \face{wadinger.jpg}{\small\textbf{Marek Wadinger}}\hspace{1.3em}%
+   \face[-0.78][2.5cm]{kvasnica.png}{\small Michal Kvasnica}\hspace{1.3em}%
+   \face{kawahara.jpg}{\small Yoshinobu Kawahara}\par}
+  \vspace*{1.15cm}
+\end{frame}
+\endgroup
+
+% Slide 1 speaker note lives in outline.md; cold open: stakes + spine, pause.
+
+% ===================== 2. THE MONITORING LOOP ============================
+% PRESENTER: the setting — model-based monitoring, and the vocabulary for
+% the whole talk. Step 1: the plain control loop, and the traditional way of
+% detection — the operator watches the raw measurements and judges by eye.
+% Step 2: an identifier builds a model of the plant from inputs and
+% measurements. Step 3: the detector compares the plant against that model:
+% the mismatch is the residual, windows of residuals form the detection
+% statistic, the statistic crossing a threshold raises an alarm to the
+% operator — the eyeballing arrow is replaced. Ideally the controller
+% consumes the same model (MPC) — one model serving both. Hold this picture;
+% the next slide is about what happens to that model over the years.
+\begin{frame}{Change detection in the control loop}
+  \centering
+  \resizebox{0.9\linewidth}{!}{%
+  \begin{tikzpicture}[font=\sffamily,>={Stealth[round]},
+    box/.style={rounded corners=4pt, align=center, inner sep=7pt,
+                line width=1pt, minimum height=1.05cm, minimum width=2.4cm},
+    sig/.style={->, line width=1.1pt, tgrey!80},
+    lbl/.style={font=\small, text=tgrey!40!black}]
+    % control loop (top row)
+    \node[box, fill=tgrey!12,  draw=tgrey!70]                       (op)    at (0,0)  {operator};
+    \node[box, fill=tblue!12,  draw=tblue]                          (ctrl)  at (4.4,0)  {controller};
+    \node[box, fill=tgrey!12,  draw=tgrey!70]                       (plant) at (8.8,0)  {plant};
+    \draw[sig] (op)   -- node[lbl,above]{setpoint} (ctrl);
+    \draw[sig] (ctrl) -- node[lbl,above]{input $u$} (plant);
+    \draw[sig] (plant.north) -- ++(0,0.75) -| node[lbl,above,pos=0.25]{measurements $y$} (ctrl.north);
+    % traditional detection: the operator watches the raw measurements —
+    % replaced by the mismatch on step 2, the detector's statistic on step 3
+    \visible<1>{
+    \fill[tgrey!80] ($(ctrl.north)+(0,0.75)$) circle (1.6pt);
+    \draw[sig] ($(ctrl.north)+(0,0.75)$) -|
+      (op.north);
+    }
+    % identification + mismatch (bottom row, revealed second)
+    \visible<2->{
+    \node[box, fill=tyellow!18, draw=tyellow!80!black] (ident) at (8.8,-2.6) {identifier};
+    \node[box, fill=tblue!12,  draw=tblue]             (model) at (4.4,-2.6) {model};
+    \draw[sig] (plant) -- node[lbl,right]{$u,\,y$} (ident);
+    \draw[sig] (ident) -- node[lbl,above]{identifies} (model);
+    \draw[sig, dashed, tblue!70] (model) -- (ctrl);
+    % residual = plant minus model: difference junction
+    \node[circle, draw=tgrey!80, line width=1pt, inner sep=1.2pt, font=\small]
+      (diff) at (2.15,-2.6) {$-$};
+    \fill[tgrey!80] (8.8,-1.35) circle (1.6pt);
+    \draw[sig] (8.8,-1.35) -| node[lbl,above,pos=0.1]{measurement $y$} (diff);
+    \draw[sig] (model) -- node[lbl,above=1pt]{$\hat y$} (diff);
+    \node[lbl, below=4pt of diff] {\shortstack{plant-model\\mismatch}};
+    }
+    % step 2: raw mismatch goes straight to the operator
+    \visible<2>{
+    \draw[sig] (diff) -| (op);
+    }
+    % detection (revealed third)
+    \visible<3->{
+    \path (model) -- node[lbl,right,text=tblue!70!black]
+      {\shortstack{ideally the\\same model}} (ctrl);
+    \node[box, fill=tred!12,   draw=tred]              (det)   at (0,-2.6) {detector};
+    \draw[sig] (diff) -- (det);
+    \draw[sig, tred!70] (det) -- node[lbl,left,text=tred!70!black]
+      {\shortstack{detection\\statistic}} (op);
+    }
+  \end{tikzpicture}}
+\end{frame}
+
+% ===================== 2. MONITORS DECAY =================================
+% Same two-tank as the live companion; a valve slowly clogs (aging), then one
+% real fault. Identical model + identical day-one threshold, frozen vs rolling.
+% PRESENTER: We commission a detector once — the plant runs for years. It
+% ages, re-seasons, gets re-tuned, gets new setpoints; the model stays static,
+% exactly as commissioned. Watch the gap widen: a valve slowly fouls, then one
+% real fault. The static model's false alarms climb and the real fault hides.
+% The real requirement is not a better detector — it's one that stays current
+% without a human re-tuning it.
+\begin{frame}{We commission a detector once. The plant runs for years.}
+  \centering
+  \only<1>{The detector is \textcolor{tred}{static} — the plant keeps aging:
+  \textcolor{tred}{false alarms climb, the real fault hides}.\\[0.2em]}
+  \only<2>{The detector is \textcolor{tblue}{adaptive} — the plant keeps aging:
+  \textcolor{tblue}{no false alarms, the fault raises an alarm}.\\[0.2em]}
+  % same figure object saved twice (adaptive panel blanked) -> no pixel jump
+  \only<1>{\includegraphics[height=0.78\textheight]{fig_drift_frozen_static.pdf}}%
+  \only<2>{\includegraphics[height=0.78\textheight]{fig_drift_frozen.pdf}}
+\end{frame}
+
+% ===================== 3. FOUR THINGS MOVE THE SIGNAL ====================
+\begin{frame}{Four things change the plant state}
+  \centering
+  \resizebox{!}{0.74\textheight}{%
+  \begin{tikzpicture}[font=\sffamily,
+    cell/.style={rounded corners=5pt, minimum width=5.4cm, minimum height=2.5cm,
+                 align=center, line width=1pt, text width=5.0cm},
+    colhdr/.style={font=\bfseries\large, align=center},
+    rowhdr/.style={font=\bfseries\large, rotate=90, align=center}]
+
+    % ponytail: fixed bbox so staged cells don't rescale the resizebox between overlays
+    \useasboundingbox (-3.8,-4.35) rectangle (8.6,2.6);
+
+    % column headers
+    \node[colhdr] at (0.0, 1.85) {CAUSE\\[1pt]{\normalsize\mdseries\itshape external driver}};
+    \node[colhdr] at (5.8, 1.85) {CONSEQUENCE\\[1pt]{\normalsize\mdseries\itshape plant's response}};
+    % row headers
+    \node[rowhdr, tgreen!60!black] at (-3.45, 0.0)  {KNOWN};
+    \node[rowhdr, tred!85!black]   at (-3.45,-3.0)  {UNKNOWN};
+
+    % --- cells (staged reveal: one cell per step, FAULT last) --------------
+    % Known x Cause  (normal)
+    \node<1->[cell, fill=tblue!12, draw=tblue!65!black] at (0.0,0.0)
+      {setpoint / reference change\\[3pt]{\footnotesize an operator command\\ — acknowledge}};
+    % Known x Consequence (normal -- the controller acting)
+    \node<2->[cell, fill=tgreen!12, draw=tgreen!65!black] at (5.8,0.0)
+      {\textbf{control input}\\[3pt]{\footnotesize the controller acts to track it\\ — model}};
+    % Unknown x Cause (normal-ish, adapt)
+    \node<3->[cell, fill=tyellow!22, draw=tyellow!75!black] at (0.0,-3.0)
+      {aging / environmental disturbance\\[3pt]{\footnotesize exogenous push\\ — adapt}};
+    % Unknown x Consequence (FAULT)
+    \node<4->[cell, fill=tred!14, draw=tred, line width=1.6pt] at (5.8,-3.0)
+      {\textbf{\textcolor{tred!85!black}{fouling}} \textcolor{tred!85!black}\\{\footnotesize permanent or transient change\\ — act}};
+  \end{tikzpicture}}
+
+  \vspace{0.3em}
+  \onslide<4->{Most detectors can't tell them apart}
+\end{frame}
+
+% ===================== 4. THE TRAP =======================================
+\begin{frame}{A good model turns change into a number}
+  % Frames from figs/fig_score_anim.py: permanent change, six sweeps —
+  % noise 0->1, ref 5->200, test 5->100, ref 200->5, noise 1->0, then
+  % transition 0->100 on the clean case (slower change only delays the peak);
+  % each holds where the last stopped. Inline playback needs Adobe Reader
+  % or Okular.
+  \centering
+  \animategraphics[autoplay,loop,controls,width=0.82\linewidth]{10}{frames/score_}{0}{259}\\
+  \vspace{0.2em}
+  {\footnotesize \textbf{Watch the detection statistic:} \textcolor{gray}{noise} pollutes it with tiny bursts; a longer
+  \textcolor{tblue}{base window} stabilizes it, a longer \textcolor{tgreen}{test window} catches slower changes.}
+\end{frame}
+
+% ===================== 5. ONE MISSING BOX ================================
+\begin{frame}{Getting a good model}
+  % Position toDMDc and tell which problem it solves
+  \centering
+  \resizebox{!}{0.82\textheight}{%
+  \begin{tikzpicture}[font=\sffamily]
+    % staged reveal: 1) the four requirements, 2) where existing methods sit,
+    % 3) the empty middle — toDMDc
+    \caps{-1.1}{-0}{-45}{3}{tblue}    % A  Interpretable
+    \caps{0}{1.}{-45}{3}{tyellow}   % B  Adaptive
+    \caps{0}{1.}{45}{3}{tgreen}      % C  Control-aware
+    \caps{1.1}{-0}{45}{3}{tred}       % D  Num. stable
+
+    % --- axis (set) names ------------------------------------------------
+    \node[tblue,           font=\bfseries\large] at (-5.6, 1.7) {Interpretable};
+    \node[tyellow!85!black,font=\bfseries\large] at (-2.4, 4.6) {Adaptive};
+    \node[tgreen,          font=\bfseries\large] at ( 2.4, 4.6) {Control-aware};
+    \node[tred,            font=\bfseries\large] at ( 5.5, 1.7) {Num.\ stable};
+
+    % --- methods placed by what they offer (representative per region) ---
+    \node<2->[meth] at (-0.80, 0.90) {oDMDc\\{\tiny[Zhang'19]}};   % ABC  no stability
+    \node<2->[meth] at (-1.96, 1.93) {oDMD};    % AB   no control, no stability
+    \node<2->[meth] at (-3.0, 1.0) {eDMD};    % A    batch, no control, no truncation
+    \node<2->[meth] at (-1.92,-0.25) {ARX};     % AC   batch, no truncation
+    \node<2->[meth] at (-0.78,-0.92) {DMDc\\N4SID $\cdot$ MOESP};             % ACD  no adaptivity
+    \node<2->[meth] at ( 1.96, 1.93) {neural NARX};                      % CD   black-box, batch
+    \node<2->[meth] at ( 0.00,-2.05) {tDMD $\cdot$ T$^2$ $\cdot$ GLR\\SSA $\cdot$ Bayesian}; % AD
+    \node<2->[meth] at ( 2.95, 1.15) {TIRE\\autoencoders\\kernel CPD}; % D-only black-box
+    \node<3->[core] at ( 0.00,-0.14) {toDMDc\\[-1pt]{\fontsize{6}{6}\selectfont(ours)}}; % ABCD
+  \end{tikzpicture}}
+
+  \vspace{-0.2em}
+  \onslide<2->{{\footnotesize Each identifier satisfies only some of the requirements}}
+  \onslide<3>{{\footnotesize — \textbf{\textcolor{tblue}{toDMDc}} alone fits them all.}}
+\end{frame}
+
+% ===================== 6a0. WHAT IS DMD ==================================
+% PRESENTER (30 s): one sentence per side, no notation. As an identification
+% method, DMD is a least-squares fit of a linear one-step model on the
+% dominant directions of the data — the same family as the ARX and subspace
+% methods on the previous slide. In operator-theoretic terms, the same fit
+% is a finite-dimensional, data-driven approximation of the Koopman
+% operator, which justifies applying a linear model to a nonlinear plant.
+% Mechanics live in the backup slide. Next: what breaks when this fit runs
+% online on noisy, redundant sensors.
+\begin{frame}{What is Dynamic Mode Decomposition (DMD)?}
+  \centering
+  \begin{tikzpicture}[font=\sffamily,>={Stealth[round]},
+    view/.style={rounded corners=4pt, align=center, inner sep=9pt,
+                 line width=1pt, text width=4.9cm},
+    sig/.style={->, line width=1.1pt, tgrey!80},
+    lbl/.style={font=\small, text=tgrey!40!black}]
+    \node[core, font=\Large\bfseries, inner sep=8pt] (dmd) at (0,1.7)
+      {{\normalsize\color{tgrey}t\,o\,e\,}DMD{\normalsize\color{tgrey}\,c}};
+    \node[view, fill=tblue!12, draw=tblue] (id) at (-3.6,-0.9)
+      {\textbf{system identification}\\[3pt]
+       least-squares data-driven identifier\\ (ARX, N4SID family)};
+    \node[view, fill=tgreen!12, draw=tgreen!65!black] (koop) at (3.6,-0.9)
+      {\textbf{Koopman operator theory}\\[3pt]
+       linear approximation\\ for nonlinear plants};
+    \draw[sig] (dmd) -- node[lbl, above left=1pt]{algorithm} (id);
+    \draw[sig] (dmd) -- node[lbl, above right=1pt]{justification} (koop);
+  \end{tikzpicture}
+
+  \vspace{0.6em}
+  {\footnotesize\color{tgrey} t = truncated \,$\cdot$\, o = online \,$\cdot$\,
+  e = extended \,$\cdot$\, c = with control}
+\end{frame}
+
+% ===================== 6b. CURRENT ONLINE SOLUTION FAILS =================
+\begin{frame}{Today's oDMDc is susceptible to noise}
+  % PRESENTER: two-tank with a DUPLICATED tank-2 sensor — the extra channel
+  % adds no information, so the data is nearly rank-deficient. The exact
+  % online update inverts the tiny noise (sigma = 1e-7): coefficients grow
+  % like 1/sigma — a million times too big. With sigma = 0 it crashes
+  % outright (singular X'X). Same streaming code; only truncation differs.
+  \centering
+  \includegraphics[height=0.68\textheight]{fig_truncation_blowup.pdf}\\[0.15em]
+  {\footnotesize One redundant sensor is enough — the exact update
+  \textcolor{tred}{divides by the noise}; \textbf{\textcolor{tblue}{truncating to rank $r$}} keeps it sane.}
+\end{frame}
+
+% ===================== 6a. WHAT IS TRUNCATION ============================
+\begin{frame}{What is truncation?}
+  % PRESENTER: the data splits into directions, strongest first (sigma bars,
+  % bottom right). Directions 1-2 (blue, green) are visibly the tank dynamics;
+  % direction 3 (red) is the duplicated sensor's noise floor, a million times
+  % smaller. The model A is built from the same directions, column i from
+  % direction i — truncation keeps the dashed r-by-r block, drops the noise
+  % column. That's the whole idea. Same data as the next slide's blow-up.
+  \centering
+  \includegraphics[height=0.72\textheight]{fig_truncation_terms.pdf}\\[0.15em]
+  % {\footnotesize Each part of the model carries the colour of the direction it is built from —
+  % \textbf{\textcolor{tblue}{truncation keeps the $r \times r$ dynamics block}},
+  % \textcolor{tred}{drops the noise part}.}
+\end{frame}
+
+% ===================== 6c. OUR FIX: TRUNCATE ONLINE ======================
+\begin{frame}{Contribution: online truncation (simplified)}
+  % PRESENTER: truncation keeps only r directions, and those directions
+  % drift as new data streams in. So each update we measure how much the
+  % kept directions rotated (K_k), and apply that rotation to yesterday's model —
+  % three cheap rotations and A-bar is valid in today's directions. That is
+  % the entire contribution: truncation that survives streaming.
+  \centering
+  \resizebox{!}{0.72\textheight}{%
+  \begin{tikzpicture}[scale=0.8, font=\sffamily,
+    op/.style={font=\large, text=tgrey!80!black},
+    cp/.style={font=\small, text=tgrey, align=left}]
+    \def\P{1.0}\def\Q{0.6}
+
+    % Row 1: split the rotation K by state (p) and control (q)
+    \node[op] at (0.0,-0.8) {$K_k=$};
+    \mblk{1.55}{0}{\P}{\P}{tblue}{$K_{pp}$}
+    \mblk{2.55}{0}{\Q}{\P}{tgrey}{$K_{pq}$}
+    \mblk{1.55}{-1.0}{\P}{\Q}{tgrey}{$K_{qp}$}
+    \mblk{2.55}{-1.0}{\Q}{\Q}{tgreen}{$K_{qq}$}
+    \lbr{1.45}{0.14}{-1.74} \rbr{3.25}{0.14}{-1.74}
+    \node[op,anchor=west] at (3.5,-0.8) {$=\tilde U_k^\top\,\tilde U_{k-1}$};
+    % PRESENTER: split by state (p) & control (q) subspaces, r = p + q;
+    % only the diagonal blocks K_pp, K_qq are used.
+    \node[cp,anchor=west,text width=5.0cm] at (7.0,-0.8)
+      {how much the orthonormal basis rotated, governed by update of $\tilde U_k$ [Zhang et al. 2019]};
+
+    % Row 2: rotate the state operator (both sides by K_pp)
+    \begin{scope}[yshift=-3.0cm]
+      \node[op] at (0.0,-0.5) {$\tilde A_k\leftarrow$};
+      \mblk{1.2}{0}{\P}{\P}{tblue}{$K_{pp}$}
+      \node[op] at (2.4,-0.5) {$\cdot$};
+      \mblk{2.6}{0}{\P}{\P}{tblue}{$\tilde A_k$}
+      \node[op] at (3.8,-0.5) {$\cdot$};
+      \mblk{4.0}{0}{\P}{\P}{tblue}{$K_{pp}^\top$}
+      \node[op] at (5.38,-0.5) {$=$};
+      \mblk{5.75}{0}{\P}{\P}{tblue}{$\tilde A_k$}
+      \node[cp,anchor=west,text width=4.4cm] at (7.0,-0.5)
+        {rotate the \textbf{state} operator};
+    \end{scope}
+
+    % Row 3: rotate the control operator (left K_pp, right K_qq)
+    \begin{scope}[yshift=-5.0cm]
+      \node[op] at (0.0,-0.5) {$\tilde B_k\leftarrow$};
+      \mblk{1.2}{0}{\P}{\P}{tblue}{$K_{pp}$}
+      \node[op] at (2.4,-0.5) {$\cdot$};
+      \mblk{2.6}{0}{\Q}{\P}{tgreen}{$\tilde B_k$}
+      \node[op] at (3.4,-0.5) {$\cdot$};
+      \mblk{3.6}{-0.2}{\Q}{\Q}{tgreen}{$K_{qq}$}
+      \node[op] at (4.63,-0.5) {$=$};
+      \mblk{5.05}{0}{\Q}{\P}{tgreen}{$\tilde B_k$}
+      \node[cp,anchor=west,text width=4.6cm] at (7.0,-0.5)
+        {rotate the \textbf{control} operator};
+    \end{scope}
+
+    % Row 4: assemble the augmented operator  A-bar = [ A | B ]
+    \begin{scope}[yshift=-6.7cm]
+      \node[op] at (0.0,-0.5) {$\tilde{\bar A}_k=$};
+      \lbr{1.4}{0.15}{-1.15}
+      \mblk{1.5}{0}{\P}{\P}{tblue}{$\tilde A_k$}
+      \mblk{2.5}{0}{\Q}{\P}{tgreen}{$\tilde B_k$}
+      \rbr{3.18}{0.15}{-1.15}
+      \node[cp,anchor=west,text width=4.6cm] at (7.0,-0.5) {the model, valid again today};
+    \end{scope}
+
+  \end{tikzpicture}}%
+\end{frame}
+
+% ===================== 8. GUARANTEES =====================================
+\begin{frame}{Two guarantees of toDMDc}
+  % Figures from figs/fig_guarantees.py: left = measured update wall time under
+  % the O(mr^2) envelope + flat over the stream; right = the frames/score_
+  % synthetic — a sharp change peaks exactly c samples after onset (any c);
+  % slower transitions (sharp <-> over 90) only push the peak later: delay >= c.
+  \begin{columns}[T]
+    \begin{column}{0.5\linewidth}
+      \begin{block}{Cheap: cost $\mathcal{O}((m+d)r^2)$ per update}
+        $m$ dimensions, model rank $r$ ($r \ll m$), learning window $d$ — \textbf{independent of history length}.\\
+        Fits into the sample interval.
+      \end{block}
+      \centering
+      % \includegraphics[width=0.92\linewidth,height=0.52\textheight,keepaspectratio]{fig_cost_mr2.pdf}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{block}{Predictable: detection delay $\ge c$}
+        The detection statistic \textbf{peaks one \textcolor{tgreen}{test window}} after a persistent change.\\
+        The test window is \textbf{your reaction budget}.
+      \end{block}
+      \centering
+      % \includegraphics[width=0.92\linewidth,height=0.52\textheight,keepaspectratio]{fig_delay_c.pdf}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===================== 9. SPINE PROOF (two-tank) =========================
+\begin{frame}{On a controlled nonlinear two-tank plant}
+  \centering
+  \includegraphics[height=0.72\textheight]{fig_twotank_companion.pdf}\\[0.1em]
+\end{frame}
+
+% ===================== 9b. METHOD COMPARISON (companion) =================
+\begin{frame}{toDMDc provides best separation}
+  \centering
+  \includegraphics[height=0.72\textheight]{fig_twotank_companion_scores.pdf}\\[0.1em]
+  {\footnotesize\color{tgrey} Table: detected (\ding{51}/\ding{55}) $\cdot$ delay / peak = samples from onset
+  to threshold-cross / statistic-peak $\cdot$ FAR = false-alarm rate outside the change $\cdot$
+  AUC = statistic separability (1.0 = perfect).}
+\end{frame}
+
+% ===================== 10. BESS HERO ====================================
+\begin{frame}{Case study: Fauling HVAC of industrial battery storage}
+  \centering
+  \includegraphics[width=0.9\linewidth]{fig_bess_hx10_crop.pdf}\\
+  \vspace{0.2em}
+  Real cooling-fan fault flagged with high confidence and precursor
+  peak \textbf{1 day before the confirmed fault}, on data never seen.\\
+\end{frame}
+
+% ===================== 11. CLOSE ========================================
+\begin{frame}{Closing the loop}
+  \renewcommand{\arraystretch}{1.3}
+  \begin{columns}[T]
+    \begin{column}{0.74\linewidth}
+      \begin{itemize}
+        \item \textbf{Stays up to date} without human re-tuning.
+        \item Tells the \textbf{controller's actions} apart from a \textbf{fauling}.
+        \item Delay you \textbf{permit} (test window $c$), cost you \textbf{afford} ($\mathcal{O}((m+d)r^2)$).
+        \item Compatible with \textbf{SCADA} infrastructure.
+        \item \textbf{Open source}, one-line install — \texttt{pip install reshift}.
+      \end{itemize}
+
+    \end{column}
+    \begin{column}{0.26\linewidth}
+      \centering
+      \includegraphics[width=0.74\linewidth]{qr_reshift.pdf}\\[0.25em]
+      {\scriptsize\color{tgrey} Interactive companion \\marekwadinger.github.io/reshift}
+    \end{column}
+  \end{columns}
+  \vspace{0.8em}
+  \centering
+  \setbeamertemplate{footnote}{\parindent 0em\noindent\raggedright\insertfootnotetext\par}%
+  \footnotetext{Supported by the internal STU grant OptiVision, the Scientific
+  Grant Agency of the Slovak Republic (VEGA 1/0490/23), and the EU
+  NextGenerationEU through the Recovery and Resilience Plan for Slovakia,
+  project No.\ 09I01--03--V04--00024.}
+\end{frame}
+
+% ===================== BACKUP ===========================================
+\appendix
+% freeze page count at the last main slide; backups are unnumbered
+\newcounter{finalframe}\setcounter{finalframe}{\value{framenumber}}
+\setbeamertemplate{footline}{}
+
+% ===================== 7d. SVD UPDATE AS BLOCK ALGEBRA ==================
+\begin{frame}{Backup — Adding a sample (Alg.~1): updating the basis $\tilde U$}
+  \centering
+  \begin{tikzpicture}[scale=0.9, font=\sffamily,
+    op/.style={font=\large, text=tgrey!80!black},
+    cp/.style={font=\small, text=tgrey, align=left}]
+    \def\R{0.95}\def\C{0.32}\def\M{1.4}
+
+    % top: the small re-SVD that produces the rotations
+    \node[op] at (0.0,-0.65) {$Y=$};
+    \mblk{0.6}{0}{\R}{\R}{tblue}{$\tilde\Sigma$}
+    \mblk{1.55}{0}{\C}{\R}{tyellow}{}
+    \mblk{0.6}{-0.95}{\R}{\C}{tgrey}{$0$}
+    \mblk{1.55}{-0.95}{\C}{\C}{tred}{}
+    \lbr{0.5}{0.14}{-1.34} \rbr{1.97}{0.14}{-1.34}
+    \node[font=\tiny,text=tblue!55!black] at (1.075,-0.55) {$r\times r$};
+    \node[op] at (2.75,-0.65) {$=$};
+    \mblk{3.2}{0.1}{\R}{1.27}{tblue}{$U_Y$}    \dimbr{3.2}{0.1}{\R}{1.27}{(r{+}c)\times r}
+    \mblk{4.35}{0.1}{\R}{\R}{tyellow}{$\Sigma_Y$}    \dimbr{4.35}{0.1}{\R}{\R}{r\times r}
+    \draw[tyellow!80!black,line width=0.8pt] (4.35,0.1) -- ++(\R,-\R);
+    \mblk{5.5}{0.1}{1.27}{\R}{tblue}{$V_Y^\top$}    \dimbr{5.5}{0.1}{1.27}{\R}{r\times(r{+}c)}
+    \node[cp,anchor=west,text width=4.6cm] at (7.2,-0.65)
+      {$\tilde\Sigma$ + in-basis \textcolor{tyellow!55!black}{$\tilde{\bar X}_k$}
+       + residual \textcolor{tred!60!black}{$K^{E'E}$}, then re-SVD $\Rightarrow U_Y$.};
+
+    % bottom: the basis update -- the point of the slide
+    \begin{scope}[yshift=-2.7cm]
+      \fill[tblue!5,rounded corners=4pt] (-0.60,0.5) rectangle (6.95,-2.0);
+      \node[op] at (-0.1,-0.7) {$\tilde U_k\leftarrow$};
+      \lbr{0.55}{0.12}{-1.55}
+      \mblk{0.65}{0}{\R}{\M}{tblue}{$\tilde U_{k-1}$}    \dimbr{0.65}{0}{\R}{\M}{m\times r}
+      \mblk{1.60}{0}{\C}{\M}{tred}{}
+      \node[font=\scriptsize,text=tred!50!black,rotate=90] at (1.76,-0.7) {$E'$};
+      \rbr{2.04}{0.12}{-1.55}
+      \node[op] at (2.4,-0.7) {$\cdot$};
+      \mblk{2.7}{-0.22}{\R}{\R}{tblue}{$U_0$}    \dimbr{2.7}{-0.22}{\R}{\R}{(r{+}c){\times}(r{+}c)}
+      \node[op] at (3.85,-0.7) {$\cdot$};
+      \mblk{4.15}{-0.07}{\R}{1.27}{tblue}{$U_Y$}    \dimbr{4.15}{-0.07}{\R}{1.27}{(r{+}c)\times r}
+      \node[op] at (5.35,-0.7) {$=$};
+      \mblk{5.8}{0}{\R}{\M}{tblue}{$\tilde U_k$}    \dimbr{5.8}{0}{\R}{\M}{m\times r}
+      \node[cp,anchor=west,text width=4.6cm] at (7.2,-0.7)
+        {append \textcolor{tred!60!black}{new axis $E'$}, rotate by $U_0$, $U_Y$
+         $\Rightarrow$ updated $\tilde U_k$ ($m\times r$).};
+    \end{scope}
+  \end{tikzpicture}
+\end{frame}
+
+% ===================== 7e. SVD REVERT AS BLOCK ALGEBRA ==================
+\begin{frame}{Backup — Forgetting a sample (Alg.~2): the basis $\tilde U$ rotates \& shrinks}
+  \centering
+  \begin{tikzpicture}[scale=0.9, font=\sffamily,
+    op/.style={font=\large, text=tgrey!80!black},
+    cp/.style={font=\small, text=tgrey, align=left}]
+    \def\R{0.95}\def\C{0.32}\def\M{1.4}
+
+    % top: the small downdate re-SVD
+    \node[op] at (0.0,-0.65) {$Y=$};
+    \mblk{0.6}{0}{\R}{\R}{tblue}{$\tilde\Sigma$}
+    \mblk{1.55}{0}{\C}{\R}{tgrey}{}
+    \mblk{0.6}{-0.95}{\R}{\C}{tgrey}{$0$}
+    \mblk{1.55}{-0.95}{\C}{\C}{tgrey}{}
+    \lbr{0.5}{0.14}{-1.34} \rbr{1.97}{0.14}{-1.34}
+    \node[font=\tiny,text=tblue!55!black] at (1.075,-0.55) {$r\times r$};
+    \node[op] at (2.2,-0.65) {$\cdot$};
+    \mblk{2.45}{0.06}{\R}{\R}{tgreen}{$\Pi$}    \dimbr{2.45}{0.06}{\R}{\R}{(r{+}c){\times}(r{+}c)}
+    \node[op] at (3.6,-0.65) {$=$};
+    \mblk{3.95}{0.1}{\R}{1.27}{tblue}{$U_Y$}    \dimbr{3.95}{0.1}{\R}{1.27}{(r{+}c)\times r}
+    \mblk{5.1}{0.1}{\R}{\R}{tyellow}{$\Sigma_Y$}    \dimbr{5.1}{0.1}{\R}{\R}{r\times r}
+    \draw[tyellow!80!black,line width=0.8pt] (5.1,0.1) -- ++(\R,-\R);
+    \mblk{6.25}{0.1}{1.27}{\R}{tblue}{$V_Y^\top$}    \dimbr{6.25}{0.1}{1.27}{\R}{r\times(r{+}c)}
+    \node[cp,anchor=west,text width=4.6cm] at (7.6,-0.65)
+      {\textcolor{tgreen!45!black}{\textbf{downdate} $\Pi$} strips the leaving
+       sample, then re-SVD $\Rightarrow U_Y$.};
+
+    % bottom: the basis update -- emphasis on U
+    \begin{scope}[yshift=-2.7cm]
+      \fill[tblue!5,rounded corners=4pt] (-0.60,0.5) rectangle (4.95,-2.0);
+      \node[op] at (-0.1,-0.7) {$\tilde U\leftarrow$};
+      \mblk{0.65}{0}{\R}{\M}{tblue}{$\tilde U$}    \dimbr{0.65}{0}{\R}{\M}{m\times r}
+      \node[op] at (1.85,-0.7) {$\cdot$};
+      \mblk{2.15}{-0.22}{\R}{\R}{tblue}{$U_Y$}    \dimbr{2.15}{-0.22}{\R}{\R}{r\times r}
+      \node[font=\tiny,text=tgrey] at (2.62,-1.45) {$(:r,:r)$};
+      \node[op] at (3.35,-0.7) {$=$};
+      \mblk{3.8}{0}{\R}{\M}{tblue}{$\tilde U$}    \dimbr{3.8}{0}{\R}{\M}{m\times r}
+      \node[cp,anchor=west,text width=4.6cm] at (7.6,-0.7)
+        {keep leading $r$ columns of $U_Y$.\\[2pt]
+         \emph{No new axis} — basis only rotates \& shrinks.};
+    \end{scope}
+  \end{tikzpicture}
+\end{frame}
+
+
+
+% ===================== 6a0. WHAT IS DMD ==================================
+\begin{frame}{Backup — What is DMD?}
+  % PRESENTER (30 s): DMD in one breath. SVD gives the directions the data
+  % actually moves in (blue, green). Project the data onto them — one
+  % coordinate per direction — and fit the one-step model z_k = A~ z_{k-1}
+  % by least squares on those coordinates (the grey step arrows). That's all
+  % of DMD: a linear model living ON the directions, one row/column of A~
+  % per direction — the interpretable linear identifier we asked for. But
+  % look at the data: every sample is fuzzed by sensor noise, and once the
+  % dynamics decay the coordinates are pure noise (tail, right). A direction
+  % that carries mostly noise still gets its own piece of the model — what
+  % the least squares does to it is the next slide.
+  \centering
+  \includegraphics[width=\linewidth,height=0.72\textheight,keepaspectratio]{fig_what_is_dmd.pdf}\\[0.15em]
+  {\footnotesize Project the data on its \textbf{\textcolor{tblue}{SVD directions}} and fit the
+  linear step there: $z_k = \tilde A\,z_{k-1}$.}
+\end{frame}
+
+
+% ===================== 7g. REALIGNMENT ON DATA ==========================
+\begin{frame}{Backup — Realignment on the two-tank (1\,\% valve clog)}
+  \centering
+  \includegraphics[height=0.80\textheight]{fig_rotation_ellipse.pdf}\\[-0.2em]
+  {\footnotesize $K_{pp}$ carries $\bar A_{k-1}$ into the rotated basis
+   ($\theta\approx0.7^\circ$): the realigned operator tracks the refit;
+   the leftover gap is the physical change.}
+\end{frame}
+
+% ===================== 7a. MECHANISM (flowchart version) ================
+\begin{frame}{Backup — How one update stays $\mathcal{O}((m+d)r^2)$}
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[font=\sffamily,>={Stealth[round]},
+    box/.style={rounded corners=3pt, align=center, inner sep=5pt, line width=0.9pt},
+    full/.style={box, fill=tgrey!10, draw=tgrey!70},
+    redu/.style={box, fill=tblue!12, draw=tblue, text=tblue!85!black},
+    rot/.style={box, fill=tyellow!18, draw=tyellow!80!black},
+    upd/.style={box, fill=tgreen!12, draw=tgreen!70!black, text=tgreen!45!black},
+    flow/.style={->, line width=1.1pt, tgrey!75},
+    lbl/.style={font=\scriptsize, text=tgrey, align=center}]
+
+    % streaming data row (top)
+    \node[full]                    (snap) {new snapshot\\$\bar X_k,\,X'_k$\\{\scriptsize $m$-dim}};
+    \node[redu, right=18mm of snap](proj) {\textbf{project}\\$\tilde U_k^\top(\cdot)$\\{\scriptsize keep top $r$}};
+    \node[upd, right=18mm of proj] (updt) {\textbf{DMD update}\\in $r$-dim space\\{\scriptsize eqs.\,(p)–(a)}};
+    \node[redu, right=16mm of updt](out)  {updated model\\$\tilde{\bar A}_k,\,\tilde P_k$};
+    \draw[flow] (snap) -- node[lbl,above]{$m{\to}r$} (proj);
+    \draw[flow] (proj) -- (updt);
+    \draw[flow] (updt) -- (out);
+
+    % basis-tracking row (bottom)
+    \node[full, below=14mm of proj](ub)  {online SVD\\$\tilde U_{k-1}\!\to\!\tilde U_k$\\{\scriptsize rank-$c$ update}};
+    \node[rot, right=14mm of ub]   (krot){\textbf{rotation}\\$K^{U'U}_k=\tilde U_k^\top\tilde U_{k-1}$};
+    \draw[flow] (ub) -- (krot);
+    \draw[flow, tblue!70] (ub.north) |- (proj.west);
+    \draw[flow, tyellow!85!black] (krot.north) -- (updt.south)
+          node[lbl, midway, left=1pt, text=tyellow!55!black]{realign\\$\tilde{\bar A}_k,\tilde P_k$};
+
+    % cost badge
+    \node[box, draw=tred, fill=tred!8, text=tred!85!black, below=14mm of out,
+          font=\footnotesize] (cost)
+      {$\mathcal{O}((m+d)r^2)$ / step\\\textcolor{tgrey}{vs}\; $\mathcal{O}(m^3)$ naive};
+
+    \begin{scope}[on background layer]
+      \node[fit=(snap)(proj)(updt)(out), rounded corners, draw=tgrey!25,
+            dashed, inner sep=9pt,
+            label={[lbl,anchor=west]north west:reduced-order stream}] {};
+    \end{scope}
+  \end{tikzpicture}}
+\end{frame}
+
+\begin{frame}{Backup — BESS, full run}
+  \centering
+  \includegraphics[width=0.86\linewidth]{fig_bess_hx10_full.pdf}\\
+  Largest late peaks are return-to-normal transitions.
+\end{frame}
+
+\setcounter{framenumber}{\value{finalframe}}
+\end{document}
