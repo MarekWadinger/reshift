@@ -162,7 +162,7 @@ def fig_bess(variant: str = "hx10", *, crop: bool = True) -> None:
         fontweight="bold",
         arrowprops={"arrowstyle": "->", "color": BLUE, "lw": 1.8},
     )
-    ax1.set_ylabel("score")
+    ax1.set_ylabel("detection\nstatistic")
     ax1.set_xlabel("time since start (hours)")
     ax1.set_ylim(0, q.max() * 1.1)
     if crop:
@@ -492,7 +492,7 @@ def fig_twotank_companion() -> None:
     axs[0].legend(
         handles=[
             *axs[0].get_legend_handles_labels()[0],
-            Patch(facecolor=APP_REF, alpha=0.35, label="reference window"),
+            Patch(facecolor=APP_REF, alpha=0.35, label="base window"),
             Patch(facecolor=APP_TEST, alpha=0.40, label="test window"),
         ],
         loc="upper right",
@@ -506,7 +506,7 @@ def fig_twotank_companion() -> None:
 
     axs[3].plot(x, s, color=APP_COLOR["toDMDc"], lw=1.7)
     axs[3].axhline(APP_THR, color=APP_THRESH, ls="--", lw=1.2)
-    axs[3].set_ylabel("score")
+    axs[3].set_ylabel("detection\nstatistic")
     axs[3].set_xlabel("sample")
 
     # reference (blue) and test (green) window undercolors, app colours/opacities
@@ -571,7 +571,7 @@ def fig_twotank_companion_scores() -> None:
     )
     ax.axhline(APP_THR, color=APP_THRESH, ls="--", lw=1.2)
     ax.set_xlim(LEARN_W, n)
-    ax.set_ylabel("change score")
+    ax.set_ylabel("detection\nstatistic")
     ax.set_xlabel("sample")
     ax.xaxis.set_label_coords(0.5, -0.13)  # keep the label clear of the table
     # legend in a strip above the axes so no trace ever crosses it

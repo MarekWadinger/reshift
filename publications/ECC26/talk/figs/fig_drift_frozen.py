@@ -147,7 +147,7 @@ def main() -> None:
     ):
         ax.plot(x, s, color=col, lw=1.5)
         ax.axhline(1.0, color="black", ls=":", lw=1.3)
-        ax.set_ylabel("alarm\nstatistic")
+        ax.set_ylabel("detection\nstatistic")
         ax.text(
             0.008, 0.93, lab, transform=ax.transAxes, ha="left", va="top",
             color=col, fontsize=14, fontweight="bold",

@@ -130,7 +130,7 @@ def fig_terms() -> None:
         c = term_colors[i]
         # one trace per term: its time course sigma_i * v_i
         axs[i + 1].plot(t, S[i] * Vt[i], lw=1.1, color=c)
-        axs[i + 1].set_ylabel(f"term {i + 1}")
+        axs[i + 1].set_ylabel(f"direction {i + 1}")
         axs[i + 1].annotate(
             tags[i],
             xy=(0.99, 0.78),
@@ -172,7 +172,7 @@ def fig_terms() -> None:
         plt.Rectangle((0.02, 1.08), 1.9, 1.84, fill=False, ls="--", lw=2.2, edgecolor="black"),
     )
     axb.set_title(r"the model $\bar A$", fontsize=15)
-    axb.text(1.47, -0.35, "column $i$ is built from term $i$\ndashed: kept — rank $r$",
+    axb.text(1.47, -0.35, "column $i$ is built from direction $i$\ndashed: kept — rank $r$",
              ha="center", va="top", fontsize=12)
     axb.set_xlim(-0.4, 3.3)
     axb.set_ylim(-1.6, 3.6)
@@ -185,7 +185,7 @@ def fig_terms() -> None:
     axh.set_yticks([1e-6, 1e-1, 1e4])
     axh.set_xticks([1, 2, 3])
     axh.set_ylabel(r"$\sigma_i$")
-    axh.set_xlabel("term $i$")
+    axh.set_xlabel("direction $i$")
     fig.tight_layout()
     save_fig(fig, "fig_truncation_terms")
 

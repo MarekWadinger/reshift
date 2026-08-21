@@ -183,7 +183,7 @@ def fig_delay() -> None:
     ax0.axvline(onset, color=GREY, ls="--", lw=1.4)
     ax0.set_ylim(0, 4.2)
     ax0.legend(frameon=False, loc="upper right", fontsize=13)
-    ax0.set_ylabel("score")
+    ax0.set_ylabel("detection\nstatistic")
     ax0.set_title("same change, three test windows $c$", fontsize=14)
 
     # bottom: one test window, sharp ↔ slow transition — the delay only grows
@@ -205,7 +205,7 @@ def fig_delay() -> None:
     ax1.axvline(onset, color=GREY, ls="--", lw=1.4)
     ax1.set_ylim(0, 4.2)
     ax1.legend(frameon=False, loc="upper right", fontsize=13)
-    ax1.set_ylabel("score")
+    ax1.set_ylabel("detection\nstatistic")
     ax1.set_xlabel("sample")
     ax1.set_title(f"same window $c={c}$, sharp ↔ slow transition", fontsize=14)
 
