@@ -1,3 +1,36 @@
+## v5.2.2 (2026-08-21)
+
+### Fixes
+
+- **ecc26**: retitle Zhang2022 to its 2026 v3 arXiv revision
+- **examples**: pin window-explorer change onset to CENTER
+
+### Refactor
+
+- **ecc26**: consolidate talk plotting into talkplot toolkit
+
+### Docs
+
+- **ecc26**: capture rehearsal feedback from Juraj and Rado
+- **ecc26**: show the eyeballing path, extend score animation, add DMD backup slide
+- **ecc26**: finish detection-statistic nomenclature sweep, regen figs
+- **ecc26**: trim logo whitespace, unify title-band logo height
+- **ecc26**: unify nomenclature across the deck
+- **ecc26**: add model-based monitoring loop slide
+- **ecc26**: redesign title slide with ECC26 branding
+- **ecc26**: rework identifier venn — fill empty requirement regions
+- **ecc26**: merge decay slides into two-step drift reveal
+- **ecc26**: drop fig_claims figure and its generators
+- **ecc26**: rework talk figure generators per colleague feedback
+- **companion**: use 'identifier' for DMD variants in user-facing text
+- add method-naming section mapping DMD variants to code
+- **ecc26**: add basis-realignment demo figure and backup slide
+- **ecc26**: revise talk deck — companion figs, block-algebra backups, QR
+- **ecc26**: add score-evolution animation generator
+- **ecc26**: expand talk figure generator and regenerate figures
+- **ecc26**: add nonlinear CPD examples + refresh talk slides/figure
+- **ecc26**: add conference talk — slides, figures, reusable plotter, outline
+
 ## v5.2.1 (2026-07-03)
 
 ### Fixes
