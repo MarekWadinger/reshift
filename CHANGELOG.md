@@ -1,3 +1,9 @@
+## v5.2.3 (2026-09-03)
+
+### Fixes
+
+- **deps**: resolve dependabot alerts and relax fragile upper bounds
+
 ## v5.2.2 (2026-08-21)
 
 ### Fixes
