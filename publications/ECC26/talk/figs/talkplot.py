@@ -83,7 +83,9 @@ def talk_style(**overrides: object) -> None:
         "figure.dpi": 130,
     }
     style.update(overrides)
-    plt.rcParams.update(style)
+    # matplotlib types rcParams keys as a closed Literal set, which a
+    # str-keyed dict cannot satisfy; runtime validation happens in RcParams.
+    plt.rcParams.update(style)  # ty: ignore[no-matching-overload]
 
 
 def save_fig(

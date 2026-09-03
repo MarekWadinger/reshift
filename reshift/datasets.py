@@ -92,7 +92,7 @@ def load_nprs44() -> np.ndarray:
     )
 
 
-def load_cats(resample_s: None | int = None) -> pd.DataFrame:
+def load_cats(resample_s: int | None = None) -> pd.DataFrame:
     """Load the CATS multivariate time-series dataset.
 
     Downloads and caches the dataset as a CSV on first call.

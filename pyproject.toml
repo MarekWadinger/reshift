@@ -16,12 +16,12 @@ keywords = [
     "river",
 ]
 dependencies = [
-    "matplotlib<4.0.0",
-    "numpy<3.0.0",
-    "pandas<3.0.0",
+    "matplotlib>=3.10",
+    "numpy>=2.3",
+    "pandas>=2.3",
     "requests>=2.32.4",
     "river",
-    "scipy<2.0.0",
+    "scipy>=1.16",
     "tqdm>=4.67.1",
 ]
 
@@ -76,6 +76,8 @@ lint.ignore = [
     "S101",    # assert used for runtime invariants
     "PLR0912", # too many branches (algorithmic code)
     "PLR0913", # too many arguments (model/config constructors)
+    "PLR0917", # too many positional arguments (same rationale as PLR0913)
+    "CPY001",  # no per-file copyright headers; LICENSE covers the project
     "PLR0915", # too many statements (algorithmic code)
     "C901",    # function too complex (algorithmic code)
     "PLC0415", # intentional lazy imports (optional/heavy deps)
@@ -150,9 +152,8 @@ default-groups = ["dev", "app", "docs", "examples"]
 river = { path = "vendor/river", editable = true }
 
 [dependency-groups]
-app = ["streamlit<2.0.0"]
+app = ["streamlit>=1.63"]
 examples = [
-    "bayesian-optimization~=1.4.3",
     "jupyter>=1.1.1",
     "notebook>=7.5.6",
     "pydmd>=2025.8.1",
@@ -183,15 +184,15 @@ dev = [
     "types-tqdm>=4.68.0.20260608",
 ]
 docs = [
-    "black<30.0.0",
-    "markdown-exec<2.0.0",
+    "black>=26.1",
+    "markdown-exec>=1.12",
     "mkdocs-charts-plugin>=0.0.12",
     "mkdocs-gen-files>=0.5.0",
-    "mkdocs-include-markdown-plugin<10.0.0",
+    "mkdocs-include-markdown-plugin>=7.3",
     "mkdocs-literate-nav>=0.6.2",
-    "mkdocs-material<10.0.0",
+    "mkdocs-material>=9.7",
     "mkdocs-section-index>=0.3.10",
-    "mkdocstrings-python<2.0.0",
+    "mkdocstrings-python>=2.0",
 ]
 
 [tool.commitizen]
