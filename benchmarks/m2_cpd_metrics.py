@@ -585,22 +585,26 @@ def write_latex(results: dict, tolerances: dict) -> str:
     lines = [
         r"\begin{table}[t]",
         r"  \centering",
-        r"  \caption{Change-point detection performance of the proposed "
-        r"toDMDc detector against the OnlineSVD reference baseline "
-        r"(OSVD-CPD), over $N$ Monte-Carlo runs. Values are "
-        r"mean~$\pm$~95\,\% confidence interval ($1.96\,\sigma/\sqrt{N}$). "
-        r"A detection is a true positive if it falls within the "
-        r"$(t_c,\,t_c+c]$ tolerance window after a true change-point $t_c$, "
-        r"with $c=\text{test\_size}$ the deterministic delay budget. F1 uses "
-        r"a per-run threshold calibrated to $\mu+4\sigma$ of the score over a "
-        r"stable pre-change window; ROC-AUC is threshold-free (score as a "
-        r"per-sample change discriminant). False-alarm rate is false "
-        r"positives per $1000$ change-free samples.}",
+        (
+            r"  \caption{Change-point detection performance of the proposed "
+            r"toDMDc detector against the OnlineSVD reference baseline "
+            r"(OSVD-CPD), over $N$ Monte-Carlo runs. Values are "
+            r"mean~$\pm$~95\,\% confidence interval ($1.96\,\sigma/\sqrt{N}$). "
+            r"A detection is a true positive if it falls within the "
+            r"$(t_c,\,t_c+c]$ tolerance window after a true change-point $t_c$, "
+            r"with $c=\text{test\_size}$ the deterministic delay budget. F1 uses "
+            r"a per-run threshold calibrated to $\mu+4\sigma$ of the score over a "
+            r"stable pre-change window; ROC-AUC is threshold-free (score as a "
+            r"per-sample change discriminant). False-alarm rate is false "
+            r"positives per $1000$ change-free samples.}"
+        ),
         r"  \label{tab:m2-cpd}",
         r"  \begin{tabular}{lllll}",
         r"    \toprule",
-        r"    Method & F1 & ROC-AUC & Mean delay [samples] & "
-        r"False-alarm rate \\",
+        (
+            r"    Method & F1 & ROC-AUC & Mean delay [samples] & "
+            r"False-alarm rate \\"
+        ),
         r"    \midrule",
     ]
     exp_titles = {

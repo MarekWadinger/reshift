@@ -528,8 +528,8 @@ if submit_params:
     runtime_info.info("Plotting results ...")
     # Plot results
     if data_gt:
-        Y: np.ndarray | None = df_gt.iloc[:, 0].to_numpy()
-        Y_: np.ndarray | None = np.where(Y == 1)[0]
+        Y = df_gt.iloc[:, 0].to_numpy()
+        Y_ = np.where(Y == 1)[0]
     else:
         Y = None
         Y_ = None
