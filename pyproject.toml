@@ -96,6 +96,8 @@ lint.pycodestyle.max-line-length = 79
 "benchmarks/*" = ["T201", "T203"]
 # Comparison helper shells out to `git clone` and prints in its smoke check.
 "examples/cpdmd_compare.py" = ["S603", "S607", "T201"]
+# Benchmark sweep script: prints are the progress-reporting medium (T201).
+"examples/tep_sweep.py" = ["T201"]
 # Numbered example scripts are jupytext (percent-format) pairs of the talk
 # notebooks: numeric module names (N999) and no module docstring (D100) come
 # from the notebook pairing, and prints are the output medium (T201/T203) --
@@ -157,6 +159,10 @@ examples = [
     "jupyter>=1.1.1",
     "notebook>=7.5.6",
     "pydmd>=2025.8.1",
+    "pyreadr>=0.5.6",
+    "scikit-learn>=1.5.1",
+    "torch>=2.13.0",
+    "ts2vec>=0.1",
 ]
 dev = [
     "commitizen>=4.16.3",

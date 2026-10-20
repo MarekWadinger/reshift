@@ -23,9 +23,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.lines import Line2D
+from sklearn.metrics import roc_auc_score
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Callable, Mapping
 
     from matplotlib.figure import Figure
 
@@ -237,6 +238,110 @@ def match_changepoints(
         "f1": f1,
         "mean_delay": float(np.mean(delays)) if delays else float("nan"),
     }
+
+
+# --- generic benchmark bed -------------------------------------------------
+
+# A method is *any* callable that streams X and returns detected indices --
+# ODMD-CPD, CPDMD, and future entrants all conform, so run_benchmark never
+# branches on which one it's running.
+
+
+def run_benchmark(
+    datasets: dict[str, tuple[np.ndarray, list[int]]],
+    methods: Mapping[str, Callable[[np.ndarray], list[int]]],
+    tol: int,
+    pre: int = 0,
+) -> pd.DataFrame:
+    """Run every method on every dataset through the identical causal metric.
+
+    Each method is called uniformly as ``method(X) -> list[int]``; adding a
+    method or a dataset is purely additive (register it and rerun), no
+    special-casing here.
+
+    Args:
+        datasets: ``{name: (X, true_cps)}``.
+        methods: ``{name: callable}``, each taking ``X`` and returning
+            detected change indices.
+        tol: Forward matching tolerance passed to :func:`match_changepoints`.
+        pre: Pre-change grace passed to :func:`match_changepoints`.
+
+    Returns:
+        Long-format DataFrame with one row per (dataset, method).
+    """
+    rows = [
+        {
+            "dataset": dname,
+            "method": mname,
+            **match_changepoints(true_cps, method(X), tol, pre),
+        }
+        for dname, (X, true_cps) in datasets.items()
+        for mname, method in methods.items()
+    ]
+    return pd.DataFrame(rows)
+
+
+def label_causal_window(
+    n: int,
+    true_cps: list[int],
+    tol: int,
+    pre: int = 0,
+) -> np.ndarray:
+    """Binary per-step labels: 1 within a change's causal window, else 0.
+
+    Same ``[c - pre, c + tol)`` window :func:`match_changepoints` scores
+    detections against, turned into a per-timestep label so a continuous
+    score can be evaluated threshold-free (ROC AUC) instead of only at one
+    fixed threshold.
+
+    Args:
+        n: Number of samples.
+        true_cps: Ground-truth change-point indices.
+        tol: Forward window length.
+        pre: Pre-change grace (default 0).
+
+    Returns:
+        Length-``n`` array of 0/1 labels.
+    """
+    y = np.zeros(n, dtype=int)
+    for c in true_cps:
+        y[max(c - pre, 0) : min(c + tol, n)] = 1
+    return y
+
+
+def run_auc_benchmark(
+    datasets: dict[str, tuple[np.ndarray, list[int]]],
+    scorers: Mapping[str, Callable[[np.ndarray], np.ndarray]],
+    tol: int,
+    pre: int = 0,
+) -> pd.DataFrame:
+    """Threshold-free counterpart to :func:`run_benchmark`: ROC AUC per method.
+
+    Each scorer is called uniformly as ``scorer(X) -> score array`` (one
+    score per sample); no branching on which method produced it, same
+    contract as :func:`run_benchmark`'s binary-detector methods.
+
+    Args:
+        datasets: ``{name: (X, true_cps)}``.
+        scorers: ``{name: callable}``, each taking ``X`` and returning a
+            per-sample continuous score.
+        tol: Forward window passed to :func:`label_causal_window`.
+        pre: Pre-change grace passed to :func:`label_causal_window`.
+
+    Returns:
+        Long-format DataFrame with one row per (dataset, method).
+    """
+    rows = []
+    for dname, (X, true_cps) in datasets.items():
+        y = label_causal_window(len(X), true_cps, tol, pre)
+        for sname, scorer in scorers.items():
+            auc = (
+                roc_auc_score(y, scorer(X))
+                if 0 < y.sum() < len(y)
+                else float("nan")
+            )
+            rows.append({"dataset": dname, "method": sname, "roc_auc": auc})
+    return pd.DataFrame(rows)
 
 
 # --- synthetic benchmarks -------------------------------------------------
