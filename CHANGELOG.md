@@ -1,3 +1,10 @@
+## v5.3.0 (2026-10-20)
+
+### Features
+
+- **examples**: add plug-and-play CPD benchmark bed and TEP sweep
+- **datasets**: add Tennessee Eastman Process loader
+
 ## v5.2.3 (2026-09-03)
 
 ### Fixes
