@@ -41,9 +41,9 @@ Nonlinear two-tank (control case, mirrors 08_nonlinear_delay_control.ipynb):
     Ground-truth change-points: [3998, 4998, 7598, 8598, 9798].
 
 Run with:
-  cd /Users/mw/pyprojects/phd/researcher/odmd-ecc-fixes && \
+  cd /Users/mw/Developer/academia/researcher/odmd-ecc-fixes && \
   PYTHONPATH=$PWD \
-  /Users/mw/pyprojects/phd/researcher/odmd-subid-cpd/.venv/bin/python \
+  /Users/mw/Developer/academia/researcher/odmd-subid-cpd/.venv/bin/python \
   benchmarks/m2_cpd_metrics.py
 (the odmd-subid-cpd venv interpreter resolves vendored river; run from the
 examples dir is not required because data paths below are absolute).
