@@ -370,3 +370,46 @@ def load_bess() -> tuple[pd.DataFrame, pd.DataFrame]:
     y = pd.read_csv(y_path, index_col=0)
     y.index = pd.to_datetime(y.index)
     return X, y
+
+
+def load_tep(
+    file_path: str = "data/TEP",
+    fault_number: int = 1,
+    simulation_run: int = 1,
+) -> pd.DataFrame:
+    """Load a single Tennessee Eastman Process testing run (Rieth et al. 2017).
+
+    Each testing run is fault-free for its first 160 samples (3 min/sample),
+    after which the given fault is injected for the remainder of the run.
+
+    Args:
+        file_path: Directory containing ``TEP_Faulty_Testing.RData``
+            (download from https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/6C3JR1).
+        fault_number: Injected fault ID, 1-20.
+        simulation_run: Simulation run ID, 1-500.
+
+    Returns:
+        DataFrame of the 52 process variables (``xmeas_*``, ``xmv_*``)
+        indexed by sample number, for the requested run.
+
+    Raises:
+        FileNotFoundError: If the RData file is not present at ``file_path``.
+    """
+    import pyreadr
+
+    rdata_path = Path(file_path) / "TEP_Faulty_Testing.RData"
+    if not rdata_path.exists():
+        msg = (
+            f"{rdata_path} not found. Download it from "
+            "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/6C3JR1"
+        )
+        raise FileNotFoundError(msg)
+
+    df = next(iter(pyreadr.read_r(str(rdata_path)).values()))
+    run = df[
+        (df["faultNumber"] == fault_number)
+        & (df["simulationRun"] == simulation_run)
+    ].sort_values("sample")
+    return run.set_index("sample").drop(
+        columns=["faultNumber", "simulationRun"],
+    )
