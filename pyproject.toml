@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=80.9.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "reshift"
 version = "5.3.0"
@@ -151,7 +155,14 @@ exclude_lines = [
 default-groups = ["dev", "app", "docs", "examples"]
 
 [tool.uv.sources]
-river = { path = "vendor/river", editable = true }
+# Pinned to the packaging fix so a git install of reshift resolves river.
+# To develop against the vendored checkout, swap for the line below
+# (run `git submodule update --init vendor/river` first):
+# river = { path = "vendor/river", editable = true }
+river = { git = "https://github.com/MarekWadinger/river.git", rev = "ae465096573be2dd0a0f8c57e17b136f889efb8a" }
+
+[tool.setuptools.packages.find]
+include = ["reshift*"]
 
 [dependency-groups]
 app = ["streamlit>=1.63"]
