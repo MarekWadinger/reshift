@@ -2656,8 +2656,8 @@ wheels = [
 
 [[package]]
 name = "reshift"
-version = "5.2.3"
-source = { virtual = "." }
+version = "5.3.0"
+source = { editable = "." }
 dependencies = [
     { name = "matplotlib" },
     { name = "numpy" },
@@ -2724,7 +2724,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.3" },
     { name = "pandas", specifier = ">=2.3" },
     { name = "requests", specifier = ">=2.32.4" },
-    { name = "river", editable = "vendor/river" },
+    { name = "river", git = "https://github.com/MarekWadinger/river.git?rev=ae465096573be2dd0a0f8c57e17b136f889efb8a" },
     { name = "scipy", specifier = ">=1.16" },
     { name = "tqdm", specifier = ">=4.67.1" },
 ]
@@ -2813,69 +2813,11 @@ wheels = [
 [[package]]
 name = "river"
 version = "0.23.0"
-source = { editable = "vendor/river" }
+source = { git = "https://github.com/MarekWadinger/river.git?rev=ae465096573be2dd0a0f8c57e17b136f889efb8a#ae465096573be2dd0a0f8c57e17b136f889efb8a" }
 dependencies = [
     { name = "numpy" },
     { name = "pandas" },
     { name = "scipy" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "numpy", specifier = ">=2.3.4,<3" },
-    { name = "pandas", specifier = ">=2.2,<3" },
-    { name = "scipy", specifier = ">=1.16,<2" },
-]
-
-[package.metadata.requires-dev]
-benchmark = [
-    { name = "dominate" },
-    { name = "scikit-learn" },
-    { name = "tabulate" },
-    { name = "watermark" },
-]
-compat = [
-    { name = "scikit-learn", specifier = ">=1.5.1,<2" },
-    { name = "sqlalchemy", specifier = ">=2.0.0,<3" },
-]
-dev = [
-    { name = "graphviz", specifier = ">=0.20.1,<0.21" },
-    { name = "gymnasium", specifier = ">=0.29.0,<0.30" },
-    { name = "ipykernel", specifier = ">=6.26.0,<7" },
-    { name = "ipython", specifier = ">=8.17.2,<9" },
-    { name = "jupyter", specifier = ">=1.0.0,<2" },
-    { name = "matplotlib", specifier = ">=3.8.4,<4" },
-    { name = "mike", specifier = ">=2.0.0,<3" },
-    { name = "mypy", specifier = ">=1.11.1,<2" },
-    { name = "polars", specifier = ">=1.1.0,<2" },
-    { name = "pre-commit", specifier = ">=3.5.0,<4" },
-    { name = "pytest", specifier = ">=7.4.2,<8" },
-    { name = "pytest-xdist", extras = ["psutil"], specifier = ">=3.3.1,<4" },
-    { name = "rich", specifier = ">=13.6.0,<14" },
-    { name = "ruff", specifier = ">=0.4.10,<0.5" },
-    { name = "scikit-learn", specifier = ">=1.5.1,<2" },
-    { name = "sqlalchemy", specifier = ">=2.0.22,<3" },
-    { name = "sympy", specifier = ">=1.12.1,<2" },
-]
-docs = [
-    { name = "dominate" },
-    { name = "flask" },
-    { name = "ipykernel" },
-    { name = "jupyter-client" },
-    { name = "jupyter-contrib-nbextensions", specifier = ">=0.7.0,<0.8" },
-    { name = "mike" },
-    { name = "mkdocs" },
-    { name = "mkdocs-awesome-pages-plugin" },
-    { name = "mkdocs-charts-plugin" },
-    { name = "mkdocs-material" },
-    { name = "nbconvert" },
-    { name = "notebook", specifier = "<7" },
-    { name = "numpydoc" },
-    { name = "plotly", specifier = ">=6.3.0" },
-    { name = "python-slugify" },
-    { name = "spacy" },
-    { name = "tabulate" },
-    { name = "watermark" },
 ]
 
 [[package]]
